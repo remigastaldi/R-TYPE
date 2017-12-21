@@ -7,4 +7,4 @@
 
 #pragma once
 
-#define BUILD_SERVER @SERVER@
+#define DEBUG @DEBUG@

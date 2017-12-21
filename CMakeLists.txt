@@ -6,8 +6,8 @@ endif()
 
 project(R-TYPE)
 set(R-TYPE_VERSION_MAJOR 0)
-set(R-TYPE_VERSION_MINOR 1)
-set(R-TYPE_VERSION_PATCH 0)
+set(R-TYPE_VERSION_MINOR 0)
+set(R-TYPE_VERSION_PATCH 1)
 
 if(MSVC)
     add_definitions(-DMSVC)
@@ -15,78 +15,25 @@ elseif(APPLE)
     add_definitions(-DAPPLE)
 endif()
 
-if (${SERVER_ONLY})
-  message(STATUS "### BUILD R-TYPE SERVER ###")
-  set(SERVER true)
-  set(NAME "server")
+if (${DEBUG})
+  message(STATUS "### DEBUG ON ###")
+  set(DEBUG true)
 else()
-  message(STATUS "### BUILD R-TYPE GAME ###")
-  set(SERVER false)
-  set(NAME "R-TYPE")
+  set(DEBUG false)
 endif()
 
-configure_file(${CMAKE_SOURCE_DIR}/config/r-type01.h.in ${CMAKE_SOURCE_DIR}/common/config/r-type01.h)
-set(CMAKE_CXX_STANDARD 17)
-
-set(CMAKE_CXX_FLAGS
-  "-O3 \
-  -W \
-  -Wall \
-  -Wunsafe-loop-optimizations \
-  -Woverloaded-virtual \
-  -Wshadow \
-  -Wsign-conversion \
-  -Wsign-promo \
-  -Wstrict-null-sentinel \
-  -Wstrict-overflow=4 \
-  -Wundef \
-  -Weffc++ \
-  -Wno-unused-variable \
-  -Wfloat-equal \
-  -Wcast-align \
-  -Wmissing-declarations \
-  -Wmissing-include-dirs \
-  -Wswitch-enum \
-  -Wlogical-op \
-  -Wnoexcept \
-  -Winvalid-pch \
-  -Wredundant-decls \
-  -Wformat=2 \
-  -Wmissing-format-attribute \
-  -Wformat-nonliteral \
-  -flto \
-  -Wodr"
-)
-
+configure_file(${CMAKE_SOURCE_DIR}/config/r-type001.h.in ${CMAKE_SOURCE_DIR}/Common/config/r-type001.h)
 
 if (${SERVER_ONLY})
-  include_directories(common/config)
-  include_directories(server/include)
-  include_directories(common/components/include)
-  include_directories(common/systems/include)
-  file(GLOB source_files
-        server/main.cpp
-        server/src/*
-        common/components/src/*
-        common/systems/src/*
-      )
-
+  message(STATUS "### BUILD R-TYPE SERVER ONLY ###")
+  add_subdirectory(Server)
+elseif (${CLIENT_ONLY})
+  message(STATUS "### BUILD R-TYPE CLIENT ONLY ###")
+  add_subdirectory(SFML)
+  add_subdirectory(Client)
 else()
-  include_directories(common/config)
-  include_directories(server/include)
-  include_directories(client/include)
-  include_directories(common/components/include)
-  include_directories(common/systems/include)
-  file(GLOB source_files
-        client/main.cpp
-        server/src/*
-        client/src/*
-        common/components/src/*
-        common/systems/src/*
-      )
+  message(STATUS "### BUILD R-TYPE CLIENT AND SERVER ###")
+  add_subdirectory(SFML)
+  add_subdirectory(Server)
+  add_subdirectory(Client)
 endif()
-
-add_executable(
-  ${NAME}
-  ${source_files}
-)

@@ -32,3 +32,6 @@
 *.app
 
 build/
+
+# Generated config
+r-type001.h

@@ -1,5 +1,5 @@
--I./common/config
--I./client/include
--I./server/include
--I./common/components/include
--I./common/systems/include
+-I./Common/config
+-I./Common/Components/include
+-I./Common/systems/include
+-I./Client/include
+-I./Server/include
