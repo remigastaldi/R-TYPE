@@ -15,15 +15,7 @@ file(GLOB source_files
       src/*
 )
 
-add_executable(
-  ${BINARY_NAME}
-  ${source_files}
-)
-
-link_directories(SFML/lib)
-target_link_libraries(${BINARY_NAME} sfml-graphics sfml-window sfml-system sfml-audio)
-
-add_compile_options(${BINARY_NAME} PRIVATE
+add_compile_options(
   -std=c++17
   -O3
   -W
@@ -56,7 +48,15 @@ add_compile_options(${BINARY_NAME} PRIVATE
   -Wodr
 )
 if (DEBUG)
-  add_compile_options(${BINARY_NAME} PRIVATE -g -g3)
+  add_compile_options(-g -g3)
 else()
-  add_compile_options(${BINARY_NAME} PRIVATE -Werror)
+  add_compile_options(-Werror)
 endif()
+
+add_executable(
+  ${BINARY_NAME}
+  ${source_files}
+)
+
+link_directories(SFML/lib)
+target_link_libraries(${BINARY_NAME} sfml-graphics sfml-window sfml-system sfml-audio)
