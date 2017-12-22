@@ -4,16 +4,12 @@ if (CMAKE_BINARY_DIR STREQUAL CMAKE_SOURCE_DIR)
     message(FATAL_ERROR "Source and build directories cannot be the same.")
 endif()
 
-set(BINARY_NAME R-Type)
+set(NAME R-Type)
 
 include_directories(include)
 include_directories(SYSTEM ../SFML/include)
 include_directories(../Common/include/)
 include_directories(../Common/config/)
-
-file(GLOB source_files
-      src/*
-)
 
 add_compile_options(
   -std=c++17
@@ -54,9 +50,13 @@ else()
 endif()
 
 add_executable(
-  ${BINARY_NAME}
-  ${source_files}
+  ${NAME}
+  ${CMAKE_SOURCE_DIR}/Client/src/main.cpp
+)
+
+target_sources(${NAME}
+  PUBLIC
 )
 
 link_directories(SFML/lib)
-target_link_libraries(${BINARY_NAME} sfml-graphics sfml-window sfml-system sfml-audio)
+target_link_libraries(${NAME} sfml-graphics sfml-window sfml-system sfml-audio)

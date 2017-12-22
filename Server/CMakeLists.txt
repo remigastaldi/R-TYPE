@@ -4,15 +4,11 @@ if (CMAKE_BINARY_DIR STREQUAL CMAKE_SOURCE_DIR)
     message(FATAL_ERROR "Source and build directories cannot be the same.")
 endif()
 
-set(BINARY_NAME server)
+set(NAME server)
 
 include_directories(include)
 include_directories(../Common/include/)
 include_directories(../Common/config/)
-
-file(GLOB source_files
-      src/*
-)
 
 add_compile_options(
   -std=c++17
@@ -53,6 +49,10 @@ else()
 endif()
 
 add_executable(
-  ${BINARY_NAME}
-  ${source_files}
+  ${NAME}
+  ${CMAKE_SOURCE_DIR}/Server/src/main.cpp
+)
+
+target_sources(${NAME}
+  PUBLIC
 )
