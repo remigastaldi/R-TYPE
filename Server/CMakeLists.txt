@@ -56,3 +56,5 @@ add_executable(
 target_sources(${NAME}
   PUBLIC
 )
+
+target_link_libraries(${NAME} AlfredBase)
