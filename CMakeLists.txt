@@ -7,6 +7,15 @@ endif()
 project(R-TYPE)
 set(R-TYPE_VERSION 001)
 
+#Imgui
+set(IMGUI_ROOT "${CMAKE_CURRENT_SOURCE_DIR}/libs/imgui")
+include_directories(libs/imgui-sfml libs/imgui)
+include(libs/imgui.cmake)
+
+#Alfred
+include_directories(libs/Alfred/src/)
+add_subdirectory(libs/Alfred)
+
 if(MSVC)
     add_definitions(-DMSVC)
 elseif(APPLE)

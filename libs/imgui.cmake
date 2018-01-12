@@ -1,0 +1,1 @@
+set(IMGUI_SOURCES ${CMAKE_SOURCE_DIR}/libs/imgui/imgui.cpp ${CMAKE_SOURCE_DIR}/libs/imgui/imgui_draw.cpp ${CMAKE_SOURCE_DIR}/libs/imgui-sfml/imgui-SFML.cpp ${CMAKE_SOURCE_DIR}/libs/imgui-sfml/imconfig-SFML.h ${CMAKE_SOURCE_DIR}/libs/imgui-sfml/imgui-SFML.h)

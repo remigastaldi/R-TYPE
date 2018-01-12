@@ -35,3 +35,6 @@ build/
 
 # Generated config
 r-type001.h
+
+.idea
+cmake-build-debug
