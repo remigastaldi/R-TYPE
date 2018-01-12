@@ -38,7 +38,3 @@ r-type001.h
 
 .idea
 cmake-build-debug
-
-libs/Alfred
-libs/imgui
-libs/imgui-sfml

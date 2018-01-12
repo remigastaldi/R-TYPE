@@ -8,6 +8,3 @@
 [submodule "libs/Alfred"]
 	path = libs/Alfred
 	url = https://github.com/ethanquix/Alfred.git
-[submodule "libs/imgui"]
-	path = libs/imgui
-	url = https://github.com/ocornut/imgui.git
