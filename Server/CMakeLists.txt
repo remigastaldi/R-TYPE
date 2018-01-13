@@ -7,8 +7,6 @@ endif()
 set(NAME R-Type_server)
 
 include_directories(include)
-include_directories(../Common/include/)
-include_directories(../Common/config/)
 
 if (UNIX)
   add_compile_options(
@@ -46,17 +44,21 @@ if (UNIX)
   if (DEBUG)
    add_compile_options(-g -g3)
   else()
-   add_compile_options(-Werror)
+    #impossible due to libs warnings
+   # add_compile_options(-Werror)
   endif()
 endif()
 
 add_executable(
         ${NAME}
-        ${CMAKE_SOURCE_DIR}/Server/src/main.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/main.cpp
 )
 
 target_sources(${NAME}
-  PUBLIC
+        PUBLIC
 )
+
+include(../Common/common.cmake)
+
 
 target_link_libraries(${NAME} AlfredBase)

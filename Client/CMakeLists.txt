@@ -6,10 +6,9 @@ endif()
 
 set(NAME R-Type)
 
-include_directories(include)
 include_directories(SYSTEM ../SFML/include)
-include_directories(../Common/include/)
-include_directories(../Common/config/)
+
+include_directories(include)
 
 if (UNIX)
   add_compile_options(
@@ -47,19 +46,22 @@ if (UNIX)
   if (DEBUG)
    add_compile_options(-g -g3)
   else()
-   add_compile_options(-Werror)
+    #impossible due to libs warnings
+   # add_compile_options(-Werror)
   endif()
 endif()
 
 add_executable(
         ${NAME}
-        ${CMAKE_SOURCE_DIR}/Client/src/main.cpp
-        ${IMGUI_SOURCES}
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/main.cpp
 )
 
 target_sources(${NAME}
         PUBLIC
-        )
+        ${IMGUI_SOURCES}
+)
+
+include(../Common/common.cmake)
 
 link_directories(SFML/lib)
 target_link_libraries(${NAME} sfml-graphics sfml-window sfml-system sfml-audio AlfredBase)

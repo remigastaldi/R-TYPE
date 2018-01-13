@@ -7,11 +7,6 @@ endif()
 project(R-TYPE)
 set(R-TYPE_VERSION 001)
 
-#Imgui
-set(IMGUI_ROOT "${CMAKE_CURRENT_SOURCE_DIR}/libs/imgui")
-include_directories(libs/imgui-sfml libs/imgui)
-include(libs/imgui.cmake)
-
 #Alfred
 include_directories(libs/Alfred/src/)
 add_subdirectory(libs/Alfred)
@@ -40,6 +35,9 @@ elseif (${CLIENT_ONLY})
   add_subdirectory(Client)
 else()
   message(STATUS "### BUILD R-TYPE CLIENT AND SERVER ###")
+  set(IMGUI_ROOT "${CMAKE_CURRENT_SOURCE_DIR}/libs/imgui")
+  include_directories(libs/imgui-sfml libs/imgui)
+  include(libs/imgui.cmake)
   add_subdirectory(SFML)
   add_subdirectory(Server)
   add_subdirectory(Client)
