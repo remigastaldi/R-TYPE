@@ -1,5 +1,7 @@
-include_directories(../Common/include/)
-include_directories(../Common/config/)
+include_directories(${CMAKE_SOURCE_DIR}/Common/include/)
+include_directories(${CMAKE_SOURCE_DIR}/Common/config/)
+
+include(${CMAKE_SOURCE_DIR}/Common/LibraryInterfaces/libraryinterfaces.cmake)
 
 target_sources(${NAME}
         PUBLIC

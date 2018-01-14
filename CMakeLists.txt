@@ -1,11 +1,16 @@
 cmake_minimum_required(VERSION 3.9)
 
+set(CMAKE_CXX_STANDARD 17)
+
 if (CMAKE_BINARY_DIR STREQUAL CMAKE_SOURCE_DIR)
     message(FATAL_ERROR "Source and build directories cannot be the same.")
 endif()
 
 project(R-TYPE)
 set(R-TYPE_VERSION 001)
+
+#Includes
+include_directories(.)
 
 #Alfred
 include_directories(libs/Alfred/src/)
@@ -25,6 +30,15 @@ else()
 endif()
 
 configure_file(${CMAKE_SOURCE_DIR}/config/r-type001.h.in ${CMAKE_SOURCE_DIR}/Common/config/r-type001.h)
+
+#BOOST
+FIND_PACKAGE(Boost COMPONENTS regex system filesystem serialization thread REQUIRED)
+INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIR})
+LINK_DIRECTORIES(${Boost_LIBRARY_DIRS})
+
+#Threads
+set(THREADS_PREFER_PTHREAD_FLAG ON)
+find_package(Threads REQUIRED)
 
 if (${SERVER_ONLY})
   message(STATUS "### BUILD R-TYPE SERVER ONLY ###")
