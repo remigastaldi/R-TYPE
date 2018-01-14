@@ -47,6 +47,8 @@ namespace GameEngine
                     return false;
                 }
 
+                BOOST_LOG_TRIVIAL(info) << "Adding font " << name;
+
                 _fonts[type][name] = f;
                 _indexFontPath[type][name] = path;
                 _indexPathFont[type][path] = name;
@@ -77,12 +79,14 @@ namespace GameEngine
             std::unordered_map<std::string, sf::Music> _musics;
 
           public:
-            void loadSound(const std::string &name, const std::string &path)
+            void loadSoundFile(const std::string &name, const std::string &path)
             {
                 if (_sounds_buffer.count(name) != 0)
                     BOOST_LOG_TRIVIAL(error) << "Sound Buffer " << name << " already exist";
                 if (!_sounds_buffer[name].loadFromFile(path))
                     BOOST_LOG_TRIVIAL(error) << "Cannot load sound " << path;
+
+                BOOST_LOG_TRIVIAL(info) << "Adding sound " << name;
             }
 
             sf::SoundBuffer &getSoundBuffer(const std::string &name)
@@ -94,7 +98,7 @@ namespace GameEngine
                 return _sounds_buffer[name];
             }
 
-            void addSound(const std::string &name, const std::string &from)
+            void addSoundFromBuffer(const std::string &name, const std::string &from)
             {
                 if (_sounds.count(name) != 0) {
                     BOOST_LOG_TRIVIAL(error) << "Sound " << name << " already exist";
@@ -129,6 +133,8 @@ namespace GameEngine
                     BOOST_LOG_TRIVIAL(error) << "Cant load music " << path;
                     return;
                 }
+
+                BOOST_LOG_TRIVIAL(info) << "Adding music " << name;
             }
 
             sf::Music &getMusic(const std::string &name)
@@ -179,6 +185,8 @@ namespace GameEngine
                 }
                 if (!_textures[name].loadFromFile(path))
                     BOOST_LOG_TRIVIAL(error) << "Cannot load texture " << path;
+
+                BOOST_LOG_TRIVIAL(info) << "Adding texture " << name;
             }
 
             void addSprite(const std::string &name, const std::string &from)
@@ -191,6 +199,8 @@ namespace GameEngine
                 if (_textures.count(from) == 0)
                     BOOST_LOG_TRIVIAL(error) << "Texture " << from << " dont exist";
                 _sprites[name].setTexture(_textures[from]);
+
+                BOOST_LOG_TRIVIAL(info) << "Adding sprite " << name;
             }
 
             void addSprite(const std::string &name, const sf::Sprite &sprite)
@@ -198,6 +208,8 @@ namespace GameEngine
                 if (_sprites.count(name) != 0)
                     BOOST_LOG_TRIVIAL(error) << "Sprite " << name << " already exist";
                 _sprites[name] = sprite;
+
+                BOOST_LOG_TRIVIAL(info) << "Adding sprite " << name;
             }
 
             void addSprite(const std::string &name, const std::string &from, const sf::IntRect &location)
@@ -214,6 +226,8 @@ namespace GameEngine
 
                 _sprites[name].setTexture(_textures[from]);
                 _sprites[name].setTextureRect(location);
+
+                BOOST_LOG_TRIVIAL(info) << "Adding sprite " << name;
             }
 
             sf::Texture &getTexture(const std::string &name)
