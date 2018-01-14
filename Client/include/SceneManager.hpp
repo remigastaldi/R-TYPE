@@ -51,6 +51,13 @@ namespace GameEngine
                 return;
             }
 
+            if (_scenesList.empty())
+            {
+                _scenesList.push(_scenes[name]);
+                _scenesList.top()->onEnter();
+                return;
+            }
+
             _scenesList.top()->onExit();
             _scenesList.push(_scenes[name]);
             _scenesList.top()->onEnter();
@@ -58,6 +65,9 @@ namespace GameEngine
 
         void popScene()
         {
+            if (_scenesList.empty())
+                return;
+
             _scenesList.top()->onExit();
             _scenesList.pop();
             _scenesList.top()->onEnter();
