@@ -12,7 +12,6 @@ include_directories(include)
 
 if (UNIX)
   add_compile_options(
-   -std=c++17
    -O3
    -W
    -Wall
@@ -60,6 +59,8 @@ target_sources(${NAME}
         PUBLIC
         ${IMGUI_SOURCES}
 )
+
+target_compile_features(${NAME} PRIVATE cxx_std_17)
 
 include(../Common/common.cmake)
 

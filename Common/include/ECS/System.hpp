@@ -2,17 +2,24 @@
  * @Author: Remi Gastaldi <gastal_r>
  * @Date:   2018-01-13T00:16:14+01:00
  * @Last modified by:   gastal_r
- * @Last modified time: 2018-01-13T03:44:07+01:00
+ * @Last modified time: 2018-01-14T01:30:13+01:00
  */
 
 
 #pragma once
 
-#include <ECS/Entity.hpp>
-#include <ECS/Component/Component.hpp>
+#include "ECS/Entity.hpp"
+#include "ECS/Component.hpp"
 
 #include <set>
 #include <memory>
+#include <experimental/memory>
+#include <type_traits>
+
+namespace std
+{
+  using namespace std::experimental;
+}
 
 namespace ECS
 {
@@ -20,7 +27,7 @@ namespace ECS
   class System
   {
   public:
-    System(int priority, std::set<ComponentType> &needed, std::weak_ptr<Manager> manager)
+    System(int priority, std::set<ComponentType> needed, std::observer_ptr<ECS::Manager> &manager)
       : _priority(priority), _needed(needed), _manager(manager), _entities()
     {}
 
@@ -42,14 +49,14 @@ namespace ECS
     int getPriority() const;
     std::set<ComponentType> getNeededComponents() const;
 
-    std::weak_ptr<Manager> getManager();
+    std::observer_ptr<ECS::Manager> &getManager();
 
   private:
     const int _priority;
     const std::set<ComponentType> _needed;
 
     // Manager * const _manager;
-    std::weak_ptr<Manager> _manager;
+    std::observer_ptr<ECS::Manager> _manager;
     std::set<Entity> _entities;
   };
 }

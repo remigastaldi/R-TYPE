@@ -2,11 +2,11 @@
  * @Author: Remi Gastaldi <gastal_r>
  * @Date:   2018-01-13T00:47:26+01:00
  * @Last modified by:   gastal_r
- * @Last modified time: 2018-01-13T03:26:06+01:00
+ * @Last modified time: 2018-01-13T22:34:38+01:00
  */
 
 
-#include  "ECS/System/System.hpp"
+#include  "ECS/System.hpp"
 
 namespace ECS
 {
@@ -43,6 +43,12 @@ namespace ECS
     }
   }
 
+  void System::updateEntity(float delta, Entity e)
+  {
+    (void) delta;
+    (void) e;
+  }
+
   void System::postUpdate(float delta)
   {
     (void)delta;
@@ -58,7 +64,7 @@ namespace ECS
     return (_needed);
   }
 
-  std::weak_ptr<Manager> System::getManager()
+  std::observer_ptr<ECS::Manager> &System::getManager()
   {
     return (_manager);
   }

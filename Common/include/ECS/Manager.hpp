@@ -2,23 +2,25 @@
  * @Author: Remi Gastaldi <gastal_r>
  * @Date:   2018-01-13T01:04:20+01:00
  * @Last modified by:   gastal_r
- * @Last modified time: 2018-01-13T03:19:01+01:00
+ * @Last modified time: 2018-01-14T00:55:23+01:00
  */
 
 
 #pragma once
 
-#include <ECS/Store.hpp>
-#include <ECS/System/System.hpp>
+#include  "ECS/Store.hpp"
+#include  "ECS/System.hpp"
 
-#include <map>
-#include <memory>
-#include <set>
-#include <string>
-#include <type_traits>
-#include <vector>
-#include <cassert>
-#include <algorithm>
+#include  "ECS/Components/CommonComponents.hpp"
+
+#include  <map>
+#include  <memory>
+#include  <set>
+#include  <string>
+#include  <type_traits>
+#include  <vector>
+#include  <cassert>
+#include  <algorithm>
 
 namespace ECS
 {
@@ -46,8 +48,8 @@ namespace ECS
     template<typename C>
     bool createStoreFor() {
       static_assert(std::is_base_of<Component, C>::value, "C must be a Component");
-      static_assert(C::type != INVALID_COMPONENT, "C must define its type");
-      return createStoreFor(C::type);
+      static_assert(C::Type != INVALID_COMPONENT, "C must define its type");
+      return createStoreFor(C::Type);
     }
 
 
@@ -56,8 +58,8 @@ namespace ECS
     template<typename C>
     C *getComponent(Entity e) {
       static_assert(std::is_base_of<Component, C>::value, "C must be a Component");
-      static_assert(C::type != INVALID_COMPONENT, "C must define its type");
-      return static_cast<C*>(getComponent(e, C::type));
+      static_assert(C::Type != INVALID_COMPONENT, "C must define its type");
+      return static_cast<C*>(getComponent(e, C::Type));
     }
 
 
@@ -66,8 +68,8 @@ namespace ECS
     template<typename C>
     bool addComponent(Entity e, C *c) {
       static_assert(std::is_base_of<Component, C>::value, "C must be a Component");
-      static_assert(C::type != INVALID_COMPONENT, "C must define its type");
-      return addComponent(e, C::type, c);
+      static_assert(C::Type != INVALID_COMPONENT, "C must define its type");
+      return addComponent(e, C::Type, c);
     }
 
 
@@ -76,8 +78,8 @@ namespace ECS
     template<typename C>
     C *extractComponent(Entity e) {
       static_assert(std::is_base_of<Component, C>::value, "C must be a Component");
-      static_assert(C::type != INVALID_COMPONENT, "C must define its type");
-      return static_cast<C*>(extractComponent(e, C::type));
+      static_assert(C::Type != INVALID_COMPONENT, "C must define its type");
+      return static_cast<C*>(extractComponent(e, C::Type));
     }
 
 

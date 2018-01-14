@@ -2,7 +2,7 @@
  * @Author: Remi Gastaldi <gastal_r>
  * @Date:   2018-01-13T02:09:37+01:00
  * @Last modified by:   gastal_r
- * @Last modified time: 2018-01-13T02:32:18+01:00
+ * @Last modified time: 2018-01-13T20:30:18+01:00
  */
 
 
@@ -18,7 +18,7 @@ namespace ECS
 
   struct Component
   {
-    static const ComponentType type = INVALID_COMPONENT;
+    static const ComponentType Type = INVALID_COMPONENT;
   };
 
 }

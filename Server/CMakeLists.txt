@@ -10,7 +10,6 @@ include_directories(include)
 
 if (UNIX)
   add_compile_options(
-   -std=c++17
    -O3
    -W
    -Wall
@@ -53,6 +52,8 @@ add_executable(
         ${NAME}
         ${CMAKE_CURRENT_SOURCE_DIR}/src/main.cpp
 )
+
+target_compile_features(${NAME} PRIVATE cxx_std_17)
 
 target_sources(${NAME}
         PUBLIC

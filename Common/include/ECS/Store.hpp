@@ -2,14 +2,14 @@
  * @Author: Remi Gastaldi <gastal_r>
  * @Date:   2018-01-13T02:28:43+01:00
  * @Last modified by:   gastal_r
- * @Last modified time: 2018-01-13T03:26:33+01:00
+ * @Last modified time: 2018-01-13T22:25:24+01:00
  */
 
 
 #pragma once
 
-#include <ECS/Entity.hpp>
-#include <ECS/Component/Component.hpp>
+#include "ECS/Entity.hpp"
+#include "ECS/Component.hpp"
 
 #include <map>
 #include <set>
