@@ -2,7 +2,7 @@
  * @Author: Remi Gastaldi <gastal_r>
  * @Date:   2018-01-13T01:04:20+01:00
  * @Last modified by:   gastal_r
- * @Last modified time: 2018-01-14T00:55:23+01:00
+ * @Last modified time: 2018-01-15T03:17:19+01:00
  */
 
 
@@ -21,6 +21,7 @@
 #include  <vector>
 #include  <cassert>
 #include  <algorithm>
+#include <iostream>
 
 namespace ECS
 {
@@ -34,7 +35,7 @@ namespace ECS
     bool   destroyEntity(Entity e);
     std::set<Entity> getEntities() const;
 
-    Store *getStore(ComponentType ct);
+    std::shared_ptr<Store> getStore(ComponentType ct);
 
     void initSystems();
     void updateSystems(float delta);
@@ -53,33 +54,32 @@ namespace ECS
     }
 
 
-    Component *getComponent(Entity e, ComponentType ct);
+    std::shared_ptr<Component> getComponent(Entity e, ComponentType ct);
 
     template<typename C>
-    C *getComponent(Entity e) {
-      static_assert(std::is_base_of<Component, C>::value, "C must be a Component");
+    std::shared_ptr<C> getComponent(Entity e) {
+      static_assert(std::is_base_of<C, C>::value, "C must be a Component");
       static_assert(C::Type != INVALID_COMPONENT, "C must define its type");
-      return static_cast<C*>(getComponent(e, C::Type));
+      return std::static_pointer_cast<C>(getComponent(e, C::Type));
     }
 
 
-    bool addComponent(Entity e, ComponentType ct, Component *c);
+    bool addComponent(Entity e, ComponentType ct, std::shared_ptr<Component> c);
 
     template<typename C>
-    bool addComponent(Entity e, C *c) {
-      static_assert(std::is_base_of<Component, C>::value, "C must be a Component");
+    bool addComponent(Entity e, C c) {
+      static_assert(std::is_base_of<C, C>::value, "C must be a Component");
       static_assert(C::Type != INVALID_COMPONENT, "C must define its type");
-      return addComponent(e, C::Type, c);
+      return addComponent(e, C::Type, std::static_pointer_cast<Component>(std::make_shared<C>(c)));
     }
 
-
-    Component *extractComponent(Entity e, ComponentType ct);
+    std::shared_ptr<Component> extractComponent(Entity e, ComponentType ct);
 
     template<typename C>
-    C *extractComponent(Entity e) {
-      static_assert(std::is_base_of<Component, C>::value, "C must be a Component");
+    std::shared_ptr<C> extractComponent(Entity e) {
+      static_assert(std::is_base_of<C, C>::value, "C must be a Component");
       static_assert(C::Type != INVALID_COMPONENT, "C must define its type");
-      return static_cast<C*>(extractComponent(e, C::Type));
+      return std::static_pointer_cast<C>(extractComponent(e, C::Type));
     }
 
 
@@ -96,6 +96,6 @@ namespace ECS
 
     std::map<Entity, std::set<ComponentType>> _entities;
     std::vector<std::shared_ptr<System>> _systems;
-    std::map<ComponentType, Store *> _stores;
+    std::map<ComponentType, std::shared_ptr<Store>> _stores;
   };
 }

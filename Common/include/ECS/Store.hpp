@@ -2,7 +2,7 @@
  * @Author: Remi Gastaldi <gastal_r>
  * @Date:   2018-01-13T02:28:43+01:00
  * @Last modified by:   gastal_r
- * @Last modified time: 2018-01-13T22:25:24+01:00
+ * @Last modified time: 2018-01-14T22:00:19+01:00
  */
 
 
@@ -13,6 +13,7 @@
 
 #include <map>
 #include <set>
+#include <memory>
 
 namespace ECS
 {
@@ -22,12 +23,12 @@ namespace ECS
     Store();
 
     bool has(Entity e);
-    Component *get(Entity e);
-    bool add(Entity e, Component *c);
+    std::shared_ptr<Component> get(Entity e);
+    bool add(Entity e, std::shared_ptr<Component> c);
     bool remove(Entity e);
     std::set<Entity> getEntities() const;
 
   private:
-    std::map<Entity, Component *> _store;
+    std::map<Entity, std::shared_ptr<Component>> _store;
   };
 }

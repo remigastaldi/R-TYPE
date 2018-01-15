@@ -2,7 +2,7 @@
  * @Author: Remi Gastaldi <gastal_r>
  * @Date:   2018-01-13T03:22:48+01:00
  * @Last modified by:   gastal_r
- * @Last modified time: 2018-01-13T03:26:51+01:00
+ * @Last modified time: 2018-01-14T22:00:42+01:00
  */
 
 
@@ -20,13 +20,17 @@ namespace ECS
     return it != _store.end();
   }
 
-  Component *Store::get(Entity e)
+  std::shared_ptr<Component> Store::get(Entity e)
   {
     auto it = _store.find(e);
-    return (it == _store.end() ? nullptr : it->second);
+
+    if (it == _store.end())
+      return (nullptr);
+
+    return (it->second);
   }
 
-  bool Store::add(Entity e, Component *c)
+  bool Store::add(Entity e, std::shared_ptr<Component> c)
   {
     auto ret = _store.insert(std::make_pair(e, c));
     return ret.second;
