@@ -10,8 +10,25 @@ include_directories(SYSTEM ../SFML/include)
 
 include_directories(include)
 
+add_executable(
+        ${NAME}
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/main.cpp
+)
+
+target_compile_features(${NAME} PUBLIC cxx_std_17)
+
+target_sources(${NAME}
+        PUBLIC
+        ${IMGUI_SOURCES}
+)
+
+include(../Common/common.cmake)
+
+link_directories(SFML/lib)
+target_link_libraries(${NAME} sfml-graphics sfml-window sfml-system sfml-audio AlfredBase)
+
 if (UNIX)
-  add_compile_options(
+  list(APPEND COMPILE_OPTIONS
    -O3
    -W
    -Wall
@@ -43,26 +60,10 @@ if (UNIX)
    -Wodr
   )
   if (DEBUG)
-   add_compile_options(-g -g3)
+    list(APPEND COMPILE_OPTIONS -g3)
   else()
     #impossible due to libs warnings
-   # add_compile_options(-Werror)
+    # list(APPEND COMPILE_OPTIONS -Werror)
   endif()
 endif()
-
-add_executable(
-        ${NAME}
-        ${CMAKE_CURRENT_SOURCE_DIR}/src/main.cpp
-)
-
-target_sources(${NAME}
-        PUBLIC
-        ${IMGUI_SOURCES}
-)
-
-target_compile_features(${NAME} PRIVATE cxx_std_17)
-
-include(../Common/common.cmake)
-
-link_directories(SFML/lib)
-target_link_libraries(${NAME} sfml-graphics sfml-window sfml-system sfml-audio AlfredBase)
+target_compile_options(${NAME} PUBLIC ${COMPILE_OPTIONS})
