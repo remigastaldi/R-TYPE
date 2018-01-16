@@ -62,4 +62,17 @@ if (UNIX)
     # list(APPEND COMPILE_OPTIONS -Werror)
   endif()
 endif()
-target_compile_options(${NAME} PUBLIC ${COMPILE_OPTIONS})
+
+if(MSVC)
+  target_compile_options(${NAME} PUBLIC ${COMPILE_OPTIONS} /std:c++latest)
+else()
+  target_compile_options(${NAME} PUBLIC ${COMPILE_OPTIONS})
+endif()
+
+
+file(TO_NATIVE_PATH "${CMAKE_BINARY_DIR}\\Server" copyDest)
+
+#Copy Boost DLL
+if (WIN32)
+  file(COPY ${Boost_LIBRARY_DIRS}/../bin/ DESTINATION ${copyDest})
+endif()

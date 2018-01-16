@@ -66,4 +66,25 @@ if (UNIX)
     # list(APPEND COMPILE_OPTIONS -Werror)
   endif()
 endif()
-target_compile_options(${NAME} PUBLIC ${COMPILE_OPTIONS})
+
+if(MSVC)
+  target_compile_options(${NAME} PUBLIC ${COMPILE_OPTIONS} /std:c++latest)
+else()
+  target_compile_options(${NAME} PUBLIC ${COMPILE_OPTIONS})
+endif()
+
+#Copy SFML DLL
+file(GLOB copySource "${CMAKE_BINARY_DIR}/SFML/lib/*${CMAKE_SHARED_LIBRARY_SUFFIX}")
+file(TO_NATIVE_PATH "${CMAKE_BINARY_DIR}\\Client" copyDest)
+
+add_custom_command(TARGET ${NAME}
+        POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E
+        copy
+        ${copySource}
+        ${copyDest})
+
+#Copy Boost DLL
+if (WIN32)
+  file(COPY ${Boost_LIBRARY_DIRS}/../bin/ DESTINATION ${copyDest})
+endif()
