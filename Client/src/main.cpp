@@ -12,12 +12,20 @@
 #include  "ECS/Systems/CommonSystems.hpp"
 
 #include  <iostream>
+#include "Logger/Logger.hpp"
 
-int     main(int ac, char *av[])
+int main(int ac, char *av[])
 {
   (void)ac;
   (void)av;
 
+  //Config logger
+  Logger::get().setOutput(CONSOLE_LOG);
+
+  LOG_INFO << "Ceci est un test" << std::endl;
+  LOG_ERROR << "Ceci est une erreur" << std::endl;
+
+//  return 0;
   if constexpr (DEBUG)
     std::cout << "DEBUG ON" << std::endl;
 
@@ -32,7 +40,6 @@ int     main(int ac, char *av[])
   manager->addComponent<ECS::Position>(e, ECS::Position(0, 10));
   manager->subscribeEntityToSystems(e);
 
-
   ECS::Entity e2 = manager->createEntity();
   // std::shared_ptr<ECS::Position> test2(new ECS::Position(0, 20));
   manager->addComponent<ECS::Position>(e2, ECS::Position(0, 20));
@@ -42,8 +49,7 @@ int     main(int ac, char *av[])
   // std::cout << test->y << std::endl;
   // manager->subscribeEntityToSystems(e2);
 
-  for (int i = 0; i < 100; ++i)
-  {
+  for (int i = 0; i < 100; ++i) {
     // std::shared_ptr<ECS::Store>  store = manager->getStore(ECS::Position::Type);
     // std::cout << store->has(e2) << std::endl;
     manager->updateSystems(0.5 + i);
