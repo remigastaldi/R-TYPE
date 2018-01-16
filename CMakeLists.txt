@@ -2,6 +2,8 @@ cmake_minimum_required(VERSION 3.9)
 
 set(CMAKE_CXX_STANDARD 17)
 
+message($ENV{BOOST_ROOT})
+
 if (CMAKE_BINARY_DIR STREQUAL CMAKE_SOURCE_DIR)
     message(FATAL_ERROR "Source and build directories cannot be the same.")
 endif()
@@ -9,29 +11,33 @@ endif()
 project(R-TYPE)
 set(R-TYPE_VERSION 001)
 
-#Includes
-include_directories(.)
+if(NOT CMAKE_BUILD_TYPE)
+  set(CMAKE_BUILD_TYPE Release)
+endif()
+
+if(CMAKE_BUILD_TYPE MATCHES Debug)
+  message("### DEBUG MOD ###")
+  set(DEBUG true)
+else()
+  set(DEBUG false)
+endif(CMAKE_BUILD_TYPE MATCHES Debug)
+
+if(MSVC)
+  add_definitions(-DMSVC)
+elseif(APPLE)
+  add_definitions(-DAPPLE)
+endif()
 
 #Alfred
 include_directories(libs/Alfred/src/)
 add_subdirectory(libs/Alfred)
 
-if(MSVC)
-    add_definitions(-DMSVC)
-elseif(APPLE)
-    add_definitions(-DAPPLE)
-endif()
-
-if (${DEBUG})
-  message(STATUS "### DEBUG ON ###")
-  set(DEBUG true)
-else()
-  set(DEBUG false)
-endif()
-
 configure_file(${CMAKE_SOURCE_DIR}/config/r-type001.h.in ${CMAKE_SOURCE_DIR}/Common/config/r-type001.h)
 
 #BOOST
+set(Boost_USE_STATIC_LIBS        OFF)
+set(Boost_USE_MULTITHREADED      ON)
+set(Boost_USE_STATIC_RUNTIME    OFF)
 FIND_PACKAGE(Boost COMPONENTS regex system filesystem serialization thread REQUIRED)
 INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIR})
 LINK_DIRECTORIES(${Boost_LIBRARY_DIRS})

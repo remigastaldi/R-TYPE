@@ -8,8 +8,23 @@ set(NAME R-Type_server)
 
 include_directories(include)
 
+add_executable(
+        ${NAME}
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/main.cpp
+)
+
+target_compile_features(${NAME} PRIVATE cxx_std_17)
+
+target_sources(${NAME}
+  PUBLIC
+)
+
+include(../Common/common.cmake)
+
+target_link_libraries(${NAME} AlfredBase)
+
 if (UNIX)
-  add_compile_options(
+  list(APPEND COMPILE_OPTIONS
    -O3
    -W
    -Wall
@@ -41,25 +56,23 @@ if (UNIX)
    -Wodr
   )
   if (DEBUG)
-   add_compile_options(-g -g3)
+    list(APPEND COMPILE_OPTIONS -g3)
   else()
     #impossible due to libs warnings
-   # add_compile_options(-Werror)
+    # list(APPEND COMPILE_OPTIONS -Werror)
   endif()
 endif()
 
-add_executable(
-        ${NAME}
-        ${CMAKE_CURRENT_SOURCE_DIR}/src/main.cpp
-)
-
-target_compile_features(${NAME} PRIVATE cxx_std_17)
-
-target_sources(${NAME}
-        PUBLIC
-)
-
-include(../Common/common.cmake)
+if(MSVC)
+  target_compile_options(${NAME} PUBLIC ${COMPILE_OPTIONS} /std:c++latest)
+else()
+  target_compile_options(${NAME} PUBLIC ${COMPILE_OPTIONS})
+endif()
 
 
-target_link_libraries(${NAME} AlfredBase)
+file(TO_NATIVE_PATH "${CMAKE_BINARY_DIR}\\Server" copyDest)
+
+#Copy Boost DLL
+if (WIN32)
+  file(COPY ${Boost_LIBRARY_DIRS}/../bin/ DESTINATION ${copyDest})
+endif()

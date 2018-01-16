@@ -2,7 +2,7 @@
  * @Author: Remi Gastaldi <gastal_r>
  * @Date:   2018-01-13T01:04:05+01:00
  * @Last modified by:   gastal_r
- * @Last modified time: 2018-01-13T03:43:51+01:00
+ * @Last modified time: 2018-01-15T03:32:24+01:00
  */
 
 
@@ -19,11 +19,11 @@ namespace ECS
 
   Manager::~Manager()
   {
-    for (auto store : _stores)
-    {
-      // TODO: delete content of store
-      delete store.second;
-    }
+    // for (auto store : _stores)
+    // {
+    //   // TODO: delete content of store
+    //   // delete store.second;
+    // }
   }
 
   Entity Manager::createEntity()
@@ -53,10 +53,14 @@ namespace ECS
     return (ret);
   }
 
-  Store *Manager::getStore(ComponentType ct)
+  std::shared_ptr<Store> Manager::getStore(ComponentType ct)
   {
     auto it = _stores.find(ct);
-    return it == _stores.end() ? nullptr : it->second;
+    if (it == _stores.end())
+      return (nullptr);
+
+    return (std::shared_ptr<Store>(it->second));
+    // return it == _stores.end() ? nullptr : it->second;
   }
 
   void Manager::initSystems()
@@ -96,14 +100,14 @@ namespace ECS
     return ret.second;
   }
 
-  Component *Manager::getComponent(Entity e, ComponentType ct)
+  std::shared_ptr<Component> Manager::getComponent(Entity e, ComponentType ct)
   {
     if (e == INVALID_ENTITY || ct == INVALID_COMPONENT)
     {
       return nullptr;
     }
 
-    Store *store = getStore(ct);
+    std::shared_ptr<Store> store(getStore(ct));
 
     if (store == nullptr)
     {
@@ -113,14 +117,14 @@ namespace ECS
     return store->get(e);
   }
 
-  bool Manager::addComponent(Entity e, ComponentType ct, Component *c)
+  bool Manager::addComponent(Entity e, ComponentType ct, std::shared_ptr<Component> c)
   {
     if (e == INVALID_ENTITY || ct == INVALID_COMPONENT)
     {
       return false;
     }
 
-    Store *store = getStore(ct);
+    std::shared_ptr<Store> store(getStore(ct));
 
     if (store == nullptr)
     {
@@ -138,14 +142,14 @@ namespace ECS
     return store->add(e, c);
   }
 
-  Component *Manager::extractComponent(Entity e, ComponentType ct)
+  std::shared_ptr<Component> Manager::extractComponent(Entity e, ComponentType ct)
   {
     if (e == INVALID_ENTITY || ct == INVALID_COMPONENT)
     {
       return nullptr;
     }
 
-    Store *store = getStore(ct);
+    std::shared_ptr<Store> store(getStore(ct));
 
     if (store == nullptr)
     {
@@ -159,7 +163,7 @@ namespace ECS
     }
     it->second.erase(ct);
 
-    Component *c = store->get(e);
+    std::shared_ptr<Component> c(store->get(e));
     store->remove(e);
     return c;
   }
@@ -180,7 +184,10 @@ namespace ECS
       {
         sys->addEntity(e);
         n++;
-      } else {
+      }
+      else
+      {
+        std::cout << "==========================" << std::endl;
         sys->removeEntity(e);
       }
     }
