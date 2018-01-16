@@ -11,25 +11,26 @@ endif()
 project(R-TYPE)
 set(R-TYPE_VERSION 001)
 
-#Includes
-include_directories(.)
+if(NOT CMAKE_BUILD_TYPE)
+  set(CMAKE_BUILD_TYPE Release)
+endif()
+
+if(CMAKE_BUILD_TYPE MATCHES Debug)
+  message("### DEBUG MOD ###")
+  set(DEBUG true)
+else()
+  set(DEBUG false)
+endif(CMAKE_BUILD_TYPE MATCHES Debug)
+
+if(MSVC)
+  add_definitions(-DMSVC)
+elseif(APPLE)
+  add_definitions(-DAPPLE)
+endif()
 
 #Alfred
 include_directories(libs/Alfred/src/)
 add_subdirectory(libs/Alfred)
-
-if(MSVC)
-    add_definitions(-DMSVC)
-elseif(APPLE)
-    add_definitions(-DAPPLE)
-endif()
-
-if (${DEBUG})
-  message(STATUS "### DEBUG ON ###")
-  set(DEBUG true)
-else()
-  set(DEBUG false)
-endif()
 
 configure_file(${CMAKE_SOURCE_DIR}/config/r-type001.h.in ${CMAKE_SOURCE_DIR}/Common/config/r-type001.h)
 
