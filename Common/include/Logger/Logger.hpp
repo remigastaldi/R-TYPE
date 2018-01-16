@@ -3,21 +3,24 @@
 #include <AlfredBase/Utils/Singleton.hpp>
 #include <string>
 #include <future>
-#include <config.hpp>
 #include <fstream>
+#include <iomanip>
+#include <config.hpp>
+#include <sstream>
 
-#define LOG_DEBUG Logger::get().debug(__FUNCTION__##" ")
-#define LOG_INFO Logger::get().info(__FUNCTION__##" ")
-#define LOG_WARNING Logger::get().warning(__FUNCTION__" ")
-#define LOG_ERROR Logger::get().error(__FUNCTION__" ")
-#define LOG_FATAL Logger::get().fatal(__FUNCTION__" ")
+#define LOG_DEBUG Logger::get().debug(__FUNCTION__)
+#define LOG_INFO Logger::get().info(__FUNCTION__)
+#define LOG_WARNING Logger::get().warning(__FUNCTION__)
+#define LOG_ERROR Logger::get().error(__FUNCTION__)
+#define LOG_FATAL Logger::get().fatal(__FUNCTION__)
 
 enum __CONSOLE_LOG_ENUM
 {
   CONSOLE_LOG = 0,
 };
 
-static constexpr char DEFAULT_LOG_FILENAME[] = ".log_default.log";
+static constexpr char DEFAULT_LOG_FILENAME[] = "log_default.log";
+static constexpr char DEFAULT_LOG_TIME_FORMAT[] = "%Hh%M:%S";
 
 class NullBuffer : public std::streambuf
 {
@@ -34,10 +37,22 @@ private:
   std::ostream *_stream;
   std::ostream _nullStream;
   std::ostream *_coutStream;
+  std::string _dateFormat = DEFAULT_LOG_TIME_FORMAT;
 
   std::mutex _mutex;
 
 private:
+
+  const std::string getTime()
+  {
+    auto in_time_t = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
+
+    std::stringstream ss;
+
+    ss << std::put_time(std::localtime(&in_time_t), DEFAULT_LOG_TIME_FORMAT);
+
+    return ss.str();
+  }
 
 public:
   Logger() : _stream((new std::ofstream(DEFAULT_LOG_FILENAME, std::ios::trunc))), _nullStream(&null_buffer), _coutStream(&std::cout)
@@ -58,6 +73,11 @@ public:
 
   virtual ~Logger()
   {
+  }
+
+  void setTimeFormat(const std::string &format)
+  {
+    _dateFormat = format;
   }
 
   void setOutput(const __CONSOLE_LOG_ENUM console)
@@ -81,7 +101,7 @@ public:
   std::ostream &debug(const std::string &funcName = "")
   {
     if constexpr(DEBUG) {
-      *_stream << "[DEBUG] " << funcName;
+      *_stream << "[DEBUG] " << getTime() << " -" << funcName << "- ";
       return *_stream;
     } else {
       return _nullStream;
@@ -90,25 +110,25 @@ public:
 
   std::ostream &info(const std::string &funcName = "")
   {
-    *_stream << "[INFO] " << funcName;
+    *_stream << "[INFO] " << getTime() << " -" << funcName << "- ";
     return *_stream;
   }
 
   std::ostream &warning(const std::string &funcName = "")
   {
-    *_stream << "[WARNING] " << funcName;
+    *_stream << "[WARNING] " << getTime() << " -" << funcName << "- ";
     return *_stream;
   }
 
   std::ostream &error(const std::string &funcName = "")
   {
-    *_stream << "[ERROR] " << funcName;
+    *_stream << "[ERROR] " << getTime() << " -" << funcName << "- ";
     return *_stream;
   }
 
   std::ostream &fatal(const std::string &funcName = "")
   {
-    *_stream << "[FATAL] " << funcName;
+    *_stream << "[FATAL] " << getTime() << " -" << funcName << "- ";
     return *_stream;
   }
 };
