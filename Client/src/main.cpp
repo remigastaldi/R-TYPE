@@ -2,7 +2,7 @@
  * @Author: Remi Gastaldi <gastal_r>
  * @Date:   2017-12-17T18:57:51+01:00
  * @Last modified by:   gastal_r
- * @Last modified time: 2018-01-15T03:32:57+01:00
+ * @Last modified time: 2018-01-16T19:46:11+01:00
  */
 
 
@@ -41,17 +41,13 @@ int main(int ac, char *av[])
   manager->subscribeEntityToSystems(e);
 
   ECS::Entity e2 = manager->createEntity();
-  // std::shared_ptr<ECS::Position> test2(new ECS::Position(0, 20));
   manager->addComponent<ECS::Position>(e2, ECS::Position(0, 20));
   manager->subscribeEntityToSystems(e2);
-  //TODO correct extractor
-  // std::shared_ptr  test = manager->extractComponent<ECS::Position>(e);
-  // std::cout << test->y << std::endl;
-  // manager->subscribeEntityToSystems(e2);
+
+  manager->extractComponent<ECS::Position>(e);
+  manager->subscribeEntityToSystems(e);
 
   for (int i = 0; i < 100; ++i) {
-    // std::shared_ptr<ECS::Store>  store = manager->getStore(ECS::Position::Type);
-    // std::cout << store->has(e2) << std::endl;
     manager->updateSystems(0.5 + i);
   }
 

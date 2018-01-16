@@ -2,7 +2,7 @@
  * @Author: Remi Gastaldi <gastal_r>
  * @Date:   2018-01-13T01:04:05+01:00
  * @Last modified by:   gastal_r
- * @Last modified time: 2018-01-15T03:32:24+01:00
+ * @Last modified time: 2018-01-16T19:46:26+01:00
  */
 
 
@@ -180,14 +180,13 @@ namespace ECS
     for (auto& sys : _systems)
     {
       const std::set<ComponentType> needed = sys->getNeededComponents();
-      if (std::includes(components.begin(), components.end(), needed.begin(), needed.end()))
+      if (components.size() > 0 && std::includes(components.begin(), components.end(), needed.begin(), needed.end()))
       {
         sys->addEntity(e);
         n++;
       }
       else
       {
-        std::cout << "==========================" << std::endl;
         sys->removeEntity(e);
       }
     }
