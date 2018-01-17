@@ -2,7 +2,7 @@
  * @Author: Remi Gastaldi <gastal_r>
  * @Date:   2018-01-16T23:09:53+01:00
  * @Last modified by:   gastal_r
- * @Last modified time: 2018-01-17T03:11:44+01:00
+ * @Last modified time: 2018-01-17T03:25:00+01:00
  */
 
 
@@ -11,7 +11,7 @@
 #include  <unordered_map>
 #include  <memory>
 #include <any>
-
+#include <iostream>
 class Resourcebase
 {
 public:
@@ -55,7 +55,7 @@ public:
   template<typename C>
 	void load(const std::string &name)
 	{
-    _resources.emplace(name, std::make_shared<Resource<typename C::ContentType>>(Resource<typename C::ContentType>(name)));
+    _resources.emplace(name, std::make_shared<C>(C(name)));
 	}
 
   template<typename C>
