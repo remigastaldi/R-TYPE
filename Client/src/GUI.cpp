@@ -2,7 +2,7 @@
 #include "ResourcesManager.hpp"
 #include "Resources.hpp"
 
-sf::Sprite	&&GUI::loadSprite(sf::Texture& texture, sf::Vector2f position)
+sf::Sprite	&&GUI::loadSprite(const sf::Texture& texture, const sf::Vector2f& position)
 {
 	sf::Sprite sprite(texture);
 
@@ -11,24 +11,33 @@ sf::Sprite	&&GUI::loadSprite(sf::Texture& texture, sf::Vector2f position)
 	return std::move(sprite);
 }
 
-GUI::Button::Button(sf::Vector2f position, sf::Texture& normalTexture, sf::Texture& hoverTexture,
-					std::string text, sf::Font& font, std::function<void(void)> function, sf::Color colorText, 
-					int sizeText) :
+GUI::Button::Button(const sf::Vector2f& position, const sf::Texture& normalTexture, const sf::Texture& hoverTexture,
+	const std::string& text, const sf::Font& font, const std::function<void(void)>& function, const sf::Color colorText,
+	int sizeText) :
 	_position(position),
 	_function(function),
 	_isButtonPressed(false)
-	{
-		_normalSprite = loadSprite(normalTexture, position);
-		_hoverSprite = loadSprite(hoverTexture, position);
-		loadText(text, font, colorText, sizeText);
-	}
-
-void	GUI::Button::loadText(std::string text, sf::Font& font, sf::Color color, int size)
 {
+	_normalSprite = loadSprite(normalTexture, position);
+	_hoverSprite = loadSprite(hoverTexture, position);
 	_text.setFont(font);
 	_text.setString(text);
-	_text.setColor(color);
-	_text.setCharacterSize(size);
+	_text.setColor(colorText);
+	_text.setCharacterSize(sizeText);
+	_text.setPosition(_position.x + (_normalSprite.getGlobalBounds().width / 2) - (_text.getGlobalBounds().width / 2), _position.y + (_normalSprite.getGlobalBounds().height / 2) - (_text.getGlobalBounds().top + _text.getGlobalBounds().height / 2));
+}
+
+GUI::Button::Button(const sf::Vector2f& position, const sf::Texture& normalTexture, const sf::Texture& hoverTexture,
+	const std::string& text, const sf::Font& font, const std::function<void(void)>& function, int sizeText) :
+	_position(position),
+	_function(function),
+	_isButtonPressed(false)
+{
+	_normalSprite = loadSprite(normalTexture, position);
+	_hoverSprite = loadSprite(hoverTexture, position);
+	_text.setFont(font);
+	_text.setString(text);
+	_text.setCharacterSize(sizeText);
 	_text.setPosition(_position.x + (_normalSprite.getGlobalBounds().width / 2) - (_text.getGlobalBounds().width / 2), _position.y + (_normalSprite.getGlobalBounds().height / 2) - (_text.getGlobalBounds().top + _text.getGlobalBounds().height / 2));
 }
 
@@ -49,7 +58,7 @@ void	GUI::Button::draw(sf::RenderWindow& window)
 	}
 }
 
-GUI::Checkbox::Checkbox(sf::Vector2f position, sf::Texture& uncheckedTexture, sf::Texture& checkedTexture, std::function<void(void)> function) :
+GUI::Checkbox::Checkbox(const sf::Vector2f& position, const sf::Texture& uncheckedTexture, const sf::Texture& checkedTexture, const std::function<void(bool)>& function) :
 	_position(position),
 	_function(function),
 	_isChecked(false)
@@ -58,25 +67,60 @@ GUI::Checkbox::Checkbox(sf::Vector2f position, sf::Texture& uncheckedTexture, sf
 	_checkedSprite = loadSprite(checkedTexture, position);
 }
 
-#include <iostream>
-
 void	GUI::Checkbox::draw(sf::RenderWindow& window)
 {
 	sf::Vector2i mousePos = sf::Mouse::getPosition(window);
 
 	if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Left) &&
 		_uncheckedSprite.getGlobalBounds().contains(mousePos.x, mousePos.y))
+	{
+		_function(_isChecked);
 		_isChecked = !_isChecked;
+	}
 
 	if (_isChecked)
-	{
-		std::cout << "checked" << std::endl;
-		_function();
 		window.draw(_checkedSprite);
-	}
 	else
-	{
-		std::cout << "unchecked" << std::endl;
 		window.draw(_uncheckedSprite);
-	}
+}
+
+GUI::Text::Text(const sf::Vector2f& position, const std::string& text, const sf::Font& font, const sf::Color& color, const sf::Text::Style& style, int charSize)
+{
+	_text.setFont(font);
+	_text.setString(text);
+	_text.setPosition(position.x, position.y);
+	_text.setCharacterSize(charSize);
+	_text.setColor(color);
+	_text.setStyle(style);
+}
+
+GUI::Text::Text(const sf::Vector2f& position, const std::string& text, const sf::Font& font, const sf::Color& color, int charSize)
+{
+	_text.setFont(font);
+	_text.setString(text);
+	_text.setPosition(position.x, position.y);
+	_text.setCharacterSize(charSize);
+	_text.setColor(color);
+}
+
+GUI::Text::Text(const sf::Vector2f& position, const std::string& text, const sf::Font& font, const sf::Text::Style& style, int charSize)
+{
+	_text.setFont(font);
+	_text.setString(text);
+	_text.setPosition(position.x, position.y);
+	_text.setCharacterSize(charSize);
+	_text.setStyle(style);
+}
+
+GUI::Text::Text(const sf::Vector2f& position, const std::string& text, const sf::Font& font, int charSize)
+{
+	_text.setFont(font);
+	_text.setString(text);
+	_text.setPosition(position.x, position.y);
+	_text.setCharacterSize(charSize);
+}
+
+void	GUI::Text::draw(sf::RenderWindow& window)
+{
+	window.draw(_text);
 }
