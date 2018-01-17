@@ -2,7 +2,7 @@
  * @Author: Remi Gastaldi <gastal_r>
  * @Date:   2018-01-16T23:09:53+01:00
  * @Last modified by:   gastal_r
- * @Last modified time: 2018-01-17T01:41:08+01:00
+ * @Last modified time: 2018-01-17T03:11:44+01:00
  */
 
 
@@ -10,16 +10,36 @@
 
 #include  <unordered_map>
 #include  <memory>
+#include <any>
 
-class Resource
+class Resourcebase
 {
 public:
-  explicit Resource(const std::string &name)
+  explicit Resourcebase(const std::string &name)
     : _name(name)
   {}
 
 protected:
   std::string _name;
+};
+
+template<class T>
+class Resource : public Resourcebase
+{
+public:
+  explicit Resource(const std::string &name)
+    : Resourcebase(name),
+    _resource()
+  {}
+
+  T &getContent(void)
+  {
+    return (_resource);
+  }
+
+  typedef T ContentType;
+protected:
+  T  _resource;
 };
 
 class ResourcesManager
@@ -35,7 +55,7 @@ public:
   template<typename C>
 	void load(const std::string &name)
 	{
-    _resources.emplace(name, std::make_shared<C>(C(name)));
+    _resources.emplace(name, std::make_shared<Resource<typename C::ContentType>>(Resource<typename C::ContentType>(name)));
 	}
 
   template<typename C>
@@ -44,8 +64,8 @@ public:
     return (std::static_pointer_cast<C>(_resources[name]));
 	}
 
-  template<typename S, typename C>
-	C &getContent(const std::string &name)
+  template<typename S>
+	typename S::ContentType &getContent(const std::string &name)
 	{
     return (std::static_pointer_cast<S>(_resources[name])->getContent());
 	}
@@ -57,5 +77,5 @@ public:
   }
 
 private:
-  std::unordered_map<std::string, std::shared_ptr<Resource>> _resources;
+  std::unordered_map<std::string, std::shared_ptr<Resourcebase>> _resources;
 };

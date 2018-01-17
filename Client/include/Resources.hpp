@@ -2,7 +2,7 @@
  * @Author: Remi Gastaldi <gastal_r>
  * @Date:   2018-01-16T21:10:22+01:00
  * @Last modified by:   gastal_r
- * @Last modified time: 2018-01-17T01:33:58+01:00
+ * @Last modified time: 2018-01-17T03:04:31+01:00
  */
 
 
@@ -14,82 +14,57 @@
 #include  <SFML/Graphics/Texture.hpp>
 #include  <SFML/Graphics/Sprite.hpp>
 
-class Texture : public Resource
+class Texture : public Resource<sf::Texture>
 {
 public:
   explicit  Texture(const std::string &name)
-    : Resource(name),
-      _texture()
+    : Resource(name)
     {
-      _texture.loadFromFile(name);
+      _resource.loadFromFile(name);
     }
 
-  sf::Texture &getContent(void)
-  {
-    return (_texture);
-  }
+    void setSmooth(bool val)
+    {
+      _resource.setSmooth(val);
+    }
 
-  void  setSmooth(bool val)
-  {
-    _texture.setSmooth(val);
-  }
-
-private:
-  sf::Texture _texture;
+    typedef sf::Texture ContentType;
 };
 
 
-class SoundBuffer : public Resource
+class SoundBuffer : public Resource<sf::SoundBuffer>
 {
 public:
   explicit  SoundBuffer(const std::string &name)
-    : Resource(name),
-    _soundBuffer()
+    : Resource(name)
   {
-    _soundBuffer.loadFromFile(name);
+    _resource.loadFromFile(name);
   }
 
-  sf::SoundBuffer &getContent(void)
-  {
-    return (_soundBuffer);
-  }
-private:
-  sf::SoundBuffer _soundBuffer;
+  typedef sf::SoundBuffer ContentType;
 };
 
-class Music : public Resource
+class Music : public Resource<sf::Music>
 {
 public:
   explicit  Music(const std::string &name)
-    : Resource(name),
-      _music()
+    : Resource(name)
   {
-    _music.openFromFile(name);
+    _resource.openFromFile(name);
   }
 
-  sf::Music &getContent(void)
-  {
-    return (_music);
-  }
-private:
-  sf::Music _music;
+  typedef sf::Music ContentType;
 };
 
 
-class Font : public Resource
+class Font : public Resource<sf::Font>
 {
 public:
   explicit Font(const std::string &name)
-    : Resource(name),
-      _font()
+    : Resource(name)
     {
-      _font.loadFromFile(name);
+      _resource.loadFromFile(name);
     }
 
-    sf::Font  &getContent(void)
-    {
-      return (_font);
-    }
-private:
-  sf::Font  _font;
+  typedef sf::Font ContentType;
 };
