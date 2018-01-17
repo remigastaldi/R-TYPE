@@ -2,7 +2,7 @@
  * @Author: Remi Gastaldi <gastal_r>
  * @Date:   2018-01-16T23:09:53+01:00
  * @Last modified by:   gastal_r
- * @Last modified time: 2018-01-17T03:25:00+01:00
+ * @Last modified time: 2018-01-17T03:30:16+01:00
  */
 
 
@@ -10,8 +10,7 @@
 
 #include  <unordered_map>
 #include  <memory>
-#include <any>
-#include <iostream>
+
 class Resourcebase
 {
 public:

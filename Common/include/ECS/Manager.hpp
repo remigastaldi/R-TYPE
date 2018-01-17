@@ -2,7 +2,7 @@
  * @Author: Remi Gastaldi <gastal_r>
  * @Date:   2018-01-13T01:04:20+01:00
  * @Last modified by:   gastal_r
- * @Last modified time: 2018-01-15T03:17:19+01:00
+ * @Last modified time: 2018-01-17T03:32:49+01:00
  */
 
 
@@ -21,7 +21,6 @@
 #include  <vector>
 #include  <cassert>
 #include  <algorithm>
-#include <iostream>
 
 namespace ECS
 {
@@ -40,8 +39,8 @@ namespace ECS
     void initSystems();
     void updateSystems(float delta);
 
-    int subscribeEntityToSystems(Entity e, std::set<ComponentType> components);
-    int subscribeEntityToSystems(Entity e);
+    int updateEntityToSystems(Entity e, std::set<ComponentType> components);
+    int updateEntityToSystems(Entity e);
 
 
     bool  createStoreFor(ComponentType ct);

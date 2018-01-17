@@ -168,7 +168,7 @@ namespace ECS
     return c;
   }
 
-  int Manager::subscribeEntityToSystems(Entity e, std::set<ComponentType> components)
+  int Manager::updateEntityToSystems(Entity e, std::set<ComponentType> components)
   {
     if (e == INVALID_ENTITY)
     {
@@ -194,7 +194,7 @@ namespace ECS
     return n;
   }
 
-  int Manager::subscribeEntityToSystems(Entity e)
+  int Manager::updateEntityToSystems(Entity e)
   {
     auto it = _entities.find(e);
 
@@ -203,7 +203,7 @@ namespace ECS
       return 0;
     }
 
-    return subscribeEntityToSystems(e, it->second);
+    return updateEntityToSystems(e, it->second);
   }
 
 
