@@ -2,10 +2,13 @@
 
 #include <memory>
 #include <functional>
-#include <SFML\System.hpp>
-#include <SFML\Graphics.hpp>
+#include <SFML/System.hpp>
+#include <SFML/Graphics.hpp>
  
 namespace GUI {
+
+	inline sf::Sprite	&&loadSprite(sf::Texture&, sf::Vector2f);
+
 	class Button {
 	public:
 		Button(sf::Vector2f, sf::Texture&, sf::Texture&, std::string, sf::Font&, std::function<void(void)>, sf::Color = sf::Color::White, int = 30);
@@ -27,20 +30,36 @@ namespace GUI {
 		sf::Vector2f	getPosition() const { return _position; }
 
 	private:
-		sf::Sprite	loadSprite(sf::Texture&);
 		void		loadText(std::string, sf::Font&, sf::Color, int);
 
 		std::function<void(void)>	_function;
 		sf::Vector2f				_position;
 
-		sf::Texture					_normalTexture;
-		sf::Texture					_clickedTexture;
-		sf::Texture					_hoverTexture;
-
 		sf::Sprite					_normalSprite;
 		sf::Sprite					_clickedSprite;
 		sf::Sprite					_hoverSprite;
+
 		sf::Text					_text;
-		bool						_isButtonPressed = false;
+		bool						_isButtonPressed;
+	};
+
+	class Checkbox
+	{
+	public:
+		Checkbox(sf::Vector2f, sf::Texture&, sf::Texture&, std::function<void(void)>);
+		void			draw(sf::RenderWindow&);
+
+		sf::Vector2f	getPosition() const { return _position; }
+		sf::Sprite		getUncheckedSprite() const { return _uncheckedSprite; }
+		sf::Sprite		getCheckedSprite() const { return _checkedSprite; }
+		bool			getIsChecked() const { return _isChecked; }
+
+	private:
+		std::function<void(void)>	_function;
+
+		sf::Vector2f	_position;
+		sf::Sprite		_uncheckedSprite;
+		sf::Sprite		_checkedSprite;
+		bool			_isChecked;
 	};
 }
