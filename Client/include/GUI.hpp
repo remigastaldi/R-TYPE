@@ -1,52 +1,46 @@
 #pragma once
 
-#include "imgui.h"
-#include "imgui-SFML.h"
+#include <memory>
+#include <functional>
+#include <SFML\System.hpp>
+#include <SFML\Graphics.hpp>
+ 
+namespace GUI {
+	class Button {
+	public:
+		Button(sf::Vector2f, sf::Texture&, sf::Texture&, std::string, sf::Font&, std::function<void(void)>, sf::Color = sf::Color::White, int = 30);
 
-#include <SFML/Graphics/RenderWindow.hpp>
-#include <SFML/System/Clock.hpp>
-#include <SFML/Window/Event.hpp>
-#include <SFML/Graphics/CircleShape.hpp>
+		void	draw(sf::RenderWindow&);
+		void	checkClick(sf::Vector2i);
 
-class GUI
-{
-public:
-	//imgui-SFML overload
-	static void	GUIInit(sf::RenderTarget& target, bool loadDefaultFont = true) { return ImGui::SFML::Init(target, loadDefaultFont); }
-	static void	GUIProcessEvent(const sf::Event& event) { return ImGui::SFML::ProcessEvent(event); }
-	static void	GUIUpdate(sf::RenderWindow& window, sf::Time dt) { return ImGui::SFML::Update(window, dt); }
-	static void	GUIUpdate(sf::Window& window, sf::RenderTarget& target, sf::Time dt) { return ImGui::SFML::Update(window, target, dt); }
-	static void	GUIUpdate(const sf::Vector2i& mousePos, const sf::Vector2f& displaySize, sf::Time dt) { return ImGui::SFML::Update(mousePos, displaySize, dt); }
-	static void	GUIRender(sf::RenderTarget& target) { return ImGui::SFML::Render(target); }
-	static void	GUIShutdown() { return ImGui::SFML::Shutdown(); }
-	static void	GUIUpdateFontTexture() { return ImGui::SFML::UpdateFontTexture(); }
-	static sf::Texture& GUIGetFontTexture() { return ImGui::SFML::GetFontTexture(); }
-	static void	GUIImage(const sf::Texture& texture, const sf::Color& tintColor = sf::Color::White, const sf::Color& borderColor = sf::Color::Transparent) { return ImGui::Image(texture, tintColor, borderColor); }
-	static void	GUIImage(const sf::Texture& texture, const sf::Vector2f& size, const sf::Color& tintColor = sf::Color::White, const sf::Color& borderColor = sf::Color::Transparent) { return ImGui::Image(texture, size, tintColor, borderColor); }
-	static void	GUIImage(const sf::Texture& texture, const sf::FloatRect& textureRect, const sf::Color& tintColor = sf::Color::White, const sf::Color& bordercolor = sf::Color::Transparent) { return ImGui::Image(texture, textureRect, tintColor, bordercolor); }
-	static void	GUIImage(const sf::Texture& texture, const sf::Vector2f& size, const sf::FloatRect& textureRect, const sf::Color& tintColor = sf::Color::White, const sf::Color& borderColor = sf::Color::Transparent) { return ImGui::Image(texture, size, textureRect, tintColor, borderColor); }
-	static void	GUIImage(const sf::Sprite& sprite, const sf::Color& tintColor = sf::Color::White, const sf::Color& borderColor = sf::Color::Transparent) { return ImGui::Image(sprite, tintColor, borderColor); }
-	static void	GUIImage(const sf::Sprite& sprite, const sf::Vector2f& size, const sf::Color& tintColor = sf::Color::White, const sf::Color& borderColor = sf::Color::Transparent) { return ImGui::Image(sprite, size, tintColor, borderColor); }
-	static bool	GUIImageButton(const sf::Texture& texture, const int framePadding = -1, const sf::Color& bgColor = sf::Color::Transparent, const sf::Color& tintColor = sf::Color::White) { return ImGui::ImageButton(texture, framePadding, bgColor, tintColor); }
-	static bool	GUIImageButton(const sf::Texture& texture, const sf::Vector2f& size, const int framePadding = -1, const sf::Color& bgColor = sf::Color::Transparent, const sf::Color& tintColor = sf::Color::White) { return ImGui::ImageButton(texture, size, framePadding, bgColor, tintColor); }
-	static bool	GUIImageButton(const sf::Sprite& sprite, const int framePadding = -1, const sf::Color& bgColor = sf::Color::Transparent, const sf::Color& tintColor = sf::Color::White) { return ImGui::ImageButton(sprite, framePadding, bgColor, tintColor); }
-	static bool	GUIImageButton(const sf::Sprite& sprite, const sf::Vector2f& size, const int framePadding = -1, const sf::Color& bgColor = sf::Color::Transparent, const sf::Color& tintColor = sf::Color::White) { return ImGui::ImageButton(sprite, size, framePadding, bgColor, tintColor); }
-	static void	GUIDrawLine(const sf::Vector2f& a, const sf::Vector2f& b, const sf::Color& col, float thickness = 1.0f) { return ImGui::DrawLine(a, b, col, thickness); }
-	static void	GUIDrawRect(const sf::FloatRect& rect, const sf::Color& color, float rounding = 0.0f, int rouding_corners = 0x0F, float thickness = 1.0f) { return ImGui::DrawRect(rect, color, rounding, rouding_corners, thickness); }
-	static void	GUIDrawRectFilled(const sf::FloatRect& rect, const sf::Color& color, float rounding = 0.0f, int rounding_corners = 0x0F) { return ImGui::DrawRectFilled(rect, color, rounding, rounding_corners); }
+		void	setText(sf::Text text) { _text = text; }
+		void	setNormalSprite(std::shared_ptr<sf::Image> normalSprite) { _normalSprite = _normalSprite; }
+		void	setClickedSprite(std::shared_ptr<sf::Image> clickedSprite) { _clickedSprite = _clickedSprite; }
 
-	//imgui overload
-	static bool	GUIBegin(const char* name, bool* p_open = NULL, ImGuiWindowFlags flags = 0) { return ImGui::Begin(name, p_open, flags); }
-	static void	GUIEnd() { return ImGui::End(); }
-	static bool	GUIBeginChild(const char* str_id, const ImVec2& size = ImVec2(0, 0), bool border = false, ImGuiWindowFlags extra_flags = 0) { return ImGui::BeginChild(str_id, size, border, extra_flags); }
-	static void	GUIEndChild() { return ImGui::EndChild(); }
-	static bool GUIButton(const char* label, const ImVec2& size = ImVec2(0, 0)) { return ImGui::Button(label, size); }
-	static bool GUIColorEdit3(const char* label, float col[3], ImGuiColorEditFlags flags = 0) { return ImGui::ColorEdit3(label, col, flags); }
-	static bool GUIInputText(const char* label, char* buf, size_t buf_size, ImGuiInputTextFlags flags = 0, ImGuiTextEditCallback callback = NULL, void* user_data = NULL) { return ImGui::InputText(label, buf, buf_size, flags, callback, user_data); }
+		sf::Sprite		getNormalSprite() const { return _normalSprite; }
+		sf::FloatRect	getNormalSpriteSize() const { return _normalSprite.getGlobalBounds(); }
+		sf::Sprite		getClickedSprite() const { return _clickedSprite; }
+		sf::FloatRect	getClickedSpriteSize() const { return _clickedSprite.getGlobalBounds(); }
+		sf::Sprite		getHoverSprite() const { return _hoverSprite; }
+		sf::FloatRect	getHoverSpriteSize() const { return _hoverSprite.getGlobalBounds(); }
+		sf::Text		getText() const { return _text; }
+		sf::Vector2f	getPosition() const { return _position; }
 
+	private:
+		sf::Sprite	loadSprite(sf::Texture&);
+		void		loadText(std::string, sf::Font&, sf::Color, int);
 
-protected:
+		std::function<void(void)>	_function;
+		sf::Vector2f				_position;
 
-private:
+		sf::Texture					_normalTexture;
+		sf::Texture					_clickedTexture;
+		sf::Texture					_hoverTexture;
 
-};
+		sf::Sprite					_normalSprite;
+		sf::Sprite					_clickedSprite;
+		sf::Sprite					_hoverSprite;
+		sf::Text					_text;
+		bool						_isButtonPressed = false;
+	};
+}
