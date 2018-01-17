@@ -2,7 +2,7 @@
  * @Author: Remi Gastaldi <gastal_r>
  * @Date:   2018-01-16T21:10:22+01:00
  * @Last modified by:   gastal_r
- * @Last modified time: 2018-01-17T00:25:55+01:00
+ * @Last modified time: 2018-01-17T01:33:58+01:00
  */
 
 
@@ -24,7 +24,7 @@ public:
       _texture.loadFromFile(name);
     }
 
-  sf::Texture &getTexture(void)
+  sf::Texture &getContent(void)
   {
     return (_texture);
   }
@@ -49,7 +49,7 @@ public:
     _soundBuffer.loadFromFile(name);
   }
 
-  sf::SoundBuffer &getSoundBuffer(void)
+  sf::SoundBuffer &getContent(void)
   {
     return (_soundBuffer);
   }
@@ -67,7 +67,7 @@ public:
     _music.openFromFile(name);
   }
 
-  sf::Music &getMusic(void)
+  sf::Music &getContent(void)
   {
     return (_music);
   }
@@ -86,7 +86,7 @@ public:
       _font.loadFromFile(name);
     }
 
-    sf::Font  &getFont(void)
+    sf::Font  &getContent(void)
     {
       return (_font);
     }
