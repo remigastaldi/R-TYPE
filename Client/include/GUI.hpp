@@ -2,7 +2,7 @@
  * @Author: Remi Gastaldi <gastal_r>
  * @Date:   2018-01-17T04:31:52+01:00
  * @Last modified by:   gastal_r
- * @Last modified time: 2018-01-17T21:26:27+01:00
+ * @Last modified time: 2018-01-17T22:23:31+01:00
  */
 
 
@@ -122,21 +122,24 @@ namespace GUI {
 			(void) delta;
 			for (auto & it : _elements)
 			{
-				it->update(_win);
+				it.second->update(_win);
 			}
 		}
 
 		template<typename S, typename ... Args>
-		std::shared_ptr<S> addElement(Args&&... args) {
-			std::shared_ptr<S> ptr(std::make_shared<S>(std::forward<Args>(args)...));
-			_elements.emplace_back(ptr);
-			return (ptr);
+		void addElement(const std::string &name, Args&&... args) {
+			std::shared_ptr<S> ptr();
+			_elements.emplace(name, std::make_shared<S>(std::forward<Args>(args)...));
 		}
 
-		bool release(const std::shared_ptr<Element> element)
-		{
-			auto it = std::find(_elements.begin(), _elements.end(), element);
+		template<typename S>
+		std::shared_ptr<S> getElement(const std::string &name)	{
+			return (_elements[name]);
+		}
 
+		bool release(const std::string &name)
+		{
+			auto it = _elements.find(name);
 	    return (it == _elements.end() ? false : true);
 		}
 
@@ -147,6 +150,6 @@ namespace GUI {
 
 	private:
 		sf::RenderWindow &_win;
-		std::vector<std::shared_ptr<Element>>	_elements;
+		std::unordered_map<std::string, std::shared_ptr<Element>>	_elements;
 	};
 }
