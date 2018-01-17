@@ -14,11 +14,12 @@ namespace GUI {
 		Button(const sf::Vector2f&, const sf::Texture&, const sf::Texture&, const std::string&, const sf::Font&, const std::function<void(void)>&, const sf::Color = sf::Color::White, int = 30);
 		Button(const sf::Vector2f&, const sf::Texture&, const sf::Texture&, const std::string&, const sf::Font&, const std::function<void(void)>&, int = 30);
 
-		void	draw(sf::RenderWindow&);
+		void	update(sf::RenderWindow&);
+		void	event(const sf::Vector2i&);
 
 		void	setText(sf::Text text) { _text = text; }
-		void	setNormalSprite(std::shared_ptr<sf::Image> normalSprite) { _normalSprite = _normalSprite; }
-		void	setClickedSprite(std::shared_ptr<sf::Image> clickedSprite) { _clickedSprite = _clickedSprite; }
+		void	setNormalSprite(sf::Sprite normalSprite) { _normalSprite = normalSprite; }
+		void	setClickedSprite(sf::Sprite clickedSprite) { _clickedSprite = clickedSprite; }
 
 		const sf::Sprite	&	getNormalSprite() const { return _normalSprite; }
 		const sf::FloatRect&	getNormalSpriteSize() const { return _normalSprite.getGlobalBounds(); }
@@ -30,8 +31,6 @@ namespace GUI {
 		const sf::Vector2f &	getPosition() const { return _position; }
 
 	private:
-		void		loadText(const std::string&, const sf::Font&, const sf::Color, int);
-
 		std::function<void(void)>	_function;
 		sf::Vector2f				_position;
 
@@ -47,12 +46,13 @@ namespace GUI {
 	{
 	public:
 		Checkbox(const sf::Vector2f&, const sf::Texture&, const sf::Texture&, const std::function<void(bool)>&);
-		void			draw(sf::RenderWindow&);
+		void			update(sf::RenderWindow&);
+		void			event(const sf::Vector2i&);
 
-		const sf::Vector2f&	getPosition() const { return _position; }
+		const sf::Vector2f&		getPosition() const { return _position; }
 		const sf::Sprite&		getUncheckedSprite() const { return _uncheckedSprite; }
 		const sf::Sprite&		getCheckedSprite() const { return _checkedSprite; }
-		bool			getIsChecked() const { return _isChecked; }
+		bool					getIsChecked() const { return _isChecked; }
 
 	private:
 		std::function<void(bool)>	_function;
@@ -71,8 +71,22 @@ namespace GUI {
 		Text(const sf::Vector2f&, const std::string&, const sf::Font&, const sf::Color& = sf::Color::White, int = 30);
 		Text(const sf::Vector2f&, const std::string&, const sf::Font&, int = 30);
 
-		void draw(sf::RenderWindow&);
+		void update(sf::RenderWindow&);
 	private:
 		sf::Text _text;
+	};
+
+	class TextBox
+	{
+	public:
+		TextBox(const sf::Vector2f&, const sf::Texture&, const sf::Font&, const sf::Text::Style&, const sf::Color&, int);
+		TextBox(const sf::Vector2f&, const sf::Texture&, const sf::Font&, const sf::Color&, int);
+		TextBox(const sf::Vector2f&, const sf::Texture&, const sf::Font&, const sf::Text::Style&, int);
+		
+		void	update(sf::RenderWindow&);
+		void	event(const sf::Event&);
+	private:
+		sf::Text	_text;
+		sf::Sprite	_backgroundSprite;
 	};
 }
