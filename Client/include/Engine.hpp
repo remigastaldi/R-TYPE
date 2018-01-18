@@ -1,7 +1,7 @@
 #pragma once
 
 #include <AlfredBase/EventManager/EventManager.hpp>
-#include "RessourcesManager.hpp"
+//#include "RessourcesManager.hpp"
 #include "SceneManager.hpp"
 
 static constexpr char GE_DEFAULT_LOG_PATH[] = ".";
@@ -13,7 +13,7 @@ namespace GameEngine
     {
       private:
         Alfred::EventManager::Manager _eventManager;
-        RessourceManager::Manager _ressourcesManager;
+//        RessourceManager::Manager _ressourcesManager;
         SceneManager _sceneManager;
         //TODO Graphic Manager
         //TODO GUI Manager
