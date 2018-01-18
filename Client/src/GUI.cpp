@@ -2,11 +2,11 @@
  * @Author: Remi Gastaldi <gastal_r>
  * @Date:   2018-01-17T14:12:41+01:00
  * @Last modified by:   gastal_r
- * @Last modified time: 2018-01-17T21:21:49+01:00
+ * @Last modified time: 2018-01-18T14:55:36+01:00
  */
 
 
-#include "GUI.hpp"
+#include "GUIElements.hpp"
 #include "ResourcesManager.hpp"
 #include "Resources.hpp"
 
