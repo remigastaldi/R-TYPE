@@ -2,14 +2,14 @@
  * @Author: Remi Gastaldi <gastal_r>
  * @Date:   2018-01-18T14:54:03+01:00
  * @Last modified by:   gastal_r
- * @Last modified time: 2018-01-19T22:40:04+01:00
+ * @Last modified time: 2018-01-19T23:47:18+01:00
  */
 
 
 #pragma once
 
 #include  "GUIElements.hpp"
-
+#include <iostream>
 namespace GUI
 {
   class Manager
@@ -24,14 +24,16 @@ namespace GUI
 		{
 			//TODO use delta
 			(void) delta;
-			for (auto & it : _elements)
+			for (auto & it : _zIndex)
 			{
-				it.second->update(_win);
+        _elements[it]->update(_win);
 			}
 		}
 
 		template<typename S, typename ... Args>
-		void addElement(const std::string &name, Args&&... args) {
+		void addElement(const std::string &name, Args&&... args)
+    {
+      _zIndex.emplace_back(name);
 			_elements.emplace(name, std::make_shared<S>(std::forward<Args>(args)...));
 		}
 
@@ -51,17 +53,21 @@ namespace GUI
 
 		bool release(const std::string &name)
 		{
-			auto it = _elements.find(name);
-	    return (it == _elements.end() ? false : true);
+      auto it = std::find(_zIndex.begin(), _zIndex.end(), name);
+      _zIndex.erase(it);
+      int nb = _elements.erase(name);
+	    return (nb == 0 ? false : true);
 		}
 
 		void releaseAll(void)
 		{
 			_elements.clear();
+      _zIndex.clear();
 		}
 
 	private:
 		sf::RenderWindow &_win;
+    std::vector<std::string>  _zIndex;
 		std::unordered_map<std::string, std::shared_ptr<Element>>	_elements;
 	};
 }
