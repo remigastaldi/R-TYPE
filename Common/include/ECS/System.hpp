@@ -2,7 +2,7 @@
  * @Author: Remi Gastaldi <gastal_r>
  * @Date:   2018-01-13T00:16:14+01:00
  * @Last modified by:   gastal_r
- * @Last modified time: 2018-01-15T03:34:49+01:00
+ * @Last modified time: 2018-01-18T02:21:29+01:00
  */
 
 
@@ -21,7 +21,7 @@ namespace ECS
   class System
   {
   public:
-    System(int priority, std::set<ComponentType> needed, std::shared_ptr<ECS::Manager> manager)
+    System(int priority, std::set<ComponentType> needed, ECS::Manager &manager)
       : _priority(priority), _needed(needed), _manager(manager), _entities()
     {}
 
@@ -43,13 +43,13 @@ namespace ECS
     int getPriority() const;
     std::set<ComponentType> getNeededComponents() const;
 
-    std::shared_ptr<ECS::Manager> getManager();
+    ECS::Manager &getManager();
 
   private:
     const int _priority;
     const std::set<ComponentType> _needed;
 
-    std::shared_ptr<ECS::Manager> _manager;
+    ECS::Manager &_manager;
     std::set<Entity> _entities;
   };
 }

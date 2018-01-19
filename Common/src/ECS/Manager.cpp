@@ -2,7 +2,7 @@
  * @Author: Remi Gastaldi <gastal_r>
  * @Date:   2018-01-13T01:04:05+01:00
  * @Last modified by:   gastal_r
- * @Last modified time: 2018-01-16T19:46:26+01:00
+ * @Last modified time: 2018-01-17T16:55:19+01:00
  */
 
 
@@ -18,13 +18,7 @@ namespace ECS
   {}
 
   Manager::~Manager()
-  {
-    // for (auto store : _stores)
-    // {
-    //   // TODO: delete content of store
-    //   // delete store.second;
-    // }
-  }
+  {}
 
   Entity Manager::createEntity()
   {

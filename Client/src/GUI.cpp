@@ -2,11 +2,11 @@
  * @Author: Remi Gastaldi <gastal_r>
  * @Date:   2018-01-17T14:12:41+01:00
  * @Last modified by:   gastal_r
- * @Last modified time: 2018-01-17T21:21:49+01:00
+ * @Last modified time: 2018-01-18T14:55:36+01:00
  */
 
 
-#include "GUI.hpp"
+#include "GUIElements.hpp"
 #include "ResourcesManager.hpp"
 #include "Resources.hpp"
 
@@ -20,7 +20,7 @@ sf::Sprite	GUI::loadSprite(const sf::Texture& texture, const sf::Vector2f& posit
 }
 
 GUI::Button::Button(const sf::Vector2f& position, const sf::Texture& normalTexture, const sf::Texture& hoverTexture,
-	const std::string& text, const sf::Font& font, const std::function<void(void)>& function, const sf::Color colorText,
+	const std::string& text, const sf::Font& font, const std::function<void(void)>& function, const sf::Color& colorText,
 	size_t textSize)
 		: _function(function),
 	_position(position),
@@ -35,31 +35,30 @@ GUI::Button::Button(const sf::Vector2f& position, const sf::Texture& normalTextu
 
 GUI::Button::Button(const sf::Vector2f& position, const sf::Texture& normalTexture, const sf::Texture& hoverTexture,
 	const std::string& text, const sf::Font& font, const std::function<void(void)>& function, size_t textSize)
-		:	_function(function),
-		_position(position),
-		_normalSprite(loadSprite(normalTexture, position)),
-		_clickedSprite(),
-		_hoverSprite(loadSprite(hoverTexture, position)),
-		_text(text, font, textSize)
+	: _function(function),
+	_position(position),
+	_normalSprite(loadSprite(normalTexture, position)),
+	_clickedSprite(),
+	_hoverSprite(loadSprite(hoverTexture, position)),
+	_text(text, font, textSize)
 {
 	_text.setPosition(_position.x + (_normalSprite.getGlobalBounds().width / 2) - (_text.getGlobalBounds().width / 2), _position.y + (_normalSprite.getGlobalBounds().height / 2) - (_text.getGlobalBounds().top + _text.getGlobalBounds().height / 2));
-}
-
-void	GUI::Button::event(const sf::Vector2i &mousePos)
-{
-	if (_normalSprite.getGlobalBounds().contains(mousePos.x, mousePos.y))
-		_function();
 }
 
 void	GUI::Button::update(sf::RenderWindow& window)
 {
 	sf::Vector2i mousePos = sf::Mouse::getPosition(window);
 
-		if (_normalSprite.getGlobalBounds().contains(mousePos.x, mousePos.y))
-			window.draw(_hoverSprite);
-		else
-			window.draw(_normalSprite);
-		window.draw(_text);
+	if (_normalSprite.getGlobalBounds().contains(mousePos.x, mousePos.y))
+	{
+		if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Left))
+			_function();
+		window.draw(_hoverSprite);
+	}
+	else
+		window.draw(_normalSprite);
+	
+	window.draw(_text);
 }
 
 GUI::Checkbox::Checkbox(const sf::Vector2f& position, const sf::Texture& uncheckedTexture, const sf::Texture& checkedTexture, const std::function<void(bool)>& function)
@@ -163,4 +162,49 @@ void	GUI::TextBox::update(sf::RenderWindow& window)
 {
 	window.draw(_backgroundSprite);
 	window.draw(_text);
+}
+
+GUI::Image::Image(const sf::Vector2f& position, const sf::Texture& texture, const sf::IntRect& textureRect, const sf::Color& color, const sf::Vector2f& absoluteScale, const sf::Vector2f& relativeScale, const sf::Vector2f& origin) :
+	_sprite(loadSprite(texture, position))
+{
+	_sprite.setTextureRect(textureRect);
+	_sprite.setColor(color);
+	_sprite.setScale(absoluteScale);
+	_sprite.scale(relativeScale);
+	_sprite.setOrigin(origin);
+}
+
+GUI::Image::Image(const sf::Vector2f& position, const sf::Texture& texture, const sf::IntRect& textureRect, const sf::Color& color, const sf::Vector2f& absoluteScale, const sf::Vector2f& origin) :
+	_sprite(loadSprite(texture, position))
+{
+	_sprite.setTextureRect(textureRect);
+	_sprite.setColor(color);
+	_sprite.setScale(absoluteScale);
+	_sprite.setOrigin(origin);
+}
+
+GUI::Image::Image(const sf::Vector2f& position, const sf::Texture& texture, const sf::IntRect& textureRect, const sf::Color& color, const sf::Vector2f& origin) :
+	_sprite(loadSprite(texture, position))
+{
+	_sprite.setTextureRect(textureRect);
+	_sprite.setColor(color);
+	_sprite.setOrigin(origin);
+}
+
+GUI::Image::Image(const sf::Vector2f& position, const sf::Texture& texture, const sf::IntRect& textureRect, const sf::Vector2f& origin) :
+	_sprite(loadSprite(texture, position))
+{
+	_sprite.setTextureRect(textureRect);
+	_sprite.setOrigin(origin);
+}
+
+GUI::Image::Image(const sf::Vector2f& position, const sf::Texture& texture, const sf::Vector2f& origin) :
+	_sprite(loadSprite(texture, position))
+{
+	_sprite.setOrigin(origin);
+}
+
+void	GUI::Image::update(sf::RenderWindow& window)
+{
+	window.draw(_sprite);
 }
