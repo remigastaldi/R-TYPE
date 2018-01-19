@@ -2,7 +2,7 @@
  * @Author: Remi Gastaldi <gastal_r>
  * @Date:   2018-01-13T00:47:26+01:00
  * @Last modified by:   gastal_r
- * @Last modified time: 2018-01-15T03:34:57+01:00
+ * @Last modified time: 2018-01-18T02:23:16+01:00
  */
 
 
@@ -64,7 +64,7 @@ namespace ECS
     return (_needed);
   }
 
-  std::shared_ptr<ECS::Manager> System::getManager()
+  ECS::Manager &System::getManager()
   {
     return (_manager);
   }
