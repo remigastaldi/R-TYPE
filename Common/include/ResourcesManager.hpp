@@ -2,7 +2,7 @@
  * @Author: Remi Gastaldi <gastal_r>
  * @Date:   2018-01-16T23:09:53+01:00
  * @Last modified by:   gastal_r
- * @Last modified time: 2018-01-17T03:30:16+01:00
+ * @Last modified time: 2018-01-17T15:53:33+01:00
  */
 
 
@@ -73,6 +73,11 @@ public:
   {
     size_t nb = _resources.erase(name);
     return (nb > 0 ? true : false);
+  }
+
+  void releaseAll(void)
+  {
+    _resources.clear();
   }
 
 private:
