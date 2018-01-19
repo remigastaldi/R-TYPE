@@ -7,14 +7,14 @@
 
 
 #include  "Client.hpp"
-
+#include "StartPage\StartPage.hpp"
 namespace GameEngine
 {
   Client::Client(const std::string &ip, sf::VideoMode &videoMode)
     : _resourcesManager(),
     _ecsManager(),
     _guiManager(_window),
-    _window(videoMode, "R-Type", sf::Style::None),
+    _window(videoMode, "R-Type", sf::Style::Titlebar | sf::Style::Resize),
     _ip(ip),
     _gameEngineTick(40),
     _maxFrameRate(60)
@@ -31,8 +31,12 @@ namespace GameEngine
 
   void  Client::run()
   {
-    double nextGameTick = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now().time_since_epoch()).count();
+	  StartPage	startPageScene(_guiManager);
 
+	  startPageScene.onEnter();
+
+    double nextGameTick = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now().time_since_epoch()).count();
+	
     auto t1 = std::chrono::high_resolution_clock::now();
     while(true)
     {

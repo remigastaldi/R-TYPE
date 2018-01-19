@@ -9,8 +9,6 @@
 
 int main(int ac, char *av[])
 {
-  (void)ac;
-  (void)av;
 
   if constexpr (DEBUG)
     std::cout << "DEBUG ON" << std::endl;
@@ -18,17 +16,13 @@ int main(int ac, char *av[])
   //Config logger
   Logger::get().setOutput(CONSOLE_LOG);
 
-  LOG_INFO << "Ceci est un test" << std::endl;
-  LOG_ERROR << "Ceci est une erreur" << std::endl;
-
   std::string ip("localhost");
   if (ac > 1)
   {
     ip = av[1];
   }
 
-  sf::VideoMode videoMode(1600, 900);
-  GameEngine::Client client(ip, videoMode);
+  GameEngine::Client client(ip, sf::VideoMode(1920,1080));
 
   client.init();
   client.run();

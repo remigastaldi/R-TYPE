@@ -28,11 +28,10 @@ namespace GUI {
 
 	class Button : public Element {
 	public:
-		Button(const sf::Vector2f&, const sf::Texture&, const sf::Texture&, const std::string&, const sf::Font&, const std::function<void(void)>&, const sf::Color = sf::Color::White, size_t = 30);
+		Button(const sf::Vector2f&, const sf::Texture&, const sf::Texture&, const std::string&, const sf::Font&, const std::function<void(void)>&, const sf::Color& = sf::Color::White, size_t = 30);
 		Button(const sf::Vector2f&, const sf::Texture&, const sf::Texture&, const std::string&, const sf::Font&, const std::function<void(void)>&, size_t = 30);
 
 		void	update(sf::RenderWindow&) override;
-		void	event(const sf::Vector2i&);
 
 		void	setText(sf::Text text) { _text = text; }
 		void	setNormalSprite(sf::Sprite normalSprite) { _normalSprite = normalSprite; }
@@ -106,5 +105,27 @@ namespace GUI {
 	private:
 		sf::Text	_text;
 		sf::Sprite	_backgroundSprite;
+	};
+
+	class Image : public Element
+	{
+	public:
+		Image(const sf::Vector2f&, const sf::Texture&, const sf::Vector2f& = sf::Vector2f(0, 0));
+		Image(const sf::Vector2f&, const sf::Texture&, const sf::IntRect&, const sf::Vector2f& = sf::Vector2f(0, 0));
+		Image(const sf::Vector2f&, const sf::Texture&, const sf::IntRect&, const sf::Color&, const sf::Vector2f& = sf::Vector2f(0, 0));
+		Image(const sf::Vector2f&, const sf::Texture&, const sf::IntRect&, const sf::Color&, const sf::Vector2f&, const sf::Vector2f& = sf::Vector2f(0, 0));
+		Image(const sf::Vector2f&, const sf::Texture&, const sf::IntRect&, const sf::Color&, const sf::Vector2f&, const sf::Vector2f&, const sf::Vector2f& = sf::Vector2f(0, 0));
+
+		void	update(sf::RenderWindow&);
+
+		void	setPosition(const sf::Vector2f& position) { _sprite.setPosition(position); }
+		void	setTexture(const sf::Texture& texture) { _sprite.setTexture(texture); }
+		void	setTextureRect(const sf::IntRect& textureRect) { _sprite.setTextureRect(textureRect); }
+		void	setColor(const sf::Color& color) { _sprite.setColor(color); }
+		void	setAbsoluteScale(const sf::Vector2f& scale) { _sprite.setScale(scale); }
+		void	setRelativeScale(const sf::Vector2f& scale) { _sprite.scale(scale); }
+
+	private:
+		sf::Sprite	_sprite;
 	};
 }
