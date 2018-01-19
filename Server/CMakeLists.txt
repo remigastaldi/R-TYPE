@@ -10,6 +10,7 @@ include_directories(include)
 
 add_executable(
         ${NAME}
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/Server.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/src/main.cpp
 )
 
@@ -21,7 +22,7 @@ target_sources(${NAME}
 
 include(../Common/common.cmake)
 
-target_link_libraries(${NAME} AlfredBase)
+target_link_libraries(${NAME} -lboost_system AlfredBase)
 
 if (UNIX)
   list(APPEND COMPILE_OPTIONS
@@ -69,8 +70,11 @@ else()
   target_compile_options(${NAME} PUBLIC ${COMPILE_OPTIONS})
 endif()
 
-
 file(TO_NATIVE_PATH "${CMAKE_BINARY_DIR}\\Server" copyDest)
+
+if(Boost_FOUND)
+  include_directories(${Boost_INCLUDE_DIRS})
+endif()
 
 #Copy Boost DLL
 if (WIN32)

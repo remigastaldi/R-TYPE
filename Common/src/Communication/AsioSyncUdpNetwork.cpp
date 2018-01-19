@@ -5,55 +5,62 @@
 ** Login	leliev_t
 **
 ** Started on	Sun Jan 14 22:23:16 2018 Tanguy Lelievre
-** Last update	Wed Jan 17 00:31:25 2018 Tanguy Lelievre
+** Last update	Sat Jan 20 00:35:22 2018 Tanguy Lelievre
 */
 
 #include "Communication/AsioSyncUdpNetwork.hpp"
 
-AsioSyncUdpNetwork::AsioSyncUdpNetwork(int port) : _service(), _socket(_service), _endpoint(boost::asio::ip::udp::v4(), port) {
-  _port = port;
+AsioSyncUdpNetwork::AsioSyncUdpNetwork(int port) : _port(port), _context(), _endpoint(boost::asio::ip::udp::v4(), _port), _socket(_context, _endpoint)
+{
 }
 
-AsioSyncUdpNetwork::~AsioSyncUdpNetwork() {
-  if (_socket.is_open() == true)
-    _socket.close();
+AsioSyncUdpNetwork::~AsioSyncUdpNetwork()
+{
 }
 
-void	AsioSyncUdpNetwork::connect(const std::string &port) {
+void	AsioSyncUdpNetwork::connect(const std::string &port)
+{
   if (_socket.is_open() == true) {
     return;
   }
   _port = std::stoi(port);
 }
 
-std::string	AsioSyncUdpNetwork::receive() {
+std::string	AsioSyncUdpNetwork::receive()
+{
   std::string msg;
+  boost::asio::ip::udp::endpoint	nend;
+
   try {
-    _socket.receive_from(boost::asio::buffer(msg), _endpoint);
-  } catch (boost::system::system_error e) {
-    throw std::exception("Error receive.");
+    _socket.receive_from(boost::asio::buffer(msg), nend);
+  } catch (std::exception &e) {
+    std::cout << e.what() << std::endl;
+    throw std::runtime_error("Error receive.");
   }
   return (msg);
 }
 
-void	AsioSyncUdpNetwork::send(const std::string &msg) {
+void	AsioSyncUdpNetwork::send(const std::string &msg)
+{
   try {
     _socket.send_to(boost::asio::buffer(msg), _endpoint);
-  } catch (boost::system::system_error e) {
-    throw std::exception("Error send.");
+  } catch (std::exception &e) {
+    throw std::runtime_error("Error send.");
   }
 }
 
-void	AsioSyncUdpNetwork::send(const std::string &msg, const std::string &ip) {
+void	AsioSyncUdpNetwork::send(const std::string &msg, const std::string &ip)
+{
   try {
     _endpoint.address(boost::asio::ip::address::from_string(ip));
     _socket.send_to(boost::asio::buffer(msg), _endpoint);
-  } catch (boost::system::system_error e) {
-    throw std::exception("Error send.");
+  } catch (std::exception &e) {
+    throw std::runtime_error("Error send.");
   }
 }
 
-void  AsioSyncUdpNetwork::disconnect() {
+void  AsioSyncUdpNetwork::disconnect()
+{
   if (_socket.is_open() == true)
     _socket.close();
 }
