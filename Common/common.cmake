@@ -1,5 +1,6 @@
 include_directories(${CMAKE_SOURCE_DIR}/Common/include/)
 include_directories(${CMAKE_SOURCE_DIR}/Common/config/)
+include_directories(${CMAKE_SOURCE_DIR}/Common/)
 
 include(${CMAKE_SOURCE_DIR}/Common/LibraryInterfaces/libraryinterfaces.cmake)
 

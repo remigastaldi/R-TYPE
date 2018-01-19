@@ -2,7 +2,7 @@
  * @Author: Remi Gastaldi <gastal_r>
  * @Date:   2018-01-18T14:54:03+01:00
  * @Last modified by:   gastal_r
- * @Last modified time: 2018-01-18T23:28:53+01:00
+ * @Last modified time: 2018-01-19T22:40:04+01:00
  */
 
 
@@ -38,6 +38,15 @@ namespace GUI
 		template<typename S>
 		std::shared_ptr<S> getElement(const std::string &name)	{
 			return (_elements[name]);
+		}
+
+    template<typename C, typename S>
+		void centerElementWithAnOther(const std::string &element1, const std::string &element2)
+		{
+      std::shared_ptr<C> firstElement(getElement<C>("element1"));
+      std::shared_ptr<S> secondElement(getElement<S>("element2"));
+
+      //TODO center second element with first
 		}
 
 		bool release(const std::string &name)

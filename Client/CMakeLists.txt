@@ -23,7 +23,7 @@ target_compile_features(${NAME} PUBLIC cxx_std_17)
 target_sources(${NAME}
         PUBLIC
         ${CMAKE_CURRENT_SOURCE_DIR}/src/Client.cpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/src/GUI.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/GUIElements.cpp
 
         # Temporary
         ${CMAKE_CURRENT_SOURCE_DIR}/shared/StartPage/StartPage.cpp
