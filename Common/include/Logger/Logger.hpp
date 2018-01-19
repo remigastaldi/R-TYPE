@@ -1,3 +1,11 @@
+/**
+ * @Author: Remi Gastaldi <gastal_r>
+ * @Date:   2018-01-16T14:55:33+01:00
+ * @Last modified by:   gastal_r
+ * @Last modified time: 2018-01-18T14:59:07+01:00
+ */
+
+
 #pragma once
 
 #include <AlfredBase/Utils/Singleton.hpp>
@@ -7,6 +15,7 @@
 #include <iomanip>
 #include <config.hpp>
 #include <sstream>
+#include <iostream>
 
 #define LOG_DEBUG Logger::get().debug(__FUNCTION__)
 #define LOG_INFO Logger::get().info(__FUNCTION__)
