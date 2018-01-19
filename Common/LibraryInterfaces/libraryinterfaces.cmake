@@ -1,8 +1,11 @@
-set(INTERFACES_COMMON
-        IMap.hpp
-        IAttack.hpp
-        IMap.hpp
-        )
+list(APPEND INTERFACES_COMMON
+      IAttack.hpp
+      IMap.hpp
+      IMove.hpp
+      IPart.hpp
+      IPowerUp.hpp
+      IScene.hpp
+      )
 
 set(INTERFACES_CLIENT ${INTERFACES_COMMON})
 

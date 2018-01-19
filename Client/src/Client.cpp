@@ -2,12 +2,12 @@
  * @Author: Remi Gastaldi <gastal_r>
  * @Date:   2018-01-17T04:07:04+01:00
  * @Last modified by:   gastal_r
- * @Last modified time: 2018-01-19T04:17:57+01:00
+ * @Last modified time: 2018-01-19T21:43:55+01:00
  */
 
 
 #include  "Client.hpp"
-#include "StartPage\StartPage.hpp"
+
 namespace GameEngine
 {
   Client::Client(const std::string &ip, sf::VideoMode &videoMode)
@@ -23,7 +23,6 @@ namespace GameEngine
   void  Client::init()
   {
     // load connection scene
-
     _ecsManager.createStoreFor(ECS::Position::Type);
     _ecsManager.addSystem<ECS::Mouvement>(_ecsManager);
     _ecsManager.initSystems();
@@ -36,7 +35,7 @@ namespace GameEngine
 	  startPageScene.onEnter();
 
     double nextGameTick = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now().time_since_epoch()).count();
-	
+
     auto t1 = std::chrono::high_resolution_clock::now();
     while(true)
     {
@@ -45,6 +44,7 @@ namespace GameEngine
 
       int loops = 0;
       auto t2 = std::chrono::high_resolution_clock::now();
+      handleEvents();
       while(std::chrono::duration_cast<std::chrono::milliseconds>(t2.time_since_epoch()).count() > nextGameTick
         && loops < maxFrameSkip)
       {

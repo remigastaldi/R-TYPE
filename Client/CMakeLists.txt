@@ -9,6 +9,9 @@ set(NAME R-Type)
 include_directories(SYSTEM ../SFML/include)
 
 include_directories(include)
+include_directories(shared)
+
+link_directories(SFML/lib)
 
 add_executable(
         ${NAME}
@@ -19,13 +22,16 @@ target_compile_features(${NAME} PUBLIC cxx_std_17)
 
 target_sources(${NAME}
         PUBLIC
-        ${IMGUI_SOURCES}
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/Client.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/GUI.cpp
+
+        # Temporary
+        ${CMAKE_CURRENT_SOURCE_DIR}/shared/StartPage/StartPage.cpp
 )
 
 include(../Common/common.cmake)
 
-link_directories(SFML/lib)
-target_link_libraries(${NAME} sfml-graphics sfml-window sfml-system sfml-audio AlfredBase)
+target_link_libraries(${NAME} sfml-system sfml-graphics sfml-window sfml-audio AlfredBase)
 
 if (UNIX)
   list(APPEND COMPILE_OPTIONS
