@@ -2,7 +2,7 @@
  * @Author: Remi Gastaldi <gastal_r>
  * @Date:   2018-01-17T04:31:52+01:00
  * @Last modified by:   gastal_r
- * @Last modified time: 2018-01-20T03:15:12+01:00
+ * @Last modified time: 2018-01-20T03:39:39+01:00
  */
 
 
@@ -30,7 +30,7 @@ namespace GUI {
 
 	class Button : public Element {
 	public:
-		Button(const sf::Vector2f&, const sf::Texture&, const sf::Texture&, EventManager::Manager &manager, const std::string &event);
+		Button(EventManager::Manager &manager, const std::string &event ,const sf::Vector2f&, const sf::Texture&, const sf::Texture&);
 
 		void	update(sf::RenderWindow&) override;
 
@@ -59,7 +59,7 @@ namespace GUI {
 	class Checkbox : public Element
 	{
 	public:
-		Checkbox(const sf::Vector2f&, const sf::Texture&, const sf::Texture&, const std::function<void(bool)>&);
+		Checkbox(EventManager::Manager &manager, const std::string &event ,const sf::Vector2f&, const sf::Texture&, const sf::Texture&);
 		void			update(sf::RenderWindow&) override;
 		void			event(const sf::Vector2i&);
 
@@ -67,16 +67,17 @@ namespace GUI {
 		void	setUncheckedTexture(const sf::Texture& uncheckedTexture) { _uncheckedSprite.setTexture(uncheckedTexture); }
 		void	setCheckedTexture(const sf::Texture& checkedTexture) { _checkedSprite.setTexture(checkedTexture); }
 		void	setIsChecked(bool isChecked) { _isChecked = isChecked; }
-		void	setFunction(const std::function<void(bool)>& function) { _function = function; }
+		void	setEvent(const std::string &event) { _event = event; }
 
-		const std::function<void(bool)>	getFunction() const { return _function; }
 		const sf::FloatRect				getTextureRect() const { return _uncheckedSprite.getGlobalBounds(); }
 		const sf::Sprite&				getUncheckedSprite() const { return _uncheckedSprite; }
 		const sf::Sprite&				getCheckedSprite() const { return _checkedSprite; }
 		bool							getIsChecked() const { return _isChecked; }
 		typedef Checkbox ElementType;
+
 	private:
-		std::function<void(bool)>	_function;
+		EventManager::Manager &_eventManager;
+		std::string	_event;
 
 		sf::Sprite		_uncheckedSprite;
 		sf::Sprite		_checkedSprite;
@@ -115,9 +116,9 @@ namespace GUI {
 	class TextBox : public Element
 	{
 	public:
-		TextBox(const sf::Vector2f&, const sf::Texture&, const sf::Font&, const sf::Text::Style&, const sf::Color&, size_t = 30);
-		TextBox(const sf::Vector2f&, const sf::Texture&, const sf::Font&, const sf::Color& = sf::Color::White, size_t = 30);
-		TextBox(const sf::Vector2f&, const sf::Texture&, const sf::Font&, const sf::Text::Style& = sf::Text::Style::Regular, size_t = 30);
+		TextBox(EventManager::Manager &manager, const std::string &event, const sf::Vector2f&, const sf::Texture&, const sf::Font&, const sf::Text::Style&, const sf::Color&, size_t = 30);
+		TextBox(EventManager::Manager &manager, const std::string &event, const sf::Vector2f&, const sf::Texture&, const sf::Font&, const sf::Color& = sf::Color::White, size_t = 30);
+		TextBox(EventManager::Manager &manager, const std::string &event, const sf::Vector2f&, const sf::Texture&, const sf::Font&, const sf::Text::Style& = sf::Text::Style::Regular, size_t = 30);
 
 		void	update(sf::RenderWindow&);
 		void	event(const sf::Event&);

@@ -2,7 +2,7 @@
  * @Author: Remi Gastaldi <gastal_r>
  * @Date:   2018-01-18T14:54:03+01:00
  * @Last modified by:   gastal_r
- * @Last modified time: 2018-01-20T02:10:31+01:00
+ * @Last modified time: 2018-01-20T03:42:11+01:00
  */
 
 
@@ -17,7 +17,8 @@ namespace GUI
 	public:
 		explicit Manager(sf::RenderWindow &win)
 			:	_win(win),
-				_elements()
+				_elements(),
+        _zIndex()
 			{}
 
 		void update(float delta)
@@ -48,7 +49,7 @@ namespace GUI
 			std::shared_ptr<C> firstElement(getElement<C>(element1));
 			std::shared_ptr<S> secondElement(getElement<S>(element2));
 
-			secondElement->setPosition(sf::Vector2f((firstElement->getTextureRect().left + firstElement->getTextureRect().width / 2) - (secondElement->getTextureRect().width / 2), 
+			secondElement->setPosition(sf::Vector2f((firstElement->getTextureRect().left + firstElement->getTextureRect().width / 2) - (secondElement->getTextureRect().width / 2),
 													(firstElement->getTextureRect().top + firstElement->getTextureRect().height / 2) - (secondElement->getTextureRect().height / 2)));
 		}
 

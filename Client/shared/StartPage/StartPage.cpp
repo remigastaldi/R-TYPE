@@ -2,7 +2,7 @@
  * @Author: Remi Gastaldi <gastal_r>
  * @Date:   2018-01-19T18:05:32+01:00
  * @Last modified by:   gastal_r
- * @Last modified time: 2018-01-20T03:21:20+01:00
+ * @Last modified time: 2018-01-20T03:44:09+01:00
  */
 
 
@@ -47,17 +47,19 @@ void	StartPage::onEnter()
 	_guiManager.addElement<GUI::Image>("Background", sf::Vector2f(0, 0), _resources.getContent<Texture>("../../Client/media/img/startPage/background_04_static.png"), sf::Vector2f(0, 0));
 	_guiManager.addElement<GUI::Text>("GameTitle", sf::Vector2f(center.x + 10, center.y - 300), "R-TYPE", font, 60);
 
-	_guiManager.addElement<GUI::Button>("StartPagePlayButton", sf::Vector2f(center.x, center.y - 100), button, hoverButton, _eventManager, "PlayGameEvent");
+	_guiManager.addElement<GUI::Button>("StartPagePlayButton", _eventManager, "PlayGameEvent", sf::Vector2f(center.x, center.y - 100), button, hoverButton);
 	_guiManager.addElement<GUI::Text>("StartPagePlayText", sf::Vector2f(810, 400), "Play", fontButtons, sf::Color::Black, 30);
 	_guiManager.centerElementWithAnOther<GUI::Button, GUI::Text>("StartPagePlayButton", "StartPagePlayText");
 
-	_guiManager.addElement<GUI::Button>("StartPageOptionsButton", sf::Vector2f(center.x, center.y), button, hoverButton, _eventManager, "OptionEvent");
+	_guiManager.addElement<GUI::Button>("StartPageOptionsButton", _eventManager, "OptionsEvent" ,sf::Vector2f(center.x, center.y), button, hoverButton);
 	_guiManager.addElement<GUI::Text>("StartPageOptionsText", sf::Vector2f(810, 500), "Options", fontButtons, sf::Color::Black, 30);
 	_guiManager.centerElementWithAnOther<GUI::Button, GUI::Text>("StartPageOptionsButton", "StartPageOptionsText");
 
-	_guiManager.addElement<GUI::Button>("StartPageExitButton", sf::Vector2f(center.x, center.y + 100), button, hoverButton, _eventManager, "ExitGameEvent");
+	_guiManager.addElement<GUI::Button>("StartPageExitButton", _eventManager, "ExitGameEvent" ,sf::Vector2f(center.x, center.y + 100), button, hoverButton);
 	_guiManager.addElement<GUI::Text>("StartPageExitText", sf::Vector2f(810, 600), "Exit", fontButtons, sf::Color::Black, 30);
 	_guiManager.centerElementWithAnOther<GUI::Button, GUI::Text>("StartPageExitButton", "StartPageExitText");
+
+
 }
 
 void	StartPage::onExit()

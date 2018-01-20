@@ -2,7 +2,7 @@
  * @Author: Remi Gastaldi <gastal_r>
  * @Date:   2018-01-17T04:07:04+01:00
  * @Last modified by:   gastal_r
- * @Last modified time: 2018-01-20T03:22:12+01:00
+ * @Last modified time: 2018-01-20T03:41:00+01:00
  */
 
 
@@ -32,7 +32,7 @@ namespace GameEngine
     // Create events
     _eventManager.addEvent<void, const std::string &>("PlayGameEvent");
     _eventManager.addEvent<void, const std::string &>("ExitGameEvent");
-    _eventManager.addEvent<void, const std::string &>("OptionGameEvent");
+    _eventManager.addEvent<void, const std::string &>("OptionsEvent");
     _eventManager.listen<void, const std::string &>("ExitGameEvent", std::bind(&Client::exitGame, this, std::placeholders::_1));
   }
 
