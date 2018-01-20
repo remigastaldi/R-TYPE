@@ -2,7 +2,7 @@
  * @Author: Remi Gastaldi <gastal_r>
  * @Date:   2018-01-17T04:31:52+01:00
  * @Last modified by:   gastal_r
- * @Last modified time: 2018-01-20T03:39:39+01:00
+ * @Last modified time: 2018-01-20T04:02:52+01:00
  */
 
 
@@ -106,8 +106,8 @@ namespace GUI {
 		const std::string	getString() const { return _text.getString(); }
 		const sf::Font		*getFont() const { return _text.getFont(); }
 		const sf::Color		getColor() const { return _text.getFillColor(); }
-		const sf::Uint32	getStyle() const { return _text.getStyle(); }
-		const size_t		getCharSize() const { return _text.getCharacterSize(); }
+		sf::Uint32	getStyle() const { return _text.getStyle(); }
+		size_t			getCharSize() const { return _text.getCharacterSize(); }
 
 	private:
 		sf::Text _text;
@@ -126,9 +126,9 @@ namespace GUI {
 		const sf::Vector2f	getPosition() const { return _backgroundSprite.getPosition(); }
 		const sf::Texture	*getTexture() const { return _backgroundSprite.getTexture(); }
 		const sf::Font		*getFont() const { return _text.getFont(); }
-		const sf::Uint32	getStyle() const { return _text.getStyle(); }
+		sf::Uint32	getStyle() const { return _text.getStyle(); }
 		const sf::Color		getColor() const { return _text.getFillColor(); }
-		const size_t		getSize() const { return _text.getCharacterSize(); }
+		size_t		getSize() const { return _text.getCharacterSize(); }
 		const sf::FloatRect	getTextureRect() const { return _text.getGlobalBounds(); }
 
 		void	setText(const std::string& text) { _text.setString(text); }
@@ -138,6 +138,9 @@ namespace GUI {
 		void	setCharSize(unsigned int charSize) { _text.setCharacterSize(charSize); }
 
 	private:
+		EventManager::Manager &_eventManager;
+		std::string	_event;
+
 		sf::Text	_text;
 		sf::Sprite	_backgroundSprite;
 	};

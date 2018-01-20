@@ -2,7 +2,7 @@
  * @Author: Remi Gastaldi <gastal_r>
  * @Date:   2018-01-18T14:54:03+01:00
  * @Last modified by:   gastal_r
- * @Last modified time: 2018-01-20T03:42:11+01:00
+ * @Last modified time: 2018-01-20T04:03:59+01:00
  */
 
 
@@ -17,8 +17,8 @@ namespace GUI
 	public:
 		explicit Manager(sf::RenderWindow &win)
 			:	_win(win),
-				_elements(),
-        _zIndex()
+        _zIndex(),
+        _elements()
 			{}
 
 		void update(float delta)

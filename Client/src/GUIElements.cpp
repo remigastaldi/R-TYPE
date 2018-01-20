@@ -2,7 +2,7 @@
  * @Author: Remi Gastaldi <gastal_r>
  * @Date:   2018-01-17T14:12:41+01:00
  * @Last modified by:   gastal_r
- * @Last modified time: 2018-01-20T03:43:41+01:00
+ * @Last modified time: 2018-01-20T20:06:29+01:00
  */
 
 
@@ -20,10 +20,10 @@ sf::Sprite  GUI::loadSprite(const sf::Texture& texture, const sf::Vector2f& posi
 }
 
 GUI::Button::Button(EventManager::Manager &manager, const std::string &event, const sf::Vector2f& position, const sf::Sprite& normalSprite, const sf::Sprite& hoverSprite)
-	: _event(event),
+	:	_eventManager(manager),
+	_event(event),
 	_normalSprite(normalSprite),
-	_hoverSprite(hoverSprite),
-	_eventManager(manager)
+	_hoverSprite(hoverSprite)
 {
 	_normalSprite.setPosition(position);
 	_hoverSprite.setPosition(position);
@@ -44,12 +44,15 @@ void	GUI::Button::update(sf::RenderWindow& window)
 }
 
 GUI::Checkbox::Checkbox(EventManager::Manager &manager, const std::string &event, const sf::Vector2f& position, const sf::Sprite& uncheckedSprite, const sf::Sprite& checkedSprite)
-	:	_event(event),
+	:	_eventManager(manager),
+	_event(event),
 	_uncheckedSprite(uncheckedSprite),
 	_checkedSprite(checkedSprite),
-	_isChecked(false),
-	_eventManager(manager)
-{}
+	_isChecked(false)
+{
+	_uncheckedSprite.setPosition(position);
+	_checkedSprite.setPosition(position);
+}
 
 void	GUI::Checkbox::event(const sf::Vector2i& mousePos)
 {
@@ -102,7 +105,9 @@ void	GUI::Text::update(sf::RenderWindow& window)
 }
 
 GUI::TextBox::TextBox(EventManager::Manager &manager, const std::string &event, const sf::Vector2f& position, const sf::Texture& texture, const sf::Font& font, const sf::Text::Style& style, const sf::Color& color, size_t textSize)
-	:	_text("", font, textSize),
+	:	_eventManager(manager),
+	_event(event),
+	_text("", font, textSize),
 	_backgroundSprite(loadSprite(texture, position))
 {
 	_text.setPosition(position);
@@ -111,7 +116,9 @@ GUI::TextBox::TextBox(EventManager::Manager &manager, const std::string &event, 
 }
 
 GUI::TextBox::TextBox(EventManager::Manager &manager, const std::string &event, const sf::Vector2f& position, const sf::Texture& texture, const sf::Font& font, const sf::Text::Style& style, size_t textSize)
-	:	_text("", font, textSize),
+	:	_eventManager(manager),
+	_event(event),
+	_text("", font, textSize),
 	_backgroundSprite(loadSprite(texture, position))
 {
 	_text.setPosition(position);
@@ -120,7 +127,9 @@ GUI::TextBox::TextBox(EventManager::Manager &manager, const std::string &event, 
 }
 
 GUI::TextBox::TextBox(EventManager::Manager &manager, const std::string &event, const sf::Vector2f& position, const sf::Texture& texture, const sf::Font& font, const sf::Color& color, size_t textSize)
-	:	_text("", font, textSize),
+	:	_eventManager(manager),
+	_event(event),
+	_text("", font, textSize),
 	_backgroundSprite(loadSprite(texture, position))
 {
 	_text.setPosition(position);
