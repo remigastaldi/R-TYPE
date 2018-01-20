@@ -1,3 +1,11 @@
+/**
+ * @Author: Remi Gastaldi <gastal_r>
+ * @Date:   2018-01-20T18:35:48+01:00
+ * @Last modified by:   gastal_r
+ * @Last modified time: 2018-01-20T21:20:44+01:00
+ */
+
+
 #pragma once
 
 #include "LibraryInterfaces/IScene.hpp"
@@ -10,7 +18,7 @@
 class LobbyPlayer : IScene
 {
 public:
-	explicit LobbyPlayer(GUI::Manager &, EventManager::Manager &);
+	explicit LobbyPlayer(ResourcesManager &resourceManager, GUI::Manager &, EventManager::Manager &);
 	virtual ~LobbyPlayer() {};
 
 	const	std::string &getName() const { return _name; }
@@ -28,5 +36,5 @@ private:
 
 	GUI::Manager			&_guiManager;
 	EventManager::Manager	&_eventManager;
-	ResourcesManager		_resources;
+	ResourcesManager		&_resources;
 };

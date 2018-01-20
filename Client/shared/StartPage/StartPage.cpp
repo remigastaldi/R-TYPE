@@ -2,15 +2,17 @@
  * @Author: Remi Gastaldi <gastal_r>
  * @Date:   2018-01-19T18:05:32+01:00
  * @Last modified by:   gastal_r
- * @Last modified time: 2018-01-20T03:44:09+01:00
+ * @Last modified time: 2018-01-20T21:21:56+01:00
  */
 
 
 #include "StartPage/StartPage.hpp"
 
-StartPage::StartPage(GUI::Manager& guiManager, EventManager::Manager &eventManager)
-	:	_guiManager(guiManager),
-	_eventManager(eventManager)
+StartPage::StartPage(ResourcesManager &resourceManager, GUI::Manager& guiManager, EventManager::Manager &eventManager)
+	:	_name("StartPage"),
+	_guiManager(guiManager),
+	_eventManager(eventManager),
+	_resources(resourceManager)
 {
 
 }
@@ -46,7 +48,7 @@ void	StartPage::onEnter()
 	sf::Sprite optionsButtonHovered(button);
 	sf::Sprite exitButton(button);
 	sf::Sprite exitButtonHovered(button);
-	
+
 	startButton.setTextureRect(sf::IntRect(0, 0, 1132, 348));
 	startButtonHovered.setTextureRect(sf::IntRect(1132, 0, 1132, 348));
 	optionsButton.setTextureRect(sf::IntRect(0, 348, 1132, 348));
@@ -61,7 +63,7 @@ void	StartPage::onEnter()
 	exitButtonHovered.setScale(0.5, 0.5);
 
 	sf::Vector2f center((_guiManager.getWindowSize().x / 2) - (startButton.getGlobalBounds().width / 2), (_guiManager.getWindowSize().y / 2) - (startButton.getGlobalBounds().height / 2));
-	
+
 	_guiManager.addElement<GUI::Image>("Background", sf::Vector2f(0, 0), _resources.getContent<Texture>("../../Client/media/img/lobbiesBackground.jpg"), sf::Vector2f(0, 0));
 	_guiManager.addElement<GUI::Text>("GameTitle", sf::Vector2f(center.x + 100, center.y - 300), "R-TYPE", font, 60);
 

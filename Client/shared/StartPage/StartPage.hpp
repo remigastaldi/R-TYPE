@@ -2,7 +2,7 @@
  * @Author: Remi Gastaldi <gastal_r>
  * @Date:   2018-01-19T18:05:32+01:00
  * @Last modified by:   gastal_r
- * @Last modified time: 2018-01-20T01:23:10+01:00
+ * @Last modified time: 2018-01-20T21:17:31+01:00
  */
 
 
@@ -18,7 +18,7 @@
 class StartPage : IScene
 {
 public:
-	explicit StartPage(GUI::Manager &, EventManager::Manager &);
+	explicit StartPage(ResourcesManager &resourceManager, GUI::Manager &, EventManager::Manager &);
 	virtual ~StartPage() {};
 
 	const	std::string &getName() const { return _name; }
@@ -39,5 +39,5 @@ private:
 
 	GUI::Manager	&_guiManager;
 	EventManager::Manager	&_eventManager;
-	ResourcesManager	_resources;
+	ResourcesManager	&_resources;
 };

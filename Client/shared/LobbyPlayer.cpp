@@ -1,8 +1,18 @@
+/**
+ * @Author: Remi Gastaldi <gastal_r>
+ * @Date:   2018-01-20T21:13:21+01:00
+ * @Last modified by:   gastal_r
+ * @Last modified time: 2018-01-20T21:20:31+01:00
+ */
+
+
 #include "LobbyPlayer.hpp"
 
-LobbyPlayer::LobbyPlayer(GUI::Manager& guiManager, EventManager::Manager &eventManager)
-	: _guiManager(guiManager),
-	_eventManager(eventManager)
+LobbyPlayer::LobbyPlayer(ResourcesManager &resourceManager, GUI::Manager& guiManager, EventManager::Manager &eventManager)
+	: _name("LobbyPlayer"),
+	_guiManager(guiManager),
+	_eventManager(eventManager),
+	_resources(resourceManager)
 {
 
 }
@@ -17,7 +27,7 @@ void	LobbyPlayer::onEnter()
 	_resources.load<Texture>("../../Client/media/img/playerLobby/readyButtonState.png");
 	_resources.load<Texture>("../../Client/media/img/playerLobby/readyButton.png");
 	_resources.load<Font>("../../Client/media/font/neuropol.ttf");
-	
+
 	sf::Font &font = _resources.getContent<Font>("../../Client/media/font/neuropol.ttf");
 	sf::Texture &waitingTexture = _resources.getContent<Texture>("../../Client/media/img/playerLobby/window_whole.png");
 	sf::Texture &playerSlot = _resources.getContent<Texture>("../../Client/media/img/playerLobby/window_bottom.png");
