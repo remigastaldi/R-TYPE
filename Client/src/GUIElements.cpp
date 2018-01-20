@@ -10,7 +10,7 @@
 #include "ResourcesManager.hpp"
 #include "Resources.hpp"
 
-sf::Sprite	GUI::loadSprite(const sf::Texture& texture, const sf::Vector2f& position)
+sf::Sprite  GUI::loadSprite(const sf::Texture& texture, const sf::Vector2f& position)
 {
 	sf::Sprite sprite(texture);
 
@@ -19,12 +19,15 @@ sf::Sprite	GUI::loadSprite(const sf::Texture& texture, const sf::Vector2f& posit
 	return (sprite);
 }
 
-GUI::Button::Button(EventManager::Manager &manager, const std::string &event, const sf::Vector2f& position, const sf::Texture& normalTexture, const sf::Texture& hoverTexture)
-		: _event(event),
-	_normalSprite(loadSprite(normalTexture, position)),
-	_hoverSprite(loadSprite(hoverTexture, position)),
+GUI::Button::Button(EventManager::Manager &manager, const std::string &event, const sf::Vector2f& position, const sf::Sprite& normalSprite, const sf::Sprite& hoverSprite)
+	: _event(event),
+	_normalSprite(normalSprite),
+	_hoverSprite(hoverSprite),
 	_eventManager(manager)
-{}
+{
+	_normalSprite.setPosition(position);
+	_hoverSprite.setPosition(position);
+}
 
 void	GUI::Button::update(sf::RenderWindow& window)
 {
@@ -40,10 +43,10 @@ void	GUI::Button::update(sf::RenderWindow& window)
 		window.draw(_normalSprite);
 }
 
-GUI::Checkbox::Checkbox(EventManager::Manager &manager, const std::string &event, const sf::Vector2f& position, const sf::Texture& uncheckedTexture, const sf::Texture& checkedTexture)
+GUI::Checkbox::Checkbox(EventManager::Manager &manager, const std::string &event, const sf::Vector2f& position, const sf::Sprite& uncheckedSprite, const sf::Sprite& checkedSprite)
 	:	_event(event),
-	_uncheckedSprite(loadSprite(uncheckedTexture, position)),
-	_checkedSprite(loadSprite(checkedTexture, position)),
+	_uncheckedSprite(uncheckedSprite),
+	_checkedSprite(checkedSprite),
 	_isChecked(false),
 	_eventManager(manager)
 {}

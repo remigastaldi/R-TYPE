@@ -26,11 +26,9 @@ namespace GUI {
 		virtual void update(sf::RenderWindow&) = 0;
 	};
 
-	inline sf::Sprite	loadSprite(const sf::Texture&, const sf::Vector2f&);
-
 	class Button : public Element {
 	public:
-		Button(EventManager::Manager &manager, const std::string &event ,const sf::Vector2f&, const sf::Texture&, const sf::Texture&);
+		Button(EventManager::Manager &manager, const std::string &event, const sf::Vector2f&, const sf::Sprite&, const sf::Sprite&);
 
 		void	update(sf::RenderWindow&) override;
 
@@ -56,10 +54,12 @@ namespace GUI {
 		sf::Sprite					_hoverSprite;
 	};
 
+	inline sf::Sprite	loadSprite(const sf::Texture&, const sf::Vector2f&);
+
 	class Checkbox : public Element
 	{
 	public:
-		Checkbox(EventManager::Manager &manager, const std::string &event ,const sf::Vector2f&, const sf::Texture&, const sf::Texture&);
+		Checkbox(EventManager::Manager &manager, const std::string &event, const sf::Vector2f&, const sf::Sprite&, const sf::Sprite&);
 		void			update(sf::RenderWindow&) override;
 		void			event(const sf::Vector2i&);
 
@@ -146,10 +146,10 @@ namespace GUI {
 	{
 	public:
 		Image(const sf::Vector2f&, const sf::Texture&, const sf::Vector2f& = sf::Vector2f(0, 0));
-		Image(const sf::Vector2f&, const sf::Texture&, const sf::IntRect& = sf::IntRect(0,0,0,0), const sf::Vector2f& = sf::Vector2f(0, 0));
+		Image(const sf::Vector2f&, const sf::Texture&, const sf::IntRect& = sf::IntRect(0, 0, 0, 0), const sf::Vector2f& = sf::Vector2f(0, 0));
 		Image(const sf::Vector2f&, const sf::Texture&, const sf::IntRect&, const sf::Color& = sf::Color::White, const sf::Vector2f& = sf::Vector2f(0, 0));
-		Image(const sf::Vector2f&, const sf::Texture&, const sf::IntRect&, const sf::Color&, const sf::Vector2f& = sf::Vector2f(0,0), const sf::Vector2f& = sf::Vector2f(0, 0));
-		Image(const sf::Vector2f&, const sf::Texture&, const sf::IntRect&, const sf::Color&, const sf::Vector2f&, const sf::Vector2f& = sf::Vector2f(0,0), const sf::Vector2f& = sf::Vector2f(0, 0));
+		Image(const sf::Vector2f&, const sf::Texture&, const sf::IntRect&, const sf::Color&, const sf::Vector2f& = sf::Vector2f(0, 0), const sf::Vector2f& = sf::Vector2f(0, 0));
+		Image(const sf::Vector2f&, const sf::Texture&, const sf::IntRect&, const sf::Color&, const sf::Vector2f&, const sf::Vector2f& = sf::Vector2f(0, 0), const sf::Vector2f& = sf::Vector2f(0, 0));
 
 		void	update(sf::RenderWindow&);
 
