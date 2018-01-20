@@ -24,9 +24,12 @@ target_sources(${NAME}
         PUBLIC
         ${CMAKE_CURRENT_SOURCE_DIR}/src/Client.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/src/GUIElements.cpp
+        # ECS
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/ECS/Systems/Render.cpp
 
         # Temporary
         ${CMAKE_CURRENT_SOURCE_DIR}/shared/StartPage/StartPage.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/shared/LobbyPlayer.cpp
 )
 
 include(../Common/common.cmake)
