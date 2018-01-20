@@ -162,7 +162,7 @@ namespace GUI {
 
 		const sf::Vector2f	getPosition() const { return _sprite.getPosition(); }
 		const sf::Texture	*getTexture() const { return _sprite.getTexture(); }
-		const sf::IntRect	getTextureRect() const { return _sprite.getTextureRect(); }
+		const sf::FloatRect	getTextureRect() const { return _sprite.getGlobalBounds(); }
 		const sf::Color		getColor() const { return _sprite.getColor(); }
 		const sf::Vector2f	getAbsoluteScale() const { return _sprite.getScale(); }
 

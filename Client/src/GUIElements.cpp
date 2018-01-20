@@ -173,17 +173,17 @@ GUI::Image::Image(const sf::Vector2f& position, const sf::Texture& texture, cons
 	_sprite.setOrigin(origin);
 }
 
-GUI::Image::Image(const sf::Vector2f& position, const sf::Texture& texture, const sf::IntRect& textureRect, const sf::Vector2f& origin) :
+GUI::Image::Image(const sf::Vector2f& position, const sf::Texture& texture, const sf::IntRect& textureRect, const sf::Vector2f& abosuleScale) :
 	_sprite(loadSprite(texture, position))
 {
 	_sprite.setTextureRect(textureRect);
-	_sprite.setOrigin(origin);
+	_sprite.setScale(abosuleScale);
 }
 
-GUI::Image::Image(const sf::Vector2f& position, const sf::Texture& texture, const sf::Vector2f& origin) :
+GUI::Image::Image(const sf::Vector2f& position, const sf::Texture& texture, const sf::Vector2f& abosuleScale) :
 	_sprite(loadSprite(texture, position))
 {
-	_sprite.setOrigin(origin);
+	_sprite.setScale(abosuleScale);
 }
 
 void	GUI::Image::update(sf::RenderWindow& window)

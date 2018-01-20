@@ -44,13 +44,13 @@ namespace GUI
 		}
 
     template<typename C, typename S>
-		void centerElementWithAnOther(const std::string &element1, const std::string &element2)
+		void centerElementWithAnOther(const std::string &element1, const std::string &element2, int x, int y)
 		{
 			std::shared_ptr<C> firstElement(getElement<C>(element1));
 			std::shared_ptr<S> secondElement(getElement<S>(element2));
 
-			secondElement->setPosition(sf::Vector2f((firstElement->getTextureRect().left + firstElement->getTextureRect().width / 2) - (secondElement->getTextureRect().width / 2),
-													(firstElement->getTextureRect().top + firstElement->getTextureRect().height / 2) - (secondElement->getTextureRect().height / 2)));
+			secondElement->setPosition(sf::Vector2f((firstElement->getTextureRect().left + firstElement->getTextureRect().width / 2) - (secondElement->getTextureRect().width / 2) + x,
+													(firstElement->getTextureRect().top + firstElement->getTextureRect().height / 2) - (secondElement->getTextureRect().height / 2) + y));
 		}
 
 		bool release(const std::string &name)

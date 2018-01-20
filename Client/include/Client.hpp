@@ -18,6 +18,8 @@
 #include  "EventManager.hpp"
 
 #include  "StartPage/StartPage.hpp"
+#include "LobbyPlayer.hpp"
+
 
 #include  <chrono>
 #include  <cmath>
