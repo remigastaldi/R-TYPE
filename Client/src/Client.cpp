@@ -55,9 +55,7 @@ namespace GameEngine
     //
 	  // startPageScene.onEnter();
 
-    LobbyPlayer lobbyPlayerScene(_guiManager, _eventManager);
 
-	  lobbyPlayerScene.onEnter();
 
     double nextGameTick = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now().time_since_epoch()).count();
 
