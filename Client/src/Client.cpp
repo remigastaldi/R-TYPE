@@ -2,7 +2,7 @@
  * @Author: Remi Gastaldi <gastal_r>
  * @Date:   2018-01-17T04:07:04+01:00
  * @Last modified by:   gastal_r
- * @Last modified time: 2018-01-20T03:41:00+01:00
+ * @Last modified time: 2018-01-20T19:19:55+01:00
  */
 
 
@@ -11,9 +11,9 @@
 namespace GameEngine
 {
   Client::Client(const std::string &ip, sf::VideoMode &videoMode)
-    : _resourcesManager(),
+    : _eventManager(),
+    _resourcesManager(),
     _ecsManager(),
-    _eventManager(),
     _guiManager(_window),
     _window(videoMode, "R-Type", sf::Style::Titlebar | sf::Style::Resize),
     _ip(ip),
@@ -25,28 +25,37 @@ namespace GameEngine
   void  Client::init(void)
   {
     // load connection scene
-    _ecsManager.createStoreFor(ECS::Position::Type);
-    _ecsManager.addSystem<ECS::Mouvement>(_ecsManager);
+    _ecsManager.createStoreFor(ECS::Components::Position::Type);
+    _ecsManager.addSystem<ECS::Systems::Mouvement>(_ecsManager);
+    _ecsManager.addSystem<ECS::Systems::Render>(_ecsManager);
     _ecsManager.initSystems();
 
     // Create events
     _eventManager.addEvent<void, const std::string &>("PlayGameEvent");
     _eventManager.addEvent<void, const std::string &>("ExitGameEvent");
     _eventManager.addEvent<void, const std::string &>("OptionsEvent");
+
+    _eventManager.listen<void, const std::string &>("PlayGameEvent", std::bind(&Client::playGame, this, std::placeholders::_1));
     _eventManager.listen<void, const std::string &>("ExitGameEvent", std::bind(&Client::exitGame, this, std::placeholders::_1));
+  }
+
+  void  Client::playGame(const std::string &message)
+  {
+    std::cout << message << std::endl;
   }
 
   void  Client::exitGame(const std::string &message)
   {
+    std::cout << message << std::endl;
     _running = false;
   }
   void  Client::run(void)
   {
-	  //StartPage	startPageScene(_guiManager, _eventManager);
+	  // StartPage	startPageScene(_guiManager, _eventManager);
+    //
+	  // startPageScene.onEnter();
 
-	  //startPageScene.onEnter();
-
-	  LobbyPlayer lobbyPlayerScene(_guiManager, _eventManager);
+    LobbyPlayer lobbyPlayerScene(_guiManager, _eventManager);
 
 	  lobbyPlayerScene.onEnter();
 
@@ -90,14 +99,14 @@ namespace GameEngine
 
   void  Client::update(void)
   {
-    // TODO Call all physics systems
+    _ecsManager.updateSystemsRange(0.f, 0, 1);
   }
 
   void  Client::render(float alpha)
   {
     _window.clear();
     _guiManager.update(alpha);
-    // TODO Call render system
+    _ecsManager.updateSystemsRange(0.f, 2, 2);
     _window.display();
   }
 }

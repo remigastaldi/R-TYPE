@@ -2,7 +2,7 @@
  * @Author: Remi Gastaldi <gastal_r>
  * @Date:   2018-01-17T04:02:41+01:00
  * @Last modified by:   gastal_r
- * @Last modified time: 2018-01-20T02:36:25+01:00
+ * @Last modified time: 2018-01-20T19:18:32+01:00
  */
 
 
@@ -16,6 +16,8 @@
 #include  "GUIManager.hpp"
 #include  "Logger/Logger.hpp"
 #include  "EventManager.hpp"
+#include  "ECS/Components/Components.hpp"
+#include  "ECS/Systems/ClientSystems.hpp"
 
 #include  "StartPage/StartPage.hpp"
 #include "LobbyPlayer.hpp"
@@ -38,6 +40,7 @@ namespace GameEngine
     void  handleEvents(void);
     void  render(float alpha);
 
+    void  playGame(const std::string &);
     void  exitGame(const std::string &);
 
   private:

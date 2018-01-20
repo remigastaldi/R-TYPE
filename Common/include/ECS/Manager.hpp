@@ -2,7 +2,7 @@
  * @Author: Remi Gastaldi <gastal_r>
  * @Date:   2018-01-13T01:04:20+01:00
  * @Last modified by:   gastal_r
- * @Last modified time: 2018-01-17T03:32:49+01:00
+ * @Last modified time: 2018-01-20T18:24:47+01:00
  */
 
 
@@ -21,9 +21,12 @@
 #include  <vector>
 #include  <cassert>
 #include  <algorithm>
-
+#include  <type_traits>
+#include <tuple>
+#include <iostream>
 namespace ECS
 {
+  class Mouvement;
   class Manager {
   public:
     Manager();
@@ -36,8 +39,10 @@ namespace ECS
 
     std::shared_ptr<Store> getStore(ComponentType ct);
 
-    void initSystems();
-    void updateSystems(float delta);
+    void  initSystems();
+    void  updateSystems(float delta);
+    void  updateSystemsRange(float delta, size_t from, size_t to);
+
 
     int updateEntityToSystems(Entity e, std::set<ComponentType> components);
     int updateEntityToSystems(Entity e);
@@ -51,7 +56,6 @@ namespace ECS
       static_assert(C::Type != INVALID_COMPONENT, "C must define its type");
       return createStoreFor(C::Type);
     }
-
 
     std::shared_ptr<Component> getComponent(Entity e, ComponentType ct);
 
