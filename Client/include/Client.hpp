@@ -2,7 +2,7 @@
  * @Author: Remi Gastaldi <gastal_r>
  * @Date:   2018-01-17T04:02:41+01:00
  * @Last modified by:   gastal_r
- * @Last modified time: 2018-01-19T20:22:29+01:00
+ * @Last modified time: 2018-01-20T02:36:25+01:00
  */
 
 
@@ -36,6 +36,8 @@ namespace GameEngine
     void  handleEvents(void);
     void  render(float alpha);
 
+    void  exitGame(const std::string &);
+
   private:
     EventManager::Manager _eventManager;
     ResourcesManager  _resourcesManager;
@@ -52,5 +54,6 @@ namespace GameEngine
 
     double  _gameEngineTick;
     double  _maxFrameRate;
+    bool    _running;
   };
 }

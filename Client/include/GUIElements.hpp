@@ -2,11 +2,13 @@
  * @Author: Remi Gastaldi <gastal_r>
  * @Date:   2018-01-17T04:31:52+01:00
  * @Last modified by:   gastal_r
- * @Last modified time: 2018-01-18T14:55:07+01:00
+ * @Last modified time: 2018-01-20T03:15:12+01:00
  */
 
 
 #pragma once
+
+#include "EventManager.hpp"
 
 #include <memory>
 #include <functional>
@@ -28,12 +30,12 @@ namespace GUI {
 
 	class Button : public Element {
 	public:
-		Button(const sf::Vector2f&, const sf::Texture&, const sf::Texture&, const std::function<void(void)>&);
+		Button(const sf::Vector2f&, const sf::Texture&, const sf::Texture&, EventManager::Manager &manager, const std::string &event);
 
 		void	update(sf::RenderWindow&) override;
 
 		void	setPosition(const sf::Vector2f& pos) { _normalSprite.setPosition(pos); _hoverSprite.setPosition(pos); }
-		void	setFunction(const std::function<void(void)>& func) { _function = func; }
+		void	setEvent(const std::string &event) { _event = event; }
 		void	setNormalSprite(const sf::Sprite& normalSprite) { _normalSprite = normalSprite; }
 		void	setHoverSprite(const sf::Sprite& hoverSprite) { _hoverSprite = hoverSprite; }
 
@@ -45,8 +47,10 @@ namespace GUI {
 		const sf::FloatRect		getHoverSpriteSize() const { return _hoverSprite.getGlobalBounds(); }
 
 		typedef Button ElementType;
+
 	private:
-		std::function<void(void)>	_function;
+		EventManager::Manager &_eventManager;
+		std::string	_event;
 
 		sf::Sprite					_normalSprite;
 		sf::Sprite					_hoverSprite;
@@ -95,7 +99,7 @@ namespace GUI {
 		void	setColor(const sf::Color& color) { _text.setFillColor(color); }
 		void	setStyle(const sf::Text::Style& style) { _text.setStyle(style); }
 		void	setCharSize(unsigned int charSize) { _text.setCharacterSize(charSize); }
-		
+
 		const sf::FloatRect	getTextureRect() const { return _text.getGlobalBounds(); }
 		const sf::Vector2f	getPosition() const { return _text.getPosition(); }
 		const std::string	getString() const { return _text.getString(); }

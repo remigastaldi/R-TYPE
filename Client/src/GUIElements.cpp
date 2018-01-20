@@ -2,7 +2,7 @@
  * @Author: Remi Gastaldi <gastal_r>
  * @Date:   2018-01-17T14:12:41+01:00
  * @Last modified by:   gastal_r
- * @Last modified time: 2018-01-18T14:55:36+01:00
+ * @Last modified time: 2018-01-20T03:18:32+01:00
  */
 
 
@@ -19,10 +19,11 @@ sf::Sprite	GUI::loadSprite(const sf::Texture& texture, const sf::Vector2f& posit
 	return (sprite);
 }
 
-GUI::Button::Button(const sf::Vector2f& position, const sf::Texture& normalTexture, const sf::Texture& hoverTexture, const std::function<void(void)>& function)
-		: _function(function),
+GUI::Button::Button(const sf::Vector2f& position, const sf::Texture& normalTexture, const sf::Texture& hoverTexture, EventManager::Manager &manager, const std::string &event)
+		: _event(event),
 	_normalSprite(loadSprite(normalTexture, position)),
-	_hoverSprite(loadSprite(hoverTexture, position))
+	_hoverSprite(loadSprite(hoverTexture, position)),
+	_eventManager(manager)
 {
 }
 
@@ -33,7 +34,7 @@ void	GUI::Button::update(sf::RenderWindow& window)
 	if (_normalSprite.getGlobalBounds().contains(mousePos.x, mousePos.y))
 	{
 		if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Left))
-			_function();
+			_eventManager.fire<void, const std::string &>(_event, "Play");
 		window.draw(_hoverSprite);
 	}
 	else

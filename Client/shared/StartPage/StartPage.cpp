@@ -2,14 +2,15 @@
  * @Author: Remi Gastaldi <gastal_r>
  * @Date:   2018-01-19T18:05:32+01:00
  * @Last modified by:   gastal_r
- * @Last modified time: 2018-01-19T18:45:47+01:00
+ * @Last modified time: 2018-01-20T03:21:20+01:00
  */
 
 
 #include "StartPage/StartPage.hpp"
 
-StartPage::StartPage(GUI::Manager& manager) :
-	_manager(manager)
+StartPage::StartPage(GUI::Manager& guiManager, EventManager::Manager &eventManager)
+	:	_guiManager(guiManager),
+	_eventManager(eventManager)
 {
 
 }
@@ -41,22 +42,22 @@ void	StartPage::onEnter()
 	sf::Texture &button = _resources.getContent<Texture>("../../Client/media/img/startPage/button.png");
 	sf::Texture &hoverButton = _resources.getContent<Texture>("../../Client/media/img/startPage/buttonHovered.png");
 
-	sf::Vector2f center((_manager.getWindowSize().x / 2) - (button.getSize().x / 2), (_manager.getWindowSize().y / 2) - (button.getSize().y / 2));
+	sf::Vector2f center((_guiManager.getWindowSize().x / 2) - (button.getSize().x / 2), (_guiManager.getWindowSize().y / 2) - (button.getSize().y / 2));
 
-	_manager.addElement<GUI::Image>("Background", sf::Vector2f(0, 0), _resources.getContent<Texture>("../../Client/media/img/startPage/background_04_static.png"), sf::Vector2f(0, 0));
-	_manager.addElement<GUI::Text>("GameTitle", sf::Vector2f(center.x + 10, center.y - 300), "R-TYPE", font, 60);
-	
-	_manager.addElement<GUI::Button>("StartPagePlayButton", sf::Vector2f(center.x, center.y - 100), button, hoverButton, std::bind(&StartPage::funcPlay, this));
-	_manager.addElement<GUI::Text>("StartPagePlayText", sf::Vector2f(810, 400), "Play", fontButtons, sf::Color::Black, 30);
-	_manager.centerElementWithAnOther<GUI::Button, GUI::Text>("StartPagePlayButton", "StartPagePlayText");
+	_guiManager.addElement<GUI::Image>("Background", sf::Vector2f(0, 0), _resources.getContent<Texture>("../../Client/media/img/startPage/background_04_static.png"), sf::Vector2f(0, 0));
+	_guiManager.addElement<GUI::Text>("GameTitle", sf::Vector2f(center.x + 10, center.y - 300), "R-TYPE", font, 60);
 
-	_manager.addElement<GUI::Button>("StartPageOptionsButton", sf::Vector2f(center.x, center.y), button, hoverButton, std::bind(&StartPage::funcOptions, this));
-	_manager.addElement<GUI::Text>("StartPageOptionsText", sf::Vector2f(810, 500), "Options", fontButtons, sf::Color::Black, 30);
-	_manager.centerElementWithAnOther<GUI::Button, GUI::Text>("StartPageOptionsButton", "StartPageOptionsText");
+	_guiManager.addElement<GUI::Button>("StartPagePlayButton", sf::Vector2f(center.x, center.y - 100), button, hoverButton, _eventManager, "PlayGameEvent");
+	_guiManager.addElement<GUI::Text>("StartPagePlayText", sf::Vector2f(810, 400), "Play", fontButtons, sf::Color::Black, 30);
+	_guiManager.centerElementWithAnOther<GUI::Button, GUI::Text>("StartPagePlayButton", "StartPagePlayText");
 
-	_manager.addElement<GUI::Button>("StartPageExitButton", sf::Vector2f(center.x, center.y + 100), button, hoverButton, std::bind(&StartPage::funcExit, this));
-	_manager.addElement<GUI::Text>("StartPageExitText", sf::Vector2f(810, 600), "Exit", fontButtons, sf::Color::Black, 30);
-	_manager.centerElementWithAnOther<GUI::Button, GUI::Text>("StartPageExitButton", "StartPageExitText");
+	_guiManager.addElement<GUI::Button>("StartPageOptionsButton", sf::Vector2f(center.x, center.y), button, hoverButton, _eventManager, "OptionEvent");
+	_guiManager.addElement<GUI::Text>("StartPageOptionsText", sf::Vector2f(810, 500), "Options", fontButtons, sf::Color::Black, 30);
+	_guiManager.centerElementWithAnOther<GUI::Button, GUI::Text>("StartPageOptionsButton", "StartPageOptionsText");
+
+	_guiManager.addElement<GUI::Button>("StartPageExitButton", sf::Vector2f(center.x, center.y + 100), button, hoverButton, _eventManager, "ExitGameEvent");
+	_guiManager.addElement<GUI::Text>("StartPageExitText", sf::Vector2f(810, 600), "Exit", fontButtons, sf::Color::Black, 30);
+	_guiManager.centerElementWithAnOther<GUI::Button, GUI::Text>("StartPageExitButton", "StartPageExitText");
 }
 
 void	StartPage::onExit()

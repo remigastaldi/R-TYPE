@@ -2,7 +2,7 @@
  * @Author: Remi Gastaldi <gastal_r>
  * @Date:   2018-01-17T04:07:04+01:00
  * @Last modified by:   gastal_r
- * @Last modified time: 2018-01-19T21:43:55+01:00
+ * @Last modified time: 2018-01-20T03:22:12+01:00
  */
 
 
@@ -13,31 +13,44 @@ namespace GameEngine
   Client::Client(const std::string &ip, sf::VideoMode &videoMode)
     : _resourcesManager(),
     _ecsManager(),
+    _eventManager(),
     _guiManager(_window),
     _window(videoMode, "R-Type", sf::Style::Titlebar | sf::Style::Resize),
     _ip(ip),
     _gameEngineTick(40),
-    _maxFrameRate(60)
+    _maxFrameRate(60),
+    _running(true)
   {}
 
-  void  Client::init()
+  void  Client::init(void)
   {
     // load connection scene
     _ecsManager.createStoreFor(ECS::Position::Type);
     _ecsManager.addSystem<ECS::Mouvement>(_ecsManager);
     _ecsManager.initSystems();
+
+    // Create events
+    _eventManager.addEvent<void, const std::string &>("PlayGameEvent");
+    _eventManager.addEvent<void, const std::string &>("ExitGameEvent");
+    _eventManager.addEvent<void, const std::string &>("OptionGameEvent");
+    _eventManager.listen<void, const std::string &>("ExitGameEvent", std::bind(&Client::exitGame, this, std::placeholders::_1));
   }
 
-  void  Client::run()
+  void  Client::exitGame(const std::string &message)
   {
-	  StartPage	startPageScene(_guiManager);
+    _running = false;
+  }
+
+  void  Client::run(void)
+  {
+	  StartPage	startPageScene(_guiManager, _eventManager);
 
 	  startPageScene.onEnter();
 
     double nextGameTick = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now().time_since_epoch()).count();
 
     auto t1 = std::chrono::high_resolution_clock::now();
-    while(true)
+    while(_running)
     {
       double skipTick = 1000 / _gameEngineTick;
       int maxFrameSkip = sqrt(_gameEngineTick);
