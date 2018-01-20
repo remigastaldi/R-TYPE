@@ -1,1 +1,0 @@
-/usr/bin/c++  -O3 -DNDEBUG   CMakeFiles/R-Type_server.dir/src/main.cpp.o CMakeFiles/R-Type_server.dir/__/Common/src/ECS/Manager.cpp.o CMakeFiles/R-Type_server.dir/__/Common/src/ECS/System.cpp.o CMakeFiles/R-Type_server.dir/__/Common/src/ECS/Store.cpp.o CMakeFiles/R-Type_server.dir/__/Common/src/ECS/Systems/Mouvement.cpp.o  -o R-Type_server -pthread 
