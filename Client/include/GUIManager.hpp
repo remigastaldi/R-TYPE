@@ -2,14 +2,14 @@
  * @Author: Remi Gastaldi <gastal_r>
  * @Date:   2018-01-18T14:54:03+01:00
  * @Last modified by:   gastal_r
- * @Last modified time: 2018-01-19T23:47:18+01:00
+ * @Last modified time: 2018-01-20T02:10:31+01:00
  */
 
 
 #pragma once
 
 #include  "GUIElements.hpp"
-#include <iostream>
+
 namespace GUI
 {
   class Manager
@@ -64,6 +64,11 @@ namespace GUI
 			_elements.clear();
       _zIndex.clear();
 		}
+
+    const sf::Vector2<unsigned int> getWindowSize(void)
+    {
+      return _win.getSize();
+    }
 
 	private:
 		sf::RenderWindow &_win;
