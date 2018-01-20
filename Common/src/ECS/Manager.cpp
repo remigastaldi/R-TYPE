@@ -2,7 +2,7 @@
  * @Author: Remi Gastaldi <gastal_r>
  * @Date:   2018-01-13T01:04:05+01:00
  * @Last modified by:   gastal_r
- * @Last modified time: 2018-01-17T16:55:19+01:00
+ * @Last modified time: 2018-01-20T18:48:26+01:00
  */
 
 
@@ -54,7 +54,6 @@ namespace ECS
       return (nullptr);
 
     return (std::shared_ptr<Store>(it->second));
-    // return it == _stores.end() ? nullptr : it->second;
   }
 
   void Manager::initSystems()
@@ -85,6 +84,28 @@ namespace ECS
     for (auto& sys : _systems)
     {
       sys->postUpdate(delta);
+    }
+  }
+
+  void Manager::updateSystemsRange(float delta, size_t from, size_t to)
+  {
+    if (to > _systems.size())
+    {
+      //TODO throw exception
+    }
+
+    auto end = _systems.cbegin() + to;
+    for (auto it = _systems.cbegin() + from; it != end; ++it)
+    {
+      (*it)->preUpdate(delta);
+    }
+    for (auto it = _systems.cbegin() + from; it != end; ++it)
+    {
+      (*it)->update(delta);
+    }
+    for (auto it = _systems.cbegin() + from; it != end; ++it)
+    {
+      (*it)->postUpdate(delta);
     }
   }
 

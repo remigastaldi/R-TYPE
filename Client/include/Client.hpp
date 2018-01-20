@@ -2,7 +2,7 @@
  * @Author: Remi Gastaldi <gastal_r>
  * @Date:   2018-01-17T04:02:41+01:00
  * @Last modified by:   gastal_r
- * @Last modified time: 2018-01-19T04:18:20+01:00
+ * @Last modified time: 2018-01-20T19:18:32+01:00
  */
 
 
@@ -13,16 +13,21 @@
 #include  "ResourcesManager.hpp"
 #include  "ECS/Systems/CommonSystems.hpp"
 #include  "ECS/Manager.hpp"
-
 #include  "GUIManager.hpp"
 #include  "Logger/Logger.hpp"
+#include  "EventManager.hpp"
+#include  "ECS/Components/Components.hpp"
+#include  "ECS/Systems/ClientSystems.hpp"
+
+#include  "StartPage/StartPage.hpp"
+#include "LobbyPlayer.hpp"
+
 
 #include  <chrono>
 #include  <cmath>
 
 namespace GameEngine
 {
-
   class Client
   {
   public:
@@ -35,8 +40,11 @@ namespace GameEngine
     void  handleEvents(void);
     void  render(float alpha);
 
+    void  playGame(const std::string &);
+    void  exitGame(const std::string &);
+
   private:
-    // EventManager _eventManger;
+    EventManager::Manager _eventManager;
     ResourcesManager  _resourcesManager;
     ECS::Manager      _ecsManager;
     GUI::Manager      _guiManager;
@@ -51,5 +59,6 @@ namespace GameEngine
 
     double  _gameEngineTick;
     double  _maxFrameRate;
+    bool    _running;
   };
 }

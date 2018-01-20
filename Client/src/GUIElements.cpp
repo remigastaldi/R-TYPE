@@ -2,7 +2,7 @@
  * @Author: Remi Gastaldi <gastal_r>
  * @Date:   2018-01-17T14:12:41+01:00
  * @Last modified by:   gastal_r
- * @Last modified time: 2018-01-18T14:55:36+01:00
+ * @Last modified time: 2018-01-20T20:06:29+01:00
  */
 
 
@@ -10,7 +10,7 @@
 #include "ResourcesManager.hpp"
 #include "Resources.hpp"
 
-sf::Sprite	GUI::loadSprite(const sf::Texture& texture, const sf::Vector2f& position)
+sf::Sprite  GUI::loadSprite(const sf::Texture& texture, const sf::Vector2f& position)
 {
 	sf::Sprite sprite(texture);
 
@@ -19,30 +19,14 @@ sf::Sprite	GUI::loadSprite(const sf::Texture& texture, const sf::Vector2f& posit
 	return (sprite);
 }
 
-GUI::Button::Button(const sf::Vector2f& position, const sf::Texture& normalTexture, const sf::Texture& hoverTexture,
-	const std::string& text, const sf::Font& font, const std::function<void(void)>& function, const sf::Color& colorText,
-	size_t textSize)
-		: _function(function),
-	_position(position),
-	_normalSprite(loadSprite(normalTexture, position)),
-	_clickedSprite(),
-	_hoverSprite(loadSprite(hoverTexture, position)),
-	_text(text, font, textSize)
+GUI::Button::Button(EventManager::Manager &manager, const std::string &event, const sf::Vector2f& position, const sf::Sprite& normalSprite, const sf::Sprite& hoverSprite)
+	:	_eventManager(manager),
+	_event(event),
+	_normalSprite(normalSprite),
+	_hoverSprite(hoverSprite)
 {
-	_text.setFillColor(colorText);
-	_text.setPosition(_position.x + (_normalSprite.getGlobalBounds().width / 2) - (_text.getGlobalBounds().width / 2), _position.y + (_normalSprite.getGlobalBounds().height / 2) - (_text.getGlobalBounds().top + _text.getGlobalBounds().height / 2));
-}
-
-GUI::Button::Button(const sf::Vector2f& position, const sf::Texture& normalTexture, const sf::Texture& hoverTexture,
-	const std::string& text, const sf::Font& font, const std::function<void(void)>& function, size_t textSize)
-	: _function(function),
-	_position(position),
-	_normalSprite(loadSprite(normalTexture, position)),
-	_clickedSprite(),
-	_hoverSprite(loadSprite(hoverTexture, position)),
-	_text(text, font, textSize)
-{
-	_text.setPosition(_position.x + (_normalSprite.getGlobalBounds().width / 2) - (_text.getGlobalBounds().width / 2), _position.y + (_normalSprite.getGlobalBounds().height / 2) - (_text.getGlobalBounds().top + _text.getGlobalBounds().height / 2));
+	_normalSprite.setPosition(position);
+	_hoverSprite.setPosition(position);
 }
 
 void	GUI::Button::update(sf::RenderWindow& window)
@@ -52,28 +36,29 @@ void	GUI::Button::update(sf::RenderWindow& window)
 	if (_normalSprite.getGlobalBounds().contains(mousePos.x, mousePos.y))
 	{
 		if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Left))
-			_function();
+			_eventManager.fire<void, const std::string &>(_event, "Play");
 		window.draw(_hoverSprite);
 	}
 	else
 		window.draw(_normalSprite);
-	
-	window.draw(_text);
 }
 
-GUI::Checkbox::Checkbox(const sf::Vector2f& position, const sf::Texture& uncheckedTexture, const sf::Texture& checkedTexture, const std::function<void(bool)>& function)
-	:	_function(function),
-	_position(position),
-	_uncheckedSprite(loadSprite(uncheckedTexture, position)),
-	_checkedSprite(loadSprite(checkedTexture, position)),
+GUI::Checkbox::Checkbox(EventManager::Manager &manager, const std::string &event, const sf::Vector2f& position, const sf::Sprite& uncheckedSprite, const sf::Sprite& checkedSprite)
+	:	_eventManager(manager),
+	_event(event),
+	_uncheckedSprite(uncheckedSprite),
+	_checkedSprite(checkedSprite),
 	_isChecked(false)
-{}
+{
+	_uncheckedSprite.setPosition(position);
+	_checkedSprite.setPosition(position);
+}
 
 void	GUI::Checkbox::event(const sf::Vector2i& mousePos)
 {
 	if (_uncheckedSprite.getGlobalBounds().contains(mousePos.x, mousePos.y))
 	{
-		_function(_isChecked);
+		_eventManager.fire<void, bool>(_event, _isChecked);
 		_isChecked = !_isChecked;
 	}
 }
@@ -119,8 +104,10 @@ void	GUI::Text::update(sf::RenderWindow& window)
 	window.draw(_text);
 }
 
-GUI::TextBox::TextBox(const sf::Vector2f& position, const sf::Texture& texture, const sf::Font& font, const sf::Text::Style& style, const sf::Color& color, size_t textSize)
-	:	_text("", font, textSize),
+GUI::TextBox::TextBox(EventManager::Manager &manager, const std::string &event, const sf::Vector2f& position, const sf::Texture& texture, const sf::Font& font, const sf::Text::Style& style, const sf::Color& color, size_t textSize)
+	:	_eventManager(manager),
+	_event(event),
+	_text("", font, textSize),
 	_backgroundSprite(loadSprite(texture, position))
 {
 	_text.setPosition(position);
@@ -128,8 +115,10 @@ GUI::TextBox::TextBox(const sf::Vector2f& position, const sf::Texture& texture, 
 	_text.setStyle(style);
 }
 
-GUI::TextBox::TextBox(const sf::Vector2f& position, const sf::Texture& texture, const sf::Font& font, const sf::Text::Style& style, size_t textSize)
-	:	_text("", font, textSize),
+GUI::TextBox::TextBox(EventManager::Manager &manager, const std::string &event, const sf::Vector2f& position, const sf::Texture& texture, const sf::Font& font, const sf::Text::Style& style, size_t textSize)
+	:	_eventManager(manager),
+	_event(event),
+	_text("", font, textSize),
 	_backgroundSprite(loadSprite(texture, position))
 {
 	_text.setPosition(position);
@@ -137,8 +126,10 @@ GUI::TextBox::TextBox(const sf::Vector2f& position, const sf::Texture& texture, 
 	_text.setStyle(style);
 }
 
-GUI::TextBox::TextBox(const sf::Vector2f& position, const sf::Texture& texture, const sf::Font& font, const sf::Color& color, size_t textSize)
-	:	_text("", font, textSize),
+GUI::TextBox::TextBox(EventManager::Manager &manager, const std::string &event, const sf::Vector2f& position, const sf::Texture& texture, const sf::Font& font, const sf::Color& color, size_t textSize)
+	:	_eventManager(manager),
+	_event(event),
+	_text("", font, textSize),
 	_backgroundSprite(loadSprite(texture, position))
 {
 	_text.setPosition(position);
@@ -151,7 +142,7 @@ void	GUI::TextBox::event(const sf::Event& event)
 	std::string str;
 
 	if (event.key.code == sf::Keyboard::BackSpace)
-		str.erase(0, str.size() - 1);
+		str.pop_back();
 	else
 		str  += static_cast<char>(event.text.unicode);
 
@@ -191,17 +182,17 @@ GUI::Image::Image(const sf::Vector2f& position, const sf::Texture& texture, cons
 	_sprite.setOrigin(origin);
 }
 
-GUI::Image::Image(const sf::Vector2f& position, const sf::Texture& texture, const sf::IntRect& textureRect, const sf::Vector2f& origin) :
+GUI::Image::Image(const sf::Vector2f& position, const sf::Texture& texture, const sf::IntRect& textureRect, const sf::Vector2f& abosuleScale) :
 	_sprite(loadSprite(texture, position))
 {
 	_sprite.setTextureRect(textureRect);
-	_sprite.setOrigin(origin);
+	_sprite.setScale(abosuleScale);
 }
 
-GUI::Image::Image(const sf::Vector2f& position, const sf::Texture& texture, const sf::Vector2f& origin) :
+GUI::Image::Image(const sf::Vector2f& position, const sf::Texture& texture, const sf::Vector2f& abosuleScale) :
 	_sprite(loadSprite(texture, position))
 {
-	_sprite.setOrigin(origin);
+	_sprite.setScale(abosuleScale);
 }
 
 void	GUI::Image::update(sf::RenderWindow& window)

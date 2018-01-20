@@ -1,8 +1,8 @@
 /**
  * @Author: Remi Gastaldi <gastal_r>
- * @Date:   2018-01-13T19:02:40+01:00
+ * @Date:   2018-01-20T04:48:40+01:00
  * @Last modified by:   gastal_r
- * @Last modified time: 2018-01-20T19:07:56+01:00
+ * @Last modified time: 2018-01-20T19:13:55+01:00
  */
 
 
@@ -12,14 +12,15 @@
 
 #include  "ECS/Systems/SystemsPriotity.hpp"
 
+
 namespace ECS
 {
   namespace Systems
   {
-    class Mouvement : public ECS::System
+    class Render : public System
     {
     public:
-      Mouvement(ECS::Manager &manager);
+      explicit Render(ECS::Manager &manager);
 
       // void update(float delta);
       void updateEntity(float delta, Entity e);

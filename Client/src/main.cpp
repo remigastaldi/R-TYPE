@@ -2,7 +2,7 @@
  * @Author: Remi Gastaldi <gastal_r>
  * @Date:   2017-12-17T18:57:51+01:00
  * @Last modified by:   gastal_r
- * @Last modified time: 2018-01-19T03:55:47+01:00
+ * @Last modified time: 2018-01-19T18:49:42+01:00
  */
 
 #include  "Client.hpp"
@@ -23,7 +23,8 @@ int main(int ac, char *av[])
     ip = av[1];
   }
 
-  GameEngine::Client client(ip, sf::VideoMode(1920,1080));
+  sf::VideoMode videoMode(1920,1080);
+  GameEngine::Client client(ip, videoMode);
 
   client.init();
   client.run();

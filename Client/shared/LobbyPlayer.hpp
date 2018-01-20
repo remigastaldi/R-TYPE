@@ -1,8 +1,8 @@
 /**
  * @Author: Remi Gastaldi <gastal_r>
- * @Date:   2018-01-19T18:05:32+01:00
+ * @Date:   2018-01-20T18:35:48+01:00
  * @Last modified by:   gastal_r
- * @Last modified time: 2018-01-20T21:17:31+01:00
+ * @Last modified time: 2018-01-20T21:20:44+01:00
  */
 
 
@@ -15,11 +15,11 @@
 #include "GUIManager.hpp"
 #include "EventManager.hpp"
 
-class StartPage : IScene
+class LobbyPlayer : IScene
 {
 public:
-	explicit StartPage(ResourcesManager &resourceManager, GUI::Manager &, EventManager::Manager &);
-	virtual ~StartPage() {};
+	explicit LobbyPlayer(ResourcesManager &resourceManager, GUI::Manager &, EventManager::Manager &);
+	virtual ~LobbyPlayer() {};
 
 	const	std::string &getName() const { return _name; }
 
@@ -30,14 +30,11 @@ public:
 	void	onResume() {}
 
 	void	update(const float time, ECS::Manager &ecs, EventManager::Manager &event);
-	void	funcPlay(void);
-	void	funcOptions(void);
-	void	funcExit(void);
 
 private:
-	std::string			_name;
+	std::string				_name;
 
-	GUI::Manager	&_guiManager;
+	GUI::Manager			&_guiManager;
 	EventManager::Manager	&_eventManager;
-	ResourcesManager	&_resources;
+	ResourcesManager		&_resources;
 };

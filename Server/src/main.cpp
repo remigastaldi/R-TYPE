@@ -6,6 +6,7 @@
  */
 
 
+#include	"Server.hpp"
 #include  "config.hpp"
 
 #include  <iostream>
@@ -14,6 +15,13 @@ int     main(int ac, char *av[])
 {
   (void)ac;
   (void)av;
+  Server	server;
+
+try {
+  server.acceptClient();
+} catch (std::runtime_error &e){
+  std::cout << e.what() << std::endl;
+}
 
   if (DEBUG)
     std::cout << "### DEBUG ON ###" << std::endl;

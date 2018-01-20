@@ -2,7 +2,7 @@
  * @Author: Remi Gastaldi <gastal_r>
  * @Date:   2018-01-13T19:04:26+01:00
  * @Last modified by:   gastal_r
- * @Last modified time: 2018-01-18T02:22:23+01:00
+ * @Last modified time: 2018-01-20T19:12:38+01:00
  */
 
 
@@ -12,19 +12,24 @@
 
 namespace ECS
 {
-  Mouvement::Mouvement(ECS::Manager &manager)
-    : System(MOUVEMENT_PRIORITY, { }, manager)
-    {}
-
-  void Mouvement::updateEntity(float delta, Entity e)
+  namespace Systems
   {
-    std::shared_ptr<ECS::Position> body = getManager().getComponent<ECS::Position>(e);
+    Mouvement::Mouvement(ECS::Manager &manager)
+      : System(MOUVEMENT_PRIORITY, { }, manager)
+      {}
 
-    if (body->y == 10)
-      body->x++;
-    if (body->y == 20)
-      body->x += 2;
-    (void) delta;
-    std::cout << body->y << ":" << body->x << std::endl;
+    void Mouvement::updateEntity(float delta, Entity e)
+    {
+      std::shared_ptr<ECS::Components::Position> body = getManager().getComponent<ECS::Components::Position>(e);
+
+      std::cout << "MOUVEMENT" << std::endl;
+      //
+      // if (body->y == 10)
+      //   body->x++;
+      // if (body->y == 20)
+      //   body->x += 2;
+      // (void) delta;
+      // std::cout << body->y << ":" << body->x << std::endl;
+    }
   }
 }
