@@ -22,7 +22,7 @@ int main(int ac, char *av[])
     ip = av[1];
   }
 
-  sf::VideoMode videoMode(1600,900);
+  sf::VideoMode videoMode(1920,1080);
   GameEngine::Client client(ip, videoMode);
 
   client.init();

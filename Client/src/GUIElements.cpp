@@ -19,30 +19,11 @@ sf::Sprite	GUI::loadSprite(const sf::Texture& texture, const sf::Vector2f& posit
 	return (sprite);
 }
 
-GUI::Button::Button(const sf::Vector2f& position, const sf::Texture& normalTexture, const sf::Texture& hoverTexture,
-	const std::string& text, const sf::Font& font, const std::function<void(void)>& function, const sf::Color& colorText,
-	size_t textSize)
+GUI::Button::Button(const sf::Vector2f& position, const sf::Texture& normalTexture, const sf::Texture& hoverTexture, const std::function<void(void)>& function)
 		: _function(function),
-	_position(position),
 	_normalSprite(loadSprite(normalTexture, position)),
-	_clickedSprite(),
-	_hoverSprite(loadSprite(hoverTexture, position)),
-	_text(text, font, textSize)
+	_hoverSprite(loadSprite(hoverTexture, position))
 {
-	_text.setFillColor(colorText);
-	_text.setPosition(_position.x + (_normalSprite.getGlobalBounds().width / 2) - (_text.getGlobalBounds().width / 2), _position.y + (_normalSprite.getGlobalBounds().height / 2) - (_text.getGlobalBounds().top + _text.getGlobalBounds().height / 2));
-}
-
-GUI::Button::Button(const sf::Vector2f& position, const sf::Texture& normalTexture, const sf::Texture& hoverTexture,
-	const std::string& text, const sf::Font& font, const std::function<void(void)>& function, size_t textSize)
-	: _function(function),
-	_position(position),
-	_normalSprite(loadSprite(normalTexture, position)),
-	_clickedSprite(),
-	_hoverSprite(loadSprite(hoverTexture, position)),
-	_text(text, font, textSize)
-{
-	_text.setPosition(_position.x + (_normalSprite.getGlobalBounds().width / 2) - (_text.getGlobalBounds().width / 2), _position.y + (_normalSprite.getGlobalBounds().height / 2) - (_text.getGlobalBounds().top + _text.getGlobalBounds().height / 2));
 }
 
 void	GUI::Button::update(sf::RenderWindow& window)
@@ -57,13 +38,10 @@ void	GUI::Button::update(sf::RenderWindow& window)
 	}
 	else
 		window.draw(_normalSprite);
-	
-	window.draw(_text);
 }
 
 GUI::Checkbox::Checkbox(const sf::Vector2f& position, const sf::Texture& uncheckedTexture, const sf::Texture& checkedTexture, const std::function<void(bool)>& function)
 	:	_function(function),
-	_position(position),
 	_uncheckedSprite(loadSprite(uncheckedTexture, position)),
 	_checkedSprite(loadSprite(checkedTexture, position)),
 	_isChecked(false)

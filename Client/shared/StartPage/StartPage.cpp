@@ -30,23 +30,33 @@ void	StartPage::funcExit(void)
 
 void	StartPage::onEnter()
 {
-	_resources.load<Texture>("../../Client/media/img/startPage/startPageBackground3.jpg");
+	_resources.load<Texture>("../../Client/media/img/startPage/background_04_static.png");
 	_resources.load<Texture>("../../Client/media/img/startPage/button.png");
 	_resources.load<Texture>("../../Client/media/img/startPage/buttonHovered.png");
 	_resources.load<Font>("../../Client/media/font/Gravedigger.otf");
-	std::function<void(void)> playFunc = std::bind(&StartPage::funcPlay, this);
-	std::function<void(void)> optionsFunc = std::bind(&StartPage::funcOptions, this);
-	std::function<void(void)> exitFunc = std::bind(&StartPage::funcExit, this);
+	_resources.load<Font>("../../Client/media/font/neuropol.ttf");
 
-	_manager.addElement<GUI::Image>("Background", sf::Vector2f(0, 0), _resources.getContent<Texture>("../../Client/media/img/startPage/startPageBackground3.jpg"));
-	_manager.addElement<GUI::Text>("GameTitle", sf::Vector2f(160,200), "R-TYPE", _resources.getContent<Font>("../../Client/media/font/Gravedigger.otf"), 60);
+	sf::Font &font = _resources.getContent<Font>("../../Client/media/font/Gravedigger.otf");
+	sf::Font &fontButtons = _resources.getContent<Font>("../../Client/media/font/neuropol.ttf");
+	sf::Texture &button = _resources.getContent<Texture>("../../Client/media/img/startPage/button.png");
+	sf::Texture &hoverButton = _resources.getContent<Texture>("../../Client/media/img/startPage/buttonHovered.png");
 
-	_manager.addElement<GUI::Button>("StartPagePlayButton", sf::Vector2f(150, 400), _resources.getContent<Texture>("../../Client/media/img/startPage/button.png"), _resources.getContent<Texture>("../../Client/media/img/startPage/buttonHovered.png"),
-		"Play", _resources.getContent<Font>("../../Client/media/font/Gravedigger.otf"), playFunc, sf::Color::Black);
-	_manager.addElement<GUI::Button>("StartPageOptionsButton", sf::Vector2f(150, 500), _resources.getContent<Texture>("../../Client/media/img/startPage/button.png"), _resources.getContent<Texture>("../../Client/media/img/startPage/buttonHovered.png"),
-		"Options", _resources.getContent<Font>("../../Client/media/font/Gravedigger.otf"), optionsFunc, sf::Color::Black);
-	_manager.addElement<GUI::Button>("StartPageExitButton", sf::Vector2f(150, 600), _resources.getContent<Texture>("../../Client/media/img/startPage/button.png"),
-		_resources.getContent<Texture>("../../Client/media/img/startPage/buttonHovered.png"), "Exit", _resources.getContent<Font>("../../Client/media/font/Gravedigger.otf"), std::bind(&StartPage::funcExit, this), sf::Color::Black);
+	sf::Vector2f center((_manager.getWindowSize().x / 2) - (button.getSize().x / 2), (_manager.getWindowSize().y / 2) - (button.getSize().y / 2));
+
+	_manager.addElement<GUI::Image>("Background", sf::Vector2f(0, 0), _resources.getContent<Texture>("../../Client/media/img/startPage/background_04_static.png"), sf::Vector2f(0, 0));
+	_manager.addElement<GUI::Text>("GameTitle", sf::Vector2f(center.x + 10, center.y - 300), "R-TYPE", font, 60);
+	
+	_manager.addElement<GUI::Button>("StartPagePlayButton", sf::Vector2f(center.x, center.y - 100), button, hoverButton, std::bind(&StartPage::funcPlay, this));
+	_manager.addElement<GUI::Text>("StartPagePlayText", sf::Vector2f(810, 400), "Play", fontButtons, sf::Color::Black, 30);
+	_manager.centerElementWithAnOther<GUI::Button, GUI::Text>("StartPagePlayButton", "StartPagePlayText");
+
+	_manager.addElement<GUI::Button>("StartPageOptionsButton", sf::Vector2f(center.x, center.y), button, hoverButton, std::bind(&StartPage::funcOptions, this));
+	_manager.addElement<GUI::Text>("StartPageOptionsText", sf::Vector2f(810, 500), "Options", fontButtons, sf::Color::Black, 30);
+	_manager.centerElementWithAnOther<GUI::Button, GUI::Text>("StartPageOptionsButton", "StartPageOptionsText");
+
+	_manager.addElement<GUI::Button>("StartPageExitButton", sf::Vector2f(center.x, center.y + 100), button, hoverButton, std::bind(&StartPage::funcExit, this));
+	_manager.addElement<GUI::Text>("StartPageExitText", sf::Vector2f(810, 600), "Exit", fontButtons, sf::Color::Black, 30);
+	_manager.centerElementWithAnOther<GUI::Button, GUI::Text>("StartPageExitButton", "StartPageExitText");
 }
 
 void	StartPage::onExit()
