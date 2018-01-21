@@ -979,3 +979,5 @@ dkms.conf### ClionCPP template
 
 # Kernel Module Compile Results
 dkms.conf
+
+git-temp-build
