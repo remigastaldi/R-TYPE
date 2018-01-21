@@ -5,7 +5,6 @@
  * @Last modified time: 2018-01-21T22:10:01+01:00
  */
 
-
 #pragma once
 
 #include  "config.hpp"
@@ -20,6 +19,7 @@
 #include  "ECS/Components/Components.hpp"
 #include  "ECS/Systems/ClientSystems.hpp"
 #include  "Communication/AsioSyncUdpNetwork.hpp"
+#include  "RFC.hpp"
 
 #include  "StartPage/StartPage.hpp"
 #include "LobbyPlayer.hpp"

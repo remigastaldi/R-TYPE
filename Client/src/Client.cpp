@@ -50,8 +50,8 @@ namespace GameEngine
     std::unordered_map<std::string, std::string>	map;
 
     map["ip"] = "127.0.0.1";
-    map["cmd"] = "connection";
-
+    map["cmd"] = RFC::Commands::LOGIN;
+    
     packet.setData(map);
     _network.send(packet, "127.0.0.1");
   }

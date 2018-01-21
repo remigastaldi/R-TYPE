@@ -12,6 +12,7 @@
 
 #include <string>
 #include <unordered_map>
+#include "RFC.hpp"
 
 class	UDPPacket
 {
@@ -33,8 +34,10 @@ public:
   std::string	const &getToken();
   void	setToken(std::string &);
 
-  std::string	const &getCommand() const;
+  RFC::Commands getCommand() const;
   void	setCommand(std::string &);
+
+  RFC::Commands getResult() const;
 
   int	getTimestamp() const;
   void	setTimestamp(int);
