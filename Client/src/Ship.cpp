@@ -2,7 +2,7 @@
  * @Author: Remi Gastaldi <gastal_r>
  * @Date:   2018-01-20T20:45:23+01:00
  * @Last modified by:   gastal_r
- * @Last modified time: 2018-01-21T03:07:51+01:00
+ * @Last modified time: 2018-01-21T04:23:43+01:00
  */
 
 
@@ -21,38 +21,65 @@ Ship::Ship(ResourcesManager &resourceManager, EventManager::Manager &eventManage
 
     _ecsManager.addComponent<ECS::Components::Position>(_entity, ECS::Components::Position(0, 10));
     _ecsManager.addComponent<ECS::Components::Drawable>(_entity, ECS::Components::Drawable("../../Client/media/img/playerLobby/playersSpaceships.png"));
-    _ecsManager.addComponent<ECS::Components::Direction>(_entity, ECS::Components::Direction(0));
+    _ecsManager.addComponent<ECS::Components::Direction>(_entity, ECS::Components::Direction(0, 0, 10));
 
     _ecsManager.updateEntityToSystems(_entity);
-    _eventManager.listen<void, const std::string &>("ARROW_UP", std::bind(&Ship::go_Up, this, std::placeholders::_1));
-    _eventManager.listen<void, const std::string &>("ARROW_DOWN", std::bind(&Ship::go_Down, this, std::placeholders::_1));
-    _eventManager.listen<void, const std::string &>("ARROW_RIGHT", std::bind(&Ship::go_Right, this, std::placeholders::_1));
-    _eventManager.listen<void, const std::string &>("ARROW_LEFT", std::bind(&Ship::go_Left, this, std::placeholders::_1));
+    // _eventManager.listen<void, sf::Event>("KeyPressedEvent", [&](sf::Event event) { this->KeyPressed(event);});
+    _eventManager.listen<void, sf::Event>("KeyPressedEvent", std::bind(&Ship::KeyPressed, this, std::placeholders::_1));
+    _eventManager.listen<void, sf::Event>("KeyReleasedEvent", std::bind(&Ship::KeyRelease, this, std::placeholders::_1));
   }
 
-void  Ship::go_Up(const std::string &data)
+void  Ship::KeyPressed(sf::Event event)
 {
-  std::shared_ptr<ECS::Components::Direction> body = _ecsManager.getComponent<ECS::Components::Direction>(_entity);
-  std::cout << "UP" << std::endl;
+  std::shared_ptr<ECS::Components::Direction> direction = _ecsManager.getComponent<ECS::Components::Direction>(_entity);
+
+  switch (event.key.code)
+  {
+  case sf::Keyboard::Key::Up :
+    direction->yDirection = -1;
+    std::cout << "UP" << std::endl;
+    break;
+  case sf::Keyboard::Key::Down :
+    direction->yDirection = 1;
+    std::cout << "Down" << std::endl;
+    break;
+  case sf::Keyboard::Key::Right :
+    direction->xDirection = 1;
+    std::cout << "Right" << std::endl;
+    break;
+  case sf::Keyboard::Key::Left :
+    direction->xDirection = -1;
+    std::cout << "Left" << std::endl;
+    break;
+  default :
+    break;
+  }
 }
 
-void  Ship::go_Down(const std::string &data)
+
+void  Ship::KeyRelease(sf::Event event)
 {
-  std::shared_ptr<ECS::Components::Direction> body = _ecsManager.getComponent<ECS::Components::Direction>(_entity);
-  std::cout << "Down" << std::endl;
+  std::shared_ptr<ECS::Components::Direction> direction = _ecsManager.getComponent<ECS::Components::Direction>(_entity);
 
-}
-
-void  Ship::go_Right(const std::string &data)
-{
-  std::shared_ptr<ECS::Components::Direction> body = _ecsManager.getComponent<ECS::Components::Direction>(_entity);
-  std::cout << "Right" << std::endl;
-
-}
-
-void  Ship::go_Left(const std::string &data)
-{
-  std::shared_ptr<ECS::Components::Direction> body = _ecsManager.getComponent<ECS::Components::Direction>(_entity);
-  std::cout << "Left" << std::endl;
-
+  switch (event.key.code)
+  {
+  case sf::Keyboard::Key::Up :
+    direction->yDirection = 0;
+    std::cout << "UP" << std::endl;
+    break;
+  case sf::Keyboard::Key::Down :
+    direction->yDirection = 0;
+    std::cout << "Down" << std::endl;
+    break;
+  case sf::Keyboard::Key::Right :
+    direction->xDirection = 0;
+    std::cout << "Right" << std::endl;
+    break;
+  case sf::Keyboard::Key::Left :
+    direction->xDirection = 0;
+    std::cout << "Left" << std::endl;
+    break;
+  default :
+    break;
+  }
 }

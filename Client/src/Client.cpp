@@ -2,7 +2,7 @@
  * @Author: Remi Gastaldi <gastal_r>
  * @Date:   2018-01-17T04:07:04+01:00
  * @Last modified by:   gastal_r
- * @Last modified time: 2018-01-21T03:08:06+01:00
+ * @Last modified time: 2018-01-21T04:27:42+01:00
  */
 
 
@@ -40,10 +40,8 @@ namespace GameEngine
     _eventManager.listen<void, const std::string &>("PlayGameEvent", std::bind(&Client::playGame, this, std::placeholders::_1));
     _eventManager.listen<void, const std::string &>("ExitGameEvent", std::bind(&Client::exitGame, this, std::placeholders::_1));
 
-    _eventManager.addEvent<void, const std::string &>("ARROW_UP");
-    _eventManager.addEvent<void, const std::string &>("ARROW_DOWN");
-    _eventManager.addEvent<void, const std::string &>("ARROW_RIGHT");
-    _eventManager.addEvent<void, const std::string &>("ARROW_LEFT");
+    _eventManager.addEvent<void, sf::Event>("KeyPressedEvent");
+    _eventManager.addEvent<void, sf::Event>("KeyReleasedEvent");
   }
 
   void  Client::playGame(const std::string &message)
@@ -100,8 +98,15 @@ namespace GameEngine
     sf::Event event;
     while (_window.pollEvent(event))
     {
-      // if (event.type == sf::Event::Closed)
-      //   _window.close();
+      switch (event.type)
+      {
+      case sf::Event::KeyPressed :
+        _eventManager.fire<void, sf::Event>("KeyPressedEvent", event);
+        break;
+      case sf::Event::KeyReleased :
+        _eventManager.fire<void, sf::Event>("KeyReleasedEvent", event);
+        break;
+      }
     }
   }
 

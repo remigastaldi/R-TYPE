@@ -2,7 +2,7 @@
  * @Author: Remi Gastaldi <gastal_r>
  * @Date:   2018-01-13T00:47:26+01:00
  * @Last modified by:   gastal_r
- * @Last modified time: 2018-01-18T02:23:16+01:00
+ * @Last modified time: 2018-01-21T04:06:09+01:00
  */
 
 
@@ -66,6 +66,6 @@ namespace ECS
 
   ECS::Manager &System::getManager()
   {
-    return (_manager);
+    return (_ecsManager);
   }
 }
