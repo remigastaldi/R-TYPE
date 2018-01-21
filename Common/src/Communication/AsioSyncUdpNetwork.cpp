@@ -5,12 +5,17 @@
 ** Login	leliev_t
 **
 ** Started on	Sun Jan 14 22:23:16 2018 Tanguy Lelievre
-** Last update	Sat Jan 20 00:35:22 2018 Tanguy Lelievre
+** Last update	Sun Jan 21 03:58:30 2018 Tanguy Lelievre
 */
 
 #include "Communication/AsioSyncUdpNetwork.hpp"
 
-AsioSyncUdpNetwork::AsioSyncUdpNetwork(int port) : _port(port), _context(), _endpoint(boost::asio::ip::udp::v4(), _port), _socket(_context, _endpoint)
+AsioSyncUdpNetwork::AsioSyncUdpNetwork(int port) :
+_port(port),
+_context(),
+_endpoint(boost::asio::ip::udp::v4(), _port),
+_socket(_context, _endpoint),
+_lastEndpoint()
 {
 }
 
@@ -28,11 +33,10 @@ void	AsioSyncUdpNetwork::connect(const std::string &port)
 
 std::string	AsioSyncUdpNetwork::receive()
 {
-  std::string msg;
-  boost::asio::ip::udp::endpoint	nend;
+  std::string msg(1024, 0);
 
   try {
-    _socket.receive_from(boost::asio::buffer(msg), nend);
+    _socket.receive_from(boost::asio::buffer(msg), _lastEndpoint);
   } catch (std::exception &e) {
     std::cout << e.what() << std::endl;
     throw std::runtime_error("Error receive.");
@@ -52,8 +56,8 @@ void	AsioSyncUdpNetwork::send(const std::string &msg)
 void	AsioSyncUdpNetwork::send(const std::string &msg, const std::string &ip)
 {
   try {
-    _endpoint.address(boost::asio::ip::address::from_string(ip));
-    _socket.send_to(boost::asio::buffer(msg), _endpoint);
+    _lastEndpoint.address(boost::asio::ip::address::from_string(ip));
+    _socket.send_to(boost::asio::buffer(msg), _lastEndpoint);
   } catch (std::exception &e) {
     throw std::runtime_error("Error send.");
   }
@@ -63,4 +67,9 @@ void  AsioSyncUdpNetwork::disconnect()
 {
   if (_socket.is_open() == true)
     _socket.close();
+}
+
+std::string	AsioSyncUdpNetwork::getLastSender() const
+{
+  return (_lastEndpoint.address().to_string());
 }

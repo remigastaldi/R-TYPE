@@ -5,7 +5,7 @@
 ** Login	leliev_t
 **
 ** Started on	Wed Jan 17 22:09:03 2018 Tanguy Lelievre
-** Last update	Thu Jan 18 22:35:19 2018 Tanguy Lelievre
+** Last update	Sun Jan 21 03:18:46 2018 Tanguy Lelievre
 */
 
 #pragma once
@@ -14,11 +14,15 @@
 
 class	RoomManager {
 public:
-  RoomManager();
+RoomManager(AsioSyncUdpNetwork &);
   ~RoomManager();
 
-  // void	transferRequest(const std::string &, std::string &);
+  void	transferRequest(Packet &);
+  // void	joinRoom(std::string &, std::string &);
+  void	addPlayer(std::string &);
+  // void	createRoom(std::string &);
 
 private:
   std::unordered_map<std::string, Room>	_roomList;
+  std::unordered_map<std::string, std::string>	_clientsList;
 };

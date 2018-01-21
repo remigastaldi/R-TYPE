@@ -18,7 +18,7 @@ int     main(int ac, char *av[])
   Server	server;
 
 try {
-  server.acceptClient();
+  server.waitClientPacket();
 } catch (std::runtime_error &e){
   std::cout << e.what() << std::endl;
 }
