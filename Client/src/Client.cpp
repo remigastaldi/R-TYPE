@@ -2,7 +2,7 @@
  * @Author: Remi Gastaldi <gastal_r>
  * @Date:   2018-01-17T04:07:04+01:00
  * @Last modified by:   gastal_r
- * @Last modified time: 2018-01-21T22:38:02+01:00
+ * @Last modified time: 2018-01-21T23:43:04+01:00
  */
 
 
@@ -75,8 +75,8 @@ namespace GameEngine
     // LobbyPlayer lobbyPlayerScene(_resourcesManager,_guiManager, _eventManager);
     //
 	  // lobbyPlayerScene.onEnter();
-    GameEngine::GameManagers test(_resourcesManager, _eventManager, _ecsManager, _soundManager);
-    _ship = std::make_shared<Ship>(test);
+
+    _ship = std::make_shared<Ship>(_gameManagers);
 
     double nextGameTick = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now().time_since_epoch()).count();
 
