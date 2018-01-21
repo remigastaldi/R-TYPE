@@ -170,9 +170,21 @@ namespace ECS
 
     for (auto& sys : _systems)
     {
+      LOG_INFO << "components" << std::endl;
+      for (const auto &it : components)
+        LOG_INFO << it << std::endl;
+
+
       const std::set<ComponentType> needed = sys->getNeededComponents();
-      if (components.size() > 0 && std::includes(components.begin(), components.end(), needed.begin(), needed.end()))
+
+      LOG_INFO << "needed" << std::endl;
+      for (const auto &it : needed)
+        LOG_INFO << it << std::endl;
+
+
+      if (!components.empty() && std::includes(components.begin(), components.end(), needed.begin(), needed.end()))
       {
+        LOG_INFO << "SALUT" << std::endl;
         sys->addEntity(e);
         n++;
       }

@@ -15,7 +15,7 @@ namespace ECS
   namespace Systems
   {
     Mouvement::Mouvement(ECS::Manager &ecsManager)
-      : System(MOUVEMENT_PRIORITY, {ECS::Components::Position::Type, ECS::Components::Direction::Type}, ecsManager)
+      : System(MOUVEMENT_PRIORITY, {Alfred::Utils::GetTypeID<ECS::Components::Position>(), Alfred::Utils::GetTypeID<ECS::Components::Direction>()}, ecsManager)
       {}
 
     void Mouvement::updateEntity(float delta, Entity e)

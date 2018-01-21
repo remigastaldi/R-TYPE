@@ -15,7 +15,7 @@ namespace ECS
   namespace Systems
   {
   Render::Render(ResourcesManager &resourcesManager, ECS::Manager &ecsManager, sf::RenderWindow &window)
-    : System(RENDER_PRIORITY, {ECS::Components::Drawable::Type, ECS::Components::Direction::Type}, ecsManager),
+    : System(RENDER_PRIORITY, {Alfred::Utils::GetTypeID<ECS::Components::Drawable>(), Alfred::Utils::GetTypeID<ECS::Components::Direction>()}, ecsManager),
       _window(window),
       _resourcesManager(resourcesManager)
     {}

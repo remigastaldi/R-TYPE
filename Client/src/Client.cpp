@@ -25,9 +25,10 @@ namespace GameEngine
   void  Client::init(void)
   {
     // load connection scene
-    _ecsManager.createStoreFor(ECS::Components::Position::Type);
-    _ecsManager.createStoreFor(ECS::Components::Drawable::Type);
-    _ecsManager.createStoreFor(ECS::Components::Direction::Type);
+    _ecsManager.createStoreFor<ECS::Components::Position>();
+    _ecsManager.createStoreFor<ECS::Components::Drawable>();
+    _ecsManager.createStoreFor<ECS::Components::Direction>();
+
     _ecsManager.addSystem<ECS::Systems::Mouvement>(_ecsManager);
     _ecsManager.addSystem<ECS::Systems::Render>(_resourcesManager, _ecsManager, _window);
     _ecsManager.initSystems();

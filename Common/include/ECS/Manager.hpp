@@ -24,6 +24,7 @@
 #include  <cassert>
 #include  <algorithm>
 #include  <type_traits>
+#include <Logger/Logger.hpp>
 
 namespace ECS
 {
@@ -54,7 +55,7 @@ namespace ECS
     template<typename C>
     bool createStoreFor() {
       static_assert(std::is_base_of<Component, C>::value, "C must be a Component");
-      return createStoreFor(C::Type);
+      return createStoreFor(Alfred::Utils::GetTypeID<C>());
     }
 
     std::shared_ptr<Component> getComponent(Entity e, ComponentType ct);
@@ -62,7 +63,7 @@ namespace ECS
     template<typename C>
     std::shared_ptr<C> getComponent(Entity e) {
       static_assert(std::is_base_of<Component, C>::value, "C must be a Component");
-      return std::static_pointer_cast<C>(getComponent(e, C::Type));
+      return std::static_pointer_cast<C>(getComponent(e, Alfred::Utils::GetTypeID<C>()));
     }
 
 
@@ -70,6 +71,7 @@ namespace ECS
     bool addComponent(Entity e, ComponentType ct, std::shared_ptr<Component> c)
       {
         size_t comptype = Alfred::Utils::GetTypeID<C>();
+        LOG_INFO << comptype << std::endl;
 
         if (e == INVALID_ENTITY)
         {
@@ -80,6 +82,7 @@ namespace ECS
 
         if (store == nullptr)
         {
+          LOG_ERROR << "STORE NULL" << std::endl;
           return false;
         }
 
@@ -97,7 +100,7 @@ namespace ECS
     template<typename C>
     bool addComponent(Entity e, C c) {
       static_assert(std::is_base_of<Component, C>::value, "C must be a Component");
-      return addComponent<C>(e, C::Type, std::static_pointer_cast<Component>(std::make_shared<C>(c)));
+      return addComponent<C>(e, Alfred::Utils::GetTypeID<C>(), std::static_pointer_cast<Component>(std::make_shared<C>(c)));
     }
 
     std::shared_ptr<Component> extractComponent(Entity e, ComponentType ct);
@@ -105,7 +108,7 @@ namespace ECS
     template<typename C>
     std::shared_ptr<C> extractComponent(Entity e) {
       static_assert(std::is_base_of<Component, C>::value, "C must be a Component");
-      return std::static_pointer_cast<C>(extractComponent(e, C::Type));
+      return std::static_pointer_cast<C>(extractComponent(e, Alfred::Utils::GetTypeID<C>()));
     }
 
 

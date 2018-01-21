@@ -10,14 +10,14 @@
 
 int main(int ac, char *av[])
 {
+  //Config logger
+  Logger::get().setOutput(CONSOLE_LOG);
+
   if constexpr (DEBUG)
     std::cout << "DEBUG ON" << std::endl;
 
   LibLoader l;
   l.move.addFolder("");
-
-  //Config logger
-  Logger::get().setOutput(CONSOLE_LOG);
 
   std::string ip("localhost");
   if (ac > 1)
