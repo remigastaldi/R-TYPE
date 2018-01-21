@@ -16,8 +16,7 @@
 #include  "EventManager.hpp"
 #include  "ECS/Components/Components.hpp"
 #include  "ECS/Systems/ClientSystems.hpp"
-#include  "Communication/AsioSyncUdpNetwork.hpp"
-#include  "RFC.hpp"
+#include  "NetworkManager.hpp"
 
 #include  "StartPage/StartPage.hpp"
 #include  "LobbyPlayer/LobbyPlayer.hpp"
@@ -51,12 +50,12 @@ namespace GameEngine
       ResourcesManager _resourcesManager;
       ECS::Manager _ecsManager;
       GUI::Manager _guiManager;
-      AsioSyncUdpNetwork _network;
       SoundManager _soundManager;
       GameEngine::GameManagers _gameManagers;
       // SceneManager   _sceneManager;
        LibLoader _libraryLoader;
       // Network _network;
+      NetworkManager          _networkManager;
 
       std::shared_ptr<Ship> _ship;
 
