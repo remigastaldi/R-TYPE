@@ -2,7 +2,7 @@
  * @Author: Remi Gastaldi <gastal_r>
  * @Date:   2018-01-20T20:45:23+01:00
  * @Last modified by:   gastal_r
- * @Last modified time: 2018-01-21T18:07:40+01:00
+ * @Last modified time: 2018-01-21T19:07:00+01:00
  */
 
 
@@ -12,7 +12,9 @@ Ship::Ship(ResourcesManager &resourceManager, EventManager::Manager &eventManage
   : _resourcesManager(resourceManager),
     _eventManager(eventManager),
     _ecsManager(ecsManager),
-    _entity(ecsManager.createEntity())
+    _entity(ecsManager.createEntity()),
+    _fireTickCounter(0),
+    _fire(false)
   {
     _resourcesManager.load<Sprite>("playersSpaceship", "../../Client/media/img/playerLobby/playersSpaceships.png");
     sf::Sprite &sprite = _resourcesManager.getContent<Sprite>("playersSpaceship");
@@ -25,11 +27,11 @@ Ship::Ship(ResourcesManager &resourceManager, EventManager::Manager &eventManage
 
     _ecsManager.updateEntityToSystems(_entity);
 
-    _eventManager.addEvent<void, sf::Event>("SpaceKeyEvent");
+    _eventManager.addEvent<void, const std::string &>("SpaceKeyEvent");
 
     _eventManager.listen<void, sf::Event>("KeyPressedEvent", [&](sf::Event event) { this->keyPressed(event);});
     _eventManager.listen<void, sf::Event>("KeyReleasedEvent", [&](sf::Event event) { this->keyRelease(event);});
-    _eventManager.listen<void, sf::Event>("SpaceKeyEvent", [&](sf::Event event) { this->fire(event);});
+    _eventManager.listen<void, const std::string &>("SpaceKeyEvent", [&](const std::string & msg) { this->fire(msg);});
   }
 
 void  Ship::keyPressed(sf::Event event)
@@ -51,7 +53,7 @@ void  Ship::keyPressed(sf::Event event)
     direction->xDirection = -1;
     break;
   case sf::Keyboard::Key::Space :
-    _eventManager.fire<void, sf::Event>("SpaceKeyEvent", event);
+    _fire = true;
     break;
   default :
     break;
@@ -77,13 +79,16 @@ void  Ship::keyRelease(sf::Event event)
   case sf::Keyboard::Key::Left :
     direction->xDirection = 0;
     break;
+  case sf::Keyboard::Key::Space :
+    _fire = false;
   default :
     break;
   }
 }
 
-void  Ship::fire(sf::Event event)
+void  Ship::fire(const std::string &msg)
 {
+  (void) msg;
   ECS::Entity e = _ecsManager.createEntity();
 
   std::shared_ptr<ECS::Components::Position> position = _ecsManager.getComponent<ECS::Components::Position>(_entity);
@@ -92,4 +97,20 @@ void  Ship::fire(sf::Event event)
   _ecsManager.addComponent<ECS::Components::Drawable>(e, ECS::Components::Drawable("playersSpaceship"));
   _ecsManager.addComponent<ECS::Components::Direction>(e, ECS::Components::Direction(1, 0, 30));
   _ecsManager.updateEntityToSystems(e);
+}
+
+
+void  Ship::update(void)
+{
+  if (_fire && _fireTickCounter == 0)
+  {
+    _fireTickCounter++;
+    _eventManager.fire<void, const std::string &>("SpaceKeyEvent", "Fire");
+  }
+  else if (_fire && _fireTickCounter > 5)
+    _fireTickCounter = 0;
+  else if (_fire)
+    _fireTickCounter++;
+  else
+    _fireTickCounter = 0;
 }

@@ -2,7 +2,7 @@
  * @Author: Remi Gastaldi <gastal_r>
  * @Date:   2018-01-17T04:07:04+01:00
  * @Last modified by:   gastal_r
- * @Last modified time: 2018-01-21T08:10:07+01:00
+ * @Last modified time: 2018-01-21T19:06:56+01:00
  */
 
 
@@ -17,7 +17,7 @@ namespace GameEngine
     _guiManager(_window),
     _window(videoMode, "R-Type", sf::Style::Titlebar | sf::Style::Resize),
     _ip(ip),
-    _gameEngineTick(40),
+    _gameEngineTick(60),
     _maxFrameRate(60),
     _running(true),
     _network(4242, 8000)
@@ -117,6 +117,7 @@ namespace GameEngine
   void  Client::update(void)
   {
     _ecsManager.updateSystemsRange(0.f, 0, 1);
+    _ship->update();
   }
 
   void  Client::render(float alpha)
