@@ -100,7 +100,7 @@
          }
 
          template <typename Ret, typename ...Params, typename Fctor>
-         const EventListener listen(const std::string &name, const Fctor &func)
+         EventListener listen(const std::string &name, const Fctor &func)
          {
              if (_events.count(name) <= 0) {
                  throw EventDontExist(name);

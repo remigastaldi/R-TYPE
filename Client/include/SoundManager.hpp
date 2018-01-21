@@ -52,7 +52,9 @@ class SoundManager
 
 public:
   SoundManager(ResourcesManager &resourceManager, EventManager::Manager &eventManager)
-    : _resourcesManager(resourceManager),
+    :
+    _resources(),
+    _resourcesManager(resourceManager),
     _eventManager(eventManager)
   {}
 

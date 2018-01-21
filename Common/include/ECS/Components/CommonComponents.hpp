@@ -22,8 +22,8 @@ namespace ECS
           y(_y)
         {}
 
-      size_t x;
-      size_t y;
+      int x;
+      int y;
 
     };
 

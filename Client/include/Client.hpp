@@ -27,6 +27,7 @@
 
 #include  <chrono>
 #include  <cmath>
+#include <DynamicLibrary/LibLoader.hpp>
 
 namespace GameEngine
 {
@@ -68,7 +69,9 @@ namespace GameEngine
     GUI::Manager      _guiManager;
     AsioSyncUdpNetwork _network;
     SoundManager  _soundManager;
-    // SceneManager   _sceneManager;
+      LibLoader _loader;
+
+      // SceneManager   _sceneManager;
     // LibraryLoader _libraryLoader;
     // Network _network;
 

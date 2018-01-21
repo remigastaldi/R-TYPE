@@ -54,6 +54,18 @@ namespace GameEngine
     
     packet.setData(map);
     _network.send(packet, "127.0.0.1");
+
+
+
+    //Add .so location
+    _loader.mob.addFolder("ressources/mob/");
+    _loader.move.addFolder("ressources/move/");
+    _loader.map.addFolder("ressources/map/");
+    _loader.attack.addFolder("ressources/attack/");
+
+    _loader.updateAll();
+
+    exit(0);
   }
 
   void  Client::playGame(const std::string &message)
@@ -75,6 +87,8 @@ namespace GameEngine
     // LobbyPlayer lobbyPlayerScene(_resourcesManager,_guiManager, _eventManager);
     //
 	  // lobbyPlayerScene.onEnter();
+
+
     _ship = std::make_shared<Ship>(_resourcesManager, _eventManager, _ecsManager);
 
     double nextGameTick = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now().time_since_epoch()).count();
@@ -118,6 +132,28 @@ namespace GameEngine
       case sf::Event::KeyReleased :
         _eventManager.fire<void, sf::Event>("KeyReleasedEvent", event);
         break;
+        case sf::Event::Closed:break;
+        case sf::Event::Resized:break;
+        case sf::Event::LostFocus:break;
+        case sf::Event::GainedFocus:break;
+        case sf::Event::TextEntered:break;
+        case sf::Event::MouseWheelMoved:break;
+        case sf::Event::MouseWheelScrolled:break;
+        case sf::Event::MouseButtonPressed:break;
+        case sf::Event::MouseButtonReleased:break;
+        case sf::Event::MouseMoved:break;
+        case sf::Event::MouseEntered:break;
+        case sf::Event::MouseLeft:break;
+        case sf::Event::JoystickButtonPressed:break;
+        case sf::Event::JoystickButtonReleased:break;
+        case sf::Event::JoystickMoved:break;
+        case sf::Event::JoystickConnected:break;
+        case sf::Event::JoystickDisconnected:break;
+        case sf::Event::TouchBegan:break;
+        case sf::Event::TouchMoved:break;
+        case sf::Event::TouchEnded:break;
+        case sf::Event::SensorChanged:break;
+        case sf::Event::Count:break;
       }
     }
   }

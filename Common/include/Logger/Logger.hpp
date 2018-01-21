@@ -25,7 +25,7 @@
 
 enum __CONSOLE_LOG_ENUM
 {
-    CONSOLE_LOG = 0,
+  CONSOLE_LOG = 0,
 };
 
 static constexpr char DEFAULT_LOG_FILENAME[] = "log_default.log";
@@ -41,47 +41,56 @@ class NullBuffer : public std::streambuf
 class Logger : public Alfred::Utils::Singleton<Logger>
 {
   private:
-    NullBuffer null_buffer;
-    std::string _fileName;
     std::ostream *_stream;
     std::ostream _nullStream;
     std::ostream *_coutStream;
+    std::string _fileName;
+    NullBuffer null_buffer;
     std::string _dateFormat = DEFAULT_LOG_TIME_FORMAT;
-
-    std::mutex _mutex;
 
   private:
 
     const std::string getTime()
     {
-        auto in_time_t = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
+      auto in_time_t = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
 
-        std::stringstream ss;
+      std::stringstream ss;
 
-        ss << std::put_time(std::localtime(&in_time_t), DEFAULT_LOG_TIME_FORMAT);
+      ss << std::put_time(std::localtime(&in_time_t), DEFAULT_LOG_TIME_FORMAT);
 
-        return ss.str();
+      return ss.str();
     }
 
   public:
+    Logger(const Logger&) = delete;
+    auto operator=(const Logger&) = delete;
+
     Logger() :
-        _stream((new std::ofstream(DEFAULT_LOG_FILENAME, std::ios::trunc))), _nullStream(&null_buffer),
-        _coutStream(&std::cout)
+      _stream((new std::ofstream(DEFAULT_LOG_FILENAME, std::ios::trunc))),
+      _nullStream(&null_buffer),
+      _coutStream(&std::cout),
+      _fileName(DEFAULT_LOG_FILENAME),
+      null_buffer()
     {
-        _fileName = DEFAULT_LOG_FILENAME;
     }
 
     explicit Logger(const std::string &fileName) :
-        _stream((new std::ofstream(fileName.c_str(), std::ios::trunc))),
-        _nullStream(&null_buffer), _coutStream(&std::cout)
+      _stream((new std::ofstream(fileName.c_str(), std::ios::trunc))),
+      _nullStream(&null_buffer),
+      _coutStream(&std::cout),
+      _fileName(fileName),
+      null_buffer()
     {
-        _fileName = fileName;
     }
 
     explicit Logger(const __CONSOLE_LOG_ENUM console) :
-        _stream(&std::cout), _nullStream(&null_buffer), _coutStream(&std::cout)
+      _stream(&std::cout),
+      _nullStream(&null_buffer),
+      _coutStream(&std::cout),
+      _fileName("console output"),
+      null_buffer()
     {
-        _fileName = "console output";
+      (void) console;
     }
 
     virtual ~Logger()
@@ -90,59 +99,59 @@ class Logger : public Alfred::Utils::Singleton<Logger>
 
     void setTimeFormat(const std::string &format)
     {
-        _dateFormat = format;
+      _dateFormat = format;
     }
 
     void setOutput(const __CONSOLE_LOG_ENUM console)
     {
-        (void) console;
-        _fileName = "console output";
-        _stream = _coutStream;
+      (void)console;
+      _fileName = "console output";
+      _stream = _coutStream;
     }
 
     void setOutput(const std::string &filename)
     {
-        _fileName = filename;
-        _stream = new std::ofstream(filename.c_str(), std::ios::trunc);
+      _fileName = filename;
+      _stream = new std::ofstream(filename.c_str(), std::ios::trunc);
     }
 
     void setOutput()
     {
-        _fileName = DEFAULT_LOG_FILENAME;
-        _stream = new std::ofstream(DEFAULT_LOG_FILENAME, std::ios::trunc);
+      _fileName = DEFAULT_LOG_FILENAME;
+      _stream = new std::ofstream(DEFAULT_LOG_FILENAME, std::ios::trunc);
     }
 
     std::ostream &debug(const std::string &funcName = "")
     {
-        if constexpr(DEBUG) {
-            *_stream << "[DEBUG] " << getTime() << " -" << funcName << "- ";
-            return *_stream;
-        } else {
-            return _nullStream;
-        }
+      if constexpr(DEBUG) {
+        *_stream << "[DEBUG] " << getTime() << " -" << funcName << "- ";
+        return *_stream;
+      } else {
+        return _nullStream;
+      }
     }
 
     std::ostream &info(const std::string &funcName = "")
     {
-        *_stream << "[INFO] " << getTime() << " -" << funcName << "- ";
-        return *_stream;
+      *_stream << "[INFO] " << getTime() << " -" << funcName << "- ";
+      return *_stream;
     }
 
     std::ostream &warning(const std::string &funcName = "")
     {
-        *_stream << "[WARNING] " << getTime() << " -" << funcName << "- ";
-        return *_stream;
+      *_stream << "[WARNING] " << getTime() << " -" << funcName << "- ";
+      return *_stream;
     }
 
     std::ostream &error(const std::string &funcName = "")
     {
-        *_stream << "[ERROR] " << getTime() << " -" << funcName << "- ";
-        return *_stream;
+      *_stream << "[ERROR] " << getTime() << " -" << funcName << "- ";
+      return *_stream;
     }
 
     std::ostream &fatal(const std::string &funcName = "")
     {
-        *_stream << "[FATAL] " << getTime() << " -" << funcName << "- ";
-        return *_stream;
+      *_stream << "[FATAL] " << getTime() << " -" << funcName << "- ";
+      return *_stream;
     }
 };

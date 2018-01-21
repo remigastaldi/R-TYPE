@@ -142,25 +142,23 @@ class __lib__implem : public Alfred::Utils::NonCopyable
           for (auto &p: std::experimental::filesystem::directory_iterator(it.first)) {
             std::string curPath = p.path().generic_string();
             if (curPath.find(_osLibEnding) != 0) {
-              for (const auto &iterator: it.second.second) {
-                if (iterator.first.count(curPath) > 0) {
-                  std::string nameOfLib = getLibName(curPath);
-                  T curSymbol = getSymbol(curPath);
+              if (it.second.second.count(curPath) > 0) {
+                std::string nameOfLib = getLibName(curPath);
+                T curSymbol = getSymbol(curPath);
 
-                  LOG_INFO << "Loading library: " << nameOfLib << std::endl;
+                LOG_INFO << "Loading library: " << nameOfLib << std::endl;
 
-                  //Add to path / symbol
-                  it.second.second[curPath] = curSymbol;
+                //Add to path / symbol
+                it.second.second[curPath] = curSymbol;
 
-                  //Add to symbol map
-                  if (_symbols.count(nameOfLib) > 0)
-                    LOG_ERROR << "Lib with name " << nameOfLib << " already exist" << std::endl;
-                  else
-                    _symbols[nameOfLib] = curSymbol;
+                //Add to symbol map
+                if (_symbols.count(nameOfLib) > 0)
+                  LOG_ERROR << "Lib with name " << nameOfLib << " already exist" << std::endl;
+                else
+                  _symbols[nameOfLib] = curSymbol;
 
-                  //Add to ret
-                  out.push_back(std::make_pair(nameOfLib, curSymbol));
-                }
+                //Add to ret
+                out.push_back(std::make_pair(nameOfLib, curSymbol));
               }
             }
           }
@@ -209,6 +207,20 @@ class LibLoader
     __lib__implem<getShipBlueprintSymbol> shib_blueprint;
 
   public:
-    LibLoader(){};
+    LibLoader()
+    {};
     ~LibLoader() = default;
+
+    void updateAll()
+    {
+      attack.update();
+      map.update();
+      mob.update();
+      move.update();
+      part.update();
+      powerup.update();
+      ressource.update();
+      scene.update();
+      shib_blueprint.update();
+    }
 };

@@ -20,6 +20,7 @@ namespace ECS
 
     void Mouvement::updateEntity(float delta, Entity e)
     {
+      (void) delta;
       std::shared_ptr<ECS::Components::Position> position = getManager().getComponent<ECS::Components::Position>(e);
       std::shared_ptr<ECS::Components::Direction> direction = getManager().getComponent<ECS::Components::Direction>(e);
 
