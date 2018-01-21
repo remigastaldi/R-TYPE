@@ -19,7 +19,8 @@ namespace GameEngine
     _ip(ip),
     _gameEngineTick(40),
     _maxFrameRate(60),
-    _running(true)
+    _running(true),
+    _network(4242, 8000)
   {}
 
   void  Client::init(void)
@@ -43,6 +44,8 @@ namespace GameEngine
 
     _eventManager.addEvent<void, sf::Event>("KeyPressedEvent");
     _eventManager.addEvent<void, sf::Event>("KeyReleasedEvent");
+
+    _network.send("trying connection to server", "127.0.0.1");
   }
 
   void  Client::playGame(const std::string &message)

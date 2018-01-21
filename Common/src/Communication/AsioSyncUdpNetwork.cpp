@@ -24,7 +24,7 @@ _port(port),
 _context(),
 _endpoint(boost::asio::ip::udp::v4(), _port),
 _socket(_context, _endpoint),
-_lastEndpoint(boost::asio::ip::udp::v4(), _port)
+_lastEndpoint(boost::asio::ip::udp::v4(), serverPort)
 {
 }
 
