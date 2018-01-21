@@ -2,7 +2,7 @@
  * @Author: Remi Gastaldi <gastal_r>
  * @Date:   2018-01-16T21:10:22+01:00
  * @Last modified by:   gastal_r
- * @Last modified time: 2018-01-21T00:21:30+01:00
+ * @Last modified time: 2018-01-21T07:10:56+01:00
  */
 
 
@@ -27,9 +27,9 @@ public:
     _texture()
     {}
 
-    void  loadFromFile(void)
+    void  loadFromFile(const std::string &path)
     {
-      _texture.loadFromFile(_name);
+      _texture.loadFromFile(path);
       _resource.setTexture(_texture);
     }
 
@@ -50,9 +50,9 @@ public:
       : Resource(name, texture)
     {}
 
-    void  loadFromFile(void)
+    void  loadFromFile(const std::string &path)
     {
-      _resource.loadFromFile(_name);
+      _resource.loadFromFile(path);
     }
 
     void setSmooth(bool val)
@@ -75,9 +75,9 @@ public:
     : Resource(name, soundBuffer)
   {}
 
-  void  loadFromFile(void)
+  void  loadFromFile(const std::string &path)
   {
-    _resource.loadFromFile(_name);
+    _resource.loadFromFile(path);
   }
 
   typedef sf::SoundBuffer ContentType;
@@ -90,9 +90,9 @@ public:
     : Resource(name)
   {}
 
-  void  loadFromFile(void)
+  void  loadFromFile(const std::string &path)
   {
-    _resource.openFromFile(_name);
+    _resource.openFromFile(path);
   }
 
   typedef sf::Music ContentType;
@@ -110,9 +110,9 @@ public:
       : Resource(name, font)
     {}
 
-    void  loadFromFile(void)
+    void  loadFromFile(const std::string &path)
     {
-      _resource.loadFromFile(_name);
+      _resource.loadFromFile(path);
     }
 
   typedef sf::Font ContentType;

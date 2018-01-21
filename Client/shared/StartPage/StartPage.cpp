@@ -2,7 +2,7 @@
  * @Author: Remi Gastaldi <gastal_r>
  * @Date:   2018-01-19T18:05:32+01:00
  * @Last modified by:   gastal_r
- * @Last modified time: 2018-01-20T21:21:56+01:00
+ * @Last modified time: 2018-01-21T07:39:32+01:00
  */
 
 
@@ -33,14 +33,14 @@ void	StartPage::funcExit(void)
 
 void	StartPage::onEnter()
 {
-	_resources.load<Texture>("../../Client/media/img/lobbiesBackground.jpg");
-	_resources.load<Texture>("../../Client/media/img/startPage/startButtons.png");
-	_resources.load<Font>("../../Client/media/font/Gravedigger.otf");
-	_resources.load<Font>("../../Client/media/font/neuropol.ttf");
+	_resources.load<Texture>("lobbiesBackground", "../../Client/media/img/lobbiesBackground.jpg");
+	_resources.load<Texture>("startButtons", "../../Client/media/img/startPage/startButtons.png");
+	_resources.load<Font>("Gravedigger", "../../Client/media/font/Gravedigger.otf");
+	_resources.load<Font>("neuropol", "../../Client/media/font/neuropol.ttf");
 
-	sf::Font &font = _resources.getContent<Font>("../../Client/media/font/Gravedigger.otf");
-	sf::Font &fontButtons = _resources.getContent<Font>("../../Client/media/font/neuropol.ttf");
-	sf::Texture &button = _resources.getContent<Texture>("../../Client/media/img/startPage/startButtons.png");
+	sf::Font &font = _resources.getContent<Font>("Gravedigger");
+	sf::Font &fontButtons = _resources.getContent<Font>("neuropol");
+	sf::Texture &button = _resources.getContent<Texture>("startButtons");
 
 	sf::Sprite startButton(button);
 	sf::Sprite startButtonHovered(button);
@@ -64,7 +64,7 @@ void	StartPage::onEnter()
 
 	sf::Vector2f center((_guiManager.getWindowSize().x / 2) - (startButton.getGlobalBounds().width / 2), (_guiManager.getWindowSize().y / 2) - (startButton.getGlobalBounds().height / 2));
 
-	_guiManager.addElement<GUI::Image>("Background", sf::Vector2f(0, 0), _resources.getContent<Texture>("../../Client/media/img/lobbiesBackground.jpg"), sf::Vector2f(0, 0));
+	_guiManager.addElement<GUI::Image>("Background", sf::Vector2f(0, 0), _resources.getContent<Texture>("lobbiesBackground"), sf::Vector2f(0, 0));
 	_guiManager.addElement<GUI::Text>("GameTitle", sf::Vector2f(center.x + 100, center.y - 300), "R-TYPE", font, 60);
 
 	_guiManager.addElement<GUI::Button>("StartPagePlayButton", _eventManager, "PlayGameEvent", sf::Vector2f(center.x - 100, center.y - 100), startButton, startButtonHovered);

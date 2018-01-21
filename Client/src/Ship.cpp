@@ -2,7 +2,7 @@
  * @Author: Remi Gastaldi <gastal_r>
  * @Date:   2018-01-20T20:45:23+01:00
  * @Last modified by:   gastal_r
- * @Last modified time: 2018-01-21T04:39:45+01:00
+ * @Last modified time: 2018-01-21T08:07:31+01:00
  */
 
 
@@ -15,13 +15,13 @@ Ship::Ship(ResourcesManager &resourceManager, EventManager::Manager &eventManage
   {
     _entity = _ecsManager.createEntity();
 
-    _resourcesManager.load<Sprite>("../../Client/media/img/playerLobby/playersSpaceships.png");
-    sf::Sprite &sprite = _resourcesManager.getContent<Sprite>("../../Client/media/img/playerLobby/playersSpaceships.png");
+    _resourcesManager.load<Sprite>("playersSpaceship", "../../Client/media/img/playerLobby/playersSpaceships.png");
+    sf::Sprite &sprite = _resourcesManager.getContent<Sprite>("playersSpaceship");
     sprite.setRotation(90);
     sprite.setTextureRect(sf::IntRect(0, 0, 160, 160));
 
     _ecsManager.addComponent<ECS::Components::Position>(_entity, ECS::Components::Position(200, 10));
-    _ecsManager.addComponent<ECS::Components::Drawable>(_entity, ECS::Components::Drawable("../../Client/media/img/playerLobby/playersSpaceships.png"));
+    _ecsManager.addComponent<ECS::Components::Drawable>(_entity, ECS::Components::Drawable("playersSpaceship"));
     _ecsManager.addComponent<ECS::Components::Direction>(_entity, ECS::Components::Direction(0, 0, 10));
 
     _ecsManager.updateEntityToSystems(_entity);
