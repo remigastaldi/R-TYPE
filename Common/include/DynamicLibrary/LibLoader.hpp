@@ -90,7 +90,7 @@ class __lib__implem : public Alfred::Utils::NonCopyable
   private:
     std::string _osLibEnding;
     //map of file path, file names / bool (is visible), handler
-    std::unordered_map<std::string, std::pair<bool, std::unordered_map<std::string, T>>> _files;
+    std::unordered_map<std::string, std::unordered_map<std::string, T>> _files;
     std::unordered_map<std::string, T> _symbols;
 
   private:
@@ -130,7 +130,7 @@ class __lib__implem : public Alfred::Utils::NonCopyable
      * @brief Ctor
      */
     __lib__implem() :
-    _osLibEnding(getOSDynLibExtension()),
+      _osLibEnding(getOSDynLibExtension()),
       _files(),
       _symbols()
     {}
@@ -144,28 +144,27 @@ class __lib__implem : public Alfred::Utils::NonCopyable
     {
       std::vector<std::pair<std::string, T>> out;
       for (auto &it : _files) {
-        if (it.second.first) {
-          for (auto &p: std::experimental::filesystem::directory_iterator(it.first)) {
-            std::string curPath = p.path().generic_string();
-            if (curPath.find(_osLibEnding) != 0) {
-              if (it.second.second.count(curPath) > 0) {
-                std::string nameOfLib = getLibName(curPath);
-                T curSymbol = getSymbol(curPath);
+        LOG_INFO << "Updating " << it.first << std::endl;
+        for (auto &p: std::experimental::filesystem::directory_iterator(it.first)) {
+          std::string curPath = p.path().generic_string();
+          if (curPath.find(_osLibEnding) != 0) {
+            if (it.second.count(curPath) <= 0) {
+              std::string nameOfLib = getLibName(curPath);
+              T curSymbol = getSymbol(curPath);
 
-                LOG_INFO << "Loading library: " << nameOfLib << std::endl;
+              LOG_INFO << "Loading library: " << nameOfLib << std::endl;
 
-                //Add to path / symbol
-                it.second.second[curPath] = curSymbol;
+              //Add to path / symbol
+              it.second[curPath] = curSymbol;
 
-                //Add to symbol map
-                if (_symbols.count(nameOfLib) > 0)
-                  LOG_ERROR << "Lib with name " << nameOfLib << " already exist" << std::endl;
-                else
-                  _symbols[nameOfLib] = curSymbol;
+              //Add to symbol map
+              if (_symbols.count(nameOfLib) > 0)
+                LOG_ERROR << "Lib with name " << nameOfLib << " already exist" << std::endl;
+              else
+                _symbols[nameOfLib] = curSymbol;
 
-                //Add to ret
-                out.push_back(std::make_pair(nameOfLib, curSymbol));
-              }
+              //Add to ret
+              out.push_back(std::make_pair(nameOfLib, curSymbol));
             }
           }
         }
@@ -179,13 +178,14 @@ class __lib__implem : public Alfred::Utils::NonCopyable
      * @param toRefresh
      * @return
      */
-    bool addFolder(const std::string &path, const bool toRefresh = false)
+    bool addFolder(const std::string &path)
     {
       std::experimental::filesystem::directory_entry entry(path);
       if (std::experimental::filesystem::exists(entry)) {
-        _files[path] = std::make_pair(toRefresh, std::unordered_map<std::string, T>());
+        _files[path] = std::unordered_map<std::string, T>();
         return true;
       }
+      LOG_ERROR << "Directory " << path << " not exist" << std::endl;
       return false;
     }
 
@@ -213,7 +213,7 @@ class LibLoader
     __lib__implem<getShipBlueprintSymbol> ship_blueprint;
 
   public:
-    LibLoader():
+    LibLoader() :
       attack(),
       map(),
       mob(),
@@ -229,6 +229,7 @@ class LibLoader
 
     void updateAll()
     {
+      LOG_INFO << "Updating lib loader" << std::endl;
       attack.update();
       map.update();
       mob.update();

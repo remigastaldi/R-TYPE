@@ -17,11 +17,11 @@
 #include <sstream>
 #include <iostream>
 
-#define LOG_DEBUG Logger::get().debug(__FUNCTION__)
-#define LOG_INFO Logger::get().info(__FUNCTION__)
-#define LOG_WARNING Logger::get().warning(__FUNCTION__)
-#define LOG_ERROR Logger::get().error(__FUNCTION__)
-#define LOG_FATAL Logger::get().fatal(__FUNCTION__)
+#define LOG_DEBUG Logger::get().debug(__FUNCTION__, __FILE__, __LINE__)
+#define LOG_INFO Logger::get().info(__FUNCTION__, __FILE__, __LINE__)
+#define LOG_WARNING Logger::get().warning(__FUNCTION__, __FILE__, __LINE__)
+#define LOG_ERROR Logger::get().error(__FUNCTION__, __FILE__, __LINE__)
+#define LOG_FATAL Logger::get().fatal(__FUNCTION__, __FILE__, __LINE__)
 
 enum __CONSOLE_LOG_ENUM
 {
@@ -121,37 +121,37 @@ class Logger : public Alfred::Utils::Singleton<Logger>
       _stream = new std::ofstream(DEFAULT_LOG_FILENAME, std::ios::trunc);
     }
 
-    std::ostream &debug(const std::string &funcName = "")
+    std::ostream &debug(const std::string &funcName, const std::string &file, int line)
     {
       if constexpr(DEBUG) {
-        *_stream << "[DEBUG] " << getTime() << " -" << funcName << "- ";
+        *_stream << "[DEBUG] " << getTime() << " - " << funcName << " in " << file << ":" <<line << " - ";
         return *_stream;
       } else {
         return _nullStream;
       }
     }
 
-    std::ostream &info(const std::string &funcName = "")
+    std::ostream &info(const std::string &funcName, const std::string &file, int line)
     {
-      *_stream << "[INFO] " << getTime() << " -" << funcName << "- ";
+      *_stream << "[INFO] " << getTime() << " - " << funcName << " in " << file << ":" <<line << " - ";
       return *_stream;
     }
 
-    std::ostream &warning(const std::string &funcName = "")
+    std::ostream &warning(const std::string &funcName, const std::string &file, int line)
     {
-      *_stream << "[WARNING] " << getTime() << " -" << funcName << "- ";
+      *_stream << "[WARNING] " << getTime() << " - " << funcName << " in " << file << ":" <<line << " - ";
       return *_stream;
     }
 
-    std::ostream &error(const std::string &funcName = "")
+    std::ostream &error(const std::string &funcName, const std::string &file, int line)
     {
-      *_stream << "[ERROR] " << getTime() << " -" << funcName << "- ";
+      *_stream << "[ERROR] " << getTime() << " - " << funcName << " in " << file << ":" <<line << " - ";
       return *_stream;
     }
 
-    std::ostream &fatal(const std::string &funcName = "")
+    std::ostream &fatal(const std::string &funcName, const std::string &file, int line)
     {
-      *_stream << "[FATAL] " << getTime() << " -" << funcName << "- ";
+      *_stream << "[FATAL] " << getTime() << " - " << funcName << " in " << file << ":" <<line << " - ";
       return *_stream;
     }
 };

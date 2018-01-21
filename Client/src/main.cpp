@@ -16,9 +16,6 @@ int main(int ac, char *av[])
   if constexpr (DEBUG)
     std::cout << "DEBUG ON" << std::endl;
 
-  LibLoader l;
-  l.move.addFolder("");
-
   std::string ip("localhost");
   if (ac > 1)
   {

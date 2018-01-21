@@ -67,7 +67,7 @@ namespace GameEngine
 
     _libraryLoader.updateAll();
 
-    exit(0);
+//    exit(0);
   }
 
   void Client::playGame(const std::string &message)
