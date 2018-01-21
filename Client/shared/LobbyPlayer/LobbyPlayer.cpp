@@ -99,7 +99,7 @@ void	LobbyPlayer::onEnter()
 
 void	LobbyPlayer::onExit()
 {
-
+	_guiManager.releaseAll();
 }
 
 void	LobbyPlayer::update(const float time, ECS::Manager &ecs, EventManager::Manager &event)

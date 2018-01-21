@@ -32,6 +32,7 @@ target_sources(${NAME}
         # Temporary
         ${CMAKE_CURRENT_SOURCE_DIR}/shared/StartPage/StartPage.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/shared/LobbyPlayer/LobbyPlayer.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/shared/IngameHUD/IngameHUD.cpp
 )
 
 include(../Common/common.cmake)

@@ -84,7 +84,7 @@ void	StartPage::onEnter()
 
 void	StartPage::onExit()
 {
-
+	_guiManager.releaseAll();
 }
 
 void	StartPage::update(const float time, ECS::Manager &ecs, EventManager::Manager &event)
