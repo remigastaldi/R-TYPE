@@ -2,7 +2,7 @@
  * @Author: Remi Gastaldi <gastal_r>
  * @Date:   2018-01-20T18:54:40+01:00
  * @Last modified by:   gastal_r
- * @Last modified time: 2018-01-20T19:03:04+01:00
+ * @Last modified time: 2018-01-21T06:56:53+01:00
  */
 
 
@@ -22,8 +22,6 @@ namespace ECS
         {}
 
       std::string sprite;
-
-      static const ECS::ComponentType Type = 100;
     };
   }
 }
