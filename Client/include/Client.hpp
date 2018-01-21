@@ -2,17 +2,15 @@
  * @Author: Remi Gastaldi <gastal_r>
  * @Date:   2018-01-17T04:02:41+01:00
  * @Last modified by:   gastal_r
- * @Last modified time: 2018-01-21T22:10:01+01:00
+ * @Last modified time: 2018-01-21T22:32:37+01:00
  */
 
 #pragma once
 
 #include  "config.hpp"
 
-#include "SoundManager.hpp"
-#include  "ResourcesManager.hpp"
-#include  "ECS/Systems/CommonSystems.hpp"
-#include  "ECS/Manager.hpp"
+#include  "GameManagers.hpp"
+
 #include  "GUIManager.hpp"
 #include  "Logger/Logger.hpp"
 #include  "EventManager.hpp"
@@ -27,26 +25,9 @@
 
 #include  <chrono>
 #include  <cmath>
-#include <DynamicLibrary/LibLoader.hpp>
 
 namespace GameEngine
 {
-  struct GameManagers
-  {
-    GameManagers(ResourcesManager &_resourcesManager, EventManager::Manager &_eventManager,
-      ECS::Manager &_ecsManager, SoundManager &_soundManager)
-      : resourcesManager(_resourcesManager),
-      eventManager(_eventManager),
-      ecsManager(_ecsManager),
-      soundManager(_soundManager)
-    {}
-
-    ResourcesManager  &resourcesManager;
-    EventManager::Manager &eventManager;
-    ECS::Manager    &ecsManager;
-    SoundManager    &soundManager;
-  };
-
   class Client
   {
   public:
@@ -69,9 +50,8 @@ namespace GameEngine
     GUI::Manager      _guiManager;
     AsioSyncUdpNetwork _network;
     SoundManager  _soundManager;
-      LibLoader _loader;
-
-      // SceneManager   _sceneManager;
+    GameEngine::GameManagers _gameManagers;
+    // SceneManager   _sceneManager;
     // LibraryLoader _libraryLoader;
     // Network _network;
 

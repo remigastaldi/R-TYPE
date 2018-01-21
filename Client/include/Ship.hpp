@@ -2,11 +2,13 @@
  * @Author: Remi Gastaldi <gastal_r>
  * @Date:   2018-01-20T20:45:49+01:00
  * @Last modified by:   gastal_r
- * @Last modified time: 2018-01-21T18:39:19+01:00
+ * @Last modified time: 2018-01-21T22:39:55+01:00
  */
 
 
 #pragma once
+
+#include  "GameManagers.hpp"
 
 #include  "EventManager.hpp"
 #include  "ECS/Manager.hpp"
@@ -20,7 +22,7 @@
 class Ship
 {
 public:
-  Ship(ResourcesManager &resourceManager, EventManager::Manager &eventManager, ECS::Manager &ecsManager);
+  explicit Ship(GameEngine::GameManagers &gameManager);
 
 
   void  keyPressed(sf::Event);
@@ -29,10 +31,8 @@ public:
   void  update(void);
 
 private:
+  GameEngine::GameManagers _gameManagers;
   ECS::Entity   _entity;
-  EventManager::Manager &_eventManager;
-  ResourcesManager  &_resourcesManager;
-  ECS::Manager      &_ecsManager;
 
   int  _fireTickCounter;
   bool _fire;
