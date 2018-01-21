@@ -2,7 +2,7 @@
  * @Author: Remi Gastaldi <gastal_r>
  * @Date:   2018-01-13T01:04:05+01:00
  * @Last modified by:   gastal_r
- * @Last modified time: 2018-01-20T18:48:26+01:00
+ * @Last modified time: 2018-01-21T02:01:13+01:00
  */
 
 
@@ -87,14 +87,15 @@ namespace ECS
     }
   }
 
-  void Manager::updateSystemsRange(float delta, size_t from, size_t to)
+  void Manager::updateSystemsRange(float delta, int from, int to)
   {
-    if (to > _systems.size())
+    if (static_cast<size_t>(to) > _systems.size())
     {
       //TODO throw exception
     }
 
-    auto end = _systems.cbegin() + to;
+    auto end = std::next(_systems.cbegin(), to);
+
     for (auto it = _systems.cbegin() + from; it != end; ++it)
     {
       (*it)->preUpdate(delta);

@@ -2,7 +2,7 @@
  * @Author: Remi Gastaldi <gastal_r>
  * @Date:   2018-01-17T04:07:04+01:00
  * @Last modified by:   gastal_r
- * @Last modified time: 2018-01-20T19:19:55+01:00
+ * @Last modified time: 2018-01-21T03:08:06+01:00
  */
 
 
@@ -26,8 +26,10 @@ namespace GameEngine
   {
     // load connection scene
     _ecsManager.createStoreFor(ECS::Components::Position::Type);
+    _ecsManager.createStoreFor(ECS::Components::Drawable::Type);
+    _ecsManager.createStoreFor(ECS::Components::Direction::Type);
     _ecsManager.addSystem<ECS::Systems::Mouvement>(_ecsManager);
-    _ecsManager.addSystem<ECS::Systems::Render>(_ecsManager);
+    _ecsManager.addSystem<ECS::Systems::Render>(_resourcesManager, _ecsManager, _window);
     _ecsManager.initSystems();
 
     // Create events
@@ -37,6 +39,11 @@ namespace GameEngine
 
     _eventManager.listen<void, const std::string &>("PlayGameEvent", std::bind(&Client::playGame, this, std::placeholders::_1));
     _eventManager.listen<void, const std::string &>("ExitGameEvent", std::bind(&Client::exitGame, this, std::placeholders::_1));
+
+    _eventManager.addEvent<void, const std::string &>("ARROW_UP");
+    _eventManager.addEvent<void, const std::string &>("ARROW_DOWN");
+    _eventManager.addEvent<void, const std::string &>("ARROW_RIGHT");
+    _eventManager.addEvent<void, const std::string &>("ARROW_LEFT");
   }
 
   void  Client::playGame(const std::string &message)
@@ -51,11 +58,14 @@ namespace GameEngine
   }
   void  Client::run(void)
   {
-	  // StartPage	startPageScene(_guiManager, _eventManager);
+	  // StartPage	startPageScene(_resourcesManager, _guiManager, _eventManager);
     //
 	  // startPageScene.onEnter();
 
-
+    // LobbyPlayer lobbyPlayerScene(_resourcesManager,_guiManager, _eventManager);
+    //
+	  // lobbyPlayerScene.onEnter();
+    _ship = std::make_shared<Ship>(_resourcesManager, _eventManager, _ecsManager);
 
     double nextGameTick = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now().time_since_epoch()).count();
 
@@ -90,8 +100,8 @@ namespace GameEngine
     sf::Event event;
     while (_window.pollEvent(event))
     {
-      if (event.type == sf::Event::Closed)
-      _window.close();
+      // if (event.type == sf::Event::Closed)
+      //   _window.close();
     }
   }
 
@@ -104,7 +114,7 @@ namespace GameEngine
   {
     _window.clear();
     _guiManager.update(alpha);
-    _ecsManager.updateSystemsRange(0.f, 2, 2);
+    _ecsManager.updateSystemsRange(0.f, 1, 2);
     _window.display();
   }
 }

@@ -2,7 +2,7 @@
  * @Author: Remi Gastaldi <gastal_r>
  * @Date:   2018-01-17T04:02:41+01:00
  * @Last modified by:   gastal_r
- * @Last modified time: 2018-01-20T19:18:32+01:00
+ * @Last modified time: 2018-01-21T01:28:05+01:00
  */
 
 
@@ -21,7 +21,7 @@
 
 #include  "StartPage/StartPage.hpp"
 #include "LobbyPlayer.hpp"
-
+#include "Ship.hpp"
 
 #include  <chrono>
 #include  <cmath>
@@ -53,6 +53,8 @@ namespace GameEngine
     // Network _network;
 
   private:
+    std::shared_ptr<Ship> _ship;
+
     sf::RenderWindow _window;
 
     std::string _ip;

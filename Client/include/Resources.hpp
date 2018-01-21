@@ -2,7 +2,7 @@
  * @Author: Remi Gastaldi <gastal_r>
  * @Date:   2018-01-16T21:10:22+01:00
  * @Last modified by:   gastal_r
- * @Last modified time: 2018-01-20T22:53:49+01:00
+ * @Last modified time: 2018-01-21T00:21:30+01:00
  */
 
 
@@ -14,14 +14,37 @@
 #include  <SFML/Graphics/Texture.hpp>
 #include  <SFML/Graphics/Sprite.hpp>
 
+class Sprite : public Resource<sf::Sprite>
+{
+public:
+  explicit  Sprite(const std::string &name)
+    : Resource(name),
+    _texture()
+    {}
+
+    Sprite(const std::string &name, const sf::Sprite &texture)
+      : Resource(name, texture),
+    _texture()
+    {}
+
+    void  loadFromFile(void)
+    {
+      _texture.loadFromFile(_name);
+      _resource.setTexture(_texture);
+    }
+
+    typedef sf::Sprite ContentType;
+
+  private:
+    sf::Texture _texture;
+};
+
 class Texture : public Resource<sf::Texture>
 {
 public:
   explicit  Texture(const std::string &name)
     : Resource(name)
-    {
-      // _resource.loadFromFile(name);
-    }
+    {}
 
     Texture(const std::string &name, const sf::Texture &texture)
       : Resource(name, texture)
@@ -46,9 +69,7 @@ class SoundBuffer : public Resource<sf::SoundBuffer>
 public:
   explicit  SoundBuffer(const std::string &name)
     : Resource(name)
-  {
-    // _resource.loadFromFile(name);
-  }
+  {}
 
   SoundBuffer(const std::string &name, const sf::SoundBuffer &soundBuffer)
     : Resource(name, soundBuffer)
@@ -67,9 +88,7 @@ class Music : public Resource<sf::Music>
 public:
   explicit  Music(const std::string &name)
     : Resource(name)
-  {
-    // _resource.openFromFile(name);
-  }
+  {}
 
   void  loadFromFile(void)
   {
@@ -85,9 +104,7 @@ class Font : public Resource<sf::Font>
 public:
   explicit Font(const std::string &name)
     : Resource(name)
-    {
-      // _resource.loadFromFile(name);
-    }
+    {}
 
     Font(const std::string &name, const sf::Font &font)
       : Resource(name, font)

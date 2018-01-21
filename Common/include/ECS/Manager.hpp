@@ -2,7 +2,7 @@
  * @Author: Remi Gastaldi <gastal_r>
  * @Date:   2018-01-13T01:04:20+01:00
  * @Last modified by:   gastal_r
- * @Last modified time: 2018-01-20T18:24:47+01:00
+ * @Last modified time: 2018-01-21T00:46:07+01:00
  */
 
 
@@ -22,8 +22,7 @@
 #include  <cassert>
 #include  <algorithm>
 #include  <type_traits>
-#include <tuple>
-#include <iostream>
+
 namespace ECS
 {
   class Mouvement;
@@ -41,7 +40,7 @@ namespace ECS
 
     void  initSystems();
     void  updateSystems(float delta);
-    void  updateSystemsRange(float delta, size_t from, size_t to);
+    void  updateSystemsRange(float delta, int from, int to);
 
 
     int updateEntityToSystems(Entity e, std::set<ComponentType> components);

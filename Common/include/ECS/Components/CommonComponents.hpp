@@ -2,7 +2,7 @@
  * @Author: Remi Gastaldi <gastal_r>
  * @Date:   2018-01-13T20:15:43+01:00
  * @Last modified by:   gastal_r
- * @Last modified time: 2018-01-20T19:07:04+01:00
+ * @Last modified time: 2018-01-21T02:59:38+01:00
  */
 
 
@@ -25,6 +25,17 @@ namespace ECS
       size_t y;
 
       static const ECS::ComponentType Type = 1;
+    };
+
+    struct Direction : ECS::Component
+    {
+      explicit Direction(int _direction)
+      : direction(_direction)
+        {}
+
+      int direction;
+
+      static const ECS::ComponentType Type = 100;
     };
   }
 }
