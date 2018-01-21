@@ -291,7 +291,8 @@ void  Ship::fire(const std::string &msg)
 
   std::shared_ptr<ECS::Components::Position> position = _gameManagers.ecs.getComponent<ECS::Components::Position>(_entity);
 
-  _gameManagers.ecs.addComponent<ECS::Components::Position>(e, ECS::Components::Position(position->x + 100, position->y));
+  _gameManagers.ecs.addComponent<ECS::Components::Position>(e, ECS::Components::Position(
+    static_cast<size_t>(position->x + 100), static_cast<size_t>(position->y)));
   _gameManagers.ecs.addComponent<ECS::Components::Drawable>(e, ECS::Components::Drawable("playersSpaceship"));
   _gameManagers.ecs.addComponent<ECS::Components::Direction>(e, ECS::Components::Direction(1, 0, 30));
   _gameManagers.ecs.updateEntityToSystems(e);

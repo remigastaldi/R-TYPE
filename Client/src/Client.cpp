@@ -15,15 +15,16 @@ namespace GameEngine
     _resourcesManager(),
     _ecsManager(),
     _guiManager(_window),
-    _soundManager(_resourcesManager, _eventManager),
+      _network(4242, 8000),
+      _soundManager(_resourcesManager, _eventManager),
     _gameManagers(_resourcesManager, _eventManager, _ecsManager, _soundManager),
+      _ship(),
     _window(videoMode, "R-Type", sf::Style::Titlebar | sf::Style::Resize),
-    _ip(ip),
-    _gameEngineTick(60),
-    _maxFrameRate(60),
-    _running(true),
-    _network(4242, 8000)
-  {}
+      _ip(ip),
+      _gameEngineTick(60),
+      _maxFrameRate(60),
+  _running(true)
+{}
 
   void  Client::init(void)
   {
@@ -120,6 +121,28 @@ namespace GameEngine
       case sf::Event::KeyReleased :
         _eventManager.fire<void, sf::Event>("KeyReleasedEvent", event);
         break;
+        case sf::Event::Closed:break;
+        case sf::Event::Resized:break;
+        case sf::Event::LostFocus:break;
+        case sf::Event::GainedFocus:break;
+        case sf::Event::TextEntered:break;
+        case sf::Event::MouseWheelMoved:break;
+        case sf::Event::MouseWheelScrolled:break;
+        case sf::Event::MouseButtonPressed:break;
+        case sf::Event::MouseButtonReleased:break;
+        case sf::Event::MouseMoved:break;
+        case sf::Event::MouseEntered:break;
+        case sf::Event::MouseLeft:break;
+        case sf::Event::JoystickButtonPressed:break;
+        case sf::Event::JoystickButtonReleased:break;
+        case sf::Event::JoystickMoved:break;
+        case sf::Event::JoystickConnected:break;
+        case sf::Event::JoystickDisconnected:break;
+        case sf::Event::TouchBegan:break;
+        case sf::Event::TouchMoved:break;
+        case sf::Event::TouchEnded:break;
+        case sf::Event::SensorChanged:break;
+        case sf::Event::Count:break;
       }
     }
   }

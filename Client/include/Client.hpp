@@ -55,8 +55,7 @@ namespace GameEngine
     // LibraryLoader _libraryLoader;
     // Network _network;
 
-  private:
-    std::shared_ptr<Ship> _ship;
+      std::shared_ptr<Ship> _ship;
 
     sf::RenderWindow _window;
 

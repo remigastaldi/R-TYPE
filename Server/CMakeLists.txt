@@ -53,7 +53,6 @@ if (UNIX)
    -Wformat=2
    -Wmissing-format-attribute
    -Wformat-nonliteral
-   -Wold-style-cast
    -flto
    -Wodr
   )

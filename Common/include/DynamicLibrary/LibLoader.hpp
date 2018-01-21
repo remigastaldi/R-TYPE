@@ -74,6 +74,16 @@ typedef IShipBluprint *(*getShipBlueprintSymbol)();
 
 #endif
 
+static std::string getOSDynLibExtension()
+{
+  if constexpr (the_os == OS::Linux)
+    return ".so";
+  else if constexpr (the_os == OS::Mac)
+    return ".dylib";
+  else
+    return ".dll";
+}
+
 template <typename T>
 class __lib__implem : public Alfred::Utils::NonCopyable
 {
@@ -96,7 +106,7 @@ class __lib__implem : public Alfred::Utils::NonCopyable
       return ((getNameOfLib) GetProcAddress(hGetProcIDDLL, "getName"))();
 #else
       void *handle = dlopen(path.c_str(), RTLD_LAZY);
-      return ((getNameOfLib)dlsym(handle, "getName"))();
+      return ((getNameOfLib)(dlsym(handle, "getName")))();
 #endif
     }
 
@@ -111,7 +121,7 @@ class __lib__implem : public Alfred::Utils::NonCopyable
       return (T) GetProcAddress(hGetProcIDDLL, "getSymbol");
 #else
       void *handle = dlopen(path.c_str(), RTLD_LAZY);
-      return (T)dlsym(handle, "getSymbol");
+      return (T)(dlsym(handle, "getSymbol"));
 #endif
     }
 
@@ -119,15 +129,11 @@ class __lib__implem : public Alfred::Utils::NonCopyable
     /**
      * @brief Ctor
      */
-    __lib__implem()
-    {
-      if constexpr (the_os == OS::Linux)
-        _osLibEnding = ".so";
-      else if constexpr (the_os == OS::Mac)
-        _osLibEnding = ".dylib";
-      else
-        _osLibEnding = ".dll";
-    }
+    __lib__implem() :
+    _osLibEnding(getOSDynLibExtension()),
+      _files(),
+      _symbols()
+    {}
 
     /**
      * @brief Update
@@ -204,11 +210,21 @@ class LibLoader
     __lib__implem<getPowerUpSymbol> powerup;
     __lib__implem<getRessourceSymbol> ressource;
     __lib__implem<getSceneSymbol> scene;
-    __lib__implem<getShipBlueprintSymbol> shib_blueprint;
+    __lib__implem<getShipBlueprintSymbol> ship_blueprint;
 
   public:
-    LibLoader()
+    LibLoader():
+      attack(),
+      map(),
+      mob(),
+      move(),
+      part(),
+      powerup(),
+      ressource(),
+      scene(),
+      ship_blueprint()
     {};
+
     ~LibLoader() = default;
 
     void updateAll()
@@ -221,6 +237,6 @@ class LibLoader
       powerup.update();
       ressource.update();
       scene.update();
-      shib_blueprint.update();
+      ship_blueprint.update();
     }
 };

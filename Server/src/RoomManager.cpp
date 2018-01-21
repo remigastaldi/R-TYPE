@@ -22,6 +22,7 @@ RoomManager::~RoomManager()
 
 void	RoomManager::transferRequest(UDPPacket &packet)
 {
+  (void) packet;
 }
 
 void	RoomManager::addPlayer(std::string &player)
