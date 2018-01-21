@@ -2,7 +2,7 @@
  * @Author: Remi Gastaldi <gastal_r>
  * @Date:   2018-01-20T21:13:21+01:00
  * @Last modified by:   gastal_r
- * @Last modified time: 2018-01-20T21:20:31+01:00
+ * @Last modified time: 2018-01-21T07:47:54+01:00
  */
 
 
@@ -19,22 +19,22 @@ LobbyPlayer::LobbyPlayer(ResourcesManager &resourceManager, GUI::Manager& guiMan
 
 void	LobbyPlayer::onEnter()
 {
-	_resources.load<Texture>("../../Client/media/img/lobbiesBackground.jpg");
-	_resources.load<Texture>("../../Client/media/img/playerLobby/window_whole.png");
-	_resources.load<Texture>("../../Client/media/img/playerLobby/window_bottom.png");
-	_resources.load<Texture>("../../Client/media/img/playerLobby/playersSpaceships.png");
-	_resources.load<Texture>("../../Client/media/img/playerLobby/exitButton.png");
-	_resources.load<Texture>("../../Client/media/img/playerLobby/readyButtonState.png");
-	_resources.load<Texture>("../../Client/media/img/playerLobby/readyButton.png");
-	_resources.load<Font>("../../Client/media/font/neuropol.ttf");
+	_resources.load<Texture>("lobbiesBackground", "../../Client/media/img/lobbiesBackground.jpg");
+	_resources.load<Texture>("window_whole", "../../Client/media/img/playerLobby/window_whole.png");
+	_resources.load<Texture>("window_bottom", "../../Client/media/img/playerLobby/window_bottom.png");
+	_resources.load<Texture>("playersSpaceships", "../../Client/media/img/playerLobby/playersSpaceships.png");
+	_resources.load<Texture>("exitButton", "../../Client/media/img/playerLobby/exitButton.png");
+	_resources.load<Texture>("readyButtonState", "../../Client/media/img/playerLobby/readyButtonState.png");
+	_resources.load<Texture>("readyButton", "../../Client/media/img/playerLobby/readyButton.png");
+	_resources.load<Font>("neuropol", "../../Client/media/font/neuropol.ttf");
 
-	sf::Font &font = _resources.getContent<Font>("../../Client/media/font/neuropol.ttf");
-	sf::Texture &waitingTexture = _resources.getContent<Texture>("../../Client/media/img/playerLobby/window_whole.png");
-	sf::Texture &playerSlot = _resources.getContent<Texture>("../../Client/media/img/playerLobby/window_bottom.png");
-	sf::Texture &playersSpaceships = _resources.getContent<Texture>("../../Client/media/img/playerLobby/playersSpaceships.png");
-	sf::Texture &exitLobbyTexture = _resources.getContent<Texture>("../../Client/media/img/playerLobby/exitButton.png");
-	sf::Texture &readyLobbyTexture = _resources.getContent<Texture>("../../Client/media/img/playerLobby/readyButtonState.png");
-	sf::Texture &readyButtonLobbyTexture = _resources.getContent<Texture>("../../Client/media/img/playerLobby/readyButton.png");
+	sf::Font &font = _resources.getContent<Font>("neuropol");
+	sf::Texture &waitingTexture = _resources.getContent<Texture>("window_whole");
+	sf::Texture &playerSlot = _resources.getContent<Texture>("window_bottom");
+	sf::Texture &playersSpaceships = _resources.getContent<Texture>("playersSpaceships");
+	sf::Texture &exitLobbyTexture = _resources.getContent<Texture>("exitButton");
+	sf::Texture &readyLobbyTexture = _resources.getContent<Texture>("readyButtonState");
+	sf::Texture &readyButtonLobbyTexture = _resources.getContent<Texture>("readyButton");
 
 
 
@@ -49,7 +49,7 @@ void	LobbyPlayer::onEnter()
 	sf::Vector2f center((_guiManager.getWindowSize().x / 2) - (waitingSprite.getGlobalBounds().width / 2), (_guiManager.getWindowSize().y / 2) - (waitingSprite.getGlobalBounds().height / 2));
 	sf::Vector2f centerSlot((_guiManager.getWindowSize().x / 2) - (centerSlotSprite.getGlobalBounds().width / 2), (_guiManager.getWindowSize().y / 2) - (centerSlotSprite.getGlobalBounds().height / 2));
 
-	_guiManager.addElement<GUI::Image>("Background", sf::Vector2f(0, 0), _resources.getContent<Texture>("../../Client/media/img/lobbiesBackground.jpg"), sf::Vector2f(1,1));
+	_guiManager.addElement<GUI::Image>("Background", sf::Vector2f(0, 0), _resources.getContent<Texture>("lobbiesBackground"), sf::Vector2f(1,1));
 	_guiManager.addElement<GUI::Image>("lobbyTitleSprite", sf::Vector2f(center.x, 0), waitingTexture, sf::Vector2f(1, 0.7));
 	_guiManager.addElement<GUI::Text>("lobbyTitle", sf::Vector2f(780, 120), "Waiting for players...", font, 30);
 

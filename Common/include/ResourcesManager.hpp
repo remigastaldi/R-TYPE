@@ -2,7 +2,7 @@
  * @Author: Remi Gastaldi <gastal_r>
  * @Date:   2018-01-16T23:09:53+01:00
  * @Last modified by:   gastal_r
- * @Last modified time: 2018-01-20T23:09:50+01:00
+ * @Last modified time: 2018-01-21T08:06:24+01:00
  */
 
 
@@ -45,7 +45,7 @@ public:
     return (_resource);
   }
 
-  virtual void  loadFromFile() {};
+  virtual void  loadFromFile(const std::string &) {};
 
   typedef T ContentType;
 protected:
@@ -63,17 +63,19 @@ public:
 	{}
 
   template<typename C>
-	void load(const std::string &name)
+	void load(const std::string &name, const std::string &path)
 	{
+    if (_resources.find(name) != _resources.end())
+      LOG_ERROR << "Ressource " << name << " already exist" << std::endl;
     std::shared_ptr<C> resource(std::make_shared<C>(C(name)));
-    resource->loadFromFile();
+    resource->loadFromFile(path);
     _resources.emplace(name, resource);
 	}
 
   template<typename C>
 	std::shared_ptr<C> get(const std::string &name)
 	{
-    if (_resources.count(name) <= 0)
+    if (_resources.find(name) == _resources.end())
       LOG_ERROR << "Ressource " << name << " dont exist" << std::endl;
 
     return (std::static_pointer_cast<C>(_resources[name]));
@@ -82,7 +84,7 @@ public:
   template<typename S>
 	typename S::ContentType &getContent(const std::string &name)
 	{
-    if (_resources.count(name) <= 0)
+    if (_resources.find(name) == _resources.end())
       LOG_ERROR << "Ressource " << name << " dont exist" << std::endl;
 
     return (std::static_pointer_cast<S>(_resources[name])->getContent());
@@ -91,7 +93,9 @@ public:
   template<typename C, typename S>
 	void addResource(const std::string &name, const S &resource)
 	{
-    _resources.emplace(name, std::make_shared<C>(C(name, resource)));
+    if (_resources.find(name) != _resources.end())
+      LOG_ERROR << "Ressource " << name << " already exist" << std::endl;
+    resource.emplace(name, std::make_shared<C>(C(name, resource)));
 	}
 
   bool release(const std::string &name)

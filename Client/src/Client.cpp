@@ -2,7 +2,7 @@
  * @Author: Remi Gastaldi <gastal_r>
  * @Date:   2018-01-17T04:07:04+01:00
  * @Last modified by:   gastal_r
- * @Last modified time: 2018-01-21T04:27:42+01:00
+ * @Last modified time: 2018-01-21T08:10:07+01:00
  */
 
 
@@ -63,7 +63,7 @@ namespace GameEngine
 	  // StartPage	startPageScene(_resourcesManager, _guiManager, _eventManager);
     //
 	  // startPageScene.onEnter();
-
+    //
     // LobbyPlayer lobbyPlayerScene(_resourcesManager,_guiManager, _eventManager);
     //
 	  // lobbyPlayerScene.onEnter();
@@ -122,8 +122,8 @@ namespace GameEngine
   void  Client::render(float alpha)
   {
     _window.clear();
-    _guiManager.update(alpha);
     _ecsManager.updateSystemsRange(0.f, 1, 2);
+    _guiManager.update(alpha);
     _window.display();
   }
 }

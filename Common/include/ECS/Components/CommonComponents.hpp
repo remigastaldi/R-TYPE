@@ -2,13 +2,14 @@
  * @Author: Remi Gastaldi <gastal_r>
  * @Date:   2018-01-13T20:15:43+01:00
  * @Last modified by:   gastal_r
- * @Last modified time: 2018-01-21T04:01:06+01:00
+ * @Last modified time: 2018-01-21T06:56:23+01:00
  */
 
 
 #pragma once
 
 #include "ECS/Component.hpp"
+#include "ECS/Entity.hpp"
 
 namespace ECS
 {
@@ -24,7 +25,6 @@ namespace ECS
       size_t x;
       size_t y;
 
-      static const ECS::ComponentType Type = 1;
     };
 
     struct Direction : ECS::Component
@@ -40,7 +40,25 @@ namespace ECS
 
       int speed;
 
-      static const ECS::ComponentType Type = 2;
+    };
+
+    struct Collisionable : ECS::Component
+    {
+      enum class Type
+      {
+        NEUTRAL,
+        ALLY,
+        ENEMY
+      };
+
+      explicit Collisionable(ECS::Entity _entity, Collisionable::Type _type)
+      : entity(_entity),
+      type(_type)
+        {}
+
+      Entity entity;
+      Collisionable::Type type;
+
     };
   }
 }
