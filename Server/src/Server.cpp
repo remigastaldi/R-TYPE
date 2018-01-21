@@ -46,7 +46,11 @@ void	Server::manageClientPacket(UDPPacket &packet)
     std::string token = login();
     packet.setToken(token);
     _roomManager.addPlayer(token);
-    std::cout << packet.getCommand() << std::endl;
+    if (packet.getCommand() == RFC::Commands::LOGIN) {
+      std::cout << "OK" << std::endl;
+    } else {
+      std::cout << "KO" << std::endl;
+    }
     _net.send(packet, _net.getLastSender());
   }
   else

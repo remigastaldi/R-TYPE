@@ -2,23 +2,22 @@
  * @Author: Remi Gastaldi <gastal_r>
  * @Date:   2018-01-17T04:02:41+01:00
  * @Last modified by:   gastal_r
- * @Last modified time: 2018-01-21T01:28:05+01:00
+ * @Last modified time: 2018-01-21T22:32:37+01:00
  */
-
 
 #pragma once
 
 #include  "config.hpp"
 
-#include  "ResourcesManager.hpp"
-#include  "ECS/Systems/CommonSystems.hpp"
-#include  "ECS/Manager.hpp"
+#include  "GameManagers.hpp"
+
 #include  "GUIManager.hpp"
 #include  "Logger/Logger.hpp"
 #include  "EventManager.hpp"
 #include  "ECS/Components/Components.hpp"
 #include  "ECS/Systems/ClientSystems.hpp"
 #include  "Communication/AsioSyncUdpNetwork.hpp"
+#include  "RFC.hpp"
 
 #include  "StartPage/StartPage.hpp"
 #include "LobbyPlayer/LobbyPlayer.hpp"
@@ -50,6 +49,8 @@ namespace GameEngine
     ECS::Manager      _ecsManager;
     GUI::Manager      _guiManager;
     AsioSyncUdpNetwork _network;
+    SoundManager  _soundManager;
+    GameEngine::GameManagers _gameManagers;
     // SceneManager   _sceneManager;
     // LibraryLoader _libraryLoader;
     // Network _network;

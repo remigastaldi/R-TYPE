@@ -2,7 +2,7 @@
  * @Author: Remi Gastaldi <gastal_r>
  * @Date:   2018-01-17T04:07:04+01:00
  * @Last modified by:   gastal_r
- * @Last modified time: 2018-01-21T19:06:56+01:00
+ * @Last modified time: 2018-01-21T22:38:02+01:00
  */
 
 
@@ -15,6 +15,8 @@ namespace GameEngine
     _resourcesManager(),
     _ecsManager(),
     _guiManager(_window),
+    _soundManager(_resourcesManager, _eventManager),
+    _gameManagers(_resourcesManager, _eventManager, _ecsManager, _soundManager),
     _window(videoMode, "R-Type", sf::Style::Titlebar | sf::Style::Resize),
     _ip(ip),
     _gameEngineTick(60),
@@ -49,8 +51,8 @@ namespace GameEngine
     std::unordered_map<std::string, std::string>	map;
 
     map["ip"] = "127.0.0.1";
-    map["cmd"] = "connection";
-
+    map["cmd"] = RFC::Commands::LOGIN;
+    
     packet.setData(map);
     _network.send(packet, "127.0.0.1");
   }
@@ -74,7 +76,8 @@ namespace GameEngine
     // LobbyPlayer lobbyPlayerScene(_resourcesManager,_guiManager, _eventManager);
     //
 	  // lobbyPlayerScene.onEnter();
-    _ship = std::make_shared<Ship>(_resourcesManager, _eventManager, _ecsManager);
+    GameEngine::GameManagers test(_resourcesManager, _eventManager, _ecsManager, _soundManager);
+    _ship = std::make_shared<Ship>(test);
 
     double nextGameTick = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now().time_since_epoch()).count();
 

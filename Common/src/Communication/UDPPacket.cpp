@@ -69,9 +69,14 @@ void	UDPPacket::setToken(std::string &token)
   _data["token"] = token;
 }
 
-std::string	const &UDPPacket::getCommand() const
+RFC::Commands UDPPacket::getCommand() const
 {
-  return (_data.at("cmd"));
+  return (static_cast<RFC::Commands>(_data.at("cmd")[0]));
+}
+
+RFC::Commands UDPPacket::getResult() const
+{
+  return (static_cast<RFC::Commands>(_data.at("res")[0]));
 }
 
 void	UDPPacket::setCommand(std::string &cmd)
