@@ -48,6 +48,8 @@ namespace EventManager
 
 #ifdef WIN32
 
+typedef std::string (__stdcall *getNameOfLib)();
+
 typedef IAttack *(__stdcall *getAttackSymbol)(ECS::Manager &ecs, EventManager::Manager &event, LibLoader &libloader);
 typedef IMap *(__stdcall *getMapSymbol)();
 typedef IMob *(__stdcall *getMobSymbol)(ECS::Manager &ecs, EventManager::Manager &event, LibLoader &libloader, ECS::Components::Position);
@@ -103,7 +105,7 @@ class __lib__implem : public Alfred::Utils::NonCopyable
           LOG_ERROR << "could not load the dynamic library" << std::endl;
           return nullptr;
       }
-      return ((getNameOfLib) GetProcAddress(hGetProcIDDLL, "getName"))();
+      return ((getNameOfLib) (GetProcAddress(hGetProcIDDLL, "getName")))();
 #else
       void *handle = dlopen(path.c_str(), RTLD_LAZY);
       return ((getNameOfLib)(dlsym(handle, "getName")))();
