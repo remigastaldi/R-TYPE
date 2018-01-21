@@ -1,10 +1,10 @@
 #include "Map1.hpp"
 
-Map1::Map1(std::string name, std::pair<int, int> level)
-{
-	_name = name;
-	_level = level;
-}
+//Map1::Map1(std::string name, std::pair<int, int> level)
+//{
+//	_name = name;
+//	_level = level;
+//}
 
 Map1::~Map1() {}
 

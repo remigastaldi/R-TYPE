@@ -10,15 +10,12 @@
 
 #include <cstddef>
 
-#define INVALID_COMPONENT 0
-
 namespace ECS
 {
   typedef size_t ComponentType;
 
   struct Component
   {
-    static const ComponentType Type = INVALID_COMPONENT;
   };
 
 }

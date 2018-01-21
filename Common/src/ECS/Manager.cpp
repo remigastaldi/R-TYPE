@@ -118,7 +118,7 @@ namespace ECS
 
   std::shared_ptr<Component> Manager::getComponent(Entity e, ComponentType ct)
   {
-    if (e == INVALID_ENTITY || ct == INVALID_COMPONENT)
+    if (e == INVALID_ENTITY)
     {
       return nullptr;
     }
@@ -133,34 +133,9 @@ namespace ECS
     return store->get(e);
   }
 
-  bool Manager::addComponent(Entity e, ComponentType ct, std::shared_ptr<Component> c)
-  {
-    if (e == INVALID_ENTITY || ct == INVALID_COMPONENT)
-    {
-      return false;
-    }
-
-    std::shared_ptr<Store> store(getStore(ct));
-
-    if (store == nullptr)
-    {
-      return false;
-    }
-
-    auto it = _entities.find(e);
-
-    if (it == _entities.end())
-    {
-      return false;
-    }
-
-    it->second.insert(ct);
-    return store->add(e, c);
-  }
-
   std::shared_ptr<Component> Manager::extractComponent(Entity e, ComponentType ct)
   {
-    if (e == INVALID_ENTITY || ct == INVALID_COMPONENT)
+    if (e == INVALID_ENTITY)
     {
       return nullptr;
     }

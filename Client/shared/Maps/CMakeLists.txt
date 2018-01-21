@@ -1,0 +1,1 @@
+add_library(KirbyMap SHARED KirbyMap/KirbyMap.hpp KirbyMap/KirbyMap.cpp)

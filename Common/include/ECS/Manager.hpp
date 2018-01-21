@@ -13,6 +13,8 @@
 
 #include  "ECS/Components/CommonComponents.hpp"
 
+#include <AlfredBase/Utils/Counter.hpp>
+
 #include  <map>
 #include  <memory>
 #include  <set>
@@ -52,7 +54,6 @@ namespace ECS
     template<typename C>
     bool createStoreFor() {
       static_assert(std::is_base_of<Component, C>::value, "C must be a Component");
-      static_assert(C::Type != INVALID_COMPONENT, "C must define its type");
       return createStoreFor(C::Type);
     }
 
@@ -60,27 +61,50 @@ namespace ECS
 
     template<typename C>
     std::shared_ptr<C> getComponent(Entity e) {
-      static_assert(std::is_base_of<C, C>::value, "C must be a Component");
-      static_assert(C::Type != INVALID_COMPONENT, "C must define its type");
+      static_assert(std::is_base_of<Component, C>::value, "C must be a Component");
       return std::static_pointer_cast<C>(getComponent(e, C::Type));
     }
 
 
-    bool addComponent(Entity e, ComponentType ct, std::shared_ptr<Component> c);
+      template <typename C>
+    bool addComponent(Entity e, ComponentType ct, std::shared_ptr<Component> c)
+      {
+        size_t comptype = Alfred::Utils::GetTypeID<C>();
+
+        if (e == INVALID_ENTITY)
+        {
+          return false;
+        }
+
+        std::shared_ptr<Store> store(getStore(comptype));
+
+        if (store == nullptr)
+        {
+          return false;
+        }
+
+        auto it = _entities.find(e);
+
+        if (it == _entities.end())
+        {
+          return false;
+        }
+
+        it->second.insert(comptype);
+        return store->add(e, c);
+      };
 
     template<typename C>
     bool addComponent(Entity e, C c) {
-      static_assert(std::is_base_of<C, C>::value, "C must be a Component");
-      static_assert(C::Type != INVALID_COMPONENT, "C must define its type");
-      return addComponent(e, C::Type, std::static_pointer_cast<Component>(std::make_shared<C>(c)));
+      static_assert(std::is_base_of<Component, C>::value, "C must be a Component");
+      return addComponent<C>(e, C::Type, std::static_pointer_cast<Component>(std::make_shared<C>(c)));
     }
 
     std::shared_ptr<Component> extractComponent(Entity e, ComponentType ct);
 
     template<typename C>
     std::shared_ptr<C> extractComponent(Entity e) {
-      static_assert(std::is_base_of<C, C>::value, "C must be a Component");
-      static_assert(C::Type != INVALID_COMPONENT, "C must define its type");
+      static_assert(std::is_base_of<Component, C>::value, "C must be a Component");
       return std::static_pointer_cast<C>(extractComponent(e, C::Type));
     }
 

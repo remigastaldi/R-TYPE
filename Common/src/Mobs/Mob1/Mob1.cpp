@@ -1,10 +1,10 @@
 #include "Mob1.hpp"
 
-Mob1::Mob1(const std::string &name, int difficulty)
-{
-	_name = name;
-	_difficulty = difficulty;
-}
+//Mob1::Mob1(const std::string &name, int difficulty)
+//{
+//	_name = name;
+//	_difficulty = difficulty;
+//}
 
 Mob1::~Mob1() {}
 
