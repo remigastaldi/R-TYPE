@@ -5,7 +5,7 @@
 ** Login	leliev_t
 **
 ** Started on	Sun Jan 14 22:23:16 2018 Tanguy Lelievre
-** Last update	Sun Jan 21 03:58:30 2018 Tanguy Lelievre
+** Last update	Sun Jan 21 05:44:38 2018 Tanguy Lelievre
 */
 
 #include "Communication/AsioSyncUdpNetwork.hpp"
@@ -16,6 +16,15 @@ _context(),
 _endpoint(boost::asio::ip::udp::v4(), _port),
 _socket(_context, _endpoint),
 _lastEndpoint()
+{
+}
+
+AsioSyncUdpNetwork::AsioSyncUdpNetwork(int port, int serverPort) :
+_port(port),
+_context(),
+_endpoint(boost::asio::ip::udp::v4(), _port),
+_socket(_context, _endpoint),
+_lastEndpoint(boost::asio::ip::udp::v4(), _port)
 {
 }
 
