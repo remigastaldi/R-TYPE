@@ -15,6 +15,7 @@ namespace GameEngine
     _resourcesManager(),
     _ecsManager(),
     _guiManager(_window),
+    _soundManager(_resourcesManager, _eventManager),
     _window(videoMode, "R-Type", sf::Style::Titlebar | sf::Style::Resize),
     _ip(ip),
     _gameEngineTick(60),
