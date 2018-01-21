@@ -2,7 +2,7 @@
  * @Author: Remi Gastaldi <gastal_r>
  * @Date:   2018-01-13T01:04:05+01:00
  * @Last modified by:   gastal_r
- * @Last modified time: 2018-01-21T02:01:13+01:00
+ * @Last modified time: 2018-01-21T05:49:52+01:00
  */
 
 
@@ -170,21 +170,9 @@ namespace ECS
 
     for (auto& sys : _systems)
     {
-      LOG_INFO << "components" << std::endl;
-      for (const auto &it : components)
-        LOG_INFO << it << std::endl;
-
-
       const std::set<ComponentType> needed = sys->getNeededComponents();
-
-      LOG_INFO << "needed" << std::endl;
-      for (const auto &it : needed)
-        LOG_INFO << it << std::endl;
-
-
       if (!components.empty() && std::includes(components.begin(), components.end(), needed.begin(), needed.end()))
       {
-        LOG_INFO << "SALUT" << std::endl;
         sys->addEntity(e);
         n++;
       }

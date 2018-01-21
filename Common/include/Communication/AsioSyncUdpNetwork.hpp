@@ -10,6 +10,7 @@
 class AsioSyncUdpNetwork : public ICommunication {
 public:
   AsioSyncUdpNetwork(int);
+  AsioSyncUdpNetwork(int, int);
   virtual	~AsioSyncUdpNetwork();
 
   virtual void	connect(const std::string &);

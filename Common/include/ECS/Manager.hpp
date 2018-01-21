@@ -2,7 +2,7 @@
  * @Author: Remi Gastaldi <gastal_r>
  * @Date:   2018-01-13T01:04:20+01:00
  * @Last modified by:   gastal_r
- * @Last modified time: 2018-01-21T00:46:07+01:00
+ * @Last modified time: 2018-01-21T05:51:14+01:00
  */
 
 
@@ -71,7 +71,6 @@ namespace ECS
     bool addComponent(Entity e, ComponentType ct, std::shared_ptr<Component> c)
       {
         size_t comptype = Alfred::Utils::GetTypeID<C>();
-        LOG_INFO << comptype << std::endl;
 
         if (e == INVALID_ENTITY)
         {
@@ -82,7 +81,6 @@ namespace ECS
 
         if (store == nullptr)
         {
-          LOG_ERROR << "STORE NULL" << std::endl;
           return false;
         }
 
