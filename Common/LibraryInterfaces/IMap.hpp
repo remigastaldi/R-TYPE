@@ -7,8 +7,8 @@
 class IMap
 {
   public:
-    virtual ~IMap() = 0;
     IMap(ECS::Manager &ecs, EventManager::Manager &event) {};
+    virtual ~IMap() = 0;
 
     virtual const std::string &getName() const = 0;
     virtual const std::pair<int, int> &getNeededLevel() const = 0;

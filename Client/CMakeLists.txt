@@ -89,4 +89,4 @@ file(GLOB copySource "${CMAKE_BINARY_DIR}/SFML/lib/*${CMAKE_SHARED_LIBRARY_SUFFI
 file(TO_NATIVE_PATH "${CMAKE_BINARY_DIR}/Client" copyDest)
 
 #MAPS
-add_subdirectory(shared/Maps)
+add_subdirectory(shared)
