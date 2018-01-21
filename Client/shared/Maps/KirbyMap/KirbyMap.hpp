@@ -9,10 +9,10 @@ class KirbyMap : public IMap
     std::string _name = "kirbyMap";
 
   public:
-    KirbyMap();
+    KirbyMap(ECS::Manager &ecs, EventManager::Manager &event);
     ~KirbyMap() override;
     const std::string &getName() const override;
     const std::pair<int, int> &getNeededLevel() const override;
-    void update(const float time, ECS::Manager &ecs, EventManager::Manager &event) override;
+    void update(const float time) override;
 };
 
