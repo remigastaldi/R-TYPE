@@ -5,21 +5,23 @@
 ** Login	leliev_t
 **
 ** Started on	Wed Jan 17 21:21:19 2018 Tanguy Lelievre
-** Last update	Thu Jan 18 22:35:26 2018 Tanguy Lelievre
+** Last update	Sun Jan 21 04:01:42 2018 Tanguy Lelievre
 */
 
 #pragma once
 
 #include	"RoomManager.hpp"
-#include	"Communication/AsioSyncUdpNetwork.hpp"
 
 class	Server {
 public:
   Server();
   ~Server();
 
-  void	acceptClient();
+  void	waitClientPacket();
+  void	manageClientPacket(std::string &);
+  std::string login();
 private:
-  // RoomManager	_roomManager;
   AsioSyncUdpNetwork	_net;
+  RoomManager	_roomManager;
+
 };

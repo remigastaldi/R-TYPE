@@ -18,10 +18,11 @@ public:
   virtual void	send(const std::string &, const std::string &);
   virtual void  disconnect();
 
-  // virtual	std::string	&getLastSender() const;
+  virtual	std::string	getLastSender() const;
 private:
   int	_port;
   boost::asio::io_context _context;
   boost::asio::ip::udp::endpoint	_endpoint;
   boost::asio::ip::udp::socket	_socket;
+  boost::asio::ip::udp::endpoint	_lastEndpoint;
 };
