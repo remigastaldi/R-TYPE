@@ -5,7 +5,7 @@
 ** Login	leliev_t
 **
 ** Started on	Sat Jan 20 15:45:53 2018 Tanguy Lelievre
-** Last update	Sun Jan 21 01:45:34 2018 Tanguy Lelievre
+** Last update	Sun Jan 21 20:45:39 2018 Tanguy Lelievre
 */
 
 #pragma	once
@@ -13,12 +13,11 @@
 #include <string>
 #include <unordered_map>
 
-class	Packet
+class	UDPPacket
 {
 public:
-  Packet();
-  Packet(std::string &, const std::string &);
-  ~Packet();
+  UDPPacket();
+  virtual ~UDPPacket();
 
   std::string	const &getIp() const;
   void	setIp(std::string &);
@@ -29,6 +28,8 @@ public:
   std::string	getData(const std::string &) const;
   void	setData(std::string &, std::string &);
 
+  void	deleteData(std::string &);
+
   std::string	const &getToken();
   void	setToken(std::string &);
 
@@ -37,8 +38,6 @@ public:
 
   int	getTimestamp() const;
   void	setTimestamp(int);
-
-  std::string	toString();
 
 private:
   std::unordered_map<std::string, std::string>	_data;

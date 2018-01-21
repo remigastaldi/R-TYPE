@@ -1,11 +1,12 @@
 #pragma once
 
-#include <functional>
-#include <unordered_map>
-#include <boost/asio.hpp>
 #include <stdexcept>
-#include "ICommunication.hpp"
 #include <iostream>
+#include <boost/asio.hpp>
+#include <boost/archive/text_iarchive.hpp>
+#include <boost/archive/text_oarchive.hpp>
+#include "ICommunication.hpp"
+#include "UDPPacket.hpp"
 
 class AsioSyncUdpNetwork : public ICommunication {
 public:
@@ -14,9 +15,9 @@ public:
   virtual	~AsioSyncUdpNetwork();
 
   virtual void	connect(const std::string &);
-  virtual std::string	receive();
-  virtual void	send(const std::string &);
-  virtual void	send(const std::string &, const std::string &);
+  virtual UDPPacket	receive();
+  virtual void	send(UDPPacket &);
+  virtual void	send(UDPPacket &, const std::string &);
   virtual void  disconnect();
 
   virtual	std::string	getLastSender() const;

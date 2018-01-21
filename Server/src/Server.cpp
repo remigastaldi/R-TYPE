@@ -5,7 +5,7 @@
 ** Login	leliev_t
 **
 ** Started on	Wed Jan 17 21:20:53 2018 Tanguy Lelievre
-** Last update	Sun Jan 21 04:05:07 2018 Tanguy Lelievre
+** Last update	Sun Jan 21 20:54:31 2018 Tanguy Lelievre
 */
 
 #include <iostream>
@@ -31,27 +31,26 @@ std::string	Server::login()
 
 void	Server::waitClientPacket()
 {
-  std::string	msg;
-
+  UDPPacket	packet;
   for (;;)
   {
-    msg = _net.receive();
-    manageClientPacket(msg);
+    packet = _net.receive();
+    manageClientPacket(packet);
   }
 }
 
-void	Server::manageClientPacket(std::string &msg)
+void	Server::manageClientPacket(UDPPacket &packet)
 {
-  Packet	rpacket(msg, _net.getLastSender());
-  if (rpacket.getToken().length() == 0)
+  if (packet.getToken().length() == 0)
   {
     std::string token = login();
-    rpacket.setToken(token);
+    packet.setToken(token);
     _roomManager.addPlayer(token);
-    _net.send("player ajouté", _net.getLastSender());
+    std::cout << packet.getCommand() << std::endl;
+    _net.send(packet, _net.getLastSender());
   }
   else
   {
-    _roomManager.transferRequest(rpacket);
+    _roomManager.transferRequest(packet);
   }
 }

@@ -2,7 +2,7 @@
  * @Author: Remi Gastaldi <gastal_r>
  * @Date:   2018-01-17T04:02:41+01:00
  * @Last modified by:   gastal_r
- * @Last modified time: 2018-01-21T01:28:05+01:00
+ * @Last modified time: 2018-01-21T22:10:01+01:00
  */
 
 
@@ -10,6 +10,7 @@
 
 #include  "config.hpp"
 
+#include "SoundManager.hpp"
 #include  "ResourcesManager.hpp"
 #include  "ECS/Systems/CommonSystems.hpp"
 #include  "ECS/Manager.hpp"
@@ -29,6 +30,22 @@
 
 namespace GameEngine
 {
+  struct GameManagers
+  {
+    GameManagers(ResourcesManager &_resourcesManager, EventManager::Manager &_eventManager,
+      ECS::Manager &_ecsManager, SoundManager &_soundManager)
+      : resourcesManager(_resourcesManager),
+      eventManager(_eventManager),
+      ecsManager(_ecsManager),
+      soundManager(_soundManager)
+    {}
+
+    ResourcesManager  &resourcesManager;
+    EventManager::Manager &eventManager;
+    ECS::Manager    &ecsManager;
+    SoundManager    &soundManager;
+  };
+
   class Client
   {
   public:
@@ -50,6 +67,7 @@ namespace GameEngine
     ECS::Manager      _ecsManager;
     GUI::Manager      _guiManager;
     AsioSyncUdpNetwork _network;
+    SoundManager  _soundManager;
     // SceneManager   _sceneManager;
     // LibraryLoader _libraryLoader;
     // Network _network;

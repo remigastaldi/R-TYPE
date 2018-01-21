@@ -15,6 +15,7 @@ namespace GameEngine
     _resourcesManager(),
     _ecsManager(),
     _guiManager(_window),
+    _soundManager(_resourcesManager, _eventManager),
     _window(videoMode, "R-Type", sf::Style::Titlebar | sf::Style::Resize),
     _ip(ip),
     _gameEngineTick(60),
@@ -45,7 +46,14 @@ namespace GameEngine
     _eventManager.addEvent<void, sf::Event>("KeyPressedEvent");
     _eventManager.addEvent<void, sf::Event>("KeyReleasedEvent");
 
-    _network.send("trying connection to server", "127.0.0.1");
+    UDPPacket	packet;
+    std::unordered_map<std::string, std::string>	map;
+
+    map["ip"] = "127.0.0.1";
+    map["cmd"] = "connection";
+
+    packet.setData(map);
+    _network.send(packet, "127.0.0.1");
   }
 
   void  Client::playGame(const std::string &message)
