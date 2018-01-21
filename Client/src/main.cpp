@@ -6,13 +6,15 @@
  */
 
 #include  "Client.hpp"
-
+#include "DynamicLibrary/LibLoader.hpp"
 
 int main(int ac, char *av[])
 {
-
   if constexpr (DEBUG)
     std::cout << "DEBUG ON" << std::endl;
+
+  LibLoader l;
+  l.move.addFolder("");
 
   //Config logger
   Logger::get().setOutput(CONSOLE_LOG);
