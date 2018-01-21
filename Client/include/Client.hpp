@@ -25,44 +25,45 @@
 
 #include  <chrono>
 #include  <cmath>
+#include <DynamicLibrary/LibLoader.hpp>
 
 namespace GameEngine
 {
   class Client
   {
-  public:
-    Client(const std::string &ip, sf::VideoMode &videoMode);
+    public:
+      Client(const std::string &ip, sf::VideoMode &videoMode);
 
-    void  init(void);
-    void  run(void);
+      void init(void);
+      void run(void);
 
-    void  update(void);
-    void  handleEvents(void);
-    void  render(float alpha);
+      void update(void);
+      void handleEvents(void);
+      void render(float alpha);
 
-    void  playGame(const std::string &);
-    void  exitGame(const std::string &);
+      void playGame(const std::string &);
+      void exitGame(const std::string &);
 
-  private:
-    EventManager::Manager _eventManager;
-    ResourcesManager  _resourcesManager;
-    ECS::Manager      _ecsManager;
-    GUI::Manager      _guiManager;
-    AsioSyncUdpNetwork _network;
-    SoundManager  _soundManager;
-    GameEngine::GameManagers _gameManagers;
-    // SceneManager   _sceneManager;
-    // LibraryLoader _libraryLoader;
-    // Network _network;
+    private:
+      EventManager::Manager _eventManager;
+      ResourcesManager _resourcesManager;
+      ECS::Manager _ecsManager;
+      GUI::Manager _guiManager;
+      AsioSyncUdpNetwork _network;
+      SoundManager _soundManager;
+      GameEngine::GameManagers _gameManagers;
+      // SceneManager   _sceneManager;
+       LibLoader _libraryLoader;
+      // Network _network;
 
       std::shared_ptr<Ship> _ship;
 
-    sf::RenderWindow _window;
+      sf::RenderWindow _window;
 
-    std::string _ip;
+      std::string _ip;
 
-    double  _gameEngineTick;
-    double  _maxFrameRate;
-    bool    _running;
+      double _gameEngineTick;
+      double _maxFrameRate;
+      bool _running;
   };
 }

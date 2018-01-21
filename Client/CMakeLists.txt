@@ -36,7 +36,7 @@ target_sources(${NAME}
 
 include(../Common/common.cmake)
 
-target_link_libraries(${NAME} -lboost_system -lboost_serialization sfml-system sfml-graphics sfml-window sfml-audio AlfredBase -lstdc++fs stdc++fs)
+target_link_libraries(${NAME} -lboost_system -lboost_serialization sfml-system sfml-graphics sfml-window sfml-audio AlfredBase -lstdc++fs stdc++fs -ldl)
 
 if (UNIX)
   list(APPEND COMPILE_OPTIONS

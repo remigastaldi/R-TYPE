@@ -10,3 +10,9 @@ add_library(BasicAttack SHARED Attack/BasicAttack/BasicAttack.cpp Attack/BasicAt
 #MOVE
 add_library(StraightMove SHARED Move/StraightMove/StraightMove.cpp Move/StraightMove/StraightMove.hpp)
 add_library(UpAndDownMove SHARED Move/UpAndDown/UpAndDownMove.cpp Move/UpAndDown/UpAndDownMove.hpp)
+
+set_target_properties(KirbyMap PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/ressources/map)
+set_target_properties(Metallos PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/ressources/mob)
+set_target_properties(BasicAttack PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/ressources/attack)
+set_target_properties(StraightMove PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/ressources/move)
+set_target_properties(UpAndDownMove PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/ressources/move)
