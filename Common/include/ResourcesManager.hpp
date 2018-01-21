@@ -10,6 +10,7 @@
 
 #include  <unordered_map>
 #include  <memory>
+#include <Logger/Logger.hpp>
 
 class Resourcebase
 {
@@ -72,12 +73,18 @@ public:
   template<typename C>
 	std::shared_ptr<C> get(const std::string &name)
 	{
+    if (_resources.count(name) <= 0)
+      LOG_ERROR << "Ressource " << name << " dont exist" << std::endl;
+
     return (std::static_pointer_cast<C>(_resources[name]));
 	}
 
   template<typename S>
 	typename S::ContentType &getContent(const std::string &name)
 	{
+    if (_resources.count(name) <= 0)
+      LOG_ERROR << "Ressource " << name << " dont exist" << std::endl;
+
     return (std::static_pointer_cast<S>(_resources[name])->getContent());
 	}
 

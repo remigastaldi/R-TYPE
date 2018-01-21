@@ -21,7 +21,7 @@ const std::string &BasicAttack::getName() const
 void BasicAttack::update(const float time)
 {
   if (!_eventSet)
-    event.listen<void, int, int, ECS::Entity>("player hit", [&](int x, int y, ECS::Entity playerHit) -> void {
-      ecs.getComponent<ECS::Components::Stats>(playerHit).get()->health -= _baseDamage;
+    _event.listen<void, int, int, ECS::Entity>("player hit", [&](int x, int y, ECS::Entity playerHit) -> void {
+      _ecs.getComponent<ECS::Components::Stats>(playerHit).get()->health -= _baseDamage;
     });
 }
