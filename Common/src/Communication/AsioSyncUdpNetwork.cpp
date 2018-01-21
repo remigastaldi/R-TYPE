@@ -88,6 +88,14 @@ void	AsioSyncUdpNetwork::send(UDPPacket &packet, const std::string &ip)
   }
 }
 
+void	AsioSyncUdpNetwork::send(std::unordered_map<std::string, std::string>	&map, const std::string &ip)
+{
+  UDPPacket	packet;
+  packet.setData(map);
+  send(packet, ip);
+}
+
+
 void  AsioSyncUdpNetwork::disconnect()
 {
   if (_socket.is_open() == true)
