@@ -7,6 +7,6 @@ enum class OS { Linux, Mac, Windows };
 constexpr OS the_os = OS::Linux;
 #elif __APPLE__
 constexpr OS the_os = OS::Mac;
-#elif __WIN32
+#elif WIN32
 constexpr OS the_os = OS::Windows;
 #endif

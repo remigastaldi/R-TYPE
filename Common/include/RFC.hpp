@@ -5,7 +5,7 @@ namespace RFC
   enum Responses
   {
     SUCCESS,
-    ERROR,
+    FAIL,
     PONG,
     FRIEND_LIST,
     PROFIL,

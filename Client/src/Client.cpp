@@ -48,14 +48,12 @@ namespace GameEngine
     _eventManager.addEvent<void, sf::Event>("KeyPressedEvent");
     _eventManager.addEvent<void, sf::Event>("KeyReleasedEvent");
 
-    UDPPacket	packet;
     std::unordered_map<std::string, std::string>	map;
 
     map["ip"] = "127.0.0.1";
     map["cmd"] = RFC::Commands::LOGIN;
-    
-    packet.setData(map);
-    _network.send(packet, "127.0.0.1");
+
+    _network.send(map, "127.0.0.1");
   }
 
   void  Client::playGame(const std::string &message)
