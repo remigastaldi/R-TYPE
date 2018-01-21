@@ -68,16 +68,10 @@ namespace GameEngine
   }
   void  Client::run(void)
   {
-	  // StartPage	startPageScene(_resourcesManager, _guiManager, _eventManager);
-    //
-	  // startPageScene.onEnter();
-    //
-    // LobbyPlayer lobbyPlayerScene(_resourcesManager,_guiManager, _eventManager);
-    //
-	  // lobbyPlayerScene.onEnter();
+	  IngameHUD ingameHUDScene(_resourcesManager, _guiManager, _eventManager);
+	  ingameHUDScene.onEnter();
 
     _ship = std::make_shared<Ship>(_gameManagers);
-
     double nextGameTick = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now().time_since_epoch()).count();
 
     auto t1 = std::chrono::high_resolution_clock::now();

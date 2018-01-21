@@ -20,7 +20,9 @@
 #include  "RFC.hpp"
 
 #include  "StartPage/StartPage.hpp"
-#include "LobbyPlayer/LobbyPlayer.hpp"
+#include  "LobbyPlayer/LobbyPlayer.hpp"
+#include  "IngameHUD/IngameHUD.hpp"
+
 #include "Ship.hpp"
 
 #include  <chrono>
