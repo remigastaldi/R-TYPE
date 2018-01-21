@@ -5,7 +5,7 @@
 ** Login	leliev_t
 **
 ** Started on	Sat Jan 20 22:26:56 2018 Tanguy Lelievre
-** Last update	Sun Jan 21 03:17:30 2018 Tanguy Lelievre
+** Last update	Sun Jan 21 19:07:50 2018 Tanguy Lelievre
 */
 
 #include "RoomManager.hpp"
@@ -20,7 +20,7 @@ RoomManager::~RoomManager()
 {
 }
 
-void	RoomManager::transferRequest(Packet &packet)
+void	RoomManager::transferRequest(UDPPacket &packet)
 {
 }
 

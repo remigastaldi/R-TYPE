@@ -5,10 +5,11 @@
 ** Login	leliev_t
 **
 ** Started on	Sun Jan 14 22:23:16 2018 Tanguy Lelievre
-** Last update	Sun Jan 21 05:44:38 2018 Tanguy Lelievre
+** Last update	Sun Jan 21 20:35:43 2018 Tanguy Lelievre
 */
 
 #include "Communication/AsioSyncUdpNetwork.hpp"
+#include <boost/serialization/unordered_map.hpp>
 
 AsioSyncUdpNetwork::AsioSyncUdpNetwork(int port) :
 _port(port),
@@ -40,33 +41,48 @@ void	AsioSyncUdpNetwork::connect(const std::string &port)
   _port = std::stoi(port);
 }
 
-std::string	AsioSyncUdpNetwork::receive()
+UDPPacket	AsioSyncUdpNetwork::receive()
 {
-  std::string msg(1024, 0);
-
+  UDPPacket	packet;
+  std::unordered_map<std::string, std::string>	map;
   try {
-    _socket.receive_from(boost::asio::buffer(msg), _lastEndpoint);
+    std::string archive_data(1024, 0);
+    _socket.receive_from(boost::asio::buffer(archive_data), _lastEndpoint);
+    std::istringstream archive_stream(archive_data);
+    boost::archive::text_iarchive archive(archive_stream);
+    archive >> map;
+    packet.setData(map);
   } catch (std::exception &e) {
     std::cout << e.what() << std::endl;
     throw std::runtime_error("Error receive.");
   }
-  return (msg);
+  return (packet);
 }
 
-void	AsioSyncUdpNetwork::send(const std::string &msg)
+void	AsioSyncUdpNetwork::send(UDPPacket &packet)
 {
   try {
-    _socket.send_to(boost::asio::buffer(msg), _endpoint);
+    std::ostringstream archive_stream;
+    boost::archive::text_oarchive archive(archive_stream);
+    archive << packet.getData();
+    std::string outbound_data_ = archive_stream.str();
+
+    _socket.send_to(boost::asio::buffer(outbound_data_), _lastEndpoint);
   } catch (std::exception &e) {
     throw std::runtime_error("Error send.");
   }
 }
 
-void	AsioSyncUdpNetwork::send(const std::string &msg, const std::string &ip)
+void	AsioSyncUdpNetwork::send(UDPPacket &packet, const std::string &ip)
 {
   try {
+    std::ostringstream archive_stream;
+    boost::archive::text_oarchive archive(archive_stream);
+    archive << packet.getData();
+    std::string outbound_data_ = archive_stream.str();
+
     _lastEndpoint.address(boost::asio::ip::address::from_string(ip));
-    _socket.send_to(boost::asio::buffer(msg), _lastEndpoint);
+    _socket.send_to(boost::asio::buffer(outbound_data_), _lastEndpoint);
   } catch (std::exception &e) {
     throw std::runtime_error("Error send.");
   }
