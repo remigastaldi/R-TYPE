@@ -21,7 +21,7 @@
 #include  "Communication/AsioSyncUdpNetwork.hpp"
 
 #include  "StartPage/StartPage.hpp"
-#include "LobbyPlayer.hpp"
+#include "LobbyPlayer/LobbyPlayer.hpp"
 #include "Ship.hpp"
 
 #include  <chrono>
