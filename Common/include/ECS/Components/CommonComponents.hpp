@@ -2,7 +2,7 @@
  * @Author: Remi Gastaldi <gastal_r>
  * @Date:   2018-01-13T20:15:43+01:00
  * @Last modified by:   gastal_r
- * @Last modified time: 2018-01-21T02:59:38+01:00
+ * @Last modified time: 2018-01-21T04:01:06+01:00
  */
 
 
@@ -29,13 +29,18 @@ namespace ECS
 
     struct Direction : ECS::Component
     {
-      explicit Direction(int _direction)
-      : direction(_direction)
+      explicit Direction(int _xDirection, int _yDirection, int _speed)
+      : xDirection(_xDirection),
+      yDirection(_yDirection),
+      speed(_speed)
         {}
 
-      int direction;
+      int xDirection;
+      int yDirection;
 
-      static const ECS::ComponentType Type = 100;
+      int speed;
+
+      static const ECS::ComponentType Type = 2;
     };
   }
 }

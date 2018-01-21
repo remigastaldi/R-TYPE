@@ -2,7 +2,7 @@
  * @Author: Remi Gastaldi <gastal_r>
  * @Date:   2018-01-20T20:45:49+01:00
  * @Last modified by:   gastal_r
- * @Last modified time: 2018-01-21T02:45:12+01:00
+ * @Last modified time: 2018-01-21T04:23:13+01:00
  */
 
 
@@ -22,10 +22,8 @@ public:
   Ship(ResourcesManager &resourceManager, EventManager::Manager &eventManager, ECS::Manager &ecsManager);
 
 
-  void  go_Up(const std::string &data);
-  void  go_Down(const std::string &data);
-  void  go_Right(const std::string &data);
-  void  go_Left(const std::string &data);
+  void  KeyPressed(sf::Event);
+  void  KeyRelease(sf::Event);
 
 private:
   ECS::Entity   _entity;
