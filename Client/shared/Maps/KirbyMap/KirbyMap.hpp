@@ -2,25 +2,34 @@
 
 #include <LibraryInterfaces/IMob.hpp>
 #include "IMap.hpp"
+#include "Maps/ILevels.hpp"
 
 class KirbyMap : public IMap
 {
   private:
     std::pair<int, int> _neededLevel = std::make_pair(0, 5);
-    std::string _name = "kirbyMap";
+
+    EventManager::EventListener _listener;
 
     int _wave = 0;
 
-    std::unordered_map<ECS::Entity, IMob *> _mobs;
-
     ECS::Manager &_ecs;
     EventManager::Manager &_event;
+    LibLoader &_loader;
+
+    std::vector<std::unique_ptr<ILevels *>> _levels;
+
+    bool _isEnd = false;
 
   public:
-    KirbyMap(ECS::Manager &ecs, EventManager::Manager &event);
+    KirbyMap(ECS::Manager &ecs, EventManager::Manager &event, LibLoader &loader);
     ~KirbyMap() override;
-    const std::string &getName() const override;
     const std::pair<int, int> &getNeededLevel() const override;
-    void update(const float time) override;
+    void update() override;
+    bool isEnd() override;
 };
 
+extern "C" std::string getName()
+{
+  return "KirbyMap";
+}

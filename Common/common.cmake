@@ -16,7 +16,4 @@ target_sources(${NAME}
 
         ${CMAKE_SOURCE_DIR}/Common/src/Communication/AsioSyncUdpNetwork.cpp
         ${CMAKE_SOURCE_DIR}/Common/src/Communication/Packet.cpp
-
-				${CMAKE_SOURCE_DIR}/Common/src/Mobs/Mob1/Mob1.cpp
-				${CMAKE_SOURCE_DIR}/Common/src/Maps/Map1/Map1.cpp
 )

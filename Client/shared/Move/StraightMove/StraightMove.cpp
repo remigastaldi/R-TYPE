@@ -1,35 +1,18 @@
 #include "StraightMove.hpp"
 
-StraightMove::StraightMove(ECS::Manager &ecs, EventManager::Manager &event) :
-  IMove(ecs, event),
+StraightMove::StraightMove(ECS::Manager &ecs, EventManager::Manager &event, LibLoader &loader, ECS::Entity entity) :
+  IMove(ecs, event, loader, entity),
   _ecs(ecs),
-  _event(event)
+  _event(event),
+  _loader(_loader),
+  _owner(entity)
 {
-  _entity = _ecs.createEntity();
-
-  _ecs.addComponent<ECS::Components::Position>(_entity, *_ecs.getComponent<ECS::Components::Position>(_owner).get());
-  _ecs.addComponent<ECS::Components::Direction>(_entity, *_ecs.getComponent<ECS::Components::Direction>(_owner).get());
-  _ecs.addComponent<ECS::Components::Drawable>(_entity, ECS::Components::Drawable("ennemy1"));
+  _ecs.addComponent<ECS::Components::Direction>(_owner, ECS::Components::Direction(-1, 0, 20));
 }
 
 StraightMove::~StraightMove() = default;
 
-const std::string &StraightMove::getName() const
-{
-  return name;
-}
-
-void StraightMove::update(const float time)
+void StraightMove::update()
 {
   //go straight so nothing to do
-}
-
-ECS::Entity StraightMove::getID()
-{
-  return _entity;
-}
-
-void StraightMove::giveOwnerEntity(ECS::Entity entity)
-{
-  _owner  = entity;
 }

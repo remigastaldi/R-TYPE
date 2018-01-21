@@ -2,25 +2,27 @@
 
 #include <LibraryInterfaces/IMove.hpp>
 #include <ECS/Components/Components.hpp>
-
+#include <DynamicLibrary/LibLoader.hpp>
 
 class StraightMove : public IMove
 {
   private:
     std::string name = "StraightMove";
-    ECS::Entity _entity;
-    ECS::Entity _owner;
 
     size_t speed = 2;
 
     ECS::Manager &_ecs;
     EventManager::Manager &_event;
+    LibLoader &_loader;
+    ECS::Entity _owner;
 
   public:
-    StraightMove(ECS::Manager &ecs, EventManager::Manager &event);
+    StraightMove(ECS::Manager &ecs, EventManager::Manager &event, LibLoader &loader, ECS::Entity entity);
     ~StraightMove() override;
-    ECS::Entity getID() override;
-    const std::string &getName() const override;
-    void update(const float time) override;
-    void giveOwnerEntity(ECS::Entity entity) override;
+    void update() override;
 };
+
+extern "C" std::string getName()
+{
+  return "StraightMove";
+}

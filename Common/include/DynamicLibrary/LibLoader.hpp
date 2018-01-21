@@ -18,6 +18,8 @@
 #include <unordered_map>
 #include "DynamicLibrary/DynamicLibraryTypes.hpp"
 #include "Logger/Logger.hpp"
+#include "ECS/Manager.hpp"
+#include "ECS/Component.hpp"
 
 class IAttack;
 
@@ -37,12 +39,19 @@ class IScene;
 
 class IShipBluprint;
 
+class LibLoader;
+
+namespace EventManager
+{
+  class Manager;
+}
+
 #ifdef WIN32
 
-typedef IAttack *(__stdcall *getAttackSymbol)();
+typedef IAttack *(__stdcall *getAttackSymbol)(ECS::Manager &ecs, EventManager::Manager &event, LibLoader &libloader);
 typedef IMap *(__stdcall *getMapSymbol)();
-typedef IMob *(__stdcall *getMobSymbol)();
-typedef IMove *(__stdcall *getMoveSymbol)();
+typedef IMob *(__stdcall *getMobSymbol)(ECS::Manager &ecs, EventManager::Manager &event, LibLoader &libloader, ECS::Components::Position);
+typedef IMove *(__stdcall *getMoveSymbol)(ECS::Manager &ecs, EventManager::Manager &event, LibLoader &, ECS::Entity);
 typedef IPart *(__stdcall *getPartSymbol)();
 typedef IPowerUp *(__stdcall *getPowerUpSymbol)();
 typedef IRessources *(__stdcall *getRessourceSymbol)();
@@ -51,10 +60,12 @@ typedef IShipBluprint *(__stdcall *getShipBlueprintSymbol)();
 
 #else
 
-typedef IAttack *(*getAttackSymbol)();
+typedef std::string (*getNameOfLib)();
+
+typedef IAttack *(*getAttackSymbol)(ECS::Manager &, EventManager::Manager &, LibLoader &, ECS::Entity);
 typedef IMap *(*getMapSymbol)();
-typedef IMob *(*getMobSymbol)();
-typedef IMove *(*getMoveSymbol)();
+typedef IMob *(*getMobSymbol)(ECS::Manager &, EventManager::Manager &, LibLoader &, ECS::Components::Position);
+typedef IMove *(*getMoveSymbol)(ECS::Manager &, EventManager::Manager &, LibLoader &, ECS::Entity);
 typedef IPart *(*getPartSymbol)();
 typedef IPowerUp *(*getPowerUpSymbol)();
 typedef IRessources *(*getRessourceSymbol)();
@@ -69,70 +80,122 @@ class __lib__implem : public Alfred::Utils::NonCopyable
   private:
     std::string _osLibEnding;
     //map of file path, file names / bool (is visible), handler
-    std::unordered_map<std::string, std::pair<bool, std::vector<std::pair<std::string, T>>>> _files;
+    std::unordered_map<std::string, std::pair<bool, std::unordered_map<std::string, T>>> _files;
+    std::unordered_map<std::string, T> _symbols;
 
   private:
-    T getSymbol(std::string path)
+
+    std::string getLibName(const std::string &path)
     {
 #ifdef WIN32
-        HINSTANCE hGetProcIDDLL = LoadLibrary(std::move(path));
-        if (!hGetProcIDDLL) {
-            LOG_ERROR << "could not load the dynamic library" << std::endl;
-            return nullptr;
-        }
-        return (T) GetProcAddress(hGetProcIDDLL, "getSymbol");
+      HINSTANCE hGetProcIDDLL = LoadLibrary(path.c_str());
+      if (!hGetProcIDDLL) {
+          LOG_ERROR << "could not load the dynamic library" << std::endl;
+          return nullptr;
+      }
+      return ((getNameOfLib) GetProcAddress(hGetProcIDDLL, "getName"))();
 #else
-        void *handle = dlopen(std::move(path).c_str(), RTLD_LAZY);
-        return (T) dlsym(handle, "getSymbol");
+      void *handle = dlopen(path.c_str(), RTLD_LAZY);
+      return ((getNameOfLib)dlsym(handle, "getName"))();
+#endif
+    }
+
+    T getSymbol(const std::string &path)
+    {
+#ifdef WIN32
+      HINSTANCE hGetProcIDDLL = LoadLibrary(path.c_str());
+      if (!hGetProcIDDLL) {
+          LOG_ERROR << "could not load the dynamic library" << std::endl;
+          return nullptr;
+      }
+      return (T) GetProcAddress(hGetProcIDDLL, "getSymbol");
+#else
+      void *handle = dlopen(path.c_str(), RTLD_LAZY);
+      return (T)dlsym(handle, "getSymbol");
 #endif
     }
 
   public:
+    /**
+     * @brief Ctor
+     */
     __lib__implem()
     {
-        if constexpr (the_os == OS::Linux)
-            _osLibEnding = ".so";
-        else if constexpr (the_os == OS::Mac)
-            _osLibEnding = ".dylib";
-        else
-            _osLibEnding = ".dll";
+      if constexpr (the_os == OS::Linux)
+        _osLibEnding = ".so";
+      else if constexpr (the_os == OS::Mac)
+        _osLibEnding = ".dylib";
+      else
+        _osLibEnding = ".dll";
     }
+
+    /**
+     * @brief Update
+     * @return
+     */
 
     std::vector<std::pair<std::string, T>> update()
     {
-        std::vector<std::pair<std::string, T>> out;
-        for (auto &it : _files) {
-            if (it.second.first) {
-                for (auto &p: std::experimental::filesystem::directory_iterator(it.first)) {
-                    std::string curPath = p.path().generic_string();
-                    if (curPath.find(_osLibEnding) != 0) {
-                        for (const auto &iterator: it.second.second) {
-                            if (iterator.first.find(curPath) != 0) {
-                                T curSymbol = getSymbol(curPath);
-                                it.second.second.pushback(std::make_pair(curPath, curSymbol));
-                                out.push_back(std::make_pair(curPath, curSymbol));
-                            }
-                        }
-                    }
+      std::vector<std::pair<std::string, T>> out;
+      for (auto &it : _files) {
+        if (it.second.first) {
+          for (auto &p: std::experimental::filesystem::directory_iterator(it.first)) {
+            std::string curPath = p.path().generic_string();
+            if (curPath.find(_osLibEnding) != 0) {
+              for (const auto &iterator: it.second.second) {
+                if (iterator.first.count(curPath) > 0) {
+                  std::string nameOfLib = getLibName(curPath);
+                  T curSymbol = getSymbol(curPath);
+
+                  LOG_INFO << "Loading library: " << nameOfLib << std::endl;
+
+                  //Add to path / symbol
+                  it.second.second[curPath] = curSymbol;
+
+                  //Add to symbol map
+                  if (_symbols.count(nameOfLib) > 0)
+                    LOG_ERROR << "Lib with name " << nameOfLib << " already exist" << std::endl;
+                  else
+                    _symbols[nameOfLib] = curSymbol;
+
+                  //Add to ret
+                  out.push_back(std::make_pair(nameOfLib, curSymbol));
                 }
+              }
             }
+          }
         }
-        return out;
+      }
+      return out;
     };
 
+    /**
+     * @brief Add folder
+     * @param path
+     * @param toRefresh
+     * @return
+     */
     bool addFolder(const std::string &path, const bool toRefresh = false)
     {
-        std::experimental::filesystem::directory_entry entry(path);
-        if (std::experimental::filesystem::exists(entry))
-        {
-            _files[path] = std::make_pair(toRefresh, std::vector<std::pair<std::string, T>>());
-            return true;
-        }
-        return false;
+      std::experimental::filesystem::directory_entry entry(path);
+      if (std::experimental::filesystem::exists(entry)) {
+        _files[path] = std::make_pair(toRefresh, std::unordered_map<std::string, T>());
+        return true;
+      }
+      return false;
+    }
+
+    T get(const std::string &name)
+    {
+      if (_symbols.count(name) <= 0) {
+        LOG_ERROR << "Cant find lib " << name << std::endl;
+        return nullptr;
+      }
+      return _symbols[name];
     }
 };
 
-class LibLoader : public Alfred::Utils::NonCopyable
+class LibLoader
 {
   public:
     __lib__implem<getAttackSymbol> attack;
@@ -146,6 +209,6 @@ class LibLoader : public Alfred::Utils::NonCopyable
     __lib__implem<getShipBlueprintSymbol> shib_blueprint;
 
   public:
-    explicit LibLoader() = default;
+    LibLoader(){};
     ~LibLoader() = default;
 };

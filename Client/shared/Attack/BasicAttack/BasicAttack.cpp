@@ -1,51 +1,29 @@
 #include <ECS/Components/Components.hpp>
 #include "BasicAttack.hpp"
 
-BasicAttack::BasicAttack(ECS::Manager &ecs, EventManager::Manager &event) :
-  IAttack(ecs, event),
+BasicAttack::BasicAttack(ECS::Manager &ecs, EventManager::Manager &event, LibLoader &loader, ECS::Entity owner) :
+  IAttack(ecs, event, loader, owner),
   _ecs(ecs),
-  _event(event)
+  _event(event),
+  _loader(loader),
+  _ownerEntity(owner)
 {
   _entity = _ecs.createEntity();
-
-  ECS::Components::Stats tmp;
-  tmp.health = 1;
-
-  _ecs.addComponent<ECS::Components::Stats>(_entity, tmp);
+  attack();
 }
 
 BasicAttack::~BasicAttack()
 {
-  for (auto it : _move)
-    delete (it);
 }
 
-const std::string &BasicAttack::getName() const
+void BasicAttack::update()
 {
-  return _name;
-}
-
-void BasicAttack::update(const float time)
-{
-  if (_precTime != 0) {
-    _timeLeft -= time - _precTime;
-    if (_timeLeft <= 0) {
-      //spawn bullet
-      _timeLeft = _timeBetweenHit;
-      attack();
-    }
-  }
-  _precTime = time;
+  //TODO maybe something
 }
 
 ECS::Entity BasicAttack::getID()
 {
   return _entity;
-}
-
-void BasicAttack::giveOwnerEntity(ECS::Entity entity)
-{
-  _ownerEntity = entity;
 }
 
 void BasicAttack::attack()
@@ -60,8 +38,7 @@ void BasicAttack::attack()
 
 void BasicAttack::move()
 {
-  for (auto &it: _move)
-    it->update(_precTime);
+  (*_move)->update();
 }
 
 void BasicAttack::playerHit(ECS::Entity entity)
