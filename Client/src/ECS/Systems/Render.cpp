@@ -2,7 +2,7 @@
  * @Author: Remi Gastaldi <gastal_r>
  * @Date:   2018-01-20T04:50:36+01:00
  * @Last modified by:   gastal_r
- * @Last modified time: 2018-01-21T05:46:37+01:00
+ * @Last modified time: 2018-01-21T18:43:09+01:00
  */
 
 
@@ -15,7 +15,7 @@ namespace ECS
   namespace Systems
   {
   Render::Render(ResourcesManager &resourcesManager, ECS::Manager &ecsManager, sf::RenderWindow &window)
-    : System(RENDER_PRIORITY, {Alfred::Utils::GetTypeID<ECS::Components::Drawable>(), Alfred::Utils::GetTypeID<ECS::Components::Direction>()}, ecsManager),
+    : System(RENDER_PRIORITY, {Alfred::Utils::GetTypeID<ECS::Components::Drawable>()}, ecsManager),
       _window(window),
       _resourcesManager(resourcesManager)
     {}
@@ -28,8 +28,18 @@ namespace ECS
 
       sf::Sprite &sprite = _resourcesManager.getContent<Sprite>(body->sprite);
 
-      sprite.setPosition(sf::Vector2f(position->x + (direction->xDirection * direction->speed * delta),
-        position->y + (direction->yDirection * direction->speed * delta)));
+      int xDirection = 0;
+      int yDirection = 0;
+      int speed = 0;
+
+      if (direction)
+      {
+        xDirection = direction->xDirection;
+        yDirection = direction->yDirection;
+        speed = direction->speed;
+      }
+      sprite.setPosition(sf::Vector2f(position->x + (xDirection * speed * delta),
+        position->y + (yDirection * speed * delta)));
       _window.draw(sprite);
     }
   }
