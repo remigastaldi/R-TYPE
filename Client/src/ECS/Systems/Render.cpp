@@ -2,7 +2,7 @@
  * @Author: Remi Gastaldi <gastal_r>
  * @Date:   2018-01-20T04:50:36+01:00
  * @Last modified by:   gastal_r
- * @Last modified time: 2018-01-21T04:18:12+01:00
+ * @Last modified time: 2018-01-21T05:46:37+01:00
  */
 
 
@@ -31,8 +31,6 @@ namespace ECS
       sprite.setPosition(sf::Vector2f(position->x + (direction->xDirection * direction->speed * delta),
         position->y + (direction->yDirection * direction->speed * delta)));
       _window.draw(sprite);
-
-      // std::cout << "RENDER " << direction->direction << std::endl;
     }
   }
 }
