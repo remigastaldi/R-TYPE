@@ -2,7 +2,7 @@
  * @Author: Remi Gastaldi <gastal_r>
  * @Date:   2018-01-18T14:54:03+01:00
  * @Last modified by:   gastal_r
- * @Last modified time: 2018-01-20T04:03:59+01:00
+ * @Last modified time: 2018-01-21T23:51:49+01:00
  */
 
 
@@ -32,10 +32,12 @@ namespace GUI
 		}
 
 		template<typename S, typename ... Args>
-		void addElement(const std::string &name, Args&&... args)
+		std::shared_ptr<S> addElement(const std::string &name, Args&&... args)
     {
       _zIndex.emplace_back(name);
-			_elements.emplace(name, std::make_shared<S>(std::forward<Args>(args)...));
+      std::shared_ptr<S> ptr(std::make_shared<S>(std::forward<Args>(args)...));
+			_elements.emplace(name, ptr);
+      return (ptr);
 		}
 
 		template<typename S>
