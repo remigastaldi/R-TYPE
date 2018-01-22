@@ -5,7 +5,7 @@
 ** Login	leliev_t
 **
 ** Started on	Sat Jan 20 16:03:44 2018 Tanguy Lelievre
-** Last update	Mon Jan 22 04:54:57 2018 Tanguy Lelievre
+** Last update	Mon Jan 22 09:36:58 2018 Tanguy Lelievre
 */
 
 #include <iostream>
@@ -45,7 +45,7 @@ std::string	UDPPacket::getData(const std::string &key) const
 {
   if (_data.find(key) != _data.end())
     return (_data.at(key));
-  return (nullptr);
+  return ("");
 }
 
 void	UDPPacket::setData(std::string const &key, std::string const &value)
