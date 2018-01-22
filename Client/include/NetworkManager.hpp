@@ -17,6 +17,7 @@ public:
   void keyPressed(sf::Event event);
   void mainLoop();
   void update();
+  void playGame();
 
 private:
   AsioSyncUdpNetwork    _network;

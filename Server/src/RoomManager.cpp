@@ -35,7 +35,7 @@ bool	RoomManager::createRoom(const std::string &name)
 {
   Room	newRoom(_net);
 
-  if (_roomList.find(name) != _roomList.end())
+  if (_roomList.find(name) == _roomList.end())
   {
     newRoom.setName(name);
     newRoom.setId(name);
@@ -69,6 +69,7 @@ bool	RoomManager::joinRoom(const std::string &player, const std::string &roomId)
     }
     _roomList.at(roomId).addPlayer(_clientsList[player]);
     _clientsList[player].setRoom(roomId);
+    resp.setCommand(RFC::Commands::JOIN_ROOM);
     resp.setResult(RFC::Responses::SUCCESS);
     resp.setData("name", _clientsList[player].getName());
     _net.get()->send(resp);
