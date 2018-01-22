@@ -11,7 +11,7 @@ include_directories(SYSTEM ../SFML/include)
 include_directories(include)
 include_directories(shared)
 
-link_directories(SFML/lib)
+link_directories(${SFML_BINARY_DIR}/lib)
 
 add_executable(
         ${NAME}
@@ -38,10 +38,12 @@ target_sources(${NAME}
 
 include(../Common/common.cmake)
 
+link_directories(${SFML_BINARY_DIR}/lib)
+
 if (UNIX)
 target_link_libraries(${NAME} ${Boost_LIBRARIES} sfml-system sfml-graphics sfml-window sfml-audio AlfredBase -lstdc++fs stdc++fs -ldl)
 elseif(MSVC)
-  target_link_libraries(${NAME} ${Boost_LIBRARIES} sfml-system sfml-graphics sfml-window sfml-audio AlfredBase)
+  target_link_libraries(${NAME} ${Boost_LIBRARIES} AlfredBase ${SFML_BINARY_DIR}/lib/sfml-audio-d.lib ${SFML_BINARY_DIR}/lib/sfml-graphics-d.lib ${SFML_BINARY_DIR}/lib/sfml-system-d.lib ${SFML_BINARY_DIR}/lib/sfml-window-d.lib)
 endif()
 
 
@@ -94,5 +96,24 @@ endif()
 file(GLOB copySource "${CMAKE_BINARY_DIR}/SFML/lib/*${CMAKE_SHARED_LIBRARY_SUFFIX}")
 file(TO_NATIVE_PATH "${CMAKE_BINARY_DIR}/Client" copyDest)
 
+if(MSVC)
+add_custom_command(
+        TARGET ${NAME}
+        POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy ${copySource} ${copyDest})
+endif()
+
 #MAPS
 add_subdirectory(shared)
+
+#Copy Boost DLL
+if (WIN32)
+  file(COPY ${CMAKE_SOURCE_DIR}/SFML/extlibs/libs-msvc/x64/ DESTINATION ${copyDest})
+  file(COPY ${Boost_LIBRARY_DIRS}/../bin/ DESTINATION ${copyDest})
+  file(COPY ${CMAKE_BINARY_DIR}/SFML/lib/ DESTINATION ${copyDest})
+  #YOLo
+  file(GLOB_RECURSE SFML_EXTBLIBS_WIN
+          ${CMAKE_SOURCE_DIR}/SFML/extlibs/bin/x64/*.dll
+          )
+  file(COPY ${SFML_EXTBLIBS_WIN} DESTINATION ${copyDest})
+endif()
