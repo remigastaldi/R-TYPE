@@ -15,8 +15,11 @@ public:
 
   void init();
   void keyPressed(sf::Event event);
+  void mainLoop();
 
 private:
+  AsioSyncUdpNetwork    _network;
   EventManager::Manager &_eventManager;
-  AsioSyncUdpNetwork _network;
+  std::mutex            _mutex;
+  std::vector<UDPPacket> _queue;
 };

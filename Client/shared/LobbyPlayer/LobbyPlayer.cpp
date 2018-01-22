@@ -65,6 +65,11 @@ void	LobbyPlayer::onEnter()
 	_resources.load<Texture>("readyButton", "../../Client/media/img/playerLobby/readyButton.png");
 	_resources.load<Font>("neuropol", "../../Client/media/font/neuropol.ttf");
 
+	_eventManager.addEvent<void, int, const std::string &>("PlayerJoinEvent");
+
+	_eventManager.listen<void, int, const std::string &>("PlayerJoinEvent",
+																											[&](int id, const std::string &name){this->playerJoin(id, name);});
+
 	sf::Font &font = _resources.getContent<Font>("neuropol");
 	sf::Texture &waitingTexture = _resources.getContent<Texture>("window_whole");
 	sf::Texture &exitLobbyTexture = _resources.getContent<Texture>("exitButton");
