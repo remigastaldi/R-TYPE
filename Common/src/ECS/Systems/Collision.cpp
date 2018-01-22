@@ -2,7 +2,7 @@
  * @Author: Remi Gastaldi <gastal_r>
  * @Date:   2018-01-21T04:36:33+01:00
  * @Last modified by:   gastal_r
- * @Last modified time: 2018-01-22T04:19:20+01:00
+ * @Last modified time: 2018-01-22T07:30:11+01:00
  */
 
 
@@ -16,10 +16,10 @@ namespace ECS
   namespace Systems
   {
     Collision::Collision(EventManager::Manager &eventManager, ResourcesManager &resourceManager, ECS::Manager &ecsManager)
-      : System(COLLISION_PRIORITY, {Alfred::Utils::GetTypeID<ECS::Components::Position>(), Alfred::Utils::GetTypeID<ECS::Components::Collisionable>(),
-          Alfred::Utils::GetTypeID<ECS::Components::Drawable>()}, ecsManager),
-          _eventManager(eventManager),
-          _resourcesManager(resourceManager)
+      : System(COLLISION_PRIORITY, {ecsManager.GetTypeID<ECS::Components::Position>(), ecsManager.GetTypeID<ECS::Components::Collisionable>(),
+          ecsManager.GetTypeID<ECS::Components::Drawable>()}, ecsManager),
+          _resourcesManager(resourceManager),
+          _eventManager(eventManager)
       { }
 
     void Collision::init(void)
@@ -48,7 +48,7 @@ namespace ECS
 
         if (sprite.getGlobalBounds().intersects(entitySprite.getGlobalBounds()))
         {
-          _eventManager.fire<void, ECS::Entity, ECS::Entity>("Collision", it, e);
+          // _eventManager.fire<void, ECS::Entity, ECS::Entity>("Collision", it, e);
         }
       }
     }

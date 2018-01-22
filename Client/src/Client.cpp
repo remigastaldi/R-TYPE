@@ -2,7 +2,7 @@
  * @Author: Remi Gastaldi <gastal_r>
  * @Date:   2018-01-17T04:07:04+01:00
  * @Last modified by:   gastal_r
- * @Last modified time: 2018-01-22T01:50:29+01:00
+ * @Last modified time: 2018-01-22T07:32:17+01:00
  */
 
 
@@ -44,8 +44,8 @@ namespace GameEngine
     _ecsManager.createStoreFor<ECS::Components::Player>();
 
     _ecsManager.addSystem<ECS::Systems::Mouvement>(_eventManager, _ecsManager);
-    _ecsManager.addSystem<ECS::Systems::Render>(_resourcesManager, _ecsManager, _window);
     _ecsManager.addSystem<ECS::Systems::Collision>(_eventManager, _resourcesManager, _ecsManager);
+    _ecsManager.addSystem<ECS::Systems::Render>(_resourcesManager, _ecsManager, _window);
     _ecsManager.initSystems();
 
     // Create events
@@ -98,18 +98,6 @@ namespace GameEngine
     _myMap = _libraryLoader.map.get("KirbyMap")(_ecsManager, _eventManager, _libraryLoader);
 
     _ship = std::make_shared<Ship>(_gameManagers);
-
-    ECS::Entity entity = _gameManagers.ecs.createEntity();
-    _gameManagers.resources.load<Sprite>("playersSpaceship2", "../../Client/media/img/playerLobby/playersSpaceships.png");
-    sf::Sprite &sprite = _gameManagers.resources.getContent<Sprite>("playersSpaceship2");
-    sprite.setRotation(90);
-    sprite.setTextureRect(sf::IntRect(0, 0, 160, 160));
-    sprite.setScale(3, 3);
-
-    _gameManagers.ecs.addComponent<ECS::Components::Position>(entity, ECS::Components::Position(1500, 400));
-    _gameManagers.ecs.addComponent<ECS::Components::Drawable>(entity, ECS::Components::Drawable("playersSpaceship2"));
-    _gameManagers.ecs.addComponent<ECS::Components::Collisionable>(entity, ECS::Components::Collisionable(entity));
-    // _gameManagers.ecs.addComponent<ECS::Components::Direction>(entity, ECS::Components::Direction(0, 0, 7));
 
     long int nextGameTick = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now().time_since_epoch()).count();
 
@@ -181,15 +169,16 @@ namespace GameEngine
   {
     //_networkManager.update();
     _ship->update();
-    _myMap->update(); //TODO
-    _ecsManager.updateSystemsRange(0.f, 0, 1);
-	_parallax.updatePos();
+    _myMap->update();
+    _ecsManager.updateSystemsRange(0.f, 2, 2);
+    _ecsManager.updateSystemsRange(0.f, 0, 2);
+	  _parallax.updatePos();
   }
 
   void Client::render(float alpha)
   {
     _window.clear();
-	_parallax.update();
+	  _parallax.update();
     _ecsManager.updateSystemsRange(0.f, 2, 3);
     _guiManager.update(alpha);
     _window.display();
