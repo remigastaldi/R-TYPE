@@ -101,22 +101,19 @@ class __lib__implem : public Alfred::Utils::NonCopyable
     {
 #ifdef WIN32
       HINSTANCE hGetProcIDDLL = LoadLibrary(path.c_str());
-
       if (!hGetProcIDDLL) {
           LOG_ERROR << "could not load the dynamic library" << std::endl;
           return nullptr;
       }
 
-	  std::cout << "path = " << path << std::endl;
-
 	  getNameOfLib tmp = (getNameOfLib)(GetProcAddress(hGetProcIDDLL, "getName"));
 	  if (tmp == NULL)
 	  {
-		  std::cout << "YA uNE COUILLE " << GetLastError() << std::endl;
-		  while (true);
+		  LOG_ERROR << "Failed to load lib" << GetLastError() << " " << path << << std::endl;
+		  return "";
 	  }
 
-      return ((getNameOfLib) (GetProcAddress(hGetProcIDDLL, "getName")))();
+      return tmp();
 #else
       void *handle = dlopen(path.c_str(), RTLD_LAZY);
       char *lError = dlerror();
@@ -136,7 +133,14 @@ class __lib__implem : public Alfred::Utils::NonCopyable
           LOG_ERROR << "could not load the dynamic library" << std::endl;
           return nullptr;
       }
-      return (T) GetProcAddress(hGetProcIDDLL, "getSymbol");
+
+      T tmp = (T) GetProcAddress(hGetProcIDDLL, "getSymbol");
+      if (tmp == NULL)
+      {
+      		  LOG_ERROR << "Failed to load lib" << GetLastError() << " " << path << << std::endl;
+		        return nullptr;
+      }
+      return tmp;
 #else
       void *handle = dlopen(path.c_str(), RTLD_LAZY);
       char *lError = dlerror();
@@ -173,6 +177,9 @@ class __lib__implem : public Alfred::Utils::NonCopyable
           if (curPath.find(_osLibEnding) != 0) {
             if (it.second.count(curPath) <= 0) {
               //Get name
+
+              LOG_INFO << "Trying to load lib " << curPath << std::endl;
+
               std::string nameOfLib = getLibName(curPath);
 
               if (nameOfLib.empty())
