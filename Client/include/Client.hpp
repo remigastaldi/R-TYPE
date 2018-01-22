@@ -20,8 +20,8 @@
 #include  "NetworkManager.hpp"
 
 #include  "StartPage/StartPage.hpp"
-#include  "LobbyPlayer/LobbyPlayer.hpp"
 #include  "IngameHUD/IngameHUD.hpp"
+#include  "Parallax/Parallax.hpp"
 
 #include "Ship.hpp"
 
@@ -47,6 +47,7 @@ namespace GameEngine
       void exitGame(const std::string &);
 
     private:
+		Parallax _parallax;
       EventManager::Manager _eventManager;
       ResourcesManager _resourcesManager;
       ECS::Manager _ecsManager;
