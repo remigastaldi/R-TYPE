@@ -15,11 +15,16 @@ Ship::Ship(GameEngine::GameManagers &gameManagers)
     _fireTickCounter(0),
     _fire(false)
   {
-    _gameManagers.resources.load<Sprite>("playersSpaceship", "../../Client/media/img/playerLobby/playersSpaceships.png");
+	_gameManagers.resources.load<Sprite>("playersSpaceship", "../../Client/media/img/playerLobby/playersSpaceships.png");
+	_gameManagers.resources.load<Sprite>("playersMissiles", "../../Client/media/img/ship/playersMissiles.png");
     sf::Sprite &sprite = _gameManagers.resources.getContent<Sprite>("playersSpaceship");
     sprite.setRotation(90);
     sprite.setTextureRect(sf::IntRect(0, 0, 160, 160));
     sprite.setScale(0.6, 0.6);
+
+	sf::Sprite &spriteMissiles = _gameManagers.resources.getContent<Sprite>("playersMissiles");
+	spriteMissiles.setRotation(-90);
+	spriteMissiles.setTextureRect(sf::IntRect(0, 0, 30, 112));
 
     _gameManagers.ecs.addComponent<ECS::Components::Player>(_entity, ECS::Components::Player("Remi"));
     _gameManagers.ecs.addComponent<ECS::Components::Position>(_entity, ECS::Components::Position(200, 400));
@@ -297,8 +302,8 @@ void  Ship::fire(const std::string &msg)
   std::shared_ptr<ECS::Components::Position> position = _gameManagers.ecs.getComponent<ECS::Components::Position>(_entity);
 
   _gameManagers.ecs.addComponent<ECS::Components::Position>(e, ECS::Components::Position(
-    static_cast<size_t>(position->x + 100), static_cast<size_t>(position->y)));
-  _gameManagers.ecs.addComponent<ECS::Components::Drawable>(e, ECS::Components::Drawable("playersSpaceship"));
+    static_cast<size_t>(position->x), static_cast<size_t>(position->y + 60)));
+  _gameManagers.ecs.addComponent<ECS::Components::Drawable>(e, ECS::Components::Drawable("playersMissiles"));
   _gameManagers.ecs.addComponent<ECS::Components::Direction>(e, ECS::Components::Direction(1, 0, 30));
   _gameManagers.ecs.addComponent<ECS::Components::Collisionable>(e, ECS::Components::Collisionable(e, ECS::Components::Collisionable::Type::ALLY));
   _gameManagers.ecs.updateEntityToSystems(e);
