@@ -89,7 +89,7 @@ void NetworkManager::update()
           std::cout << "PLAYER NOT READY" << std::endl;
         }
         break;
-      case RFC::Commands::GAME_STARTED:
+      case RFC::Commands::START_GAME:
         std::cout << "GAME STARTED" << std::endl;
         _eventManager.fire<void, std::string const &>("changeScene", "IngameHUD");
         break;
