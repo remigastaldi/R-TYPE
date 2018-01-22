@@ -38,6 +38,12 @@ void NetworkManager::mainLoop()
   }
 }
 
+void NetworkManager::update()
+{
+
+
+}
+
 void NetworkManager::keyPressed(sf::Event event)
 {
   std::unordered_map<std::string, std::string>	map;
