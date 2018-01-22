@@ -89,6 +89,10 @@ void NetworkManager::update()
           std::cout << "PLAYER NOT READY" << std::endl;
         }
         break;
+      case RFC::Commands::GAME_STARTED:
+        std::cout << "GAME STARTED" << std::endl;
+        _eventManager.fire<void, std::string const &>("changeScene", "IngameHUD");
+        break;
       default:
           std::cout << "Unkown command " << std::to_string(static_cast<unsigned int>(it.getCommand())) << std::endl;
           std::cout << "Unkown response " << std::to_string(static_cast<unsigned int>(it.getResult())) << std::endl;
