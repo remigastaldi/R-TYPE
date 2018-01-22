@@ -1,3 +1,11 @@
+/**
+ * @Author: Remi Gastaldi <gastal_r>
+ * @Date:   2018-01-22T06:10:40+01:00
+ * @Last modified by:   gastal_r
+ * @Last modified time: 2018-01-22T10:48:23+01:00
+ */
+
+
 /*
 ** AsioSyncUdpNetwork.cpp for R-TYPE
 **
@@ -31,6 +39,10 @@ _lastEndpoint(boost::asio::ip::udp::v4(), serverPort)
 
 AsioSyncUdpNetwork::~AsioSyncUdpNetwork()
 {
+  if (_socket.is_open() == true)
+  {
+    _socket.close();
+  }
 }
 
 void	AsioSyncUdpNetwork::connect(const std::string &port)

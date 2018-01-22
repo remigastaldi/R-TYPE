@@ -1,3 +1,11 @@
+/**
+ * @Author: Remi Gastaldi <gastal_r>
+ * @Date:   2018-01-22T10:35:17+01:00
+ * @Last modified by:   gastal_r
+ * @Last modified time: 2018-01-22T10:56:07+01:00
+ */
+
+
 #include "NetworkManager.hpp"
 
 NetworkManager::NetworkManager(EventManager::Manager &eventManager) :
@@ -5,7 +13,6 @@ _network(4243, 8000),
 _eventManager(eventManager),
 _mutex(),
 _queue(),
-_mainLoop(),
 _token()
 {}
 
@@ -18,7 +25,7 @@ void NetworkManager::init()
   _eventManager.listen<void>("readyToPlayEvent", [&](){this->playerReady();});
   _eventManager.listen<void>("PlayGameEvent", [&](){this->playGame();});
 
-  _mainLoop = std::make_shared<std::thread>([&](){this->mainLoop();});
+  std::thread([&](){this->mainLoop();}).detach();
 
 
   UDPPacket packet;
