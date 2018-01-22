@@ -32,6 +32,8 @@ public:
 	void	onPause() {}
 	void	onResume() {}
 
+	void  closeLobby();
+
 	void	update(const float time, ECS::Manager &ecs, EventManager::Manager &event);
 
 private:

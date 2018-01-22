@@ -1,3 +1,11 @@
+/**
+ * @Author: Remi Gastaldi <gastal_r>
+ * @Date:   2018-01-22T10:02:46+01:00
+ * @Last modified by:   gastal_r
+ * @Last modified time: 2018-01-22T10:24:41+01:00
+ */
+
+
 #include "Metallos.hpp"
 
 Metallos::Metallos(ECS::Manager &ecs, EventManager::Manager &event, LibLoader &libLoader, ECS::Components::Position pos) :
@@ -16,7 +24,7 @@ Metallos::Metallos(ECS::Manager &ecs, EventManager::Manager &event, LibLoader &l
 
   _ecs.addComponent<ECS::Components::Position>(_me, pos);
   _ecs.addComponent<ECS::Components::Drawable>(_me, ECS::Components::Drawable(_TEXTURE_NAME));
-  _ecs.addComponent<ECS::Components::Collisionable>(_me, ECS::Components::Collisionable(_me));
+  _ecs.addComponent<ECS::Components::Collisionable>(_me, ECS::Components::Collisionable(_me, ECS::Components::Collisionable::Type::ENNEMY));
   _ecs.addComponent<ECS::Components::Stats>(_me, ECS::Components::Stats(1));
 
   _ecs.updateEntityToSystems(_me);

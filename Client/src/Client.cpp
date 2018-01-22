@@ -44,11 +44,14 @@ namespace GameEngine
     _ecsManager.createStoreFor<ECS::Components::Drawable>();
     _ecsManager.createStoreFor<ECS::Components::Direction>();
     _ecsManager.createStoreFor<ECS::Components::Collisionable>();
+		_ecsManager.createStoreFor<ECS::Components::Player>();
+    _ecsManager.createStoreFor<ECS::Components::Animated>();
     _ecsManager.createStoreFor<ECS::Components::Player>();
     _ecsManager.createStoreFor<ECS::Components::Stats>();
 
     _ecsManager.addSystem<ECS::Systems::Mouvement>(_eventManager, _ecsManager);
     _ecsManager.addSystem<ECS::Systems::Collision>(_eventManager, _resourcesManager, _ecsManager);
+		_ecsManager.addSystem<ECS::Systems::Animation>(_eventManager, _resourcesManager, _ecsManager);
     _ecsManager.addSystem<ECS::Systems::Render>(_resourcesManager, _ecsManager, _window);
     _ecsManager.initSystems();
 
@@ -65,7 +68,7 @@ namespace GameEngine
     _eventManager.addEvent<void, sf::Event>("KeyPressedEvent");
     _eventManager.addEvent<void, sf::Event>("KeyReleasedEvent");
 
-//    _networkManager.init();
+    _networkManager.init();
     //Loading library
    _libraryLoader.map.addFolder("../ressources/map/");
    _libraryLoader.mob.addFolder("../ressources/mob/");
@@ -183,11 +186,10 @@ namespace GameEngine
 
   void Client::update(void)
   {
-//    _networkManager.update();
+    _networkManager.update();
     _ship->update();
+    _ecsManager.updateSystemsRange(0.f, 0, 3);
     _myMap->update();
-    _ecsManager.updateSystemsRange(0.f, 2, 2);
-    _ecsManager.updateSystemsRange(0.f, 0, 2);
 	  _parallax.updatePos();
   }
 
@@ -195,7 +197,7 @@ namespace GameEngine
   {
     _window.clear();
 	  _parallax.update();
-    _ecsManager.updateSystemsRange(0.f, 2, 3);
+    _ecsManager.updateSystemsRange(0.f, 3, 4);
     _guiManager.update(alpha);
     _window.display();
   }

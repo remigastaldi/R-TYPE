@@ -1,3 +1,11 @@
+/**
+ * @Author: Remi Gastaldi <gastal_r>
+ * @Date:   2018-01-22T10:02:46+01:00
+ * @Last modified by:   gastal_r
+ * @Last modified time: 2018-01-22T10:25:04+01:00
+ */
+
+
 #include <ECS/Components/Components.hpp>
 #include "BasicAttack.hpp"
 
@@ -11,7 +19,7 @@ BasicAttack::BasicAttack(ECS::Manager &ecs, EventManager::Manager &event, LibLoa
   Logger::get().setOutput(CONSOLE_LOG);
 
   _entity = _ecs.createEntity();
-  _ecs.addComponent<ECS::Components::Collisionable>(_entity, ECS::Components::Collisionable(_entity));
+  _ecs.addComponent<ECS::Components::Collisionable>(_entity, ECS::Components::Collisionable(_entity, ECS::Components::Collisionable::Type::ENNEMY));
   _ecs.addComponent<ECS::Components::Drawable>(_entity, ECS::Components::Drawable(_TEXTURE));
   _ecs.addComponent<ECS::Components::Position>(_entity, *_ecs.getComponent<ECS::Components::Position>(_ownerEntity).get());
 

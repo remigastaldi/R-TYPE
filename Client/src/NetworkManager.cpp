@@ -1,3 +1,11 @@
+/**
+ * @Author: Remi Gastaldi <gastal_r>
+ * @Date:   2018-01-22T10:35:17+01:00
+ * @Last modified by:   gastal_r
+ * @Last modified time: 2018-01-22T10:56:07+01:00
+ */
+
+
 #include "NetworkManager.hpp"
 
 NetworkManager::NetworkManager(EventManager::Manager &eventManager) :
@@ -5,7 +13,6 @@ _network(4243, 8000),
 _eventManager(eventManager),
 _mutex(),
 _queue(),
-_mainLoop(),
 _token()
 {}
 
@@ -15,9 +22,10 @@ NetworkManager::~NetworkManager()
 void NetworkManager::init()
 {
   _eventManager.listen<void, sf::Event>("KeyPressedEvent", [&](sf::Event event){this->keyPressed(event);});
+  _eventManager.listen<void>("readyToPlayEvent", [&](){this->playerReady();});
   _eventManager.listen<void>("PlayGameEvent", [&](){this->playGame();});
 
-  _mainLoop = std::make_shared<std::thread>([&](){this->mainLoop();});
+  std::thread([&](){this->mainLoop();}).detach();
 
 
   UDPPacket packet;
@@ -25,7 +33,7 @@ void NetworkManager::init()
   packet.setData("usr", "root");
   packet.setData("pwd", "root");
 
-  _network.send(packet, "127.0.0.1");
+  _network.send(packet, "10.16.251.142");
   //_eventManager.fire<void, const std::string &>("PlayerJoinEvent", "Slut");
 
 }
@@ -64,10 +72,26 @@ void NetworkManager::update()
         break;
       case RFC::Commands::JOIN_ROOM:
         if (it.getResult() == RFC::Responses::SUCCESS) {
-          std::cout << "JOIN SUCCESS" << std::endl;
+          std::cout << "JOIN ROOM" << it.getData("name") << std::endl;
+          _eventManager.fire<void, std::string const &>("changeScene", "LobbyPlayer");
+          _eventManager.fire<void, std::string const &>("PlayerJoinEvent", it.getData("name"));
+        } else if (it.getResult() == RFC::Responses::PLAYER_JOIN) {
+          std::cout << "PLAYER JOIN" << it.getData("name") << std::endl;
+          _eventManager.fire<void, std::string const &>("PlayerJoinEvent", it.getData("name"));
         } else {
           std::cout << "JOIN ERROR" << std::endl;
         }
+        break;
+      case RFC::Commands::READY:
+        if (it.getResult() == RFC::Responses::PLAYER_READY) {
+          std::cout << "PLAYER " << it.getData("name") << " READY" << std::endl;
+        } else {
+          std::cout << "PLAYER NOT READY" << std::endl;
+        }
+        break;
+      case RFC::Commands::START_GAME:
+        std::cout << "GAME STARTED" << std::endl;
+        _eventManager.fire<void, std::string const &>("changeScene", "IngameHUD");
         break;
       default:
           std::cout << "Unkown command " << std::to_string(static_cast<unsigned int>(it.getCommand())) << std::endl;
@@ -101,6 +125,15 @@ void NetworkManager::playGame()
   packet.setCommand(RFC::Commands::CREATE_ROOM);
   packet.setToken(_token);
   packet.setData("roomId", "room1");
+
+  _network.send(packet);
+}
+
+void NetworkManager::playerReady()
+{
+  UDPPacket packet;
+  packet.setCommand(RFC::Commands::READY);
+  packet.setToken(_token);
 
   _network.send(packet);
 }
