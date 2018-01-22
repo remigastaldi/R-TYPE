@@ -23,4 +23,6 @@ private:
   EventManager::Manager &_eventManager;
   std::mutex            _mutex;
   std::vector<UDPPacket> _queue;
+  std::shared_ptr<std::thread>      _mainLoop;
+  std::string            _token;
 };

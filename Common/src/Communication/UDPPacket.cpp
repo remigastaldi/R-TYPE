@@ -48,7 +48,7 @@ std::string	UDPPacket::getData(const std::string &key) const
   return (nullptr);
 }
 
-void	UDPPacket::setData(std::string &key, std::string &value)
+void	UDPPacket::setData(std::string const &key, std::string const &value)
 {
   _data[key] = value;
 }
@@ -71,17 +71,26 @@ void	UDPPacket::setToken(std::string &token)
 
 RFC::Commands UDPPacket::getCommand() const
 {
-  return (static_cast<RFC::Commands>(_data.at("cmd")[0]));
+  if (_data.find("cmd") != _data.end())
+    return (static_cast<RFC::Commands>(std::stoi(_data.at("cmd"))));
+  return (RFC::Commands::UNKNOWN);
 }
 
-RFC::Commands UDPPacket::getResult() const
+RFC::Responses UDPPacket::getResult() const
 {
-  return (static_cast<RFC::Commands>(_data.at("res")[0]));
+  if (_data.find("res") != _data.end())
+    return (static_cast<RFC::Responses>(std::stoi(_data.at("res"))));
+  return (RFC::Responses::UNKNOWN);
 }
 
-void	UDPPacket::setCommand(std::string &cmd)
+void	UDPPacket::setCommand(RFC::Commands cmd)
 {
-  _data["cmd"] = cmd;
+  _data["cmd"] = std::to_string(static_cast<unsigned int>(cmd));
+}
+
+void	UDPPacket::setResult(RFC::Responses res)
+{
+  _data["cmd"] = std::to_string(static_cast<unsigned int>(res));
 }
 
 int	UDPPacket::getTimestamp() const

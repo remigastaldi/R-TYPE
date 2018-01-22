@@ -27,7 +27,7 @@ public:
   void	setData(std::unordered_map<std::string, std::string> &);
 
   std::string	getData(const std::string &) const;
-  void	setData(std::string &, std::string &);
+  void	setData(std::string const &, std::string const &);
 
   void	deleteData(std::string &);
 
@@ -35,9 +35,10 @@ public:
   void	setToken(std::string &);
 
   RFC::Commands getCommand() const;
-  void	setCommand(std::string &);
+  void	setCommand(RFC::Commands);
 
-  RFC::Commands getResult() const;
+  RFC::Responses getResult() const;
+  void	setResult(RFC::Responses);
 
   int	getTimestamp() const;
   void	setTimestamp(int);
