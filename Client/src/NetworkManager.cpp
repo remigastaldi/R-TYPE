@@ -9,7 +9,7 @@
 #include "NetworkManager.hpp"
 
 NetworkManager::NetworkManager(EventManager::Manager &eventManager) :
-_network(4243, 8000),
+_network(4242, 8000),
 _eventManager(eventManager),
 _mutex(),
 _queue(),
@@ -33,7 +33,7 @@ void NetworkManager::init()
   packet.setData("usr", "root");
   packet.setData("pwd", "root");
 
-  _network.send(packet, "127.0.0.1");
+  _network.send(packet, "10.16.251.142");
   //_eventManager.fire<void, const std::string &>("PlayerJoinEvent", "Slut");
 
 }
@@ -72,7 +72,11 @@ void NetworkManager::update()
         break;
       case RFC::Commands::JOIN_ROOM:
         if (it.getResult() == RFC::Responses::SUCCESS) {
+          std::cout << "JOIN ROOM" << it.getData("name") << std::endl;
           _eventManager.fire<void, std::string const &>("changeScene", "LobbyPlayer");
+          _eventManager.fire<void, std::string const &>("PlayerJoinEvent", it.getData("name"));
+        } else if (it.getResult() == RFC::Responses::PLAYER_JOIN) {
+          std::cout << "PLAYER JOIN" << it.getData("name") << std::endl;
           _eventManager.fire<void, std::string const &>("PlayerJoinEvent", it.getData("name"));
         } else {
           std::cout << "JOIN ERROR" << std::endl;

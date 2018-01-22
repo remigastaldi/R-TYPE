@@ -5,7 +5,7 @@
 ** Login	leliev_t
 **
 ** Started on	Sat Jan 20 22:26:56 2018 Tanguy Lelievre
-** Last update	Mon Jan 22 10:13:30 2018 Tanguy Lelievre
+** Last update	Mon Jan 22 10:54:20 2018 Tanguy Lelievre
 */
 
 #include "RoomManager.hpp"
@@ -79,6 +79,7 @@ bool	RoomManager::joinRoom(const std::string &player, const std::string &roomId)
     resp.setData("name", _clientsList[player].getName());
     _roomList.at(roomId).getRoomInfo(resp);
     _net.get()->send(resp);
+    resp.setResult(RFC::Responses::PLAYER_JOIN);
     _roomList.at(roomId).broadcast(resp);
     return (true);
   }
@@ -110,7 +111,7 @@ void	RoomManager::setPlayerReady(const std::string &player)
   _clientsList.at(player).getRoom().length() > 0 &&
   _roomList.find(_clientsList.at(player).getRoom()) != _roomList.end())
   {
-    _roomList.at(_clientsList[player].getRoom());
+    _roomList.at(_clientsList[player].getRoom()).setPlayerReady(_clientsList[player].getName());
     packet.setResult(RFC::Responses::PLAYER_READY);
     _roomList.at(_clientsList.at(player).getRoom()).getRoomInfo(packet);
     packet.setData("name", _clientsList.at(player).getName());
@@ -127,8 +128,6 @@ void	RoomManager::setPlayerReady(const std::string &player)
         ready++;
       }
     }
-    std::cout << "Players ready : " << ready << std::endl;
-    std::cout << "Players in room : " << ready << std::endl;
     if (ready == _roomList.at(_clientsList.at(player).getRoom()).getNbPlayer())
       {
         packet.setCommand(RFC::Commands::START_GAME);
