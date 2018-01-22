@@ -2,13 +2,11 @@
  * @Author: Remi Gastaldi <gastal_r>
  * @Date:   2018-01-20T04:50:36+01:00
  * @Last modified by:   gastal_r
- * @Last modified time: 2018-01-22T03:14:38+01:00
+ * @Last modified time: 2018-01-22T09:38:11+01:00
  */
 
 
 #include  "ECS/Systems/Render.hpp"
-#include  "ECS/Components/Components.hpp"
-#include  <iostream>
 
 namespace ECS
 {
