@@ -16,8 +16,8 @@ namespace ECS
   namespace Systems
   {
     Collision::Collision(ResourcesManager &resourceManager, ECS::Manager &ecsManager)
-      : System(COLLISION_PRIORITY, {Alfred::Utils::GetTypeID<ECS::Components::Position>(), Alfred::Utils::GetTypeID<ECS::Components::Collisionable>(),
-          Alfred::Utils::GetTypeID<ECS::Components::Drawable>()}, ecsManager),
+      : System(COLLISION_PRIORITY, {ecsManager.GetTypeID<ECS::Components::Position>(), ecsManager.GetTypeID<ECS::Components::Collisionable>(),
+          ecsManager.GetTypeID<ECS::Components::Drawable>()}, ecsManager),
           _resourcesManager(resourceManager)
       { }
 
@@ -29,7 +29,7 @@ namespace ECS
 
       sf::Sprite &entitySprite = _resourcesManager.getContent<Sprite>(entityDrawable->sprite);
 
-      std::shared_ptr<Store> store = getManager().getStore(Alfred::Utils::GetTypeID<ECS::Components::Collisionable>());
+      std::shared_ptr<Store> store = getManager().getStore(getManager().GetTypeID<ECS::Components::Collisionable>());
       std::set<ECS::Entity> entity = store->getEntities();
 
       for (auto & it : entity)

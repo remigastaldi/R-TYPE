@@ -19,6 +19,8 @@ Metallos::Metallos(ECS::Manager &ecs, EventManager::Manager &event, LibLoader &l
   _ecs.addComponent<ECS::Components::Position>(_me, pos);
   _ecs.addComponent<ECS::Components::Drawable>(_me, ECS::Components::Drawable("playersSpaceship"));
 
+  _ecs.updateEntityToSystems(_me);
+
   _movement = std::make_unique<IMove *>(_loader.move.get("UpAndDownMove")(_ecs, _event, _loader, _me));
 }
 

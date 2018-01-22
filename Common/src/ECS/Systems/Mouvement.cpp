@@ -13,7 +13,7 @@ namespace ECS
   namespace Systems
   {
     Mouvement::Mouvement(EventManager::Manager &eventManager, ECS::Manager &ecsManager)
-      : System(MOUVEMENT_PRIORITY, {Alfred::Utils::GetTypeID<ECS::Components::Position>(), Alfred::Utils::GetTypeID<ECS::Components::Direction>()}, ecsManager),
+      : System(MOUVEMENT_PRIORITY, {ecsManager.GetTypeID<ECS::Components::Position>(), ecsManager.GetTypeID<ECS::Components::Direction>()}, ecsManager),
       _eventManager(eventManager)
       {
         _eventManager.addEvent<void, ECS::Entity>("UnitOutOfSpace");

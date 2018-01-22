@@ -15,7 +15,7 @@ namespace ECS
   namespace Systems
   {
   Render::Render(ResourcesManager &resourcesManager, ECS::Manager &ecsManager, sf::RenderWindow &window)
-    : System(RENDER_PRIORITY, {Alfred::Utils::GetTypeID<ECS::Components::Drawable>()}, ecsManager),
+    : System(RENDER_PRIORITY, {ecsManager.GetTypeID<ECS::Components::Drawable>()}, ecsManager),
       _window(window),
       _resourcesManager(resourcesManager)
     {}
@@ -32,7 +32,7 @@ namespace ECS
       int yDirection = 0;
       int speed = 0;
 
-      std::shared_ptr<Store> store = getManager().getStore(Alfred::Utils::GetTypeID<ECS::Components::Drawable>());
+      std::shared_ptr<Store> store = getManager().getStore(getManager().GetTypeID<ECS::Components::Drawable>());
 
       if (direction)
       {

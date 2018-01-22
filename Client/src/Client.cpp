@@ -58,11 +58,11 @@ namespace GameEngine
 
     _networkManager.init();
     //Loading library
-//    _libraryLoader.map.addFolder("../ressources/map/");
-//    _libraryLoader.mob.addFolder("../ressources/mob/");
-//    _libraryLoader.move.addFolder("../ressources/move/");
-//    _libraryLoader.attack.addFolder("../ressources/attack/");
-//    _libraryLoader.updateAll();
+    _libraryLoader.map.addFolder("../ressources/map/");
+    _libraryLoader.mob.addFolder("../ressources/mob/");
+    _libraryLoader.move.addFolder("../ressources/move/");
+    _libraryLoader.attack.addFolder("../ressources/attack/");
+    _libraryLoader.updateAll();
 
     //Escape key
     _eventManager.listen<void, sf::Event>("KeyPressedEvent", [] (sf::Event ev) -> void {
@@ -96,7 +96,7 @@ namespace GameEngine
   	  // lobbyPlayerScene.onEnter();
     //
 
-//    _myMap = _libraryLoader.map.get("KirbyMap")(_ecsManager, _eventManager, _libraryLoader);
+    _myMap = _libraryLoader.map.get("KirbyMap")(_ecsManager, _eventManager, _libraryLoader);
 
 //    exit(0);
 
@@ -172,7 +172,7 @@ namespace GameEngine
   {
     _networkManager.update();
     _ship->update();
-//    _myMap->update(); //TODO
+    _myMap->update();
     _ecsManager.updateSystemsRange(0.f, 0, 1);
   }
 

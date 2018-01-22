@@ -9,7 +9,7 @@ KirbyMap::KirbyMap(ECS::Manager &ecs, EventManager::Manager &event, LibLoader &l
 {
   Logger::get().setOutput(CONSOLE_LOG);
 
-  _listener = _event.listen<void, int, int, ECS::Entity, ECS::Entity>("player hit", [&](int x, int y, ECS::Entity by,
+  _listener = _event.listen<void, ECS::Entity, ECS::Entity>("Collision", [&](ECS::Entity by,
                                                                                         ECS::Entity to) -> void {
 
     (*_levels[_wave])->playerHit(by, to);
@@ -24,7 +24,7 @@ KirbyMap::KirbyMap(ECS::Manager &ecs, EventManager::Manager &event, LibLoader &l
 
 KirbyMap::~KirbyMap()
 {
-  _event.unlisten<void, int, int, ECS::Entity, ECS::Entity>("player hit", _listener);
+  _event.unlisten<void, ECS::Entity, ECS::Entity>("Collision", _listener);
 }
 
 const std::pair<int, int> &KirbyMap::getNeededLevel() const

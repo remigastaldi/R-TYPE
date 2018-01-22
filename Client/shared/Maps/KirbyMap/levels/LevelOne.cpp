@@ -28,19 +28,23 @@ void LevelOne::update()
     return;
   }
 
-  _timeLeft -= 1;
+  if (_timeLeft > -10)
+    _timeLeft -= 1;
 
-  if (_timeLeft < 0) {
+  if (_timeLeft < 0 && _mobs.empty()) {
     _timeLeft = _timeBetweenMobSpawn;
     _nbMobSpawn -= 1;
 
     //Spawn a mob
     LOG_INFO << "Spawning a mob " << _nbMobSpawn << std::endl;
 
-    ECS::Components::Position pos(10, 10);
-    IMob *newMob = _loader.mob.get("Metallos")(_ecs, _event, _loader, pos);
+    IMob *newMob = _loader.mob.get("Metallos")(_ecs, _event, _loader, ECS::Components::Position(500, 500));
     _mobs[newMob->getID()] = std::make_unique<IMob *>(newMob);
   }
+
+  //Update mobs
+  for (auto &it : _mobs)
+    (*it.second)->update();
 }
 
 LevelOne::LevelOne(ECS::Manager &ecs, EventManager::Manager &event, LibLoader &libloader) :
