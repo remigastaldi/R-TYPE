@@ -10,6 +10,8 @@ include_directories(include)
 
 add_executable(
         ${NAME}
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/Client.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/Room.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/src/RoomManager.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/src/Server.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/src/main.cpp

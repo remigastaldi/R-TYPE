@@ -30,6 +30,18 @@ namespace ECS
 {
   class Mouvement;
   class Manager {
+
+
+    public:
+      template <typename T>
+      inline unsigned GetTypeID() noexcept
+      {
+        return static_cast<unsigned int>(typeid(T).hash_code());
+      }
+
+      /**
+       * @brief Class
+       */
   public:
     Manager();
 
@@ -56,7 +68,7 @@ namespace ECS
     template<typename C>
     bool createStoreFor() {
       static_assert(std::is_base_of<Component, C>::value, "C must be a Component");
-      return createStoreFor(Alfred::Utils::GetTypeID<C>());
+      return createStoreFor(GetTypeID<C>());
     }
 
     std::shared_ptr<Component> getComponent(Entity e, ComponentType ct);
@@ -64,14 +76,14 @@ namespace ECS
     template<typename C>
     std::shared_ptr<C> getComponent(Entity e) {
       static_assert(std::is_base_of<Component, C>::value, "C must be a Component");
-      return std::static_pointer_cast<C>(getComponent(e, Alfred::Utils::GetTypeID<C>()));
+      return std::static_pointer_cast<C>(getComponent(e, GetTypeID<C>()));
     }
 
 
       template <typename C>
     bool addComponent(Entity e, std::shared_ptr<Component> c)
       {
-        size_t comptype = Alfred::Utils::GetTypeID<C>();
+        size_t comptype = GetTypeID<C>();
 
         if (e == INVALID_ENTITY)
         {
@@ -107,7 +119,7 @@ namespace ECS
     template<typename C>
     std::shared_ptr<C> extractComponent(Entity e) {
       static_assert(std::is_base_of<Component, C>::value, "C must be a Component");
-      return std::static_pointer_cast<C>(extractComponent(e, Alfred::Utils::GetTypeID<C>()));
+      return std::static_pointer_cast<C>(extractComponent(e, GetTypeID<C>()));
     }
 
 

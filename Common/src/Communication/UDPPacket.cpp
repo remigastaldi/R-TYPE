@@ -5,7 +5,7 @@
 ** Login	leliev_t
 **
 ** Started on	Sat Jan 20 16:03:44 2018 Tanguy Lelievre
-** Last update	Sun Jan 21 20:45:42 2018 Tanguy Lelievre
+** Last update	Mon Jan 22 04:54:57 2018 Tanguy Lelievre
 */
 
 #include <iostream>
@@ -64,7 +64,7 @@ std::string const &UDPPacket::getToken()
   return (_data["token"]);
 }
 
-void	UDPPacket::setToken(std::string &token)
+void	UDPPacket::setToken(const std::string &token)
 {
   _data["token"] = token;
 }

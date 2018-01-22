@@ -23,7 +23,7 @@ namespace RFC
   {
       PING,
       LOGIN,
-      GET_FRIEND,
+      GET_FRIENDS,
       GET_PROFIL,
       GET_SHIP_INFO,
       BUY_SHIP_COMPONENT,

@@ -5,7 +5,7 @@
 ** Login	leliev_t
 **
 ** Started on	Sat Jan 20 15:45:53 2018 Tanguy Lelievre
-** Last update	Sun Jan 21 20:45:39 2018 Tanguy Lelievre
+** Last update	Mon Jan 22 04:53:24 2018 Tanguy Lelievre
 */
 
 #pragma	once
@@ -32,7 +32,7 @@ public:
   void	deleteData(std::string &);
 
   std::string	const &getToken();
-  void	setToken(std::string &);
+  void	setToken(const std::string &);
 
   RFC::Commands getCommand() const;
   void	setCommand(RFC::Commands);

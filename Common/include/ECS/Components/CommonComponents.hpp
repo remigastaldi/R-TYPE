@@ -2,7 +2,7 @@
  * @Author: Remi Gastaldi <gastal_r>
  * @Date:   2018-01-13T20:15:43+01:00
  * @Last modified by:   gastal_r
- * @Last modified time: 2018-01-22T04:04:41+01:00
+ * @Last modified time: 2018-01-22T05:51:46+01:00
  */
 
 
@@ -46,20 +46,11 @@ namespace ECS
 
     struct Collisionable : ECS::Component
     {
-      enum class Type
-      {
-        NEUTRAL,
-        ALLY,
-        ENEMY
-      };
-
-      explicit Collisionable(ECS::Entity _entity, Collisionable::Type _type)
-      : entity(_entity),
-      type(_type)
+      explicit Collisionable(ECS::Entity _entity)
+      : entity(_entity)
         {}
 
       Entity entity;
-      Collisionable::Type type;
     };
 
     struct Player : ECS::Component
