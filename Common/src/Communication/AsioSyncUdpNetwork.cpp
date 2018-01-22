@@ -95,6 +95,13 @@ void	AsioSyncUdpNetwork::send(std::unordered_map<std::string, std::string>	&map,
   send(packet, ip);
 }
 
+void	AsioSyncUdpNetwork::send(std::unordered_map<std::string, std::string>	&map)
+{
+  UDPPacket	packet;
+  packet.setData(map);
+  send(packet);
+}
+
 
 void  AsioSyncUdpNetwork::disconnect()
 {

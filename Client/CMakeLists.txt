@@ -25,6 +25,7 @@ target_sources(${NAME}
         ${CMAKE_CURRENT_SOURCE_DIR}/src/Client.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/src/GUIElements.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/src/Ship.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/NetworkManager.cpp
 
         # ECS
         ${CMAKE_CURRENT_SOURCE_DIR}/src/ECS/Systems/Render.cpp

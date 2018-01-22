@@ -16,7 +16,6 @@ namespace GameEngine
     _resourcesManager(),
     _ecsManager(),
     _guiManager(_window),
-    _network(4242, 8000),
     _soundManager(_resourcesManager, _eventManager),
     _gameManagers(_resourcesManager, _eventManager, _ecsManager, _soundManager),
     _libraryLoader(),
@@ -25,7 +24,8 @@ namespace GameEngine
     _ip(ip),
     _gameEngineTick(60),
     _maxFrameRate(60),
-    _running(true)
+    _running(true),
+    _networkManager(_eventManager)
   {}
 
   void Client::init()
@@ -52,22 +52,14 @@ namespace GameEngine
     _eventManager.addEvent<void, sf::Event>("KeyPressedEvent");
     _eventManager.addEvent<void, sf::Event>("KeyReleasedEvent");
 
-    std::unordered_map<std::string, std::string> map;
-
-    map["ip"] = "127.0.0.1";
-    map["cmd"] = RFC::Commands::LOGIN;
-
-    _network.send(map, "127.0.0.1");
-
+    _networkManager.init();
     //Loading library
     _libraryLoader.map.addFolder("ressources/map/");
     _libraryLoader.mob.addFolder("ressources/mob/");
     _libraryLoader.move.addFolder("ressources/move/");
     _libraryLoader.attack.addFolder("ressources/attack/");
-
     _libraryLoader.updateAll();
 
-//    exit(0);
   }
 
   void Client::playGame(const std::string &message)
