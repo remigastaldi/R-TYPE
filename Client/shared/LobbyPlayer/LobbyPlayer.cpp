@@ -63,7 +63,7 @@ void	LobbyPlayer::onEnter()
 	_resources.load<Texture>("lobbiesBackground", "../../Client/media/img/lobbiesBackground.jpg");
 	_resources.load<Texture>("window_whole", "../../Client/media/img/playerLobby/window_whole.png");
 	_resources.load<Texture>("window_bottom", "../../Client/media/img/playerLobby/window_bottom.png");
-	_resources.load<Texture>("playersSpaceships", "../../Client/media/img/playerLobby/playersSpaceships.png");
+	_resources.load<Texture>("playersSpaceships", "../../Client/media/img/ship/allies/playersSpaceships.png");
 	_resources.load<Texture>("exitButton", "../../Client/media/img/playerLobby/exitButton.png");
 	_resources.load<Texture>("readyButtonState", "../../Client/media/img/playerLobby/readyButtonState.png");
 	_resources.load<Texture>("readyButton", "../../Client/media/img/playerLobby/readyButton.png");
