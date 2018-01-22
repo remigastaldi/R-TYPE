@@ -31,6 +31,7 @@ target_sources(${NAME}
         ${CMAKE_CURRENT_SOURCE_DIR}/src/NetworkManager.cpp
 
         # ECS
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/ECS/Systems/Animation.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/src/ECS/Systems/Render.cpp
 
         # Temporary

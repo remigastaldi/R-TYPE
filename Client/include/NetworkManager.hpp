@@ -18,7 +18,8 @@ public:
   void mainLoop();
   void update();
   void playGame();
-
+  void playerReady();
+  
 private:
   AsioSyncUdpNetwork    _network;
   EventManager::Manager &_eventManager;

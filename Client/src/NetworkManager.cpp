@@ -1,7 +1,7 @@
 #include "NetworkManager.hpp"
 
 NetworkManager::NetworkManager(EventManager::Manager &eventManager) :
-_network(4242, 8000),
+_network(4243, 8000),
 _eventManager(eventManager),
 _mutex(),
 _queue(),
@@ -15,6 +15,7 @@ NetworkManager::~NetworkManager()
 void NetworkManager::init()
 {
   _eventManager.listen<void, sf::Event>("KeyPressedEvent", [&](sf::Event event){this->keyPressed(event);});
+  _eventManager.listen<void>("readyToPlayEvent", [&](){this->playerReady();});
   _eventManager.listen<void>("PlayGameEvent", [&](){this->playGame();});
 
   _mainLoop = std::make_shared<std::thread>([&](){this->mainLoop();});
@@ -64,9 +65,17 @@ void NetworkManager::update()
         break;
       case RFC::Commands::JOIN_ROOM:
         if (it.getResult() == RFC::Responses::SUCCESS) {
-          std::cout << "JOIN SUCCESS" << std::endl;
+          _eventManager.fire<void, std::string const &>("changeScene", "LobbyPlayer");
+          _eventManager.fire<void, std::string const &>("PlayerJoinEvent", it.getData("name"));
         } else {
           std::cout << "JOIN ERROR" << std::endl;
+        }
+        break;
+      case RFC::Commands::READY:
+        if (it.getResult() == RFC::Responses::PLAYER_READY) {
+          std::cout << "PLAYER " << it.getData("name") << " READY" << std::endl;
+        } else {
+          std::cout << "PLAYER NOT READY" << std::endl;
         }
         break;
       default:
@@ -86,6 +95,15 @@ void NetworkManager::playGame()
   packet.setCommand(RFC::Commands::CREATE_ROOM);
   packet.setToken(_token);
   packet.setData("roomId", "room1");
+
+  _network.send(packet);
+}
+
+void NetworkManager::playerReady()
+{
+  UDPPacket packet;
+  packet.setCommand(RFC::Commands::READY);
+  packet.setToken(_token);
 
   _network.send(packet);
 }

@@ -84,6 +84,10 @@ void	StartPage::onEnter()
 
 void	StartPage::onExit()
 {
+	_resources.release("lobbiesBackground");
+	_resources.release("startButtons");
+	_resources.release("Gravedigger");
+	_resources.release("neuropol");
 	_guiManager.releaseAll();
 }
 

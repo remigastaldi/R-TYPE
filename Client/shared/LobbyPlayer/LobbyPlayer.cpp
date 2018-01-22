@@ -60,6 +60,7 @@ void	LobbyPlayer::playerLeave(const std::string &name)
 
 void	LobbyPlayer::onEnter()
 {
+	_players = 0;
 	_resources.load<Texture>("lobbiesBackground", "../../Client/media/img/lobbiesBackground.jpg");
 	_resources.load<Texture>("window_whole", "../../Client/media/img/playerLobby/window_whole.png");
 	_resources.load<Texture>("window_bottom", "../../Client/media/img/playerLobby/window_bottom.png");
@@ -69,17 +70,15 @@ void	LobbyPlayer::onEnter()
 	_resources.load<Texture>("readyButton", "../../Client/media/img/playerLobby/readyButton.png");
 	_resources.load<Font>("neuropol", "../../Client/media/font/neuropol.ttf");
 
-	_eventManager.addEvent<void, const std::string &>("PlayerJoinEvent");
 
 	_eventManager.listen<void, const std::string &>("PlayerJoinEvent", [&](const std::string &name){this->playerJoin(name);});
+	_eventManager.listen<void>("exitLobbyEvent", [&](){this->closeLobby();});
 
 	sf::Font &font = _resources.getContent<Font>("neuropol");
 	sf::Texture &waitingTexture = _resources.getContent<Texture>("window_whole");
 	sf::Texture &exitLobbyTexture = _resources.getContent<Texture>("exitButton");
 	sf::Texture &readyLobbyTexture = _resources.getContent<Texture>("readyButtonState");
 	sf::Texture &readyButtonLobbyTexture = _resources.getContent<Texture>("readyButton");
-
-
 
 	sf::Sprite waitingSprite(waitingTexture);
 	waitingSprite.setScale(1, 0.7);
@@ -96,8 +95,6 @@ void	LobbyPlayer::onEnter()
 	_guiManager.addElement<GUI::Image>("lobbyTitleSprite", sf::Vector2f(center.x, 0), waitingTexture, sf::Vector2f(1, 0.7));
 	_guiManager.addElement<GUI::Text>("lobbyTitle", sf::Vector2f(780, 120), "Waiting for players...", font, 30);
 
-	playerJoin("ProjetDeMerde");
-
 	_guiManager.addElement<GUI::Button>("readyToPlayButton", _eventManager, "readyToPlayEvent", sf::Vector2f(centerSlot.x + 80, 1000), readyToPlaySprite, readyToPlaySprite);
 	_guiManager.addElement<GUI::Text>("readyButtonText", sf::Vector2f(centerSlot.x, centerSlot.y), "Ready ?", font, 30);
 	_guiManager.centerElementWithAnOther<GUI::Button, GUI::Text>("readyToPlayButton", "readyButtonText", 0, -5);
@@ -107,7 +104,20 @@ void	LobbyPlayer::onEnter()
 
 void	LobbyPlayer::onExit()
 {
+	_resources.release("lobbiesBackground");
+	_resources.release("window_whole");
+	_resources.release("window_bottom");
+	_resources.release("playersSpaceships");
+	_resources.release("exitButton");
+	_resources.release("readyButtonState");
+	_resources.release("readyButton");
+	_resources.release("neuropol");
 	_guiManager.releaseAll();
+}
+
+void LobbyPlayer::closeLobby()
+{
+	_eventManager.fire<void, std::string const &>("changeScene", "StartPage");
 }
 
 void	LobbyPlayer::update(const float time, ECS::Manager &ecs, EventManager::Manager &event)
