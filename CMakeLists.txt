@@ -1,5 +1,8 @@
 cmake_minimum_required(VERSION 3.9)
 
+#Sfml need shared libs generated because yolo
+#set(BUILD_SHARED_LIBS true)
+
 set(CMAKE_CXX_STANDARD 17)
 
 if (CMAKE_BINARY_DIR STREQUAL CMAKE_SOURCE_DIR)
