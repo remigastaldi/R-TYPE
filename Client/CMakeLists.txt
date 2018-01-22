@@ -21,6 +21,7 @@ add_executable(
 target_compile_features(${NAME} PUBLIC cxx_std_17)
 
 target_compile_definitions(${NAME} PRIVATE WINDOWS_LEAN_AND_MEAN=1})
+target_compile_definitions(${NAME} PRIVATE WINDOWS_LEAN_AND_MEAN)
 
 target_sources(${NAME}
         PUBLIC
