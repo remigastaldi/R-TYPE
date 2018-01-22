@@ -26,8 +26,8 @@ namespace GameEngine
     _gameEngineTick(120),
     _maxFrameRate(60),
     _running(true),
-    _networkManager(_eventManager),
-	_parallax(_window, _resourcesManager)
+		_parallax(_window, _resourcesManager),
+    _networkManager(_eventManager)
   {
 		_parallax.loadLayer("../../Client/media/img/Parallax/background_01_parallax_01.png", 0.3, false);
 		_parallax.loadLayer("../../Client/media/img/Parallax/background_01_parallax_02.png", 0.5, false);
@@ -92,8 +92,11 @@ namespace GameEngine
 
   void Client::run(void)
   {
+		//StartPage  startPageScene(_resourcesManager, _guiManager, _eventManager);
+    //
+    //startPageScene.onEnter();
 	  IngameHUD ingameHUDScene(_resourcesManager, _guiManager, _eventManager);
-	  ingameHUDScene.onEnter();
+	 	ingameHUDScene.onEnter();
 
     _myMap = _libraryLoader.map.get("KirbyMap")(_ecsManager, _eventManager, _libraryLoader);
 
@@ -167,7 +170,7 @@ namespace GameEngine
 
   void Client::update(void)
   {
-    //_networkManager.update();
+    _networkManager.update();
     _ship->update();
     _myMap->update();
     _ecsManager.updateSystemsRange(0.f, 2, 2);

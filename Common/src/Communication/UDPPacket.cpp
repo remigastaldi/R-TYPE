@@ -90,7 +90,7 @@ void	UDPPacket::setCommand(RFC::Commands cmd)
 
 void	UDPPacket::setResult(RFC::Responses res)
 {
-  _data["cmd"] = std::to_string(static_cast<unsigned int>(res));
+  _data["res"] = std::to_string(static_cast<unsigned int>(res));
 }
 
 int	UDPPacket::getTimestamp() const

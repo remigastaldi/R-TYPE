@@ -15,6 +15,7 @@ NetworkManager::~NetworkManager()
 void NetworkManager::init()
 {
   _eventManager.listen<void, sf::Event>("KeyPressedEvent", [&](sf::Event event){this->keyPressed(event);});
+  _eventManager.listen<void>("PlayGameEvent", [&](){this->playGame();});
 
   _mainLoop = std::make_shared<std::thread>([&](){this->mainLoop();});
 
@@ -35,11 +36,12 @@ void NetworkManager::mainLoop()
   {
     UDPPacket packet = _network.receive();
 
+    _mutex.lock();
     if (packet.getCommand() == RFC::Commands::LOGIN && packet.getResult() == RFC::Responses::SUCCESS) {
       _token = packet.getData("token");
+    } else {
+      _queue.emplace_back(packet);
     }
-    _mutex.lock();
-    _queue.emplace_back(packet);
     _mutex.unlock();
 
   }
@@ -47,7 +49,45 @@ void NetworkManager::mainLoop()
 
 void NetworkManager::update()
 {
-  //std::cout << "salut" << std::endl;
+  UDPPacket packet;
+
+  packet.setToken(_token);
+  for (auto & it : _queue)
+  {
+    _mutex.lock();
+    switch (it.getCommand()) {
+      case RFC::Commands::CREATE_ROOM:
+        packet.setCommand(RFC::Commands::JOIN_ROOM);
+        packet.setData("roomId", "room1");
+
+        _network.send(packet);
+        break;
+      case RFC::Commands::JOIN_ROOM:
+        if (it.getResult() == RFC::Responses::SUCCESS) {
+          std::cout << "JOIN SUCCESS" << std::endl;
+        } else {
+          std::cout << "JOIN ERROR" << std::endl;
+        }
+        break;
+      default:
+          std::cout << "Unkown command " << std::to_string(static_cast<unsigned int>(it.getCommand())) << std::endl;
+          std::cout << "Unkown response " << std::to_string(static_cast<unsigned int>(it.getResult())) << std::endl;
+        break;
+    }
+
+    _queue.erase(_queue.begin());
+    _mutex.unlock();
+  }
+}
+
+void NetworkManager::playGame()
+{
+  UDPPacket packet;
+  packet.setCommand(RFC::Commands::CREATE_ROOM);
+  packet.setToken(_token);
+  packet.setData("roomId", "room1");
+
+  _network.send(packet);
 }
 
 void NetworkManager::keyPressed(sf::Event event)
@@ -62,7 +102,8 @@ void NetworkManager::keyPressed(sf::Event event)
     case sf::Keyboard::Key::Left:
     case sf::Keyboard::Key::Space:
       packet.setCommand(RFC::Commands::KEY_PRESSED);
-      packet.setData("key", std::to_string(event.key.code));
+      packet.setToken(_token);
+      packet.setData("key", std::to_string(static_cast<unsigned int>(event.key.code)));
 
       _network.send(packet);
       break;
