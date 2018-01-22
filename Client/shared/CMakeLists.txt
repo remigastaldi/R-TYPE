@@ -1,5 +1,44 @@
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
+if (UNIX)
+    list(APPEND COMPILE_OPTIONS
+            -O3
+            -W
+            -Wall
+            -Wuninitialized
+            -Winit-self
+            -Wunsafe-loop-optimizations
+            -Woverloaded-virtual
+            -Wshadow
+            -Wsign-conversion
+            -Wsign-promo
+            -Wstrict-null-sentinel
+            -Wstrict-overflow=4
+            -Wundef
+            -Weffc++
+            -Wfloat-equal
+            -Wcast-align
+            -Wmissing-declarations
+            -Wmissing-include-dirs
+            -Wswitch-enum
+            -Wlogical-op
+            -Wnoexcept
+            -Winvalid-pch
+            -Wredundant-decls
+            -Wformat=2
+            -Wmissing-format-attribute
+            -Wformat-nonliteral
+            -flto
+            -Wodr
+            )
+    if (DEBUG)
+        list(APPEND COMPILE_OPTIONS -g3)
+    else()
+        #impossible due to libs warnings
+        # list(APPEND COMPILE_OPTIONS -Werror)
+    endif()
+endif()
+
 #MAPS
 add_library(KirbyMap SHARED Maps/KirbyMap/KirbyMap.hpp Maps/KirbyMap/KirbyMap.cpp Maps/ILevels.hpp Maps/KirbyMap/levels/LevelOne.cpp Maps/KirbyMap/levels/LevelOne.hpp ${COMMON_SOURCES})
 

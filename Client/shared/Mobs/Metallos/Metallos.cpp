@@ -12,6 +12,8 @@ Metallos::Metallos(ECS::Manager &ecs, EventManager::Manager &event, LibLoader &l
 
   _me = _ecs.createEntity();
 
+  LOG_INFO << "Entity ID " << _me << std::endl;
+
   _ecs.addComponent<ECS::Components::Position>(_me, pos);
   _ecs.addComponent<ECS::Components::Drawable>(_me, ECS::Components::Drawable(_TEXTURE_NAME));
   _ecs.addComponent<ECS::Components::Collisionable>(_me, ECS::Components::Collisionable(_me));
@@ -19,12 +21,15 @@ Metallos::Metallos(ECS::Manager &ecs, EventManager::Manager &event, LibLoader &l
 
   _ecs.updateEntityToSystems(_me);
 
-  _movement = std::make_unique<IMove *>(_loader.move.get(_MOVE_NAME)(_ecs, _event, _loader, _me));
+  std::shared_ptr<IMove> tmp;
+  tmp.reset(_loader.move.get(_MOVE_NAME)(_ecs, _event, _loader, _me));
+  _movement = tmp;
 }
 
 Metallos::~Metallos()
 {
-  _ecs.destroyEntity(_me);
+  LOG_SUCCESS << "Metaloss se detruit" << std::endl;
+//  _ecs.destroyEntity(_me);
 }
 
 const int Metallos::getDifficulty()
@@ -35,11 +40,11 @@ const int Metallos::getDifficulty()
 void Metallos::update()
 {
   //Update movement
-  (*_movement)->update();
+  _movement->update();
 
   //Update attacks
   for (auto &it : _attacks)
-    (*it.second)->update();
+    it.second->update();
 
   _curTime -= 1;
 
@@ -47,8 +52,9 @@ void Metallos::update()
   {
     _curTime = _timeBetweenAttack;
     //Spawn an attack
-    IAttack *curAttack = _loader.attack.get(_ATTACK_NAME)(_ecs, _event, _loader, _me);
-    _attacks[curAttack->getID()] = std::make_unique<IAttack *>(curAttack);
+    std::shared_ptr<IAttack> tmp;
+    tmp.reset(_loader.attack.get(_ATTACK_NAME)(_ecs, _event, _loader, _me));
+    _attacks[tmp->getID()] = tmp;
   }
 }
 
@@ -62,9 +68,9 @@ void Metallos::playerHit(ECS::Entity by, ECS::Entity to)
   for (auto &it: _attacks)
   {
     if (it.first == by)
-      (*it.second)->playerHit(to);
+      it.second->playerHit(to);
     if (it.first == to)
-      (*it.second)->playerHit(by);
+      it.second->playerHit(by);
   }
 }
 

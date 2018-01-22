@@ -2,6 +2,7 @@
 
 Parallax::Parallax(sf::RenderWindow &win, ResourcesManager &resourcesManager) :
 	_win(win),
+	_layers(),
 	_resources(resourcesManager)
 {
 }

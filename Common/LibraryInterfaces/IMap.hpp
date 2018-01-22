@@ -8,8 +8,12 @@
 class IMap
 {
   public:
-    IMap(ECS::Manager &ecs, EventManager::Manager &event, LibLoader &libloader) {};
-    virtual ~IMap() = 0;
+    IMap(ECS::Manager &ecs, EventManager::Manager &event, LibLoader &libloader) {
+      (void)ecs;
+      (void)event;
+      (void)libloader;
+    };
+    virtual ~IMap() = default;
 
     virtual const std::pair<int, int> &getNeededLevel() const = 0;
     virtual void update() = 0;

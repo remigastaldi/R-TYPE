@@ -58,7 +58,8 @@ namespace ECS
 
   std::set<ComponentType> Manager::getEntityComponents(Entity entity) const
   {
-
+    if (_entities.count(entity) <= 0)
+      return {};
     auto it = _entities.find(entity);
 
     return (it->second);

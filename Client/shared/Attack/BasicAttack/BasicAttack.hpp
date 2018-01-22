@@ -7,20 +7,22 @@
 class BasicAttack : public IAttack
 {
   private:
-    std::string _TEXTURE = "playersMissiles";
-//    std::string _MOVE = "SinusoideMove";
-    std::string _MOVE = "StraightMove";
     ECS::Manager &_ecs;
     EventManager::Manager &_event;
     LibLoader &_loader;
+    ECS::Entity _ownerEntity;
+
+    std::string _TEXTURE = "playersMissiles";
+//    std::string _MOVE = "SinusoideMove";
+    std::string _MOVE = "StraightMove";
+
 
     int _baseDamage = 1;
     ECS::Entity _entity;
 
     std::vector<ECS::Entity> _attacks;
-    ECS::Entity _ownerEntity;
 
-    std::unique_ptr<IMove *> _move;
+    std::shared_ptr<IMove> _move;
 
   public:
     BasicAttack(ECS::Manager &ecs, EventManager::Manager &event, LibLoader &loader, ECS::Entity owner);

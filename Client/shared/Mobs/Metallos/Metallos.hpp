@@ -19,10 +19,10 @@ class Metallos : public IMob
     int _difficulty = 1;
 
     //Attacks
-    std::unordered_map<ECS::Entity, std::unique_ptr<IAttack *>> _attacks;
+    std::unordered_map<ECS::Entity, std::shared_ptr<IAttack>> _attacks;
 
     //Move
-    std::unique_ptr<IMove *> _movement;
+    std::shared_ptr<IMove> _movement;
 
     ECS::Manager &_ecs;
     EventManager::Manager &_event;

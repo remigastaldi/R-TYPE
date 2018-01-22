@@ -15,7 +15,7 @@ class LevelOne : public ILevels
     int _timeBetweenMobSpawn = 320;
     int _nbMobSpawn = 2;
 
-    std::unordered_map<ECS::Entity, std::unique_ptr<IMob *>> _mobs;
+    std::unordered_map<ECS::Entity, std::shared_ptr<IMob>> _mobs;
 
     std::string _name = "LevelOne";
 

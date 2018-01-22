@@ -13,16 +13,19 @@ BasicAttack::BasicAttack(ECS::Manager &ecs, EventManager::Manager &event, LibLoa
   _entity = _ecs.createEntity();
   _ecs.addComponent<ECS::Components::Collisionable>(_entity, ECS::Components::Collisionable(_entity));
   _ecs.addComponent<ECS::Components::Drawable>(_entity, ECS::Components::Drawable(_TEXTURE));
-  _ecs.addComponent<ECS::Components::Position>(_entity,
-                                               *_ecs.getComponent<ECS::Components::Position>(_ownerEntity).get());
+  _ecs.addComponent<ECS::Components::Position>(_entity, *_ecs.getComponent<ECS::Components::Position>(_ownerEntity).get());
 
   _ecs.updateEntityToSystems(_entity);
 
-  _move = std::make_unique<IMove *>(_loader.move.get(_MOVE)(_ecs, _event, _loader, _entity));
+  std::shared_ptr<IMove> tmp;
+  tmp.reset(_loader.move.get(_MOVE)(_ecs, _event, _loader, _entity));
+  _move = tmp;
 }
 
 BasicAttack::~BasicAttack()
 {
+  LOG_SUCCESS << "Basic attack se detruit" << std::endl;
+  _ecs.destroyEntity(_entity);
 }
 
 void BasicAttack::update()
@@ -37,7 +40,7 @@ ECS::Entity BasicAttack::getID()
 
 void BasicAttack::move()
 {
-  (*_move)->update();
+  _move->update();
 }
 
 void BasicAttack::playerHit(ECS::Entity entity)

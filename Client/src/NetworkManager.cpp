@@ -1,7 +1,7 @@
 #include "NetworkManager.hpp"
 
 NetworkManager::NetworkManager(EventManager::Manager &eventManager) :
-_network(4242, 8000),
+_network(4243, 8000),
 _eventManager(eventManager),
 _mutex(),
 _queue(),
@@ -73,6 +73,21 @@ void NetworkManager::update()
           std::cout << "Unkown command " << std::to_string(static_cast<unsigned int>(it.getCommand())) << std::endl;
           std::cout << "Unkown response " << std::to_string(static_cast<unsigned int>(it.getResult())) << std::endl;
         break;
+      case RFC::Commands::PING:break;
+      case RFC::Commands::LOGIN:break;
+      case RFC::Commands::GET_FRIENDS:break;
+      case RFC::Commands::GET_PROFIL:break;
+      case RFC::Commands::GET_SHIP_INFO:break;
+      case RFC::Commands::BUY_SHIP_COMPONENT:break;
+      case RFC::Commands::SEARCH_ROOM:break;
+      case RFC::Commands::GET_ROOM_INFO:break;
+      case RFC::Commands::LEAVE_ROOM:break;
+      case RFC::Commands::READY:break;
+      case RFC::Commands::NOT_READY:break;
+      case RFC::Commands::START_GAME:break;
+      case RFC::Commands::SELECT_ROOM_LEVEL:break;
+      case RFC::Commands::KEY_PRESSED:break;
+      case RFC::Commands::UNKNOWN:break;
     }
 
     _queue.erase(_queue.begin());

@@ -10,7 +10,7 @@ class IMove
 {
   public:
     IMove(ECS::Manager &ecs, EventManager::Manager &event, LibLoader &, ECS::Entity) {};
-    virtual ~IMove() = 0;
+    virtual ~IMove() = default;
 
     virtual void update() = 0;
 };

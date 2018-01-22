@@ -18,7 +18,7 @@ class KirbyMap : public IMap
     EventManager::Manager &_event;
     LibLoader &_loader;
 
-    std::vector<std::unique_ptr<ILevels *>> _levels;
+    std::vector<std::shared_ptr<ILevels>> _levels;
 
     bool _isEnd = false;
 
