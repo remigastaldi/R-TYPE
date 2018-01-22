@@ -64,7 +64,7 @@ void	StartPage::onEnter()
 
 	sf::Vector2f center((_guiManager.getWindowSize().x / 2) - (startButton.getGlobalBounds().width / 2), (_guiManager.getWindowSize().y / 2) - (startButton.getGlobalBounds().height / 2));
 
-	_guiManager.addElement<GUI::Image>("Background", sf::Vector2f(0, 0), _resources.getContent<Texture>("lobbiesBackground"), sf::Vector2f(0, 0));
+	_guiManager.addElement<GUI::Image>("Background", sf::Vector2f(0, 0), _resources.getContent<Texture>("lobbiesBackground"), sf::Vector2f(1, 1));
 	_guiManager.addElement<GUI::Text>("GameTitle", sf::Vector2f(center.x + 100, center.y - 300), "R-TYPE", font, 60);
 
 	_guiManager.addElement<GUI::Button>("StartPagePlayButton", _eventManager, "PlayGameEvent", sf::Vector2f(center.x - 100, center.y - 100), startButton, startButtonHovered);
