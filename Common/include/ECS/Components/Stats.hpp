@@ -6,9 +6,14 @@ namespace ECS
 {
   namespace Components
   {
-    struct Stats : public ECS::Component
+    class Stats : public ECS::Component
     {
-      int health;
+      public:
+        explicit Stats(int health) :
+          health(health)
+        {}
+
+        int health;
     };
   }
 }

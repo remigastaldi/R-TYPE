@@ -13,7 +13,7 @@ KirbyMap::KirbyMap(ECS::Manager &ecs, EventManager::Manager &event, LibLoader &l
                                                                              ECS::Entity to) -> void {
 
     if (!_isEnd) {
-      LOG_SUCCESS << "ON A TOUCHE" << std::endl;
+      LOG_SUCCESS << by << " " << to <<  std::endl;
       (*_levels[_wave])->playerHit(by, to);
     }
   });
@@ -56,7 +56,7 @@ void KirbyMap::update()
     (*_levels[_wave])->exit();
     _wave += 1;
 
-    if (_levels.size() <= _wave) {
+    if (_wave < _levels.size()) {
       _event.fire<void, const std::string &>("printAlert", (*_levels[_wave])->getName());
       //TODO EVENT POUR ECRIRE SUR GUI LE NOM DU NIVEAU
       (*_levels[_wave])->enter();

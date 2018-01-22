@@ -12,12 +12,10 @@ Metallos::Metallos(ECS::Manager &ecs, EventManager::Manager &event, LibLoader &l
 
   _me = _ecs.createEntity();
 
-  ECS::Components::Stats tmp;
-  tmp.health = 1;
-
-  _ecs.addComponent<ECS::Components::Stats>(_me, tmp);
   _ecs.addComponent<ECS::Components::Position>(_me, pos);
   _ecs.addComponent<ECS::Components::Drawable>(_me, ECS::Components::Drawable(_TEXTURE_NAME));
+  _ecs.addComponent<ECS::Components::Collisionable>(_me, ECS::Components::Collisionable(_me));
+  _ecs.addComponent<ECS::Components::Stats>(_me, ECS::Components::Stats(1));
 
   _ecs.updateEntityToSystems(_me);
 
@@ -62,8 +60,12 @@ ECS::Entity Metallos::getID()
 void Metallos::playerHit(ECS::Entity by, ECS::Entity to)
 {
   for (auto &it: _attacks)
+  {
     if (it.first == by)
       (*it.second)->playerHit(to);
+    if (it.first == to)
+      (*it.second)->playerHit(by);
+  }
 }
 
 void Metallos::unitOutOfSpace(ECS::Entity entity)

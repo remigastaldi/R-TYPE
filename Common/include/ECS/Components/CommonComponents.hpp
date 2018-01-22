@@ -31,14 +31,14 @@ namespace ECS
 
     struct Direction : ECS::Component
     {
-      explicit Direction(int _xDirection, int _yDirection, int _speed)
+      explicit Direction(double _xDirection, double _yDirection, int _speed)
       : xDirection(_xDirection),
       yDirection(_yDirection),
       speed(_speed)
         {}
 
-      int xDirection;
-      int yDirection;
+      double xDirection;
+      double yDirection;
 
       int speed;
 

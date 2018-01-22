@@ -67,6 +67,11 @@ void LevelOne::playerHit(ECS::Entity by, ECS::Entity to)
       LOG_INFO << "Mob is hit" << std::endl;
       //Mob is hit //TODO calc if dead
       _mobs.erase(to);
+    }
+    if (it.first == by) {
+      LOG_INFO << "Mob is hit" << std::endl;
+      //Mob is hit //TODO calc if dead
+      _mobs.erase(by);
     } else {
       //Mob is not hit, check if one of his attack is responsible for this
       (*it.second)->playerHit(by, to);
@@ -76,8 +81,7 @@ void LevelOne::playerHit(ECS::Entity by, ECS::Entity to)
 
 void LevelOne::unitOutOfSpace(ECS::Entity entity)
 {
-  if (_mobs.count(entity) > 0)
-  {
+  if (_mobs.count(entity) > 0) {
     LOG_SUCCESS << "Mob out of space deleted" << std::endl;
     _mobs.erase(entity);
     return;

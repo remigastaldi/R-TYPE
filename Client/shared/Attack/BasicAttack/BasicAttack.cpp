@@ -13,7 +13,8 @@ BasicAttack::BasicAttack(ECS::Manager &ecs, EventManager::Manager &event, LibLoa
   _entity = _ecs.createEntity();
   _ecs.addComponent<ECS::Components::Collisionable>(_entity, ECS::Components::Collisionable(_entity));
   _ecs.addComponent<ECS::Components::Drawable>(_entity, ECS::Components::Drawable(_TEXTURE));
-  _ecs.addComponent<ECS::Components::Position>(_entity, *_ecs.getComponent<ECS::Components::Position>(_ownerEntity).get());
+  _ecs.addComponent<ECS::Components::Position>(_entity,
+                                               *_ecs.getComponent<ECS::Components::Position>(_ownerEntity).get());
 
   _ecs.updateEntityToSystems(_entity);
 
@@ -41,5 +42,6 @@ void BasicAttack::move()
 
 void BasicAttack::playerHit(ECS::Entity entity)
 {
-  _ecs.getComponent<ECS::Components::Stats>(entity).get()->health -= _baseDamage;
+  if (_ecs.getComponent<ECS::Components::Stats>(entity).get() != nullptr)
+    _ecs.getComponent<ECS::Components::Stats>(entity).get()->health -= _baseDamage;
 }

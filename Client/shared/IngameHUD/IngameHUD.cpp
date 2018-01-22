@@ -10,6 +10,10 @@ _guiManager(guiManager),
 	_eventManager.listen<void, const std::string &>("printAlert", [&] (const std::string &ev) {
 		printAlert(ev);
 	});
+
+	_eventManager.listen<void, const std::string &>("hideAlert", [&] (const std::string &ev) {
+		hideAlert(ev);
+	});
 }
 
 void	IngameHUD::printAlert(const std::string&string)

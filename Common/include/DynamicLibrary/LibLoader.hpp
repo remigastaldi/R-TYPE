@@ -101,6 +101,7 @@ class __lib__implem : public Alfred::Utils::NonCopyable
     {
 #ifdef WIN32
       HINSTANCE hGetProcIDDLL = LoadLibrary(path.c_str());
+
       if (!hGetProcIDDLL) {
           LOG_ERROR << "could not load the dynamic library" << std::endl;
           return nullptr;

@@ -8,8 +8,8 @@ class BasicAttack : public IAttack
 {
   private:
     std::string _TEXTURE = "playersMissiles";
-    std::string _MOVE = "SinusoideMove";
-//    std::string _MOVE = "StraightMove";
+//    std::string _MOVE = "SinusoideMove";
+    std::string _MOVE = "StraightMove";
     ECS::Manager &_ecs;
     EventManager::Manager &_event;
     LibLoader &_loader;

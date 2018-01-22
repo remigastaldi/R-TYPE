@@ -48,7 +48,7 @@ namespace ECS
 
         if (sprite.getGlobalBounds().intersects(entitySprite.getGlobalBounds()))
         {
-          // _eventManager.fire<void, ECS::Entity, ECS::Entity>("Collision", it, e);
+           _eventManager.fire<void, ECS::Entity, ECS::Entity>("Collision", it, e);
         }
       }
     }

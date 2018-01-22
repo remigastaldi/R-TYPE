@@ -9,7 +9,7 @@ SinusoideMove::SinusoideMove(ECS::Manager &ecs, EventManager::Manager &event, Li
 {
   Logger::get().setOutput(CONSOLE_LOG);
 
-  _ecs.addComponent<ECS::Components::Direction>(_owner, ECS::Components::Direction(-1, -1, 10));
+  _ecs.addComponent<ECS::Components::Direction>(_owner, ECS::Components::Direction(-0.5, -1, 10));
 
   _ecs.updateEntityToSystems(_owner);
 }
@@ -23,7 +23,7 @@ void SinusoideMove::update()
   auto pos = _ecs.getComponent<ECS::Components::Position>(_owner);
 
   if (pos->y < 40)
-    _ecs.getComponent<ECS::Components::Direction>(_owner)->yDirection = -1;
-  if (pos->y > 1000)
     _ecs.getComponent<ECS::Components::Direction>(_owner)->yDirection = 1;
+  if (pos->y > 1000)
+    _ecs.getComponent<ECS::Components::Direction>(_owner)->yDirection = -1;
 }
