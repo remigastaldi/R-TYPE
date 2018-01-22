@@ -7,6 +7,9 @@
 class BasicAttack : public IAttack
 {
   private:
+    std::string _TEXTURE = "playersMissiles";
+    std::string _MOVE = "SinusoideMove";
+//    std::string _MOVE = "StraightMove";
     ECS::Manager &_ecs;
     EventManager::Manager &_event;
     LibLoader &_loader;
@@ -18,9 +21,6 @@ class BasicAttack : public IAttack
     ECS::Entity _ownerEntity;
 
     std::unique_ptr<IMove *> _move;
-
-  private:
-    void attack();
 
   public:
     BasicAttack(ECS::Manager &ecs, EventManager::Manager &event, LibLoader &loader, ECS::Entity owner);

@@ -11,7 +11,13 @@ BasicAttack::BasicAttack(ECS::Manager &ecs, EventManager::Manager &event, LibLoa
   Logger::get().setOutput(CONSOLE_LOG);
 
   _entity = _ecs.createEntity();
-  attack();
+  _ecs.addComponent<ECS::Components::Collisionable>(_entity, ECS::Components::Collisionable(_entity));
+  _ecs.addComponent<ECS::Components::Drawable>(_entity, ECS::Components::Drawable(_TEXTURE));
+  _ecs.addComponent<ECS::Components::Position>(_entity, *_ecs.getComponent<ECS::Components::Position>(_ownerEntity).get());
+
+  _ecs.updateEntityToSystems(_entity);
+
+  _move = std::make_unique<IMove *>(_loader.move.get(_MOVE)(_ecs, _event, _loader, _entity));
 }
 
 BasicAttack::~BasicAttack()
@@ -20,22 +26,12 @@ BasicAttack::~BasicAttack()
 
 void BasicAttack::update()
 {
-  //TODO maybe something
+  move();
 }
 
 ECS::Entity BasicAttack::getID()
 {
   return _entity;
-}
-
-void BasicAttack::attack()
-{
-  ECS::Entity e = _ecs.createEntity();
-  _attacks.push_back(e);
-
-  _ecs.addComponent<ECS::Components::Position>(e, *_ecs.getComponent<ECS::Components::Position>(_ownerEntity).get());
-  _ecs.addComponent<ECS::Components::Direction>(e, *_ecs.getComponent<ECS::Components::Direction>(_ownerEntity).get());
-  _ecs.addComponent<ECS::Components::Drawable>(e, ECS::Components::Drawable("ennemy1"));
 }
 
 void BasicAttack::move()

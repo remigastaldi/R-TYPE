@@ -17,11 +17,11 @@ Metallos::Metallos(ECS::Manager &ecs, EventManager::Manager &event, LibLoader &l
 
   _ecs.addComponent<ECS::Components::Stats>(_me, tmp);
   _ecs.addComponent<ECS::Components::Position>(_me, pos);
-  _ecs.addComponent<ECS::Components::Drawable>(_me, ECS::Components::Drawable("playersSpaceship"));
+  _ecs.addComponent<ECS::Components::Drawable>(_me, ECS::Components::Drawable(_TEXTURE_NAME));
 
   _ecs.updateEntityToSystems(_me);
 
-  _movement = std::make_unique<IMove *>(_loader.move.get("UpAndDownMove")(_ecs, _event, _loader, _me));
+  _movement = std::make_unique<IMove *>(_loader.move.get(_MOVE_NAME)(_ecs, _event, _loader, _me));
 }
 
 Metallos::~Metallos()
@@ -43,12 +43,13 @@ void Metallos::update()
   for (auto &it : _attacks)
     (*it.second)->update();
 
-  _curTime += 1;
-  if (_curTime >= _timeBetweenAttack)
+  _curTime -= 1;
+
+  if (_curTime <= 0)
   {
-    //Spawn an attack ?
-    _curTime = 0;
-    IAttack *curAttack = _loader.attack.get("BasicAttack")(_ecs, _event, _loader, _me);
+    _curTime = _timeBetweenAttack;
+    //Spawn an attack
+    IAttack *curAttack = _loader.attack.get(_ATTACK_NAME)(_ecs, _event, _loader, _me);
     _attacks[curAttack->getID()] = std::make_unique<IAttack *>(curAttack);
   }
 }
@@ -63,4 +64,9 @@ void Metallos::playerHit(ECS::Entity by, ECS::Entity to)
   for (auto &it: _attacks)
     if (it.first == by)
       (*it.second)->playerHit(to);
+}
+
+void Metallos::unitOutOfSpace(ECS::Entity entity)
+{
+  _attacks.erase(entity);
 }

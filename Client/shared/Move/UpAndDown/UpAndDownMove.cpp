@@ -9,11 +9,9 @@ UpAndDownMove::UpAndDownMove(ECS::Manager &ecs, EventManager::Manager &event, Li
 {
   Logger::get().setOutput(CONSOLE_LOG);
 
-  _ecs.addComponent<ECS::Components::Direction>(_owner, ECS::Components::Direction(0, 1, 5));
-  _ecs.getComponent<ECS::Components::Direction>(_owner)->speed = 10;
+  _ecs.addComponent<ECS::Components::Direction>(_owner, ECS::Components::Direction(0, 1, 2));
 
   _ecs.updateEntityToSystems(_owner);
-//  _ecs.getComponent<ECS::Components::Direction>(_owner)->xDirection
 }
 
 UpAndDownMove::~UpAndDownMove()

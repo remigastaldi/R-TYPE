@@ -38,7 +38,7 @@ void LevelOne::update()
     //Spawn a mob
     LOG_INFO << "Spawning a mob " << _nbMobSpawn << std::endl;
 
-    IMob *newMob = _loader.mob.get("Metallos")(_ecs, _event, _loader, ECS::Components::Position(500, 500));
+    IMob *newMob = _loader.mob.get("Metallos")(_ecs, _event, _loader, ECS::Components::Position(1800, 500));
     _mobs[newMob->getID()] = std::make_unique<IMob *>(newMob);
   }
 
@@ -72,4 +72,15 @@ void LevelOne::playerHit(ECS::Entity by, ECS::Entity to)
       (*it.second)->playerHit(by, to);
     }
   }
+}
+
+void LevelOne::unitOutOfSpace(ECS::Entity entity)
+{
+  if (_mobs.count(entity) > 0)
+  {
+    _mobs.erase(entity);
+    return;
+  }
+  for (auto &it : _mobs)
+    (*it.second)->unitOutOfSpace(entity);
 }

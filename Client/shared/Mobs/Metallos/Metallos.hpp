@@ -9,9 +9,12 @@
 class Metallos : public IMob
 {
   private:
+    std::string _ATTACK_NAME = "BasicAttack";
+    std::string _MOVE_NAME = "UpAndDownMove";
+    std::string _TEXTURE_NAME = "playersSpaceship";
     ECS::Entity _me;
-    int _timeBetweenAttack;
-    int _curTime;
+    int _timeBetweenAttack = 20;
+    int _curTime = 0;
 
     int _difficulty = 1;
 
@@ -33,6 +36,7 @@ class Metallos : public IMob
     void playerHit(ECS::Entity by, ECS::Entity to) override;
     void update() override;
     ECS::Entity getID() override;
+    void unitOutOfSpace(ECS::Entity entity) override;
 };
 
 extern "C" std::string getName()

@@ -8,6 +8,8 @@ StraightMove::StraightMove(ECS::Manager &ecs, EventManager::Manager &event, LibL
   _owner(entity)
 {
   _ecs.addComponent<ECS::Components::Direction>(_owner, ECS::Components::Direction(-1, 0, 20));
+
+  _ecs.updateEntityToSystems(_owner);
 }
 
 StraightMove::~StraightMove() = default;
