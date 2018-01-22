@@ -2,7 +2,7 @@
  * @Author: Remi Gastaldi <gastal_r>
  * @Date:   2018-01-20T18:35:48+01:00
  * @Last modified by:   gastal_r
- * @Last modified time: 2018-01-20T21:20:44+01:00
+ * @Last modified time: 2018-01-22T02:08:08+01:00
  */
 
 
@@ -23,8 +23,8 @@ public:
 
 	const	std::string &getName() const { return _name; }
 
-	void	playerJoin(int, const std::string&);
-	void	playerLeave(int);
+	void	playerJoin(const std::string &);
+	void	playerLeave(const std::string &);
 
 	void	onEnter();
 	void	onExit();
@@ -40,4 +40,6 @@ private:
 	GUI::Manager			&_guiManager;
 	EventManager::Manager	&_eventManager;
 	ResourcesManager		&_resources;
+
+	int _players;
 };
