@@ -66,5 +66,7 @@ namespace GameEngine
       double _gameEngineTick;
       double _maxFrameRate;
       bool _running;
+
+      IMap *_myMap;
   };
 }

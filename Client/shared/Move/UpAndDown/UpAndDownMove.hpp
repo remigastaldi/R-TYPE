@@ -24,3 +24,8 @@ extern "C" std::string getName()
 {
   return "UpAndDownMove";
 }
+
+extern "C" IMove *getSymbol(ECS::Manager &ecs, EventManager::Manager &event, LibLoader &loader, ECS::Entity parent)
+{
+  return new UpAndDownMove(ecs, event, loader, parent);
+}

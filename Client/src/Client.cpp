@@ -6,6 +6,7 @@
  */
 
 
+#include <LibraryInterfaces/IMap.hpp>
 #include  "Client.hpp"
 
 namespace GameEngine
@@ -54,12 +55,18 @@ namespace GameEngine
 
     _networkManager.init();
     //Loading library
-    _libraryLoader.map.addFolder("ressources/map/");
-    _libraryLoader.mob.addFolder("ressources/mob/");
-    _libraryLoader.move.addFolder("ressources/move/");
-    _libraryLoader.attack.addFolder("ressources/attack/");
+    _libraryLoader.map.addFolder("../ressources/map/");
+    _libraryLoader.mob.addFolder("../ressources/mob/");
+    _libraryLoader.move.addFolder("../ressources/move/");
+    _libraryLoader.attack.addFolder("../ressources/attack/");
     _libraryLoader.updateAll();
 
+    //Escape key
+    _eventManager.listen<void, sf::Event>("KeyPressedEvent", [] (sf::Event ev) -> void {
+      if (ev.key.code ==  sf::Keyboard::Escape)
+      LOG_SUCCESS << "Je exit" << std::endl;
+      exit(0);
+    });
   }
 
   void Client::playGame(const std::string &message)
@@ -83,6 +90,11 @@ namespace GameEngine
       //
   	  // lobbyPlayerScene.onEnter();
     //
+
+    _myMap = _libraryLoader.map.get("KirbyMap")(_ecsManager, _eventManager, _libraryLoader);
+
+//    exit(0);
+
     _ship = std::make_shared<Ship>(_gameManagers);
 
     long int nextGameTick = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now().time_since_epoch()).count();
@@ -155,6 +167,7 @@ namespace GameEngine
   {
     _networkManager.update();
     _ship->update();
+//    _myMap->update(); //TODO
     _ecsManager.updateSystemsRange(0.f, 0, 1);
   }
 

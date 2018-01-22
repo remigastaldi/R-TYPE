@@ -22,8 +22,9 @@ bool LevelOne::isEnd()
 
 void LevelOne::update()
 {
-  if (_nbMobSpawn < 0) {
-    _isEnd = true;
+  if (_nbMobSpawn <= 0) {
+    if (_mobs.empty())
+      _isEnd = true;
     return;
   }
 
@@ -34,7 +35,7 @@ void LevelOne::update()
     _nbMobSpawn -= 1;
 
     //Spawn a mob
-    LOG_INFO << "Spawning a mob" << std::endl;
+    LOG_INFO << "Spawning a mob " << _nbMobSpawn << std::endl;
 
     ECS::Components::Position pos(10, 10);
     IMob *newMob = _loader.mob.get("Metallos")(_ecs, _event, _loader, pos);

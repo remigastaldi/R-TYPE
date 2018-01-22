@@ -51,7 +51,7 @@ namespace EventManager
 typedef std::string (__stdcall *getNameOfLib)();
 
 typedef IAttack *(__stdcall *getAttackSymbol)(ECS::Manager &ecs, EventManager::Manager &event, LibLoader &libloader);
-typedef IMap *(__stdcall *getMapSymbol)();
+typedef IMap *(__stdcall *getMapSymbol)(ECS::Manager &, EventManager::Manager &, LibLoader &);
 typedef IMob *(__stdcall *getMobSymbol)(ECS::Manager &ecs, EventManager::Manager &event, LibLoader &libloader, ECS::Components::Position);
 typedef IMove *(__stdcall *getMoveSymbol)(ECS::Manager &ecs, EventManager::Manager &event, LibLoader &, ECS::Entity);
 typedef IPart *(__stdcall *getPartSymbol)();
@@ -65,7 +65,7 @@ typedef IShipBluprint *(__stdcall *getShipBlueprintSymbol)();
 typedef std::string (*getNameOfLib)();
 
 typedef IAttack *(*getAttackSymbol)(ECS::Manager &, EventManager::Manager &, LibLoader &, ECS::Entity);
-typedef IMap *(*getMapSymbol)();
+typedef IMap *(*getMapSymbol)(ECS::Manager &, EventManager::Manager &, LibLoader &);
 typedef IMob *(*getMobSymbol)(ECS::Manager &, EventManager::Manager &, LibLoader &, ECS::Components::Position);
 typedef IMove *(*getMoveSymbol)(ECS::Manager &, EventManager::Manager &, LibLoader &, ECS::Entity);
 typedef IPart *(*getPartSymbol)();
@@ -108,6 +108,11 @@ class __lib__implem : public Alfred::Utils::NonCopyable
       return ((getNameOfLib) (GetProcAddress(hGetProcIDDLL, "getName")))();
 #else
       void *handle = dlopen(path.c_str(), RTLD_LAZY);
+      char *lError = dlerror();
+      if (lError) {
+        LOG_ERROR << "Error while loading lib name " << path << " " << lError << std::endl;
+        return "";
+      }
       return ((getNameOfLib)(dlsym(handle, "getName")))();
 #endif
     }
@@ -123,6 +128,11 @@ class __lib__implem : public Alfred::Utils::NonCopyable
       return (T) GetProcAddress(hGetProcIDDLL, "getSymbol");
 #else
       void *handle = dlopen(path.c_str(), RTLD_LAZY);
+      char *lError = dlerror();
+      if (lError) {
+        LOG_ERROR << "Error while loading lib symbol " << path << " " << lError << std::endl;
+        return nullptr;
+      }
       return (T)(dlsym(handle, "getSymbol"));
 #endif
     }
@@ -151,22 +161,34 @@ class __lib__implem : public Alfred::Utils::NonCopyable
           std::string curPath = p.path().generic_string();
           if (curPath.find(_osLibEnding) != 0) {
             if (it.second.count(curPath) <= 0) {
+              //Get name
               std::string nameOfLib = getLibName(curPath);
-              T curSymbol = getSymbol(curPath);
 
-              LOG_INFO << "Loading library: " << nameOfLib << std::endl;
+              if (nameOfLib.empty())
+                LOG_ERROR << "Error while loading lib " << curPath << std::endl;
+              else {
+                //Load lib
+                T curSymbol = getSymbol(curPath);
 
-              //Add to path / symbol
-              it.second[curPath] = curSymbol;
+                LOG_INFO << "Loading library: " << nameOfLib << std::endl;
 
-              //Add to symbol map
-              if (_symbols.count(nameOfLib) > 0)
-                LOG_ERROR << "Lib with name " << nameOfLib << " already exist" << std::endl;
-              else
-                _symbols[nameOfLib] = curSymbol;
+                if (curSymbol == nullptr)
+                  LOG_ERROR << "Failed to load lib " << nameOfLib << " at path" << curPath << std::endl;
+                else {
+                  LOG_SUCCESS << "Successfully loaded lib " << nameOfLib << " at path " << curPath << std::endl;
+                  //Add to path / symbol
+                  it.second[curPath] = curSymbol;
 
-              //Add to ret
-              out.push_back(std::make_pair(nameOfLib, curSymbol));
+                  //Add to symbol map
+                  if (_symbols.count(nameOfLib) > 0)
+                    LOG_ERROR << "Lib with name " << nameOfLib << " already exist" << std::endl;
+                  else
+                    _symbols[nameOfLib] = curSymbol;
+
+                  //Add to ret
+                  out.push_back(std::make_pair(nameOfLib, curSymbol));
+                }
+              }
             }
           }
         }

@@ -8,6 +8,8 @@ BasicAttack::BasicAttack(ECS::Manager &ecs, EventManager::Manager &event, LibLoa
   _loader(loader),
   _ownerEntity(owner)
 {
+  Logger::get().setOutput(CONSOLE_LOG);
+
   _entity = _ecs.createEntity();
   attack();
 }

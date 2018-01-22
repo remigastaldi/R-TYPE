@@ -18,6 +18,7 @@
 #include <iostream>
 
 #define LOG_DEBUG Logger::get().debug(__FUNCTION__, __FILE__, __LINE__)
+#define LOG_SUCCESS Logger::get().success(__FUNCTION__, __FILE__, __LINE__)
 #define LOG_INFO Logger::get().info(__FUNCTION__, __FILE__, __LINE__)
 #define LOG_WARNING Logger::get().warning(__FUNCTION__, __FILE__, __LINE__)
 #define LOG_ERROR Logger::get().error(__FUNCTION__, __FILE__, __LINE__)
@@ -133,25 +134,31 @@ class Logger : public Alfred::Utils::Singleton<Logger>
 
     std::ostream &info(const std::string &funcName, const std::string &file, int line)
     {
-      *_stream << "[INFO] " << getTime() << " - " << funcName << " in " << file << ":" <<line << " - ";
+      *_stream << "\033[0m[INFO] " << getTime() << " - " << funcName << " in " << file << ":" <<line << " - ";
+      return *_stream;
+    }
+
+    std::ostream &success(const std::string &funcName, const std::string &file, int line)
+    {
+      *_stream << "\033[92m[SUCCESS] " << getTime() << " - " << funcName << " in " << file << ":" <<line << " - ";
       return *_stream;
     }
 
     std::ostream &warning(const std::string &funcName, const std::string &file, int line)
     {
-      *_stream << "[WARNING] " << getTime() << " - " << funcName << " in " << file << ":" <<line << " - ";
+      *_stream << "\033[0m\033[33m[WARNING] " << getTime() << " - " << funcName << " in " << file << ":" <<line << " - ";
       return *_stream;
     }
 
     std::ostream &error(const std::string &funcName, const std::string &file, int line)
     {
-      *_stream << "[ERROR] " << getTime() << " - " << funcName << " in " << file << ":" <<line << " - ";
+      *_stream << "\033[0m\033[31m[ERROR] " << getTime() << " - " << funcName << " in " << file << ":" <<line << " - ";
       return *_stream;
     }
 
     std::ostream &fatal(const std::string &funcName, const std::string &file, int line)
     {
-      *_stream << "[FATAL] " << getTime() << " - " << funcName << " in " << file << ":" <<line << " - ";
+      *_stream << "\033[0m\033[1;4;31m[FATAL] " << getTime() << " - " << funcName << " in " << file << ":" <<line << " - ";
       return *_stream;
     }
 };

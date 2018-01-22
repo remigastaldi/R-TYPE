@@ -6,6 +6,10 @@ Metallos::Metallos(ECS::Manager &ecs, EventManager::Manager &event, LibLoader &l
   _event(event),
   _loader(libLoader)
 {
+  Logger::get().setOutput(CONSOLE_LOG);
+
+  LOG_INFO << "Creating Metaloss" << std::endl;
+
   _me = _ecs.createEntity();
 
   ECS::Components::Stats tmp;
@@ -13,7 +17,7 @@ Metallos::Metallos(ECS::Manager &ecs, EventManager::Manager &event, LibLoader &l
 
   _ecs.addComponent<ECS::Components::Stats>(_me, tmp);
   _ecs.addComponent<ECS::Components::Position>(_me, pos);
-  _ecs.addComponent<ECS::Components::Drawable>(_me, ECS::Components::Drawable("playersSpaceShip"));
+  _ecs.addComponent<ECS::Components::Drawable>(_me, ECS::Components::Drawable("playersSpaceship"));
 
   _movement = std::make_unique<IMove *>(_loader.move.get("UpAndDownMove")(_ecs, _event, _loader, _me));
 }

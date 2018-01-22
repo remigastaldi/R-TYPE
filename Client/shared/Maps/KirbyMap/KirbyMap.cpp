@@ -7,6 +7,8 @@ KirbyMap::KirbyMap(ECS::Manager &ecs, EventManager::Manager &event, LibLoader &l
   _event(event),
   _loader(loader)
 {
+  Logger::get().setOutput(CONSOLE_LOG);
+
   _listener = _event.listen<void, int, int, ECS::Entity, ECS::Entity>("player hit", [&](int x, int y, ECS::Entity by,
                                                                                         ECS::Entity to) -> void {
 
@@ -15,7 +17,9 @@ KirbyMap::KirbyMap(ECS::Manager &ecs, EventManager::Manager &event, LibLoader &l
 
 
   //Adding levels
+  LOG_INFO << "Adding Level: " << std::endl;
   _levels.push_back(std::make_unique<ILevels *>(new LevelOne(_ecs, _event, loader)));
+  LOG_INFO << "Adding Level Done" << std::endl;
 }
 
 KirbyMap::~KirbyMap()

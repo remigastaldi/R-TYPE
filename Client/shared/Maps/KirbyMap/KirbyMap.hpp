@@ -33,3 +33,8 @@ extern "C" std::string getName()
 {
   return "KirbyMap";
 }
+
+extern "C" IMap *getSymbol(ECS::Manager &ecs, EventManager::Manager &event, LibLoader &loader)
+{
+  return new KirbyMap(ecs, event, loader);
+}

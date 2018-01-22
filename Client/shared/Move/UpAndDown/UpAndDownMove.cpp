@@ -7,6 +7,7 @@ UpAndDownMove::UpAndDownMove(ECS::Manager &ecs, EventManager::Manager &event, Li
   _loader(loader),
   _owner(entity)
 {
+  Logger::get().setOutput(CONSOLE_LOG);
 //  _ecs.getComponent<ECS::Components::Direction>(_owner)->xDirection
 }
 

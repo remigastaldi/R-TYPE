@@ -35,3 +35,8 @@ extern "C" std::string getName()
 {
   return "BasicAttack";
 }
+
+extern "C" IAttack *getSymbol(ECS::Manager &ecs, EventManager::Manager &event, LibLoader &loader, ECS::Entity parent)
+{
+  return new BasicAttack(ecs, event, loader, parent);
+}

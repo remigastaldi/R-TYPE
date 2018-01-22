@@ -301,9 +301,9 @@ void  Ship::fire(const std::string &msg)
 }
 
 
-void  Ship::update(void)
+void  Ship::update(void )
 {
-  if (_fire && _fireTickCounter == 0)
+   if (_fire && _fireTickCounter == 0)
   {
     _fireTickCounter++;
     _gameManagers.event.fire<void, const std::string &>("SpaceKeyEvent", "Fire");

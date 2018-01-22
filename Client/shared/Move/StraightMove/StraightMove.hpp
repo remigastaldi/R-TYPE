@@ -26,3 +26,8 @@ extern "C" std::string getName()
 {
   return "StraightMove";
 }
+
+extern "C" IMove *getSymbol(ECS::Manager &ecs, EventManager::Manager &event, LibLoader &loader, ECS::Entity parent)
+{
+  return new StraightMove(ecs, event, loader, parent);
+}

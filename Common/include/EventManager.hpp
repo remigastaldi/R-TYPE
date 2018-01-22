@@ -112,7 +112,7 @@ namespace EventManager
       EventListener listen(const std::string &name, const Fctor &func)
       {
         if (_events.count(name) <= 0) {
-          throw EventDontExist(name);
+          _events[name] = new ___Event<Ret, Params...>();
         }
         EventListener ret = static_cast<___Event<Ret, Params...> *>(_events[name])->addWatchers(func);
         return ret;
