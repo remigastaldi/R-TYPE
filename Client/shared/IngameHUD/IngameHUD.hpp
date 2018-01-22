@@ -9,7 +9,7 @@
 
 #include <string>
 
-class IngameHUD : IScene
+class IngameHUD : public IScene
 {
 public:
 	explicit IngameHUD(ResourcesManager &resourceManager, GUI::Manager &, EventManager::Manager &);

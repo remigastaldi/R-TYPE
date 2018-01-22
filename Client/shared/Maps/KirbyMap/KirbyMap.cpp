@@ -12,17 +12,14 @@ KirbyMap::KirbyMap(ECS::Manager &ecs, EventManager::Manager &event, LibLoader &l
   _listener = _event.listen<void, ECS::Entity, ECS::Entity>("Collision", [&](ECS::Entity by,
                                                                              ECS::Entity to) -> void {
 
-    if (!_isEnd)
-    {
+    if (!_isEnd) {
       LOG_SUCCESS << "ON A TOUCHE" << std::endl;
       (*_levels[_wave])->playerHit(by, to);
     }
   });
 
   _listenerOutOfSpace = _event.listen<void, ECS::Entity>("UnitOutOfSpace", [&](ECS::Entity e) -> void {
-    if (!_isEnd)
-    {
-      LOG_SUCCESS << "UNIT SE BARRE" << std::endl;
+    if (!_isEnd) {
       (*_levels[_wave])->unitOutOfSpace(e);
     }
   });
@@ -32,6 +29,8 @@ KirbyMap::KirbyMap(ECS::Manager &ecs, EventManager::Manager &event, LibLoader &l
   LOG_INFO << "Adding Level: " << std::endl;
   _levels.push_back(std::make_unique<ILevels *>(new LevelOne(_ecs, _event, loader)));
   LOG_INFO << "Adding Level Done" << std::endl;
+
+  _event.fire<void, const std::string &>("printAlert", (*_levels[_wave])->getName());
 }
 
 KirbyMap::~KirbyMap()
@@ -47,7 +46,7 @@ const std::pair<int, int> &KirbyMap::getNeededLevel() const
 
 void KirbyMap::update()
 {
-  if (_levels.size() >= _wave) {
+  if (_levels.size() <= _wave) {
     _isEnd = true;
     return;
   }
@@ -56,12 +55,16 @@ void KirbyMap::update()
   if ((*_levels[_wave])->isEnd()) {
     (*_levels[_wave])->exit();
     _wave += 1;
-    if (_levels.size() < _wave)
+
+    if (_levels.size() <= _wave) {
+      _event.fire<void, const std::string &>("printAlert", (*_levels[_wave])->getName());
       //TODO EVENT POUR ECRIRE SUR GUI LE NOM DU NIVEAU
       (*_levels[_wave])->enter();
-    LOG_INFO << (*_levels[_wave])->getName() << std::endl;
-  } else
-    _isEnd = true;
+      LOG_INFO << (*_levels[_wave])->getName() << std::endl;
+    } else {
+      _isEnd = true;
+    }
+  }
 }
 
 bool KirbyMap::isEnd()

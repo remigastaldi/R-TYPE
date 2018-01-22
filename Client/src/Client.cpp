@@ -7,12 +7,14 @@
 
 
 #include <LibraryInterfaces/IMap.hpp>
+#include <LobbyPlayer/LobbyPlayer.hpp>
 #include  "Client.hpp"
 
 namespace GameEngine
 {
 	Client::Client(const std::string &ip, sf::VideoMode &videoMode)
 		:
+    _parallax(_window, _resourcesManager),
     _eventManager(),
     _resourcesManager(),
     _ecsManager(),
@@ -20,14 +22,14 @@ namespace GameEngine
     _soundManager(_resourcesManager, _eventManager),
     _gameManagers(_resourcesManager, _eventManager, _ecsManager, _soundManager),
     _libraryLoader(),
+    _networkManager(_eventManager),
     _ship(),
     _window(videoMode, "R-Type", sf::Style::Titlebar | sf::Style::Resize),
     _ip(ip),
     _gameEngineTick(120),
     _maxFrameRate(60),
     _running(true),
-    _networkManager(_eventManager),
-	_parallax(_window, _resourcesManager)
+    _sceneManager()
   {
 		_parallax.loadLayer("../../Client/media/img/Parallax/background_01_parallax_01.png", 0.3, false);
 		_parallax.loadLayer("../../Client/media/img/Parallax/background_01_parallax_02.png", 0.5, false);
@@ -70,12 +72,25 @@ namespace GameEngine
    _libraryLoader.updateAll();
 
     //Escape key
-    _eventManager.listen<void, sf::Event>("KeyPressedEvent", [] (sf::Event ev) -> void {
+    _eventManager.listen<void, sf::Event>("KeyPressedEvent", [&] (sf::Event ev) -> void {
       if (ev.key.code ==  sf::Keyboard::Escape)
       {
-        LOG_SUCCESS << "Je exit" << std::endl;
+        LOG_SUCCESS << "Exit" << std::endl;
         exit(0);
       }
+    });
+
+    //Scenes
+    _sceneManager.addScene<StartPage>("StartPage", _resourcesManager, _guiManager, _eventManager);
+    _sceneManager.addScene<LobbyPlayer>("LobbyPlayer", _resourcesManager, _guiManager, _eventManager);
+    _sceneManager.addScene<IngameHUD>("IngameHUD", _resourcesManager, _guiManager, _eventManager);
+
+    _eventManager.listen<void, std::string>("changeScene", [&] (std::string scene) -> void {
+      _sceneManager.pushScene(scene);
+    });
+
+    _eventManager.listen<void>("popScene", [&] () -> void {
+      _sceneManager.popScene();
     });
   }
 
@@ -92,8 +107,7 @@ namespace GameEngine
 
   void Client::run(void)
   {
-	  IngameHUD ingameHUDScene(_resourcesManager, _guiManager, _eventManager);
-	  ingameHUDScene.onEnter();
+    _sceneManager.pushScene("IngameHUD");
 
     _myMap = _libraryLoader.map.get("KirbyMap")(_ecsManager, _eventManager, _libraryLoader);
 
@@ -181,9 +195,9 @@ namespace GameEngine
   {
     //_networkManager.update();
     _ship->update();
-    _myMap->update(); //TODO
     _ecsManager.updateSystemsRange(0.f, 0, 1);
-	_parallax.updatePos();
+    _myMap->update();
+    _parallax.updatePos();
   }
 
   void Client::render(float alpha)

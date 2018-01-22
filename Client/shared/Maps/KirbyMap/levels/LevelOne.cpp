@@ -78,9 +78,11 @@ void LevelOne::unitOutOfSpace(ECS::Entity entity)
 {
   if (_mobs.count(entity) > 0)
   {
+    LOG_SUCCESS << "Mob out of space deleted" << std::endl;
     _mobs.erase(entity);
     return;
   }
+
   for (auto &it : _mobs)
     (*it.second)->unitOutOfSpace(entity);
 }

@@ -15,7 +15,7 @@
 #include "GUIManager.hpp"
 #include "EventManager.hpp"
 
-class LobbyPlayer : IScene
+class LobbyPlayer : public IScene
 {
 public:
 	explicit LobbyPlayer(ResourcesManager &resourceManager, GUI::Manager &, EventManager::Manager &);
