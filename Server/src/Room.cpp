@@ -5,7 +5,7 @@
 ** Login	leliev_t
 **
 ** Started on	Mon Jan 22 00:40:59 2018 Tanguy Lelievre
-** Last update	Mon Jan 22 05:54:28 2018 Tanguy Lelievre
+** Last update	Mon Jan 22 08:45:14 2018 Tanguy Lelievre
 */
 
 #include "Room.hpp"
@@ -75,8 +75,9 @@ void	Room::addPlayer(Client &client)
     player = str + std::to_string((i + 1));
     if (_clients[player].getName().length() == 0)
     {
-      _clients[player] = client;
       client.setName(player);
+      _clients[player] = client;
+      std::cout << "Added player : " << client.getToken() << " in room : " << _name << " as : " << client.getName() << std::endl;
       break;
     }
   }
@@ -111,4 +112,29 @@ int	Room::getNbPlayer()
       ret++;
   }
   return (ret);
+}
+
+void	Room::getRoomInfo(UDPPacket &packet) const
+{
+  std::string	str("player");
+  std::string	player;
+  std::string	strue("true");
+  std::string	sfalse("false");
+
+  for (size_t i = 0; i < 4; i++) {
+    player = str + std::to_string((i + 1));
+    if (_clients.find(player) != _clients.end())
+    {
+      if (_clients.at(player).getState() == true)
+        packet.setData(player, strue);
+      else
+        packet.setData(player, sfalse);
+    }
+  }
+}
+
+void	Room::setPlayerReady(const std::string &client)
+{
+  if (_clients.find(client) != _clients.end())
+    _clients.at(client).setState(true);
 }

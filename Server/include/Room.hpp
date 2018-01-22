@@ -5,7 +5,7 @@
 ** Login	leliev_t
 **
 ** Started on	Wed Jan 17 22:29:28 2018 Tanguy Lelievre
-** Last update	Mon Jan 22 05:54:26 2018 Tanguy Lelievre
+** Last update	Mon Jan 22 09:35:01 2018 Tanguy Lelievre
 */
 
 #pragma once
@@ -33,6 +33,9 @@ public:
   void	removePlayer(Client &);
 
   int		getNbPlayer();
+  void	setPlayerReady(const std::string &);
+
+  void	getRoomInfo(UDPPacket &) const;
 private:
   std::string	_roomId;
   std::unordered_map<std::string, Client>	_clients;
