@@ -36,7 +36,7 @@ configure_file(${CMAKE_SOURCE_DIR}/config/r-type001.h.in ${CMAKE_SOURCE_DIR}/Com
 set(Boost_USE_STATIC_LIBS        OFF)
 set(Boost_USE_MULTITHREADED      ON)
 set(Boost_USE_STATIC_RUNTIME    OFF)
-FIND_PACKAGE(Boost)
+FIND_PACKAGE(Boost COMPONENTS regex system filesystem serialization thread REQUIRED)
 INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIR})
 LINK_DIRECTORIES(${Boost_LIBRARY_DIRS})
 

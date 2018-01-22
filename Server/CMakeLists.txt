@@ -23,7 +23,7 @@ target_sources(${NAME}
 
 include(../Common/common.cmake)
 
-target_link_libraries(${NAME} -lboost_system -lboost_serialization AlfredBase -ldl)
+target_link_libraries(${NAME} ${Boost_LIBRARIES} AlfredBase -ldl)
 
 if (UNIX)
   list(APPEND COMPILE_OPTIONS
