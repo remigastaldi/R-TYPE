@@ -16,6 +16,7 @@ public:
   void init();
   void keyPressed(sf::Event event);
   void mainLoop();
+  void update();
 
 private:
   AsioSyncUdpNetwork    _network;
