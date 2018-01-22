@@ -2,7 +2,7 @@
  * @Author: Remi Gastaldi <gastal_r>
  * @Date:   2018-01-20T20:45:23+01:00
  * @Last modified by:   gastal_r
- * @Last modified time: 2018-01-22T05:53:13+01:00
+ * @Last modified time: 2018-01-22T07:29:28+01:00
  */
 
 
@@ -15,8 +15,8 @@ Ship::Ship(GameEngine::GameManagers &gameManagers)
     _fireTickCounter(0),
     _fire(false)
   {
-	_gameManagers.resources.load<Sprite>("playersSpaceship", "../../Client/media/img/playerLobby/playersSpaceships.png");
-	_gameManagers.resources.load<Sprite>("playersMissiles", "../../Client/media/img/ship/playersMissiles.png");
+	_gameManagers.resources.load<Sprite>("playersSpaceship", "../../Client/media/img/ship/allies/playersSpaceships.png");
+	_gameManagers.resources.load<Sprite>("playersMissiles", "../../Client/media/img/ship/allies/playersMissiles.png");
     sf::Sprite &sprite = _gameManagers.resources.getContent<Sprite>("playersSpaceship");
     sprite.setRotation(90);
     sprite.setTextureRect(sf::IntRect(0, 0, 160, 160));
@@ -303,9 +303,9 @@ void  Ship::fire(const std::string &msg)
 
   _gameManagers.ecs.addComponent<ECS::Components::Position>(e, ECS::Components::Position(
     static_cast<size_t>(position->x), static_cast<size_t>(position->y + 60)));
+  _gameManagers.ecs.addComponent<ECS::Components::Collisionable>(e, ECS::Components::Collisionable(e));
   _gameManagers.ecs.addComponent<ECS::Components::Drawable>(e, ECS::Components::Drawable("playersMissiles"));
   _gameManagers.ecs.addComponent<ECS::Components::Direction>(e, ECS::Components::Direction(1, 0, 30));
-  _gameManagers.ecs.addComponent<ECS::Components::Collisionable>(e, ECS::Components::Collisionable(e));
   _gameManagers.ecs.updateEntityToSystems(e);
 }
 
@@ -317,7 +317,7 @@ void  Ship::update(void )
     _fireTickCounter++;
     _gameManagers.event.fire<void, const std::string &>("SpaceKeyEvent", "Fire");
   }
-  else if (_fire && _fireTickCounter > 10)
+  else if (_fire && _fireTickCounter > 20)
     _fireTickCounter = 0;
   else if (_fire)
     _fireTickCounter++;
