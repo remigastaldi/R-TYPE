@@ -5,7 +5,7 @@
 ** Login	leliev_t
 **
 ** Started on	Wed Jan 17 21:20:53 2018 Tanguy Lelievre
-** Last update	Mon Jan 22 06:23:01 2018 Tanguy Lelievre
+** Last update	Mon Jan 22 09:06:56 2018 Tanguy Lelievre
 */
 
 #include <iostream>
@@ -59,6 +59,7 @@ void	Server::manageClientPacket(UDPPacket &packet)
     case RFC::Commands::LEAVE_ROOM:
       break;
     case RFC::Commands::READY:
+      setPlayerReady(packet);
       break;
     case RFC::Commands::NOT_READY:
       break;
@@ -106,7 +107,9 @@ void	Server::joinRoomClient(UDPPacket &packet)
 
 void	Server::pressKeyClient(UDPPacket &packet)
 {
+  packet.setResult(RFC::Responses::SUCCESS);
   std::cout << "Key pressed. Code : " << packet.getData("key") << std::endl;
+  sendResponseToClient(packet);
 }
 
 void	Server::createRoomClient(UDPPacket &packet)
@@ -122,6 +125,11 @@ void	Server::createRoomClient(UDPPacket &packet)
     packet.setResult(RFC::Responses::FAIL);
   }
   sendResponseToClient(packet);
+}
+
+void	Server::setPlayerReady(UDPPacket &packet)
+{
+  _roomManager.setPlayerReady(packet.getToken());
 }
 
 void	Server::sendResponseToClient(UDPPacket &packet)
