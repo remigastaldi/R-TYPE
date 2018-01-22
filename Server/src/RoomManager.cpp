@@ -5,7 +5,7 @@
 ** Login	leliev_t
 **
 ** Started on	Sat Jan 20 22:26:56 2018 Tanguy Lelievre
-** Last update	Mon Jan 22 09:45:32 2018 Tanguy Lelievre
+** Last update	Mon Jan 22 10:13:30 2018 Tanguy Lelievre
 */
 
 #include "RoomManager.hpp"
@@ -113,7 +113,7 @@ void	RoomManager::setPlayerReady(const std::string &player)
     _roomList.at(_clientsList[player].getRoom());
     packet.setResult(RFC::Responses::PLAYER_READY);
     _roomList.at(_clientsList.at(player).getRoom()).getRoomInfo(packet);
-    _clientsList.at(player).getName();
+    packet.setData("name", _clientsList.at(player).getName());
     _net.get()->send(packet);
     std::string	str("player");
     std::string	client;
@@ -127,6 +127,8 @@ void	RoomManager::setPlayerReady(const std::string &player)
         ready++;
       }
     }
+    std::cout << "Players ready : " << ready << std::endl;
+    std::cout << "Players in room : " << ready << std::endl;
     if (ready == _roomList.at(_clientsList.at(player).getRoom()).getNbPlayer())
       {
         packet.setCommand(RFC::Commands::START_GAME);
