@@ -30,7 +30,7 @@ class KirbyMap : public IMap
     bool isEnd() override;
 };
 
-extern "C" std::string getName()
+extern "C" std::string __declspec(dllexport) __stdcall getName()
 {
   return "KirbyMap";
 }
