@@ -2,7 +2,7 @@
  * @Author: Remi Gastaldi <gastal_r>
  * @Date:   2018-01-20T20:45:23+01:00
  * @Last modified by:   gastal_r
- * @Last modified time: 2018-01-22T04:05:20+01:00
+ * @Last modified time: 2018-01-22T05:53:13+01:00
  */
 
 
@@ -305,7 +305,7 @@ void  Ship::fire(const std::string &msg)
     static_cast<size_t>(position->x), static_cast<size_t>(position->y + 60)));
   _gameManagers.ecs.addComponent<ECS::Components::Drawable>(e, ECS::Components::Drawable("playersMissiles"));
   _gameManagers.ecs.addComponent<ECS::Components::Direction>(e, ECS::Components::Direction(1, 0, 30));
-  _gameManagers.ecs.addComponent<ECS::Components::Collisionable>(e, ECS::Components::Collisionable(e, ECS::Components::Collisionable::Type::ALLY));
+  _gameManagers.ecs.addComponent<ECS::Components::Collisionable>(e, ECS::Components::Collisionable(e));
   _gameManagers.ecs.updateEntityToSystems(e);
 }
 

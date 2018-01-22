@@ -2,7 +2,7 @@
  * @Author: Remi Gastaldi <gastal_r>
  * @Date:   2018-01-21T04:36:33+01:00
  * @Last modified by:   gastal_r
- * @Last modified time: 2018-01-22T04:19:20+01:00
+ * @Last modified time: 2018-01-22T05:47:50+01:00
  */
 
 
@@ -15,11 +15,17 @@ namespace ECS
 {
   namespace Systems
   {
-    Collision::Collision(ResourcesManager &resourceManager, ECS::Manager &ecsManager)
+    Collision::Collision(EventManager::Manager &eventManager, ResourcesManager &resourceManager, ECS::Manager &ecsManager)
       : System(COLLISION_PRIORITY, {Alfred::Utils::GetTypeID<ECS::Components::Position>(), Alfred::Utils::GetTypeID<ECS::Components::Collisionable>(),
           Alfred::Utils::GetTypeID<ECS::Components::Drawable>()}, ecsManager),
+          _eventManager(eventManager),
           _resourcesManager(resourceManager)
       { }
+
+    void Collision::init(void)
+    {
+      _eventManager.addEvent<void, ECS::Entity, ECS::Entity>("Collision");
+    }
 
     void Collision::updateEntity(float delta, Entity e)
     {
@@ -32,7 +38,7 @@ namespace ECS
       std::shared_ptr<Store> store = getManager().getStore(Alfred::Utils::GetTypeID<ECS::Components::Collisionable>());
       std::set<ECS::Entity> entity = store->getEntities();
 
-      for (auto & it : entity)
+      for (auto &  it : entity)
       {
         if (it == e)
           continue;
@@ -42,7 +48,7 @@ namespace ECS
 
         if (sprite.getGlobalBounds().intersects(entitySprite.getGlobalBounds()))
         {
-          std::cout << "TOUCHING" << std::endl;
+          _eventManager.fire<void, ECS::Entity, ECS::Entity>("Collision", it, e);
         }
       }
     }
