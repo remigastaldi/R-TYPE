@@ -5,7 +5,7 @@
 ** Login	leliev_t
 **
 ** Started on	Sun Jan 14 22:23:16 2018 Tanguy Lelievre
-** Last update	Sun Jan 21 20:35:43 2018 Tanguy Lelievre
+** Last update	Mon Jan 22 03:20:18 2018 Tanguy Lelievre
 */
 
 #include "Communication/AsioSyncUdpNetwork.hpp"
@@ -51,6 +51,7 @@ UDPPacket	AsioSyncUdpNetwork::receive()
     std::istringstream archive_stream(archive_data);
     boost::archive::text_iarchive archive(archive_stream);
     archive >> map;
+    map["ip"] = _lastEndpoint.address().to_string();
     packet.setData(map);
   } catch (std::exception &e) {
     std::cout << e.what() << std::endl;

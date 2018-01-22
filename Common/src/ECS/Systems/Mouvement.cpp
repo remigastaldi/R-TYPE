@@ -2,7 +2,7 @@
  * @Author: Remi Gastaldi <gastal_r>
  * @Date:   2018-01-13T19:04:26+01:00
  * @Last modified by:   gastal_r
- * @Last modified time: 2018-01-22T04:19:15+01:00
+ * @Last modified time: 2018-01-22T04:41:32+01:00
  */
 
 
@@ -30,17 +30,15 @@ namespace ECS
       if (direction->xDirection != 0)
       {
         int posX = position->x + (direction->xDirection * direction->speed);
-        if (player && (posX <= 100 || posX >= 1820))
-          return;
-        position->x = posX;
+        if (!(player && (posX <= 100 || posX >= 1820)))
+          position->x = posX;
         //position->x += (direction->xDirection * direction->speed);
       }
       if (direction->yDirection != 0)
       {
         int posY = position->y + (direction->yDirection * direction->speed);
-        if (player && (posY <= 100 || posY >= 880))
-          return;
-        position->y = posY;
+        if (!(player && (posY <= 100 || posY >= 880)))
+          position->y = posY;
         // position->y += (direction->yDirection * direction->speed);
       }
 

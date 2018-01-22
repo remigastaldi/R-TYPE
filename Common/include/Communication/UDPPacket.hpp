@@ -5,7 +5,7 @@
 ** Login	leliev_t
 **
 ** Started on	Sat Jan 20 15:45:53 2018 Tanguy Lelievre
-** Last update	Sun Jan 21 20:45:39 2018 Tanguy Lelievre
+** Last update	Mon Jan 22 04:53:24 2018 Tanguy Lelievre
 */
 
 #pragma	once
@@ -27,17 +27,18 @@ public:
   void	setData(std::unordered_map<std::string, std::string> &);
 
   std::string	getData(const std::string &) const;
-  void	setData(std::string &, std::string &);
+  void	setData(std::string const &, std::string const &);
 
   void	deleteData(std::string &);
 
   std::string	const &getToken();
-  void	setToken(std::string &);
+  void	setToken(const std::string &);
 
   RFC::Commands getCommand() const;
-  void	setCommand(std::string &);
+  void	setCommand(RFC::Commands);
 
-  RFC::Commands getResult() const;
+  RFC::Responses getResult() const;
+  void	setResult(RFC::Responses);
 
   int	getTimestamp() const;
   void	setTimestamp(int);

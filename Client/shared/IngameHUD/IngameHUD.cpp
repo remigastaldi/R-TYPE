@@ -7,7 +7,6 @@ _guiManager(guiManager),
 	_eventManager(eventManager),
 	_resources(resourceManager)
 {
-
 }
 
 void	IngameHUD::printAlert(const std::string&string)

@@ -20,6 +20,8 @@ add_executable(
 
 target_compile_features(${NAME} PUBLIC cxx_std_17)
 
+target_compile_definitions(${NAME} PRIVATE WINDOWS_LEAN_AND_MEAN=1})
+
 target_sources(${NAME}
         PUBLIC
         ${CMAKE_CURRENT_SOURCE_DIR}/src/Client.cpp
@@ -34,6 +36,7 @@ target_sources(${NAME}
         ${CMAKE_CURRENT_SOURCE_DIR}/shared/StartPage/StartPage.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/shared/LobbyPlayer/LobbyPlayer.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/shared/IngameHUD/IngameHUD.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/shared/Parallax/Parallax.cpp
 )
 
 include(../Common/common.cmake)

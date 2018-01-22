@@ -2,7 +2,7 @@
 
 namespace RFC
 {
-  enum Responses
+  enum class Responses
   {
     SUCCESS,
     FAIL,
@@ -15,14 +15,15 @@ namespace RFC
     PLAYER_READY,
     PLAYER_NOT_READY,
     GAME_STARTED,
-    ROOM_CREATED
+    ROOM_CREATED,
+    UNKNOWN
   };
 
-  enum Commands
+  enum class Commands
   {
       PING,
       LOGIN,
-      GET_FRIEND,
+      GET_FRIENDS,
       GET_PROFIL,
       GET_SHIP_INFO,
       BUY_SHIP_COMPONENT,
@@ -35,7 +36,8 @@ namespace RFC
       START_GAME,
       SELECT_ROOM_LEVEL,
       CREATE_ROOM,
-      KEY_PRESSED
+      KEY_PRESSED,
+      UNKNOWN
   };
 
 };

@@ -1,11 +1,12 @@
 #include "NetworkManager.hpp"
 
-
 NetworkManager::NetworkManager(EventManager::Manager &eventManager) :
 _network(4242, 8000),
 _eventManager(eventManager),
 _mutex(),
-_queue()
+_queue(),
+_mainLoop(),
+_token()
 {}
 
 NetworkManager::~NetworkManager()
@@ -15,15 +16,17 @@ void NetworkManager::init()
 {
   _eventManager.listen<void, sf::Event>("KeyPressedEvent", [&](sf::Event event){this->keyPressed(event);});
 
-  std::unordered_map<std::string, std::string>	map;
-  map["cmd"] = RFC::Commands::LOGIN;
-  map["usr"] = "root";
-  map["pwd"] = "root";
+  _mainLoop = std::make_shared<std::thread>([&](){this->mainLoop();});
 
-  _network.send(map, "127.0.0.1");
-  // _eventManager.fire<void, int, const std::string &>("PlayerJoinEvent", id, name);
 
-  std::thread(mainLoop);
+  UDPPacket packet;
+  packet.setCommand(RFC::Commands::LOGIN);
+  packet.setData("usr", "root");
+  packet.setData("pwd", "root");
+
+  _network.send(packet, "127.0.0.1");
+  //_eventManager.fire<void, const std::string &>("PlayerJoinEvent", "Slut");
+
 }
 
 void NetworkManager::mainLoop()
@@ -31,6 +34,10 @@ void NetworkManager::mainLoop()
   for (;;)
   {
     UDPPacket packet = _network.receive();
+
+    if (packet.getCommand() == RFC::Commands::LOGIN && packet.getResult() == RFC::Responses::SUCCESS) {
+      _token = packet.getData("token");
+    }
     _mutex.lock();
     _queue.emplace_back(packet);
     _mutex.unlock();
@@ -40,13 +47,12 @@ void NetworkManager::mainLoop()
 
 void NetworkManager::update()
 {
-
-
+  //std::cout << "salut" << std::endl;
 }
 
 void NetworkManager::keyPressed(sf::Event event)
 {
-  std::unordered_map<std::string, std::string>	map;
+  UDPPacket packet;
 
   switch (event.key.code)
   {
@@ -55,9 +61,10 @@ void NetworkManager::keyPressed(sf::Event event)
     case sf::Keyboard::Key::Right:
     case sf::Keyboard::Key::Left:
     case sf::Keyboard::Key::Space:
-      map["cmd"] = RFC::Commands::KEY_PRESSED;
-      map["key"] = std::to_string(static_cast<unsigned int>(event.key.code));
-      _network.send(map);
+      packet.setCommand(RFC::Commands::KEY_PRESSED);
+      packet.setData("key", std::to_string(event.key.code));
+
+      _network.send(packet);
       break;
     default :
       break;

@@ -5,24 +5,28 @@
 ** Login	leliev_t
 **
 ** Started on	Wed Jan 17 22:09:03 2018 Tanguy Lelievre
-** Last update	Sun Jan 21 19:07:32 2018 Tanguy Lelievre
+** Last update	Mon Jan 22 04:55:22 2018 Tanguy Lelievre
 */
 
 #pragma once
 
 #include "Room.hpp"
+#include "AlfredBase/Random/Random.hpp"
 
 class	RoomManager {
 public:
 RoomManager(AsioSyncUdpNetwork &);
   ~RoomManager();
 
-  void	transferRequest(UDPPacket &);
-  // void	joinRoom(std::string &, std::string &);
-  void	addPlayer(std::string &);
-  // void	createRoom(std::string &);
+  void	transferRequest(const UDPPacket &);
+  bool	joinRoom(const std::string &, const std::string &);
+  bool	leaveRoom(std::string &);
+  void	addPlayer(const Client &);
+  bool	createRoom(const std::string &);
+  bool	checkPlayer(const std::string &);
 
 private:
   std::unordered_map<std::string, Room>	_roomList;
-  std::unordered_map<std::string, std::string>	_clientsList;
+  std::unordered_map<std::string, Client>	_clientsList;
+  std::shared_ptr<AsioSyncUdpNetwork>	_net;
 };

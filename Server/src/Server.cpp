@@ -5,12 +5,11 @@
 ** Login	leliev_t
 **
 ** Started on	Wed Jan 17 21:20:53 2018 Tanguy Lelievre
-** Last update	Sun Jan 21 20:54:31 2018 Tanguy Lelievre
+** Last update	Mon Jan 22 05:57:26 2018 Tanguy Lelievre
 */
 
 #include <iostream>
 #include "Server.hpp"
-#include "AlfredBase/Random/Random.hpp"
 
 Server::Server() : _net(8000),
 _roomManager(_net)
@@ -23,38 +22,103 @@ Server::~Server()
 
 }
 
-std::string	Server::login()
-{
-  std::string a(Alfred::Random::string(16));
-  return (a);
-}
-
 void	Server::waitClientPacket()
 {
   UDPPacket	packet;
   for (;;)
   {
     packet = _net.receive();
+    if (packet.getCommand() == RFC::Commands::LOGIN)
+      std::cout << "cc" << std::endl;
     manageClientPacket(packet);
   }
 }
 
 void	Server::manageClientPacket(UDPPacket &packet)
 {
-  if (packet.getToken().length() == 0)
-  {
-    std::string token = login();
-    packet.setToken(token);
-    _roomManager.addPlayer(token);
-    if (packet.getCommand() == RFC::Commands::LOGIN) {
-      std::cout << "OK" << std::endl;
-    } else {
-      std::cout << "KO" << std::endl;
-    }
-    _net.send(packet, _net.getLastSender());
+  switch (packet.getCommand()) {
+    case RFC::Commands::PING:
+      pingClient(packet);
+      break;
+    case RFC::Commands::LOGIN:
+      loginClient(packet);
+      break;
+    case RFC::Commands::GET_FRIENDS:
+      break;
+    case RFC::Commands::GET_PROFIL:
+      break;
+    case RFC::Commands::GET_SHIP_INFO:
+      break;
+    case RFC::Commands::BUY_SHIP_COMPONENT:
+      break;
+    case RFC::Commands::SEARCH_ROOM:
+      break;
+    case RFC::Commands::JOIN_ROOM:
+      joinRoomClient(packet);
+      break;
+    case RFC::Commands::GET_ROOM_INFO:
+      break;
+    case RFC::Commands::LEAVE_ROOM:
+      break;
+    case RFC::Commands::READY:
+      break;
+    case RFC::Commands::NOT_READY:
+      break;
+    case RFC::Commands::START_GAME:
+      break;
+    case RFC::Commands::SELECT_ROOM_LEVEL:
+      break;
+    case RFC::Commands::CREATE_ROOM:
+      createRoomClient(packet);
+      break;
+    case RFC::Commands::KEY_PRESSED:
+      pressKeyClient(packet);
+      break;
   }
+}
+
+void	Server::pingClient(UDPPacket &packet)
+{
+  packet.setResult(RFC::Responses::PONG);
+  sendResponseToClient(packet);
+}
+
+void	Server::loginClient(UDPPacket &packet)
+{
+  UDPPacket	resp;
+  Client	client;
+
+  std::string token(Alfred::Random::string(16));
+  while (_roomManager.checkPlayer(token) == true)
+    token = Alfred::Random::string(16);
+  resp.setToken(token);
+  resp.setResult(RFC::Responses::SUCCESS);
+  client.setIp(packet.getIp());
+  client.setToken(token);
+  _roomManager.addPlayer(client);
+  sendResponseToClient(resp);
+}
+
+void	Server::joinRoomClient(UDPPacket &packet)
+{
+  _roomManager.joinRoom(packet.getToken(), packet.getData("roomId"));
+}
+
+void	Server::pressKeyClient(UDPPacket &packet)
+{
+
+}
+
+void	Server::createRoomClient(UDPPacket &packet)
+{
+  if (_roomManager.createRoom(packet.getData("roomId")) == true)
+    packet.setResult(RFC::Responses::ROOM_CREATED);
   else
-  {
-    _roomManager.transferRequest(packet);
-  }
+    packet.setResult(RFC::Responses::FAIL);
+  sendResponseToClient(packet);
+}
+
+void	Server::sendResponseToClient(UDPPacket &packet)
+{
+  _net.send(packet);
 }
