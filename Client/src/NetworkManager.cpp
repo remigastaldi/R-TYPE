@@ -106,9 +106,7 @@ void NetworkManager::update()
       case RFC::Commands::SEARCH_ROOM:break;
       case RFC::Commands::GET_ROOM_INFO:break;
       case RFC::Commands::LEAVE_ROOM:break;
-      case RFC::Commands::READY:break;
       case RFC::Commands::NOT_READY:break;
-      case RFC::Commands::START_GAME:break;
       case RFC::Commands::SELECT_ROOM_LEVEL:break;
       case RFC::Commands::KEY_PRESSED:break;
       case RFC::Commands::UNKNOWN:break;
