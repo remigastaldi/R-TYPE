@@ -2,7 +2,7 @@
  * @Author: Remi Gastaldi <gastal_r>
  * @Date:   2018-01-13T01:04:05+01:00
  * @Last modified by:   gastal_r
- * @Last modified time: 2018-01-21T05:49:52+01:00
+ * @Last modified time: 2018-01-22T03:43:16+01:00
  */
 
 
@@ -31,6 +31,15 @@ namespace ECS
 
   bool Manager::destroyEntity(Entity e)
   {
+    std::set<ComponentType> entityComponents = getEntityComponents(e);
+
+    for (auto & it : entityComponents)
+    {
+      std::shared_ptr<Store> store = getStore(it);
+      store->remove(e);
+      extractComponent(e, it);
+    }
+    updateEntityToSystems(e);
     auto count = _entities.erase(e);
     return (count > 0);
   }
@@ -45,6 +54,14 @@ namespace ECS
     }
 
     return (ret);
+  }
+
+  std::set<ComponentType> Manager::getEntityComponents(Entity entity) const
+  {
+
+    auto it = _entities.find(entity);
+
+    return (it->second);
   }
 
   std::shared_ptr<Store> Manager::getStore(ComponentType ct)
