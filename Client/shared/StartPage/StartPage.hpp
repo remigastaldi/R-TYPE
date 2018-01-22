@@ -15,7 +15,7 @@
 #include "GUIManager.hpp"
 #include "EventManager.hpp"
 
-class StartPage : IScene
+class StartPage : public IScene
 {
 public:
 	explicit StartPage(ResourcesManager &resourceManager, GUI::Manager &, EventManager::Manager &);

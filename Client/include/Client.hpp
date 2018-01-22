@@ -24,6 +24,7 @@
 #include  "Parallax/Parallax.hpp"
 
 #include "Ship.hpp"
+#include "SceneManager.hpp"
 
 #include  <chrono>
 #include  <cmath>
@@ -47,7 +48,7 @@ namespace GameEngine
       void exitGame(const std::string &);
 
     private:
-		Parallax _parallax;
+      Parallax _parallax;
       EventManager::Manager _eventManager;
       ResourcesManager _resourcesManager;
       ECS::Manager _ecsManager;
@@ -55,9 +56,9 @@ namespace GameEngine
       SoundManager _soundManager;
       GameEngine::GameManagers _gameManagers;
       // SceneManager   _sceneManager;
-       LibLoader _libraryLoader;
+      LibLoader _libraryLoader;
       // Network _network;
-      NetworkManager          _networkManager;
+      NetworkManager _networkManager;
 
       std::shared_ptr<Ship> _ship;
 
@@ -68,6 +69,8 @@ namespace GameEngine
       double _gameEngineTick;
       double _maxFrameRate;
       bool _running;
+
+      SceneManager _sceneManager;
 
       IMap *_myMap;
   };

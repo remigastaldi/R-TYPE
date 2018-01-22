@@ -10,6 +10,7 @@ class KirbyMap : public IMap
     std::pair<int, int> _neededLevel = std::make_pair(0, 5);
 
     EventManager::EventListener _listener;
+    EventManager::EventListener _listenerOutOfSpace;
 
     int _wave = 0;
 

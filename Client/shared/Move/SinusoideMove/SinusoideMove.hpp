@@ -1,8 +1,8 @@
 #pragma once
 
-#include <LibraryInterfaces/IMove.hpp>
+#include "IMove.hpp"
 
-class UpAndDownMove : public IMove
+class SinusoideMove : public IMove
 {
   private:
     ECS::Manager &_ecs;
@@ -12,17 +12,17 @@ class UpAndDownMove : public IMove
     ECS::Entity _owner;
 
   public:
-    UpAndDownMove(ECS::Manager &ecs, EventManager::Manager &event, LibLoader &loader, ECS::Entity entity);
-    ~UpAndDownMove() override;
+    SinusoideMove(ECS::Manager &ecs, EventManager::Manager &event, LibLoader &loader, ECS::Entity entity);
+    ~SinusoideMove() override;
     void update() override;
 };
 
 extern "C" std::string getName()
 {
-  return "UpAndDownMove";
+  return "SinusoideMove";
 }
 
 extern "C" IMove *getSymbol(ECS::Manager &ecs, EventManager::Manager &event, LibLoader &loader, ECS::Entity parent)
 {
-  return new UpAndDownMove(ecs, event, loader, parent);
+  return new SinusoideMove(ecs, event, loader, parent);
 }

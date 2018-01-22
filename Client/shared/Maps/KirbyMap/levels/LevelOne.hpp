@@ -11,7 +11,7 @@ class LevelOne : public ILevels
 
     bool _isEnd = false;
 
-    int _timeLeft;
+    int _timeLeft = 0;
     int _timeBetweenMobSpawn = 320;
     int _nbMobSpawn = 2;
 
@@ -28,5 +28,6 @@ class LevelOne : public ILevels
     bool isEnd() override;
     void update() override;
     void playerHit(ECS::Entity by, ECS::Entity to) override;
+    void unitOutOfSpace(ECS::Entity entity) override;
 };
 

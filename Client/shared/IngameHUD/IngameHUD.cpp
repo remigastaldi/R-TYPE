@@ -7,6 +7,9 @@ _guiManager(guiManager),
 	_eventManager(eventManager),
 	_resources(resourceManager)
 {
+	_eventManager.listen<void, const std::string &>("printAlert", [&] (const std::string &ev) {
+		printAlert(ev);
+	});
 }
 
 void	IngameHUD::printAlert(const std::string&string)
