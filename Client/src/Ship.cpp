@@ -2,7 +2,7 @@
  * @Author: Remi Gastaldi <gastal_r>
  * @Date:   2018-01-20T20:45:23+01:00
  * @Last modified by:   gastal_r
- * @Last modified time: 2018-01-22T07:29:28+01:00
+ * @Last modified time: 2018-01-22T10:25:33+01:00
  */
 
 
@@ -28,6 +28,7 @@ Ship::Ship(GameEngine::GameManagers &gameManagers)
 
     _gameManagers.ecs.addComponent<ECS::Components::Player>(_entity, ECS::Components::Player("Remi"));
     _gameManagers.ecs.addComponent<ECS::Components::Position>(_entity, ECS::Components::Position(200, 400));
+    _gameManagers.ecs.addComponent<ECS::Components::Collisionable>(_entity, ECS::Components::Collisionable(_entity, ECS::Components::Collisionable::Type::ALLY));
     _gameManagers.ecs.addComponent<ECS::Components::Drawable>(_entity, ECS::Components::Drawable("playersSpaceship"));
     _gameManagers.ecs.addComponent<ECS::Components::Direction>(_entity, ECS::Components::Direction(0, 0, 7));
 
@@ -303,7 +304,7 @@ void  Ship::fire(const std::string &msg)
 
   _gameManagers.ecs.addComponent<ECS::Components::Position>(e, ECS::Components::Position(
     static_cast<size_t>(position->x), static_cast<size_t>(position->y + 60)));
-  _gameManagers.ecs.addComponent<ECS::Components::Collisionable>(e, ECS::Components::Collisionable(e));
+  _gameManagers.ecs.addComponent<ECS::Components::Collisionable>(e, ECS::Components::Collisionable(e, ECS::Components::Collisionable::Type::ALLY));
   _gameManagers.ecs.addComponent<ECS::Components::Drawable>(e, ECS::Components::Drawable("playersMissiles"));
   _gameManagers.ecs.addComponent<ECS::Components::Direction>(e, ECS::Components::Direction(1, 0, 30));
   _gameManagers.ecs.updateEntityToSystems(e);
