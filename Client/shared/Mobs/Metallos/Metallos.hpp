@@ -39,6 +39,19 @@ class Metallos : public IMob
     void unitOutOfSpace(ECS::Entity entity) override;
 };
 
+#if WIN32
+extern "C" std::string __declspec(dllexport) __stdcall getName()
+{
+  return "Metallos";
+}
+
+extern "C" IMob __declspec(dllexport) __stdcall *getSymbol(ECS::Manager &ecs, EventManager::Manager &event, LibLoader &loader, ECS::Components::Position pos)
+{
+  return new Metallos(ecs, event, loader, pos);
+}
+
+#else
+
 extern "C" std::string getName()
 {
   return "Metallos";
@@ -49,3 +62,4 @@ extern "C" IMob *getSymbol(ECS::Manager &ecs, EventManager::Manager &event, LibL
   return new Metallos(ecs, event, loader, pos);
 }
 
+#endif

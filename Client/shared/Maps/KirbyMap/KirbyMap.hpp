@@ -30,7 +30,20 @@ class KirbyMap : public IMap
     bool isEnd() override;
 };
 
+#if WIN32
 extern "C" std::string __declspec(dllexport) __stdcall getName()
+{
+  return "KirbyMap";
+}
+
+extern "C" IMap  __declspec(dllexport) __stdcall *getSymbol(ECS::Manager &ecs, EventManager::Manager &event, LibLoader &loader)
+{
+  return new KirbyMap(ecs, event, loader);
+}
+
+#else
+
+extern "C" std::string getName()
 {
   return "KirbyMap";
 }
@@ -39,3 +52,5 @@ extern "C" IMap *getSymbol(ECS::Manager &ecs, EventManager::Manager &event, LibL
 {
   return new KirbyMap(ecs, event, loader);
 }
+
+#endif

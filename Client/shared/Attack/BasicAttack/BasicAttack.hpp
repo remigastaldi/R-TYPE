@@ -31,6 +31,19 @@ class BasicAttack : public IAttack
     void move();
 };
 
+#if WIN32
+extern "C" std::string __declspec(dllexport) __stdcall getName()
+{
+  return "BasicAttack";
+}
+
+extern "C" IAttack  __declspec(dllexport) __stdcall *getSymbol(ECS::Manager &ecs, EventManager::Manager &event, LibLoader &loader, ECS::Entity parent)
+{
+  return new BasicAttack(ecs, event, loader, parent);
+}
+
+#else
+
 extern "C" std::string getName()
 {
   return "BasicAttack";
@@ -40,3 +53,5 @@ extern "C" IAttack *getSymbol(ECS::Manager &ecs, EventManager::Manager &event, L
 {
   return new BasicAttack(ecs, event, loader, parent);
 }
+
+#endif
