@@ -2,7 +2,7 @@
  * @Author: Remi Gastaldi <gastal_r>
  * @Date:   2018-01-13T01:04:20+01:00
  * @Last modified by:   gastal_r
- * @Last modified time: 2018-01-21T05:51:14+01:00
+ * @Last modified time: 2018-01-22T03:22:03+01:00
  */
 
 
@@ -38,6 +38,7 @@ namespace ECS
     Entity createEntity();
     bool   destroyEntity(Entity e);
     std::set<Entity> getEntities() const;
+    std::set<ComponentType> getEntityComponents(Entity) const;
 
     std::shared_ptr<Store> getStore(ComponentType ct);
 

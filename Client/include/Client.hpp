@@ -2,7 +2,7 @@
  * @Author: Remi Gastaldi <gastal_r>
  * @Date:   2018-01-17T04:02:41+01:00
  * @Last modified by:   gastal_r
- * @Last modified time: 2018-01-21T22:32:37+01:00
+ * @Last modified time: 2018-01-22T02:41:57+01:00
  */
 
 #pragma once
@@ -16,6 +16,7 @@
 #include  "EventManager.hpp"
 #include  "ECS/Components/Components.hpp"
 #include  "ECS/Systems/ClientSystems.hpp"
+#include  "ECS/Systems/Collision.hpp"
 #include  "NetworkManager.hpp"
 
 #include  "StartPage/StartPage.hpp"

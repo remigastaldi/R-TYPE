@@ -35,9 +35,12 @@ namespace GameEngine
     _ecsManager.createStoreFor<ECS::Components::Position>();
     _ecsManager.createStoreFor<ECS::Components::Drawable>();
     _ecsManager.createStoreFor<ECS::Components::Direction>();
+    _ecsManager.createStoreFor<ECS::Components::Collisionable>();
+    _ecsManager.createStoreFor<ECS::Components::Player>();
 
     _ecsManager.addSystem<ECS::Systems::Mouvement>(_eventManager, _ecsManager);
     _ecsManager.addSystem<ECS::Systems::Render>(_resourcesManager, _ecsManager, _window);
+    _ecsManager.addSystem<ECS::Systems::Collision>(_resourcesManager, _ecsManager);
     _ecsManager.initSystems();
 
     // Create events
@@ -174,7 +177,7 @@ namespace GameEngine
   void Client::render(float alpha)
   {
     _window.clear();
-    _ecsManager.updateSystemsRange(0.f, 1, 2);
+    _ecsManager.updateSystemsRange(0.f, 2, 3);
     _guiManager.update(alpha);
     _window.display();
   }

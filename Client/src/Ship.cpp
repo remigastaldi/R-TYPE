@@ -2,7 +2,7 @@
  * @Author: Remi Gastaldi <gastal_r>
  * @Date:   2018-01-20T20:45:23+01:00
  * @Last modified by:   gastal_r
- * @Last modified time: 2018-01-22T01:46:03+01:00
+ * @Last modified time: 2018-01-22T04:05:20+01:00
  */
 
 
@@ -21,7 +21,8 @@ Ship::Ship(GameEngine::GameManagers &gameManagers)
     sprite.setTextureRect(sf::IntRect(0, 0, 160, 160));
     sprite.setScale(0.6, 0.6);
 
-    _gameManagers.ecs.addComponent<ECS::Components::Position>(_entity, ECS::Components::Position(200, 10));
+    _gameManagers.ecs.addComponent<ECS::Components::Player>(_entity, ECS::Components::Player("Remi"));
+    _gameManagers.ecs.addComponent<ECS::Components::Position>(_entity, ECS::Components::Position(200, 400));
     _gameManagers.ecs.addComponent<ECS::Components::Drawable>(_entity, ECS::Components::Drawable("playersSpaceship"));
     _gameManagers.ecs.addComponent<ECS::Components::Direction>(_entity, ECS::Components::Direction(0, 0, 7));
 
@@ -40,6 +41,8 @@ Ship::Ship(GameEngine::GameManagers &gameManagers)
 void  Ship::keyPressed(sf::Event event)
 {
   std::shared_ptr<ECS::Components::Direction> direction = _gameManagers.ecs.getComponent<ECS::Components::Direction>(_entity);
+
+  std::shared_ptr<ECS::Components::Position> position = _gameManagers.ecs.getComponent<ECS::Components::Position>(_entity);
 
   switch (event.key.code)
   {
@@ -297,6 +300,7 @@ void  Ship::fire(const std::string &msg)
     static_cast<size_t>(position->x + 100), static_cast<size_t>(position->y)));
   _gameManagers.ecs.addComponent<ECS::Components::Drawable>(e, ECS::Components::Drawable("playersSpaceship"));
   _gameManagers.ecs.addComponent<ECS::Components::Direction>(e, ECS::Components::Direction(1, 0, 30));
+  _gameManagers.ecs.addComponent<ECS::Components::Collisionable>(e, ECS::Components::Collisionable(e, ECS::Components::Collisionable::Type::ALLY));
   _gameManagers.ecs.updateEntityToSystems(e);
 }
 
@@ -308,7 +312,7 @@ void  Ship::update(void )
     _fireTickCounter++;
     _gameManagers.event.fire<void, const std::string &>("SpaceKeyEvent", "Fire");
   }
-  else if (_fire && _fireTickCounter > 5)
+  else if (_fire && _fireTickCounter > 10)
     _fireTickCounter = 0;
   else if (_fire)
     _fireTickCounter++;

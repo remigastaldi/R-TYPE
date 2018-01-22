@@ -2,7 +2,7 @@
  * @Author: Remi Gastaldi <gastal_r>
  * @Date:   2018-01-20T04:50:36+01:00
  * @Last modified by:   gastal_r
- * @Last modified time: 2018-01-21T18:43:09+01:00
+ * @Last modified time: 2018-01-22T03:14:38+01:00
  */
 
 
@@ -32,12 +32,15 @@ namespace ECS
       int yDirection = 0;
       int speed = 0;
 
+      std::shared_ptr<Store> store = getManager().getStore(Alfred::Utils::GetTypeID<ECS::Components::Drawable>());
+
       if (direction)
       {
         xDirection = direction->xDirection;
         yDirection = direction->yDirection;
         speed = direction->speed;
       }
+
       sprite.setPosition(sf::Vector2f(position->x + (xDirection * speed * delta),
         position->y + (yDirection * speed * delta)));
       _window.draw(sprite);

@@ -2,7 +2,7 @@
  * @Author: Remi Gastaldi <gastal_r>
  * @Date:   2018-01-13T20:15:43+01:00
  * @Last modified by:   gastal_r
- * @Last modified time: 2018-01-21T06:56:23+01:00
+ * @Last modified time: 2018-01-22T04:04:41+01:00
  */
 
 
@@ -10,6 +10,8 @@
 
 #include "ECS/Component.hpp"
 #include "ECS/Entity.hpp"
+
+#include <string>
 
 namespace ECS
 {
@@ -58,7 +60,15 @@ namespace ECS
 
       Entity entity;
       Collisionable::Type type;
+    };
 
+    struct Player : ECS::Component
+    {
+      explicit  Player(const std::string &_name)
+        : name(_name)
+      {}
+
+      std::string name;
     };
   }
 }
