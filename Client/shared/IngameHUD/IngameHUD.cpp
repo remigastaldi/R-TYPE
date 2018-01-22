@@ -2,10 +2,10 @@
 
 IngameHUD::IngameHUD(ResourcesManager &resourceManager, GUI::Manager& guiManager, EventManager::Manager &eventManager)
 	: _name("LobbyPlayer"),
-	_guiManager(guiManager),
+		_score(0),
+_guiManager(guiManager),
 	_eventManager(eventManager),
-	_resources(resourceManager),
-	_score(0)
+	_resources(resourceManager)
 {
 
 }

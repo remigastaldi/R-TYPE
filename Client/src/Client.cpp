@@ -58,17 +58,19 @@ namespace GameEngine
 
     _networkManager.init();
     //Loading library
-    _libraryLoader.map.addFolder("../ressources/map/");
-    _libraryLoader.mob.addFolder("../ressources/mob/");
-    _libraryLoader.move.addFolder("../ressources/move/");
-    _libraryLoader.attack.addFolder("../ressources/attack/");
-    _libraryLoader.updateAll();
+//    _libraryLoader.map.addFolder("../ressources/map/");
+//    _libraryLoader.mob.addFolder("../ressources/mob/");
+//    _libraryLoader.move.addFolder("../ressources/move/");
+//    _libraryLoader.attack.addFolder("../ressources/attack/");
+//    _libraryLoader.updateAll();
 
     //Escape key
     _eventManager.listen<void, sf::Event>("KeyPressedEvent", [] (sf::Event ev) -> void {
       if (ev.key.code ==  sf::Keyboard::Escape)
-      LOG_SUCCESS << "Je exit" << std::endl;
-      exit(0);
+      {
+        LOG_SUCCESS << "Je exit" << std::endl;
+        exit(0);
+      }
     });
   }
 
@@ -94,7 +96,7 @@ namespace GameEngine
   	  // lobbyPlayerScene.onEnter();
     //
 
-    _myMap = _libraryLoader.map.get("KirbyMap")(_ecsManager, _eventManager, _libraryLoader);
+//    _myMap = _libraryLoader.map.get("KirbyMap")(_ecsManager, _eventManager, _libraryLoader);
 
 //    exit(0);
 
