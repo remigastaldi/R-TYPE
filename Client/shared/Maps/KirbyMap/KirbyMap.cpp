@@ -10,8 +10,9 @@ KirbyMap::KirbyMap(ECS::Manager &ecs, EventManager::Manager &event, LibLoader &l
   Logger::get().setOutput(CONSOLE_LOG);
 
   _listener = _event.listen<void, ECS::Entity, ECS::Entity>("Collision", [&](ECS::Entity by,
-                                                                                        ECS::Entity to) -> void {
+                                                                             ECS::Entity to) -> void {
 
+    LOG_SUCCESS << "ON A TOUCHE" << std::endl;
     (*_levels[_wave])->playerHit(by, to);
   });
 

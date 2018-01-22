@@ -181,7 +181,7 @@ namespace GameEngine
   {
     //_networkManager.update();
     _ship->update();
-//    _myMap->update(); //TODO
+    _myMap->update(); //TODO
     _ecsManager.updateSystemsRange(0.f, 0, 1);
 	_parallax.updatePos();
   }
