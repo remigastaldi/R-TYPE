@@ -109,7 +109,11 @@ namespace GameEngine
 
   void Client::run(void)
   {
-    _sceneManager.pushScene("IngameHUD");
+    _sceneManager.pushScene("StartPage");
+
+  	//  startPageScene.onEnter();
+	  // IngameHUD ingameHUDScene(_resourcesManager, _guiManager, _eventManager);
+	 	// ingameHUDScene.onEnter();
 
     _myMap = _libraryLoader.map.get("KirbyMap")(_ecsManager, _eventManager, _libraryLoader);
 
@@ -185,8 +189,8 @@ namespace GameEngine
   {
     _networkManager.update();
     _ship->update();
-    _myMap->update();
     _ecsManager.updateSystemsRange(0.f, 0, 3);
+    //_myMap->update();
 	  _parallax.updatePos();
   }
 
