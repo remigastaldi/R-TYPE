@@ -29,41 +29,39 @@ target_link_libraries(${NAME} ${Boost_LIBRARIES} AlfredBase -ldl)
 
 if (UNIX)
   list(APPEND COMPILE_OPTIONS
-   -O3
-   -W
-   -Wall
-   -Wuninitialized
-   -Winit-self
-   -Wunsafe-loop-optimizations
-   -Woverloaded-virtual
-   -Wshadow
-   -Wsign-conversion
-   -Wsign-promo
-   -Wstrict-null-sentinel
-   -Wstrict-overflow=4
-   -Wundef
-   -Weffc++
-   -Wfloat-equal
-   -Wcast-align
-   -Wmissing-declarations
-   -Wmissing-include-dirs
-   -Wswitch-enum
-   -Wlogical-op
-   -Wnoexcept
-   -Winvalid-pch
-   -Wredundant-decls
-   -Wformat=2
-   -Wmissing-format-attribute
-   -Wformat-nonliteral
-   -flto
-   -Wodr
+    $<$<CONFIG:Debug>: -g3>
+    $<$<CONFIG:Release>: -O3>
+
+    $<$<BOOL:True>:
+      -fdiagnostics-color=always
+      -W
+      -Wall
+      -Wuninitialized
+      -Winit-self
+      -Wunsafe-loop-optimizations
+      -Woverloaded-virtual
+      -Wshadow
+      -Wsign-conversion
+      -Wsign-promo
+      -Wstrict-null-sentinel
+      -Wstrict-overflow=4
+      -Wundef
+      -Weffc++
+      -Wfloat-equal
+      -Wcast-align
+      -Wmissing-declarations
+      -Wmissing-include-dirs
+      -Wswitch
+      -Wlogical-op
+      -Wnoexcept
+      -Winvalid-pch
+      -Wredundant-decls
+      -Wformat=2
+      -Wmissing-format-attribute
+      -Wformat-nonliteral
+      -flto
+      -Wno-odr >
   )
-  if (DEBUG)
-    list(APPEND COMPILE_OPTIONS -g3)
-  else()
-    #impossible due to libs warnings
-    # list(APPEND COMPILE_OPTIONS -Werror)
-  endif()
 endif()
 
 if(MSVC)

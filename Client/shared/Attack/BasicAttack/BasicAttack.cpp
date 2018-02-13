@@ -32,7 +32,6 @@ BasicAttack::BasicAttack(ECS::Manager &ecs, EventManager::Manager &event, LibLoa
 
 BasicAttack::~BasicAttack()
 {
-  LOG_SUCCESS << "Basic attack se detruit" << std::endl;
   _ecs.destroyEntity(_entity);
 }
 

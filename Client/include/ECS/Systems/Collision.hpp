@@ -18,6 +18,11 @@
 
 #include  "EventManager.hpp"
 
+#include  <SFML/System.hpp>
+#include  <SFML/Graphics.hpp>
+
+#include <iostream>
+
 namespace ECS
 {
   namespace Systems

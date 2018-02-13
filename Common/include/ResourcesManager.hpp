@@ -84,7 +84,6 @@ public:
   template<typename S>
 	typename S::ContentType &getContent(const std::string &name)
 	{
-    LOG_SUCCESS << "LE NOM " << name << std::endl;
     if (_resources.find(name) == _resources.end())
       LOG_ERROR << "Ressource " << name << " dont exist" << std::endl;
 

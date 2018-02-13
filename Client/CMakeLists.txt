@@ -20,9 +20,6 @@ add_executable(
 
 target_compile_features(${NAME} PUBLIC cxx_std_17)
 
-target_compile_definitions(${NAME} PRIVATE WINDOWS_LEAN_AND_MEAN=1})
-target_compile_definitions(${NAME} PRIVATE WINDOWS_LEAN_AND_MEAN)
-
 target_sources(${NAME}
         PUBLIC
         ${CMAKE_CURRENT_SOURCE_DIR}/src/Client.cpp
@@ -33,6 +30,7 @@ target_sources(${NAME}
         # ECS
         ${CMAKE_CURRENT_SOURCE_DIR}/src/ECS/Systems/Animation.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/src/ECS/Systems/Render.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/ECS/Systems/Collision.cpp
 
         # Temporary
         ${CMAKE_CURRENT_SOURCE_DIR}/shared/StartPage/StartPage.cpp
@@ -46,49 +44,51 @@ include(../Common/common.cmake)
 link_directories(${SFML_BINARY_DIR}/lib)
 
 if (UNIX)
-target_link_libraries(${NAME} ${Boost_LIBRARIES} sfml-system sfml-graphics sfml-window sfml-audio AlfredBase -lstdc++fs stdc++fs -ldl)
+  target_link_libraries(${NAME} ${Boost_LIBRARIES} sfml-system sfml-graphics sfml-window sfml-audio AlfredBase -lstdc++fs stdc++fs -ldl)
 elseif(MSVC)
+  target_compile_definitions(${NAME} PRIVATE WINDOWS_LEAN_AND_MEAN=1})
+  target_compile_definitions(${NAME} PRIVATE WINDOWS_LEAN_AND_MEAN)
   target_link_libraries(${NAME} ${Boost_LIBRARIES} AlfredBase ${SFML_BINARY_DIR}/lib/sfml-audio-d.lib ${SFML_BINARY_DIR}/lib/sfml-graphics-d.lib ${SFML_BINARY_DIR}/lib/sfml-system-d.lib ${SFML_BINARY_DIR}/lib/sfml-window-d.lib)
 endif()
 
 
 if (UNIX)
   list(APPEND COMPILE_OPTIONS
-   -O3
-   -W
-   -Wall
-   -Wuninitialized
-   -Winit-self
-   -Wunsafe-loop-optimizations
-   -Woverloaded-virtual
-   -Wshadow
-   -Wsign-conversion
-   -Wsign-promo
-   -Wstrict-null-sentinel
-   -Wstrict-overflow=4
-   -Wundef
-   -Weffc++
-   -Wfloat-equal
-   -Wcast-align
-   -Wmissing-declarations
-   -Wmissing-include-dirs
-   -Wswitch-enum
-   -Wlogical-op
-   -Wnoexcept
-   -Winvalid-pch
-   -Wredundant-decls
-   -Wformat=2
-   -Wmissing-format-attribute
-   -Wformat-nonliteral
-   -flto
-   -Wodr
+    $<$<CONFIG:Debug>: -g3>
+    $<$<CONFIG:Release>: -O3>
+
+    $<$<PLATFORM_ID:Darwin>: -stdlib=libc++ >
+
+    $<$<BOOL:True>:
+      -fdiagnostics-color=always
+      -W
+      -Wall
+      -Wuninitialized
+      -Winit-self
+      -Wunsafe-loop-optimizations
+      -Woverloaded-virtual
+      -Wshadow
+      -Wsign-conversion
+      -Wsign-promo
+      -Wstrict-null-sentinel
+      -Wstrict-overflow=4
+      -Wundef
+      -Weffc++
+      -Wfloat-equal
+      -Wcast-align
+      -Wmissing-declarations
+      -Wmissing-include-dirs
+      -Wswitch
+      -Wlogical-op
+      -Wnoexcept
+      -Winvalid-pch
+      -Wredundant-decls
+      -Wformat=2
+      -Wmissing-format-attribute
+      -Wformat-nonliteral
+      -flto
+      -Wodr >
   )
-  if (DEBUG)
-    list(APPEND COMPILE_OPTIONS -g3)
-  else()
-    #impossible due to libs warnings
-    # list(APPEND COMPILE_OPTIONS -Werror)
-  endif()
 endif()
 
 if(MSVC)

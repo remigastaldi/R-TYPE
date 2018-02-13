@@ -9,7 +9,6 @@
 #include  "ECS/Systems/Collision.hpp"
 
 #include  "ECS/Components/CommonComponents.hpp"
-#include <iostream>
 
 namespace ECS
 {
@@ -45,11 +44,11 @@ namespace ECS
         std::shared_ptr<ECS::Components::Drawable> drawable = getManager().getComponent<ECS::Components::Drawable>(it);
 
         sf::Sprite &sprite = _resourcesManager.getContent<Sprite>(drawable->sprite);
-
+/*
         if (sprite.getGlobalBounds().intersects(entitySprite.getGlobalBounds()))
         {
-           _eventManager.fire<void, ECS::Entity, ECS::Entity>("Collision", it, e);
-        }
+          _eventManager.fire<void, ECS::Entity, ECS::Entity>("Collision", it, e);
+        } */
       }
     }
   }

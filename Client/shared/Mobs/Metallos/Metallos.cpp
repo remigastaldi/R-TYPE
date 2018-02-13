@@ -36,7 +36,6 @@ Metallos::Metallos(ECS::Manager &ecs, EventManager::Manager &event, LibLoader &l
 
 Metallos::~Metallos()
 {
-  LOG_SUCCESS << "Metaloss se detruit" << std::endl;
 //  _ecs.destroyEntity(_me);
 }
 
