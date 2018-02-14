@@ -5,7 +5,7 @@
 ** Login	leliev_t
 **
 ** Started on	Sat Jan 20 22:26:56 2018 Tanguy Lelievre
-** Last update	Mon Jan 22 10:54:20 2018 Tanguy Lelievre
+** Last update	Mon Jan 22 13:26:16 2018 Tanguy Lelievre
 */
 
 #include "RoomManager.hpp"
@@ -43,7 +43,7 @@ bool	RoomManager::createRoom(const std::string &name)
   {
     newRoom.setName(name);
     newRoom.setId(name);
-    _roomList.emplace(std::make_pair(name, newRoom));;
+    _roomList.emplace(std::make_pair(name, newRoom));
     return (true);
   }
   return (false);
@@ -78,7 +78,7 @@ bool	RoomManager::joinRoom(const std::string &player, const std::string &roomId)
     resp.setResult(RFC::Responses::SUCCESS);
     resp.setData("name", _clientsList[player].getName());
     _roomList.at(roomId).getRoomInfo(resp);
-    _net.get()->send(resp);
+    _net.get()->send(resp, _clientsList[player].getIp(), _clientsList[player].getPort());
     resp.setResult(RFC::Responses::PLAYER_JOIN);
     _roomList.at(roomId).broadcast(resp);
     return (true);
@@ -115,7 +115,7 @@ void	RoomManager::setPlayerReady(const std::string &player)
     packet.setResult(RFC::Responses::PLAYER_READY);
     _roomList.at(_clientsList.at(player).getRoom()).getRoomInfo(packet);
     packet.setData("name", _clientsList.at(player).getName());
-    _net.get()->send(packet);
+    _net.get()->send(packet, _clientsList[player].getIp(), _clientsList[player].getPort());
     std::string	str("player");
     std::string	client;
     int	ready;
@@ -132,7 +132,7 @@ void	RoomManager::setPlayerReady(const std::string &player)
       {
         packet.setCommand(RFC::Commands::START_GAME);
         packet.setResult(RFC::Responses::GAME_STARTED);
-        _net.get()->send(packet);
+        _net.get()->send(packet, _clientsList[player].getIp(), _clientsList[player].getPort());
         _roomList.at(_clientsList.at(player).getRoom()).broadcast(packet);
       }
   }

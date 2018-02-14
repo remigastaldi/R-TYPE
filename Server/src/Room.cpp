@@ -5,7 +5,7 @@
 ** Login	leliev_t
 **
 ** Started on	Mon Jan 22 00:40:59 2018 Tanguy Lelievre
-** Last update	Mon Jan 22 08:45:14 2018 Tanguy Lelievre
+** Last update	Mon Jan 22 13:21:24 2018 Tanguy Lelievre
 */
 
 #include "Room.hpp"
@@ -61,7 +61,8 @@ void	Room::broadcast(UDPPacket &packet)
     if (_clients[player].getName().length() != 0 &&
     _clients[player].getToken() != packet.getToken())
     {
-      _net.get()->send(packet, _clients[player].getIp());
+      std::cout << _clients[player].getIp() << std::endl;
+      _net.get()->send(packet, _clients[player].getIp(), _clients[player].getPort());
     }
   }
 }

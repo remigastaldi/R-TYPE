@@ -64,6 +64,7 @@ UDPPacket	AsioSyncUdpNetwork::receive()
     boost::archive::text_iarchive archive(archive_stream);
     archive >> map;
     map["ip"] = _lastEndpoint.address().to_string();
+    map["port"] = std::to_string(_lastEndpoint.port());
     packet.setData(map);
   } catch (std::exception &e) {
     std::cout << e.what() << std::endl;
@@ -86,7 +87,7 @@ void	AsioSyncUdpNetwork::send(UDPPacket &packet)
   }
 }
 
-void	AsioSyncUdpNetwork::send(UDPPacket &packet, const std::string &ip)
+void	AsioSyncUdpNetwork::send(UDPPacket &packet, const std::string &ip, unsigned short port)
 {
   try {
     std::ostringstream archive_stream;
@@ -95,26 +96,26 @@ void	AsioSyncUdpNetwork::send(UDPPacket &packet, const std::string &ip)
     std::string outbound_data_ = archive_stream.str();
 
     _lastEndpoint.address(boost::asio::ip::address::from_string(ip));
+    _lastEndpoint.port(port);
     _socket.send_to(boost::asio::buffer(outbound_data_), _lastEndpoint);
   } catch (std::exception &e) {
     throw std::runtime_error("Error send.");
   }
 }
 
-void	AsioSyncUdpNetwork::send(std::unordered_map<std::string, std::string>	&map, const std::string &ip)
-{
-  UDPPacket	packet;
-  packet.setData(map);
-  send(packet, ip);
-}
-
-void	AsioSyncUdpNetwork::send(std::unordered_map<std::string, std::string>	&map)
-{
-  UDPPacket	packet;
-  packet.setData(map);
-  send(packet);
-}
-
+// void	AsioSyncUdpNetwork::send(std::unordered_map<std::string, std::string>	&map, const std::string &ip)
+// {
+//   UDPPacket	packet;
+//   packet.setData(map);
+//   send(packet, ip);
+// }
+//
+// void	AsioSyncUdpNetwork::send(std::unordered_map<std::string, std::string>	&map)
+// {
+//   UDPPacket	packet;
+//   packet.setData(map);
+//   send(packet);
+// }
 
 void  AsioSyncUdpNetwork::disconnect()
 {

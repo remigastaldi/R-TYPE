@@ -5,7 +5,7 @@
 ** Login	leliev_t
 **
 ** Started on	Mon Jan 22 02:54:04 2018 Tanguy Lelievre
-** Last update	Mon Jan 22 04:57:10 2018 Tanguy Lelievre
+** Last update	Mon Jan 22 13:12:46 2018 Tanguy Lelievre
 */
 
 #pragma once
@@ -33,10 +33,14 @@ public:
   bool	getState() const;
   void	setState(bool);
 
+  unsigned short	getPort() const;
+  void	setPort(unsigned short);
+
 private:
   std::string	_ip;
   std::string	_token;
   std::string	_name;
   std::string	_roomId;
   bool	_ready;
+  unsigned short	_port;
 };

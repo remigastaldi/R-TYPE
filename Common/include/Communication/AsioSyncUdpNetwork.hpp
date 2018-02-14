@@ -17,9 +17,9 @@ public:
   virtual void	connect(const std::string &);
   virtual UDPPacket	receive();
   virtual void	send(UDPPacket &);
-  virtual void	send(UDPPacket &, const std::string &);
-  virtual void	send(std::unordered_map<std::string, std::string>	&, const std::string &);
-  virtual void	send(std::unordered_map<std::string, std::string>	&);
+  virtual void	send(UDPPacket &, const std::string &, unsigned short);
+  // virtual void	send(std::unordered_map<std::string, std::string>	&, const std::string &);
+  // virtual void	send(std::unordered_map<std::string, std::string>	&);
   virtual void  disconnect();
 
   virtual	std::string	getLastSender() const;

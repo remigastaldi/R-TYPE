@@ -5,7 +5,7 @@
 ** Login	leliev_t
 **
 ** Started on	Wed Jan 17 21:20:53 2018 Tanguy Lelievre
-** Last update	Mon Jan 22 09:06:56 2018 Tanguy Lelievre
+** Last update	Tue Feb 13 13:35:15 2018 Tanguy Lelievre
 */
 
 #include <iostream>
@@ -95,8 +95,8 @@ void	Server::loginClient(UDPPacket &packet)
   resp.setCommand(RFC::Commands::LOGIN);
   client.setIp(packet.getIp());
   client.setToken(token);
+  client.setPort(std::stoi(packet.getData("port")));
   _roomManager.addPlayer(client);
-  std::cout << "Client login successful. Token : " << token << std::endl;
   sendResponseToClient(resp);
 }
 
@@ -108,7 +108,7 @@ void	Server::joinRoomClient(UDPPacket &packet)
 void	Server::pressKeyClient(UDPPacket &packet)
 {
   packet.setResult(RFC::Responses::SUCCESS);
-  std::cout << "Key pressed. Code : " << packet.getData("key") << std::endl;
+  _roomManager.transferRequest(packet);
   sendResponseToClient(packet);
 }
 
@@ -116,12 +116,10 @@ void	Server::createRoomClient(UDPPacket &packet)
 {
   if (_roomManager.createRoom(packet.getData("roomId")) == true)
   {
-    std::cout << "Room created successfully. Room name : " << packet.getData("roomId") << std::endl;
     packet.setResult(RFC::Responses::ROOM_CREATED);
   }
   else
   {
-    std::cout << "Failed to create the room. Room name : " << packet.getData("roomId") << std::endl;
     packet.setResult(RFC::Responses::FAIL);
   }
   sendResponseToClient(packet);

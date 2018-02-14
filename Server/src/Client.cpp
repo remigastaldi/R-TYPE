@@ -5,7 +5,7 @@
 ** Login	leliev_t
 **
 ** Started on	Mon Jan 22 02:59:41 2018 Tanguy Lelievre
-** Last update	Mon Jan 22 04:57:06 2018 Tanguy Lelievre
+** Last update	Mon Jan 22 13:13:39 2018 Tanguy Lelievre
 */
 
 #include "Client.hpp"
@@ -72,4 +72,14 @@ bool	Client::getState() const
 void	Client::setState(bool state)
 {
   _ready = state;
+}
+
+unsigned short	Client::getPort() const
+{
+  return (_port);
+}
+
+void	Client::setPort(unsigned short port)
+{
+  _port = port;
 }
