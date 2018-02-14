@@ -5,6 +5,7 @@
 class SinusoideMove : public IMove
 {
   private:
+    GameEngine::GameManagers &_gameManagers;
     ECS::Manager &_ecs;
     EventManager::Manager &_event;
     LibLoader &_loader;
@@ -12,7 +13,7 @@ class SinusoideMove : public IMove
     ECS::Entity _owner;
 
   public:
-    SinusoideMove(ECS::Manager &ecs, EventManager::Manager &event, LibLoader &loader, ECS::Entity entity);
+    SinusoideMove(GameEngine::GameManagers &gameManagers, ECS::Entity entity);
     ~SinusoideMove() override;
     void update() override;
 };
@@ -24,9 +25,9 @@ extern "C" std::string __declspec(dllexport) __stdcall getName()
   return "SinusoideMove";
 }
 
-extern "C" IMove __declspec(dllexport) __stdcall *getSymbol(ECS::Manager &ecs, EventManager::Manager &event, LibLoader &loader, ECS::Entity parent)
+extern "C" IMove __declspec(dllexport) __stdcall *getSymbol(GameEngine::GameManagers &gameManagers, ECS::Entity parent)
 {
-  return new SinusoideMove(ecs, event, loader, parent);
+  return new SinusoideMove(gameManagers, parent);
 }
 
 #else
@@ -36,9 +37,9 @@ extern "C" std::string getName()
   return "SinusoideMove";
 }
 
-extern "C" IMove *getSymbol(ECS::Manager &ecs, EventManager::Manager &event, LibLoader &loader, ECS::Entity parent)
+extern "C" IMove *getSymbol(GameEngine::GameManagers &gameManagers, ECS::Entity parent)
 {
-  return new SinusoideMove(ecs, event, loader, parent);
+  return new SinusoideMove(gameManagers, parent);
 }
 
 #endif

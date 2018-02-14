@@ -8,11 +8,13 @@
 
 #include "Metallos.hpp"
 
-Metallos::Metallos(ECS::Manager &ecs, EventManager::Manager &event, LibLoader &libLoader, ECS::Components::Position pos) :
-  IMob(ecs, event, libLoader, pos),
-  _ecs(ecs),
-  _event(event),
-  _loader(libLoader)
+Metallos::Metallos(GameEngine::GameManagers &gameManagers, ECS::Components::Position pos) :
+  IMob(gameManagers, pos),
+  _gameManagers(gameManagers),
+  _ecs(gameManagers.ecs),
+  _event(gameManagers.event),
+  _loader(gameManagers.libLoader),
+  _spriteName()
 {
   Logger::get().setOutput(CONSOLE_LOG);
 
@@ -22,21 +24,32 @@ Metallos::Metallos(ECS::Manager &ecs, EventManager::Manager &event, LibLoader &l
 
   LOG_INFO << "Entity ID " << _me << std::endl;
 
+  std::shared_ptr<Texture> texture(_gameManagers.resources.get<Texture>("playersShipTexture"));
+  _spriteName = "metallos_sprite[" + std::to_string(_me) + "]";
+  Sprite sprite(_spriteName, *texture);
+
+  // sf::Sprite &spriteMetallos = _gameManagers.resources.getContent<Sprite>(_spriteName);
+  sprite.getContent().setRotation(-90);
+  sprite.getContent().setTextureRect(sf::IntRect(160, 0, 160, 160));
+  sprite.getContent().setScale(0.6, 0.6);
+  _gameManagers.resources.addResource<Sprite>(_spriteName, sprite);
+
   _ecs.addComponent<ECS::Components::Position>(_me, pos);
-  _ecs.addComponent<ECS::Components::Drawable>(_me, ECS::Components::Drawable(_TEXTURE_NAME));
+  _ecs.addComponent<ECS::Components::Drawable>(_me, ECS::Components::Drawable(_spriteName));
   _ecs.addComponent<ECS::Components::Collisionable>(_me, ECS::Components::Collisionable(_me, ECS::Components::Collisionable::Type::ENNEMY));
   _ecs.addComponent<ECS::Components::Stats>(_me, ECS::Components::Stats(1));
 
   _ecs.updateEntityToSystems(_me);
 
   std::shared_ptr<IMove> tmp;
-  tmp.reset(_loader.move.get(_MOVE_NAME)(_ecs, _event, _loader, _me));
+  tmp.reset(_loader.move.get(_MOVE_NAME)(_gameManagers, _me));
   _movement = tmp;
 }
 
 Metallos::~Metallos()
 {
-//  _ecs.destroyEntity(_me);
+  _gameManagers.resources.release(_spriteName);
+  _ecs.destroyEntity(_me);
 }
 
 const int Metallos::getDifficulty()
@@ -57,10 +70,11 @@ void Metallos::update()
 
   if (_curTime <= 0)
   {
+    return;
     _curTime = _timeBetweenAttack;
     //Spawn an attack
     std::shared_ptr<IAttack> tmp;
-    tmp.reset(_loader.attack.get(_ATTACK_NAME)(_ecs, _event, _loader, _me));
+    tmp.reset(_loader.attack.get(_ATTACK_NAME)(_gameManagers, _me));
     _attacks[tmp->getID()] = tmp;
   }
 }

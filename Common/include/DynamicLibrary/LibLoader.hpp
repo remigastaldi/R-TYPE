@@ -21,6 +21,10 @@
 #include "ECS/Manager.hpp"
 #include "ECS/Component.hpp"
 
+namespace GameEngine {
+  struct GameManagers;
+}
+
 class IAttack;
 
 class IMap;
@@ -50,10 +54,10 @@ namespace EventManager
 
 typedef std::string (__stdcall *getNameOfLib)();
 
-typedef IAttack *(__stdcall *getAttackSymbol)(ECS::Manager &ecs, EventManager::Manager &event, LibLoader &libloader, ECS::Entity);
-typedef IMap *(__stdcall *getMapSymbol)(ECS::Manager &, EventManager::Manager &, LibLoader &);
-typedef IMob *(__stdcall *getMobSymbol)(ECS::Manager &ecs, EventManager::Manager &event, LibLoader &libloader, ECS::Components::Position);
-typedef IMove *(__stdcall *getMoveSymbol)(ECS::Manager &ecs, EventManager::Manager &event, LibLoader &, ECS::Entity);
+typedef IAttack *(__stdcall *getAttackSymbol)(GameEngine::GameManagers &gameManagers, ECS::Entity);
+typedef IMap *(__stdcall *getMapSymbol)(GameEngine::GameManagers &gameManagers);
+typedef IMob *(__stdcall *getMobSymbol)(GameEngine::GameManagers &gameManagers, ECS::Components::Position);
+typedef IMove *(__stdcall *getMoveSymbol)(GameEngine::GameManagers &gameManagers, ECS::Entity);
 typedef IPart *(__stdcall *getPartSymbol)();
 typedef IPowerUp *(__stdcall *getPowerUpSymbol)();
 typedef IRessources *(__stdcall *getRessourceSymbol)();
@@ -64,10 +68,10 @@ typedef IShipBluprint *(__stdcall *getShipBlueprintSymbol)();
 
 typedef std::string (*getNameOfLib)();
 
-typedef IAttack *(*getAttackSymbol)(ECS::Manager &, EventManager::Manager &, LibLoader &, ECS::Entity);
-typedef IMap *(*getMapSymbol)(ECS::Manager &, EventManager::Manager &, LibLoader &);
-typedef IMob *(*getMobSymbol)(ECS::Manager &, EventManager::Manager &, LibLoader &, ECS::Components::Position);
-typedef IMove *(*getMoveSymbol)(ECS::Manager &, EventManager::Manager &, LibLoader &, ECS::Entity);
+typedef IAttack *(*getAttackSymbol)(GameEngine::GameManagers &gameManagers, ECS::Entity);
+typedef IMap *(*getMapSymbol)(GameEngine::GameManagers &gameManagers);
+typedef IMob *(*getMobSymbol)(GameEngine::GameManagers &gameManagers, ECS::Components::Position);
+typedef IMove *(*getMoveSymbol)(GameEngine::GameManagers &gameManagers, ECS::Entity);
 typedef IPart *(*getPartSymbol)();
 typedef IPowerUp *(*getPowerUpSymbol)();
 typedef IRessources *(*getRessourceSymbol)();

@@ -14,6 +14,7 @@ class KirbyMap : public IMap
 
     int _wave = 0;
 
+    GameEngine::GameManagers &_gameManagers;
     ECS::Manager &_ecs;
     EventManager::Manager &_event;
     LibLoader &_loader;
@@ -23,7 +24,7 @@ class KirbyMap : public IMap
     bool _isEnd = false;
 
   public:
-    KirbyMap(ECS::Manager &ecs, EventManager::Manager &event, LibLoader &loader);
+    KirbyMap(GameEngine::GameManagers &gameManagers);
     ~KirbyMap() override;
     const std::pair<int, int> &getNeededLevel() const override;
     void update() override;
@@ -36,9 +37,9 @@ extern "C" std::string __declspec(dllexport) __stdcall getName()
   return "KirbyMap";
 }
 
-extern "C" IMap  __declspec(dllexport) __stdcall *getSymbol(ECS::Manager &ecs, EventManager::Manager &event, LibLoader &loader)
+extern "C" IMap  __declspec(dllexport) __stdcall *getSymbol(GameEngine::GameManagers &gameManagers)
 {
-  return new KirbyMap(ecs, event, loader);
+  return new KirbyMap(gameManagers);
 }
 
 #else
@@ -48,9 +49,9 @@ extern "C" std::string getName()
   return "KirbyMap";
 }
 
-extern "C" IMap *getSymbol(ECS::Manager &ecs, EventManager::Manager &event, LibLoader &loader)
+extern "C" IMap *getSymbol(GameEngine::GameManagers &gameManagers)
 {
-  return new KirbyMap(ecs, event, loader);
+  return new KirbyMap(gameManagers);
 }
 
 #endif

@@ -1,10 +1,11 @@
 #include "StraightMove.hpp"
 
-StraightMove::StraightMove(ECS::Manager &ecs, EventManager::Manager &event, LibLoader &loader, ECS::Entity entity) :
-  IMove(ecs, event, loader, entity),
-  _ecs(ecs),
-  _event(event),
-  _loader(_loader),
+StraightMove::StraightMove(GameEngine::GameManagers &gameManagers, ECS::Entity entity) :
+  IMove(gameManagers, entity),
+  _gameManagers(gameManagers),
+  _ecs(gameManagers.ecs),
+  _event(gameManagers.event),
+  _loader(gameManagers.libLoader),
   _owner(entity)
 {
   _ecs.addComponent<ECS::Components::Direction>(_owner, ECS::Components::Direction(-1, 0, 20));

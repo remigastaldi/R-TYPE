@@ -10,7 +10,7 @@
 class ILevels
 {
   public:
-    ILevels(ECS::Manager &ecs, EventManager::Manager &event, LibLoader &libloader)
+    ILevels(GameEngine::GameManagers &gameManagers)
     {}
 
     virtual ~ILevels()
@@ -25,4 +25,3 @@ class ILevels
     virtual void playerHit(ECS::Entity, ECS::Entity) = 0;
     virtual void unitOutOfSpace(ECS::Entity) = 0;
 };
-

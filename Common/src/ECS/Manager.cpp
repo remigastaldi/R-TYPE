@@ -35,9 +35,9 @@ namespace ECS
 
     for (auto & it : entityComponents)
     {
-      std::shared_ptr<Store> store = getStore(it);
-      store->remove(e);
       extractComponent(e, it);
+      // std::shared_ptr<Store> store = getStore(it);
+      // store->remove(e);
     }
     updateEntityToSystems(e);
     auto count = _entities.erase(e);

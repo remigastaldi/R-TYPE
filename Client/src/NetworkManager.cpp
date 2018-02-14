@@ -33,7 +33,7 @@ void NetworkManager::init()
   packet.setData("usr", "root");
   packet.setData("pwd", "root");
 
-  _network.send(packet, "10.16.251.142");
+  //_network.send(packet, "127.0.0.1");
   //_eventManager.fire<void, const std::string &>("PlayerJoinEvent", "Slut");
 
 }

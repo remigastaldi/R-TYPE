@@ -5,6 +5,7 @@
 class LevelOne : public ILevels
 {
   private:
+    GameEngine::GameManagers &_gameManagers;
     ECS::Manager &_ecs;
     EventManager::Manager &_event;
     LibLoader &_loader;
@@ -20,7 +21,7 @@ class LevelOne : public ILevels
     std::string _name = "LevelOne";
 
   public:
-    LevelOne(ECS::Manager &ecs, EventManager::Manager &event, LibLoader &libloader);
+    LevelOne(GameEngine::GameManagers &gameManagers);
     ~LevelOne() override;
     const std::string &getName() override;
     void enter() override;
@@ -30,4 +31,3 @@ class LevelOne : public ILevels
     void playerHit(ECS::Entity by, ECS::Entity to) override;
     void unitOutOfSpace(ECS::Entity entity) override;
 };
-

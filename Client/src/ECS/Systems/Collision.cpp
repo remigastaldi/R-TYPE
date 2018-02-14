@@ -35,20 +35,23 @@ namespace ECS
       sf::Sprite &entitySprite = _resourcesManager.getContent<Sprite>(entityDrawable->sprite);
 
       std::shared_ptr<Store> store = getManager().getStore(getManager().GetTypeID<ECS::Components::Collisionable>());
-      std::set<ECS::Entity> entity = store->getEntities();
+      std::set<ECS::Entity> entities = store->getEntities();
 
-      for (auto &  it : entity)
+      for (auto &  it : entities)
       {
         if (it == e)
           continue;
+
         std::shared_ptr<ECS::Components::Drawable> drawable = getManager().getComponent<ECS::Components::Drawable>(it);
 
         sf::Sprite &sprite = _resourcesManager.getContent<Sprite>(drawable->sprite);
-/*
+
         if (sprite.getGlobalBounds().intersects(entitySprite.getGlobalBounds()))
         {
+          std::cout <<  it << " : "  << e << std::endl;
           _eventManager.fire<void, ECS::Entity, ECS::Entity>("Collision", it, e);
-        } */
+          entities = store->getEntities();
+        }
       }
     }
   }

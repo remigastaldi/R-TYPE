@@ -1,11 +1,12 @@
 #include <Maps/KirbyMap/levels/LevelOne.hpp>
 #include "KirbyMap.hpp"
 
-KirbyMap::KirbyMap(ECS::Manager &ecs, EventManager::Manager &event, LibLoader &loader) :
-  IMap(ecs, event, loader),
-  _ecs(ecs),
-  _event(event),
-  _loader(loader)
+KirbyMap::KirbyMap(GameEngine::GameManagers &gameManagers) :
+  IMap(gameManagers),
+  _gameManagers(gameManagers),
+  _ecs(gameManagers.ecs),
+  _event(gameManagers.event),
+  _loader(gameManagers.libLoader)
 {
   Logger::get().setOutput(CONSOLE_LOG);
 
@@ -28,7 +29,7 @@ KirbyMap::KirbyMap(ECS::Manager &ecs, EventManager::Manager &event, LibLoader &l
   LOG_INFO << "Adding Level: " << std::endl;
 
   std::shared_ptr<ILevels> tmp;
-  tmp.reset(new LevelOne(_ecs, _event, loader));
+  tmp.reset(new LevelOne(_gameManagers));
   _levels.push_back(tmp);
 
   LOG_INFO << "Adding Level Done" << std::endl;

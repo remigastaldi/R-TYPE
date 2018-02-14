@@ -2,11 +2,15 @@
 
 #include <LibraryInterfaces/IMove.hpp>
 #include "IAttack.hpp"
+#include <ECS/Components/Components.hpp>
 #include "ECS/Components/Stats.hpp"
+
+#include <Resources.hpp>
 
 class BasicAttack : public IAttack
 {
   private:
+    GameEngine::GameManagers &_gameManagers;
     ECS::Manager &_ecs;
     EventManager::Manager &_event;
     LibLoader &_loader;
@@ -24,8 +28,10 @@ class BasicAttack : public IAttack
 
     std::shared_ptr<IMove> _move;
 
+    std::string _spriteName;
+
   public:
-    BasicAttack(ECS::Manager &ecs, EventManager::Manager &event, LibLoader &loader, ECS::Entity owner);
+    BasicAttack(GameEngine::GameManagers &gameManagers, ECS::Entity owner);
     ~BasicAttack() override;
     void update() override;
     void playerHit(ECS::Entity entity) override;
@@ -39,9 +45,9 @@ extern "C" std::string __declspec(dllexport) __stdcall getName()
   return "BasicAttack";
 }
 
-extern "C" IAttack  __declspec(dllexport) __stdcall *getSymbol(ECS::Manager &ecs, EventManager::Manager &event, LibLoader &loader, ECS::Entity parent)
+extern "C" IAttack  __declspec(dllexport) __stdcall *getSymbol(GameEngine::GameManagers &gameManagers, ECS::Entity parent)
 {
-  return new BasicAttack(ecs, event, loader, parent);
+  return new BasicAttack(gameManagers);
 }
 
 #else
@@ -51,9 +57,9 @@ extern "C" std::string getName()
   return "BasicAttack";
 }
 
-extern "C" IAttack *getSymbol(ECS::Manager &ecs, EventManager::Manager &event, LibLoader &loader, ECS::Entity parent)
+extern "C" IAttack *getSymbol(GameEngine::GameManagers &gameManagers, ECS::Entity parent)
 {
-  return new BasicAttack(ecs, event, loader, parent);
+  return new BasicAttack(gameManagers, parent);
 }
 
 #endif

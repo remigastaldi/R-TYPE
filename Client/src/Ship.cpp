@@ -13,23 +13,27 @@ Ship::Ship(GameEngine::GameManagers &gameManagers)
   : _gameManagers(gameManagers),
     _entity(_gameManagers.ecs.createEntity()),
     _fireTickCounter(0),
-    _fire(false)
+    _fire(false),
+    _spriteName()
   {
-	_gameManagers.resources.load<Sprite>("playersSpaceship", "../../Client/media/img/ship/allies/playersSpaceships.png");
-	_gameManagers.resources.load<Sprite>("playersMissiles", "../../Client/media/img/ship/allies/playersMissiles.png");
-    sf::Sprite &sprite = _gameManagers.resources.getContent<Sprite>("playersSpaceship");
-    sprite.setRotation(90);
-    sprite.setTextureRect(sf::IntRect(0, 0, 160, 160));
-    sprite.setScale(0.6, 0.6);
+    _gameManagers.resources.load<Texture>("playersMissilesTexture", "../../Client/media/img/ship/allies/playersMissiles.png");
+    std::shared_ptr<Texture> texture = _gameManagers.resources.load<Texture>("playersShipTexture", "../../Client/media/img/ship/allies/playersSpaceships.png");
 
-	sf::Sprite &spriteMissiles = _gameManagers.resources.getContent<Sprite>("playersMissiles");
-	spriteMissiles.setRotation(-90);
-	spriteMissiles.setTextureRect(sf::IntRect(0, 0, 30, 112));
+    std::cout << "Ship ID is : " << _entity << std::endl;
+
+    _spriteName = "player_sprite[" + std::to_string(_entity) + "]";
+    Sprite sprite(_spriteName, *texture);
+    sprite.getContent().setRotation(90);
+    sprite.getContent().setTextureRect(sf::IntRect(0, 0, 160, 160));
+    sprite.getContent().setScale(0.6, 0.6);
+
+    _gameManagers.resources.addResource<Sprite>(_spriteName, sprite);
+
 
     _gameManagers.ecs.addComponent<ECS::Components::Player>(_entity, ECS::Components::Player("Remi"));
     _gameManagers.ecs.addComponent<ECS::Components::Position>(_entity, ECS::Components::Position(200, 400));
     _gameManagers.ecs.addComponent<ECS::Components::Collisionable>(_entity, ECS::Components::Collisionable(_entity, ECS::Components::Collisionable::Type::ALLY));
-    _gameManagers.ecs.addComponent<ECS::Components::Drawable>(_entity, ECS::Components::Drawable("playersSpaceship"));
+    _gameManagers.ecs.addComponent<ECS::Components::Drawable>(_entity, ECS::Components::Drawable(_spriteName));
     _gameManagers.ecs.addComponent<ECS::Components::Direction>(_entity, ECS::Components::Direction(0, 0, 7));
 
     _gameManagers.ecs.updateEntityToSystems(_entity);
@@ -299,13 +303,23 @@ void  Ship::fire(const std::string &msg)
   (void) msg;
 
   ECS::Entity e = _gameManagers.ecs.createEntity();
+  std::cout << "AttackID : " << e << std::endl;
 
   std::shared_ptr<ECS::Components::Position> position = _gameManagers.ecs.getComponent<ECS::Components::Position>(_entity);
+
+  std::shared_ptr<Texture>  texture(_gameManagers.resources.get<Texture>("playersMissilesTexture"));
+  std::string spriteName = "playersMissiles[" + std::to_string(e) + "]";
+  Sprite sprite(spriteName, *texture);
+  _gameManagers.resources.addResource<Sprite>(spriteName, sprite);
+
+	sf::Sprite &spriteMissiles = _gameManagers.resources.getContent<Sprite>(spriteName);
+	spriteMissiles.setRotation(-90);
+	spriteMissiles.setTextureRect(sf::IntRect(0, 0, 30, 112));
 
   _gameManagers.ecs.addComponent<ECS::Components::Position>(e, ECS::Components::Position(
     static_cast<size_t>(position->x), static_cast<size_t>(position->y + 60)));
   _gameManagers.ecs.addComponent<ECS::Components::Collisionable>(e, ECS::Components::Collisionable(e, ECS::Components::Collisionable::Type::ALLY));
-  _gameManagers.ecs.addComponent<ECS::Components::Drawable>(e, ECS::Components::Drawable("playersMissiles"));
+  _gameManagers.ecs.addComponent<ECS::Components::Drawable>(e, ECS::Components::Drawable(spriteName));
   _gameManagers.ecs.addComponent<ECS::Components::Direction>(e, ECS::Components::Direction(1, 0, 30));
   _gameManagers.ecs.updateEntityToSystems(e);
 }

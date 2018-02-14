@@ -20,6 +20,11 @@ public:
   {}
   virtual ~Resourcebase(){};
 
+  const std::string &getName(void) const
+  {
+    return (_name);
+  }
+
 protected:
   std::string _name;
 };
@@ -63,13 +68,14 @@ public:
 	{}
 
   template<typename C>
-	void load(const std::string &name, const std::string &path)
+	std::shared_ptr<C> load(const std::string &name, const std::string &path)
 	{
     if (_resources.find(name) != _resources.end())
       LOG_ERROR << "Ressource " << name << " already exist" << std::endl;
     std::shared_ptr<C> resource(std::make_shared<C>(C(name)));
     resource->loadFromFile(path);
     _resources.emplace(name, resource);
+    return (resource);
 	}
 
   template<typename C>
@@ -90,12 +96,12 @@ public:
     return (std::static_pointer_cast<S>(_resources[name])->getContent());
 	}
 
-  template<typename C, typename S>
-	void addResource(const std::string &name, const S &resource)
+  template<typename C>
+	void addResource(const std::string &name, C &resource)
 	{
     if (_resources.find(name) != _resources.end())
       LOG_ERROR << "Ressource " << name << " already exist" << std::endl;
-    resource.emplace(name, std::make_shared<C>(C(name, resource)));
+      _resources.emplace(name, std::make_shared<C>(C(name, resource)));
 	}
 
   bool release(const std::string &name)

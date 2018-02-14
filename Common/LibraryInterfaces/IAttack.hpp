@@ -8,7 +8,7 @@
 class IAttack
 {
   public:
-    IAttack(ECS::Manager &ecs, EventManager::Manager &event, LibLoader &libloader, ECS::Entity) {};
+    IAttack(GameEngine::GameManagers &gameManagers, ECS::Entity) {};
     virtual ~IAttack() = default;
 
     virtual void update() = 0;

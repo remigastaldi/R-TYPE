@@ -5,10 +5,12 @@
 #include <DynamicLibrary/LibLoader.hpp>
 #include "ECS/Manager.hpp"
 
+#include <GameManagers.hpp>
+
 class IMob
 {
   public:
-    IMob(ECS::Manager &ecs, EventManager::Manager &event, LibLoader &libloader, ECS::Components::Position) {};
+    IMob(GameEngine::GameManagers gameManagers, ECS::Components::Position) {};
     virtual ~IMob() = default;
 
     virtual const int getDifficulty() = 0;

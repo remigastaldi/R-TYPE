@@ -4,6 +4,8 @@
 #include <ECS/Components/Components.hpp>
 #include <DynamicLibrary/LibLoader.hpp>
 
+#include <GameManagers.hpp>
+
 class StraightMove : public IMove
 {
   private:
@@ -11,13 +13,14 @@ class StraightMove : public IMove
 
     size_t speed = 2;
 
+    GameEngine::GameManagers &_gameManagers;
     ECS::Manager &_ecs;
     EventManager::Manager &_event;
     LibLoader &_loader;
     ECS::Entity _owner;
 
   public:
-    StraightMove(ECS::Manager &ecs, EventManager::Manager &event, LibLoader &loader, ECS::Entity entity);
+    StraightMove(GameEngine::GameManagers &gameManagers, ECS::Entity entity);
     ~StraightMove() override;
     void update() override;
 };
@@ -27,7 +30,7 @@ extern "C" std::string getName()
   return "StraightMove";
 }
 
-extern "C" IMove *getSymbol(ECS::Manager &ecs, EventManager::Manager &event, LibLoader &loader, ECS::Entity parent)
+extern "C" IMove *getSymbol(GameEngine::GameManagers &gameManagers, ECS::Entity parent)
 {
-  return new StraightMove(ecs, event, loader, parent);
+  return new StraightMove(gameManagers, parent);
 }

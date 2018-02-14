@@ -1,10 +1,11 @@
 #include "SinusoideMove.hpp"
 
-SinusoideMove::SinusoideMove(ECS::Manager &ecs, EventManager::Manager &event, LibLoader &loader, ECS::Entity entity) :
-  IMove(ecs, event, loader, entity),
-  _ecs(ecs),
-  _event(event),
-  _loader(loader),
+SinusoideMove::SinusoideMove(GameEngine::GameManagers &gameManagers, ECS::Entity entity) :
+  IMove(gameManagers, entity),
+  _gameManagers(gameManagers),
+  _ecs(gameManagers.ecs),
+  _event(gameManagers.event),
+  _loader(gameManagers.libLoader),
   _owner(entity)
 {
   Logger::get().setOutput(CONSOLE_LOG);

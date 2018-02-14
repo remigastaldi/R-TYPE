@@ -47,6 +47,7 @@ LINK_DIRECTORIES(${Boost_LIBRARY_DIRS})
 set(THREADS_PREFER_PTHREAD_FLAG ON)
 find_package(Threads REQUIRED)
 
+set(BUILD_SHARED_LIBS true)
 if (${SERVER_ONLY})
   message(STATUS "### BUILD R-TYPE SERVER ONLY ###")
   add_subdirectory(Server)

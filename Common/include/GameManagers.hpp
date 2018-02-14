@@ -14,21 +14,25 @@
 #include  "ECS/Systems/CommonSystems.hpp"
 #include  "ECS/Manager.hpp"
 
+#include <DynamicLibrary/LibLoader.hpp>
+
 namespace GameEngine
 {
   struct GameManagers
   {
     GameManagers(ResourcesManager &_resourcesManager, EventManager::Manager &_eventManager,
-      ECS::Manager &_ecsManager, SoundManager &_soundManager)
+      ECS::Manager &_ecsManager, SoundManager &_soundManager, LibLoader &_libraryLoader)
       : resources(_resourcesManager),
       event(_eventManager),
       ecs(_ecsManager),
-      sound(_soundManager)
+      sound(_soundManager),
+      libLoader(_libraryLoader)
     {}
 
     ResourcesManager  &resources;
     EventManager::Manager &event;
     ECS::Manager    &ecs;
     SoundManager    &sound;
+    LibLoader       &libLoader;
   };
 }

@@ -14,31 +14,6 @@
 #include  <SFML/Graphics/Texture.hpp>
 #include  <SFML/Graphics/Sprite.hpp>
 
-class Sprite : public Resource<sf::Sprite>
-{
-public:
-  explicit  Sprite(const std::string &name)
-    : Resource(name),
-    _texture()
-    {}
-
-    Sprite(const std::string &name, const sf::Sprite &texture)
-      : Resource(name, texture),
-    _texture()
-    {}
-
-    void  loadFromFile(const std::string &path)
-    {
-      _texture.loadFromFile(path);
-      _resource.setTexture(_texture);
-    }
-
-    typedef sf::Sprite ContentType;
-
-  private:
-    sf::Texture _texture;
-};
-
 class Texture : public Resource<sf::Texture>
 {
 public:
@@ -63,6 +38,44 @@ public:
     typedef sf::Texture ContentType;
 };
 
+class Sprite : public Resource<sf::Sprite>
+{
+public:
+  explicit  Sprite(const std::string &name)
+    : Resource(name),
+    _textureName()
+    {}
+
+    Sprite(const std::string &name, Texture &texture)
+      : Resource(name),
+      _textureName(texture.getName())
+    {
+      _resource.setTexture(texture.getContent());
+    }
+
+    Sprite(const std::string &name, Sprite &sprite)
+      : Resource(name),
+      _textureName(sprite.getTextureName())
+    {
+      _resource = sprite.getContent();
+    }
+
+    void  loadFromFile(const std::string &path)
+    {
+      (void) path;
+      LOG_ERROR << "No loadFromFile method for Sprite" << std::endl;
+    }
+
+    const std::string &getTextureName(void) const
+    {
+      return (_textureName);
+    }
+
+    typedef sf::Sprite ContentType;
+
+  private:
+    std::string _textureName;
+};
 
 class SoundBuffer : public Resource<sf::SoundBuffer>
 {

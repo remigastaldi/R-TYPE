@@ -37,4 +37,6 @@ private:
 
   int  _fireTickCounter;
   bool _fire;
+
+  std::string _spriteName;
 };

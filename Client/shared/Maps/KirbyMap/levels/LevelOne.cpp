@@ -40,7 +40,7 @@ void LevelOne::update()
     LOG_INFO << "Spawning a mob " << _nbMobSpawn << std::endl;
 
     std::shared_ptr<IMob> tmp;
-    tmp.reset(_loader.mob.get("Metallos")(_ecs, _event, _loader, ECS::Components::Position(1800, 900)));
+    tmp.reset(_loader.mob.get("Metallos")(_gameManagers, ECS::Components::Position(1800, 900)));
     _mobs[tmp->getID()] = tmp;
   }
 
@@ -49,11 +49,12 @@ void LevelOne::update()
     it.second->update();
 }
 
-LevelOne::LevelOne(ECS::Manager &ecs, EventManager::Manager &event, LibLoader &libloader) :
-  ILevels(ecs, event, libloader),
-  _ecs(ecs),
-  _event(event),
-  _loader(libloader)
+LevelOne::LevelOne(GameEngine::GameManagers &gameManagers) :
+  ILevels(gameManagers),
+  _gameManagers(gameManagers),
+  _ecs(gameManagers.ecs),
+  _event(gameManagers.event),
+  _loader(gameManagers.libLoader)
 {
   LOG_INFO << "Loading Level One" << std::endl;
 }
@@ -64,11 +65,16 @@ LevelOne::~LevelOne()
 
 void LevelOne::playerHit(ECS::Entity by, ECS::Entity to)
 {
+  std::shared_ptr<ECS::Components::Collisionable> collisionable = _ecs.getComponent<ECS::Components::Collisionable>(by);
+
+  if (collisionable->type == ECS::Components::Collisionable::Type::ENNEMY)
+    return;
+
   for (auto &it : _mobs) {
     if (it.first == to) {
 //      if ((*it.second)->isYouWhenHit(by))
 //      {
-      LOG_INFO << "Mob is hit " << to << " " << by << std::endl;
+      LOG_INFO << "to Mob is hit " << to << " " << by << std::endl;
 
       _ecs.getComponent<ECS::Components::Stats>(to)->health -= 1;
       if (_ecs.getComponent<ECS::Components::Stats>(to)->health <= 0) {
@@ -77,15 +83,17 @@ void LevelOne::playerHit(ECS::Entity by, ECS::Entity to)
       return;
     }
     if (it.first == by) {
-      LOG_INFO << "Mob is hit " << by << " " << to << std::endl;
+      LOG_INFO << "by Mob is hit " << by << " " << to << std::endl;
 
       _ecs.getComponent<ECS::Components::Stats>(by)->health -= 1;
       if (_ecs.getComponent<ECS::Components::Stats>(by)->health <= 0) {
         _mobs.erase(by);
+        _ecs.destroyEntity(to);
       }
       return;
     } else {
       //Mob is not hit, check if one of his attack is responsible for this
+      std::cout << "***********************************************" << std::endl;
       it.second->playerHit(by, to);
     }
   }
@@ -93,7 +101,7 @@ void LevelOne::playerHit(ECS::Entity by, ECS::Entity to)
 
 void LevelOne::unitOutOfSpace(ECS::Entity entity)
 {
-  if (_mobs.count(entity) > 0) {
+  if (_mobs.find(entity) != _mobs.end()) {
     LOG_SUCCESS << "Mob out of space deleted" << std::endl;
     _mobs.erase(entity);
     return;

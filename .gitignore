@@ -981,3 +981,6 @@ dkms.conf### ClionCPP template
 dkms.conf
 
 git-temp-build
+
+.tags
+.tags1

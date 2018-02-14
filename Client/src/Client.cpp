@@ -21,8 +21,8 @@ namespace GameEngine
     _ecsManager(),
     _guiManager(_window),
     _soundManager(_resourcesManager, _eventManager),
-    _gameManagers(_resourcesManager, _eventManager, _ecsManager, _soundManager),
-    _libraryLoader(),
+		_libraryLoader(),
+    _gameManagers(_resourcesManager, _eventManager, _ecsManager, _soundManager, _libraryLoader),
     _networkManager(_eventManager),
     _ship(),
     _window(videoMode, "R-Type", sf::Style::Titlebar | sf::Style::Resize),
@@ -39,7 +39,7 @@ namespace GameEngine
 
   void Client::init()
   {
-    // load connection scene
+	  // load connection scene
     _ecsManager.createStoreFor<ECS::Components::Position>();
     _ecsManager.createStoreFor<ECS::Components::Drawable>();
     _ecsManager.createStoreFor<ECS::Components::Direction>();
@@ -68,7 +68,7 @@ namespace GameEngine
     _eventManager.addEvent<void, sf::Event>("KeyPressedEvent");
     _eventManager.addEvent<void, sf::Event>("KeyReleasedEvent");
 
-    _networkManager.init();
+  //  _networkManager.init();
     //Loading library
    _libraryLoader.map.addFolder("../ressources/map/");
    _libraryLoader.mob.addFolder("../ressources/mob/");
@@ -114,7 +114,7 @@ namespace GameEngine
   {
     _sceneManager.pushScene("IngameHUD");
 
-    _myMap = _libraryLoader.map.get("KirbyMap")(_ecsManager, _eventManager, _libraryLoader);
+    _myMap = _libraryLoader.map.get("KirbyMap")(_gameManagers);
 
     _ship = std::make_shared<Ship>(_gameManagers);
 
@@ -186,7 +186,7 @@ namespace GameEngine
 
   void Client::update(void)
   {
-    _networkManager.update();
+    //_networkManager.update();
     _ship->update();
     _ecsManager.updateSystemsRange(0.f, 0, 3);
     _myMap->update();
@@ -195,6 +195,7 @@ namespace GameEngine
 
   void Client::render(float alpha)
   {
+		//std::cout << "entities: " << _ecsManager.getEntities().size() << std::endl;
     _window.clear();
 	  _parallax.update();
     _ecsManager.updateSystemsRange(0.f, 3, 4);

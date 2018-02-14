@@ -6,12 +6,13 @@
 #include <DynamicLibrary/LibLoader.hpp>
 #include "ECS/Manager.hpp"
 
+#include <GameManagers.hpp>
+
 class IMove
 {
   public:
-    IMove(ECS::Manager &ecs, EventManager::Manager &event, LibLoader &, ECS::Entity) {};
+    IMove(GameEngine::GameManagers &gameManagers, ECS::Entity) {};
     virtual ~IMove() = default;
 
     virtual void update() = 0;
 };
-
