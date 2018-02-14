@@ -87,6 +87,21 @@ void	AsioSyncUdpNetwork::send(UDPPacket &packet)
   }
 }
 
+void	AsioSyncUdpNetwork::send(UDPPacket &packet, const std::string &ip)
+{
+  try {
+    std::ostringstream archive_stream;
+    boost::archive::text_oarchive archive(archive_stream);
+    archive << packet.getData();
+    std::string outbound_data_ = archive_stream.str();
+
+    _lastEndpoint.address(boost::asio::ip::address::from_string(ip));
+    _socket.send_to(boost::asio::buffer(outbound_data_), _lastEndpoint);
+  } catch (std::exception &e) {
+    throw std::runtime_error("Error send.");
+  }
+}
+
 void	AsioSyncUdpNetwork::send(UDPPacket &packet, const std::string &ip, unsigned short port)
 {
   try {
