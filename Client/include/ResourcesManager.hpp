@@ -2,7 +2,7 @@
  * @Author: Remi Gastaldi <gastal_r>
  * @Date:   2018-01-16T23:09:53+01:00
  * @Last modified by:   gastal_r
- * @Last modified time: 2018-01-21T08:06:24+01:00
+ * @Last modified time: 2018-02-15T19:03:51+01:00
  */
 
 
@@ -97,11 +97,14 @@ public:
 	}
 
   template<typename C>
-	void addResource(const std::string &name, C &resource)
+	std::shared_ptr<C> addResource(const std::string &name, C &resource)
 	{
     if (_resources.find(name) != _resources.end())
       LOG_ERROR << "Ressource " << name << " already exist" << std::endl;
-      _resources.emplace(name, std::make_shared<C>(C(name, resource)));
+      std::shared_ptr ptr = std::make_shared<C>(C(name, resource));
+      _resources.emplace(name, ptr);
+
+      return (ptr);
 	}
 
   bool release(const std::string &name)

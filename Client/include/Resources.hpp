@@ -63,7 +63,7 @@ public:
     void  loadFromFile(const std::string &path)
     {
       (void) path;
-      LOG_ERROR << "No loadFromFile method for Sprite" << std::endl;
+      LOG_ERROR << "Construct Sprite with Texture instead" << std::endl;
     }
 
     const std::string &getTextureName(void) const
