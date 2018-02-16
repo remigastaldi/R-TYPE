@@ -2,7 +2,7 @@
  * @Author: Remi Gastaldi <gastal_r>
  * @Date:   2018-01-13T20:15:43+01:00
  * @Last modified by:   gastal_r
- * @Last modified time: 2018-01-22T10:21:48+01:00
+ * @Last modified time: 2018-02-15T22:36:07+01:00
  */
 
 
@@ -19,28 +19,28 @@ namespace ECS
   {
     struct Position : ECS::Component
     {
-      Position(size_t _x, size_t _y)
+      Position(float _x, float _y)
         : x(_x),
           y(_y)
         {}
 
-      int x;
-      int y;
+      float x;
+      float y;
 
     };
 
     struct Direction : ECS::Component
     {
-      explicit Direction(double _xDirection, double _yDirection, int _speed)
+      explicit Direction(float _xDirection, float _yDirection, float _speed)
       : xDirection(_xDirection),
       yDirection(_yDirection),
       speed(_speed)
         {}
 
-      double xDirection;
-      double yDirection;
+      float xDirection;
+      float yDirection;
 
-      int speed;
+      float speed;
 
     };
 

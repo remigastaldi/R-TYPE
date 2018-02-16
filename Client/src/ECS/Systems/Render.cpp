@@ -2,7 +2,7 @@
  * @Author: Remi Gastaldi <gastal_r>
  * @Date:   2018-01-20T04:50:36+01:00
  * @Last modified by:   gastal_r
- * @Last modified time: 2018-01-22T09:38:11+01:00
+ * @Last modified time: 2018-02-15T22:36:36+01:00
  */
 
 
@@ -13,7 +13,7 @@ namespace ECS
   namespace Systems
   {
   Render::Render(ResourcesManager &resourcesManager, ECS::Manager &ecsManager, sf::RenderWindow &window)
-    : System(RENDER_PRIORITY, {ecsManager.GetTypeID<ECS::Components::Drawable>()}, ecsManager),
+    : System(RENDER_PRIORITY, {ecsManager.GetTypeID<ECS::Components::Drawable>(), ecsManager.GetTypeID<ECS::Components::Position>()}, ecsManager),
       _window(window),
       _resourcesManager(resourcesManager)
     {}
@@ -26,9 +26,9 @@ namespace ECS
 
       sf::Sprite &sprite = _resourcesManager.getContent<Sprite>(body->sprite);
 
-      int xDirection = 0;
-      int yDirection = 0;
-      int speed = 0;
+      float xDirection = 0;
+      float yDirection = 0;
+      float speed = 0;
 
       std::shared_ptr<Store> store = getManager().getStore(getManager().GetTypeID<ECS::Components::Drawable>());
 

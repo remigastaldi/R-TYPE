@@ -2,7 +2,7 @@
  * @Author: Remi Gastaldi <gastal_r>
  * @Date:   2018-01-13T19:04:26+01:00
  * @Last modified by:   gastal_r
- * @Last modified time: 2018-01-22T04:41:32+01:00
+ * @Last modified time: 2018-02-16T02:12:52+01:00
  */
 
 
@@ -45,7 +45,7 @@ namespace ECS
       if ((position->x <= 0 || position->x >= 1900) || (position->y <= 0 || position->y >= 1080))
       {
         _eventManager.fire<void, ECS::Entity>("UnitOutOfSpace", e);
-        getManager().destroyEntity(e);
+//        getManager().destroyEntity(e);
       }
     }
   }

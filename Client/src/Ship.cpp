@@ -2,7 +2,7 @@
  * @Author: Remi Gastaldi <gastal_r>
  * @Date:   2018-01-20T20:45:23+01:00
  * @Last modified by:   gastal_r
- * @Last modified time: 2018-01-22T10:25:33+01:00
+ * @Last modified time: 2018-02-16T02:42:58+01:00
  */
 
 
@@ -14,7 +14,8 @@ Ship::Ship(GameEngine::GameManagers &gameManagers)
     _entity(_gameManagers.ecs.createEntity()),
     _fireTickCounter(0),
     _fire(false),
-    _spriteName()
+    _spriteName(),
+    _activeKeys()
   {
     _gameManagers.resources.load<Texture>("playersMissilesTexture", "../../Client/media/img/ship/allies/playersMissiles.png");
     std::shared_ptr<Texture> texture = _gameManagers.resources.load<Texture>("playersShipTexture", "../../Client/media/img/ship/allies/playersSpaceships.png");
@@ -46,6 +47,10 @@ Ship::Ship(GameEngine::GameManagers &gameManagers)
 
     _gameManagers.sound.loadSound("shoot", "../../Client/media/sounds/shoot.wav");
     _gameManagers.sound.registerSoundWithEvent<void, sf::Event>("shoot", "SpaceKeyEvent");
+
+    _gameManagers.event.listen<void, ECS::Entity>("UnitOutOfSpace", [&](ECS::Entity e) -> void {
+      _gameManagers.ecs.destroyEntity(e);
+    });
   }
 
 void  Ship::keyPressed(sf::Event event)
@@ -54,6 +59,7 @@ void  Ship::keyPressed(sf::Event event)
 
   std::shared_ptr<ECS::Components::Position> position = _gameManagers.ecs.getComponent<ECS::Components::Position>(_entity);
 
+  _activeKeys[event.key.code] = true;
   switch (event.key.code)
   {
   case sf::Keyboard::Key::Up :
@@ -179,22 +185,40 @@ void  Ship::keyRelease(sf::Event event)
 {
   std::shared_ptr<ECS::Components::Direction> direction = _gameManagers.ecs.getComponent<ECS::Components::Direction>(_entity);
 
+  _activeKeys[event.key.code] = false;
   switch (event.key.code)
   {
   case sf::Keyboard::Key::Up :
-    direction->yDirection = 0;
+    if (_activeKeys[sf::Keyboard::Key::Down])
+      direction->yDirection = -1;
+    else
+      direction->yDirection = 0;
     break;
+
   case sf::Keyboard::Key::Down :
-    direction->yDirection = 0;
+    if (_activeKeys[sf::Keyboard::Key::Up])
+      direction->yDirection = 1;
+    else
+      direction->yDirection = 0;
     break;
+
   case sf::Keyboard::Key::Right :
-    direction->xDirection = 0;
+    if (_activeKeys[sf::Keyboard::Key::Left])
+      direction->xDirection = -1;
+    else
+      direction->xDirection = 0;
     break;
+
   case sf::Keyboard::Key::Left :
-    direction->xDirection = 0;
+    if (_activeKeys[sf::Keyboard::Key::Right])
+      direction->xDirection = 1;
+    else
+      direction->xDirection = 0;
     break;
+
   case sf::Keyboard::Key::Space :
     _fire = false;
+
   default :
     break;
     case sf::Keyboard::Unknown:break;
@@ -303,7 +327,6 @@ void  Ship::fire(const std::string &msg)
   (void) msg;
 
   ECS::Entity e = _gameManagers.ecs.createEntity();
-  std::cout << "AttackID : " << e << std::endl;
 
   std::shared_ptr<ECS::Components::Position> position = _gameManagers.ecs.getComponent<ECS::Components::Position>(_entity);
 
@@ -327,6 +350,7 @@ void  Ship::fire(const std::string &msg)
 
 void  Ship::update(void )
 {
+
    if (_fire && _fireTickCounter == 0)
   {
     _fireTickCounter++;

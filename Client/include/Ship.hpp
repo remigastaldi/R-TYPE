@@ -2,7 +2,7 @@
  * @Author: Remi Gastaldi <gastal_r>
  * @Date:   2018-01-20T20:45:49+01:00
  * @Last modified by:   gastal_r
- * @Last modified time: 2018-01-21T23:07:14+01:00
+ * @Last modified time: 2018-02-16T02:42:15+01:00
  */
 
 
@@ -39,4 +39,6 @@ private:
   bool _fire;
 
   std::string _spriteName;
+
+  std::unordered_map<sf::Keyboard::Key, bool> _activeKeys;
 };
