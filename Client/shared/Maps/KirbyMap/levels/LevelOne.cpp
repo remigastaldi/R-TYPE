@@ -93,7 +93,6 @@ void LevelOne::playerHit(ECS::Entity by, ECS::Entity to)
       return;
     } else {
       //Mob is not hit, check if one of his attack is responsible for this
-      std::cout << "***********************************************" << std::endl;
       it.second->playerHit(by, to);
     }
   }

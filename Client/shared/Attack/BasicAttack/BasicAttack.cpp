@@ -2,7 +2,7 @@
  * @Author: Remi Gastaldi <gastal_r>
  * @Date:   2018-01-22T10:02:46+01:00
  * @Last modified by:   gastal_r
- * @Last modified time: 2018-01-22T10:25:04+01:00
+ * @Last modified time: 2018-02-15T20:12:16+01:00
  */
 
 
@@ -33,8 +33,8 @@ BasicAttack::BasicAttack(GameEngine::GameManagers &gameManagers, ECS::Entity own
 
   _ecs.addComponent<ECS::Components::Collisionable>(_entity, ECS::Components::Collisionable(_entity, ECS::Components::Collisionable::Type::ENNEMY));
   _ecs.addComponent<ECS::Components::Drawable>(_entity, ECS::Components::Drawable(_spriteName));
-  ECS::Components::Position pos = *_ecs.getComponent<ECS::Components::Position>(_ownerEntity).get();
-  pos.x -= 600;
+  ECS::Components::Position pos = *_ecs.getComponent<ECS::Components::Position>(_ownerEntity);
+  pos.x -= 200;
   _ecs.addComponent<ECS::Components::Position>(_entity, pos);
   _ecs.addComponent<ECS::Components::Stats>(_entity, ECS::Components::Stats(1));
 
