@@ -2,7 +2,7 @@
  * @Author: Remi Gastaldi <gastal_r>
  * @Date:   2018-01-22T10:02:46+01:00
  * @Last modified by:   gastal_r
- * @Last modified time: 2018-01-22T10:24:41+01:00
+ * @Last modified time: 2018-02-16T02:44:50+01:00
  */
 
 
@@ -70,7 +70,7 @@ void Metallos::update()
 
   if (_curTime <= 0)
   {
-    return;
+    //return;
     _curTime = _timeBetweenAttack;
     //Spawn an attack
     std::shared_ptr<IAttack> tmp;

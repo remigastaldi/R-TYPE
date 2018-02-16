@@ -1,10 +1,18 @@
+/**
+ * @Author: Remi Gastaldi <gastal_r>
+ * @Date:   2018-02-14T19:31:45+01:00
+ * @Last modified by:   gastal_r
+ * @Last modified time: 2018-02-15T00:36:47+01:00
+ */
+
+
 #pragma once
 
 #include <LibraryInterfaces/IMob.hpp>
-#include "IMap.hpp"
+#include "Maps/MapEngine.hpp"
 #include "Maps/ILevels.hpp"
 
-class KirbyMap : public IMap
+class KirbyMap : public MapEngine
 {
   private:
     std::pair<int, int> _neededLevel = std::make_pair(0, 5);

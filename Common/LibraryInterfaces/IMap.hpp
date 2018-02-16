@@ -5,12 +5,10 @@
 #include <DynamicLibrary/LibLoader.hpp>
 #include "ECS/Manager.hpp"
 
-#include <GameManagers.hpp>
-
 class IMap
 {
   public:
-    IMap(GameEngine::GameManagers &gameManagers) {};
+    IMap() {};
     virtual ~IMap() = default;
 
     virtual const std::pair<int, int> &getNeededLevel() const = 0;

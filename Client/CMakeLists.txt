@@ -28,6 +28,7 @@ target_sources(${NAME}
         ${CMAKE_CURRENT_SOURCE_DIR}/src/NetworkManager.cpp
 
         # ECS
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/ECS/Systems/Parallax.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/src/ECS/Systems/Animation.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/src/ECS/Systems/Render.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/src/ECS/Systems/Collision.cpp
@@ -36,7 +37,6 @@ target_sources(${NAME}
         ${CMAKE_CURRENT_SOURCE_DIR}/shared/StartPage/StartPage.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/shared/LobbyPlayer/LobbyPlayer.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/shared/IngameHUD/IngameHUD.cpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/shared/Parallax/Parallax.cpp
 )
 
 include(../Common/common.cmake)

@@ -1,14 +1,26 @@
+/**
+ * @Author: Remi Gastaldi <gastal_r>
+ * @Date:   2018-02-14T19:31:45+01:00
+ * @Last modified by:   gastal_r
+ * @Last modified time: 2018-02-15T22:44:44+01:00
+ */
+
+
 #include <Maps/KirbyMap/levels/LevelOne.hpp>
 #include "KirbyMap.hpp"
 
 KirbyMap::KirbyMap(GameEngine::GameManagers &gameManagers) :
-  IMap(gameManagers),
+  MapEngine(gameManagers),
   _gameManagers(gameManagers),
   _ecs(gameManagers.ecs),
   _event(gameManagers.event),
   _loader(gameManagers.libLoader)
 {
   Logger::get().setOutput(CONSOLE_LOG);
+
+  addParallax("../../Client/media/img/Parallax/background_01_parallax_01.png", 0.3, false);
+  addParallax("../../Client/media/img/Parallax/background_01_parallax_02.png", 0.5, false);
+  addParallax("../../Client/media/img/Parallax/background_01_parallax_03.png", 1, true);
 
   _listener = _event.listen<void, ECS::Entity, ECS::Entity>("Collision", [&](ECS::Entity by,
                                                                              ECS::Entity to) -> void {

@@ -2,7 +2,7 @@
  * @Author: Remi Gastaldi <gastal_r>
  * @Date:   2018-01-20T18:54:40+01:00
  * @Last modified by:   gastal_r
- * @Last modified time: 2018-01-22T10:09:56+01:00
+ * @Last modified time: 2018-02-15T22:34:54+01:00
  */
 
 
@@ -41,6 +41,20 @@ namespace ECS
       int   xSize;
       int   currentAnimationNumber;
       int   animationNumber;
+    };
+
+    struct Parallax : ECS::Component
+    {
+      Parallax(float _xDirection, float _yDirection, float _speed)
+      : xDirection(_xDirection),
+      yDirection(_yDirection),
+      speed(_speed)
+        {}
+
+      float xDirection;
+      float yDirection;
+
+      float speed;
     };
   }
 }

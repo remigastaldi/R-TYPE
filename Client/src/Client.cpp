@@ -2,7 +2,7 @@
  * @Author: Remi Gastaldi <gastal_r>
  * @Date:   2018-01-17T04:07:04+01:00
  * @Last modified by:   gastal_r
- * @Last modified time: 2018-01-22T01:50:29+01:00
+ * @Last modified time: 2018-02-16T02:45:00+01:00
  */
 
 
@@ -14,9 +14,7 @@
 namespace GameEngine
 {
 	Client::Client(const std::string &ip, sf::VideoMode &videoMode)
-		:
-    _parallax(_window, _resourcesManager),
-    _eventManager(),
+		:  _eventManager(),
     _resourcesManager(),
     _ecsManager(),
     _guiManager(_window),
@@ -25,21 +23,18 @@ namespace GameEngine
     _gameManagers(_resourcesManager, _eventManager, _ecsManager, _soundManager, _libraryLoader),
     _networkManager(_eventManager),
     _ship(),
-    _window(videoMode, "R-Type", sf::Style::Titlebar | sf::Style::Resize),
+    _window(videoMode, "R-Type", sf::Style::Titlebar),
     _ip(ip),
     _gameEngineTick(120),
     _maxFrameRate(60),
     _running(true),
     _sceneManager()
-  {
-		_parallax.loadLayer("../../Client/media/img/Parallax/background_01_parallax_01.png", 0.3, false);
-		_parallax.loadLayer("../../Client/media/img/Parallax/background_01_parallax_02.png", 0.5, false);
-		_parallax.loadLayer("../../Client/media/img/Parallax/background_01_parallax_03.png", 1, true);
-	}
+  {}
 
   void Client::init()
   {
 	  // load connection scene
+		_ecsManager.createStoreFor<ECS::Components::Parallax>();
     _ecsManager.createStoreFor<ECS::Components::Position>();
     _ecsManager.createStoreFor<ECS::Components::Drawable>();
     _ecsManager.createStoreFor<ECS::Components::Direction>();
@@ -47,8 +42,9 @@ namespace GameEngine
 		_ecsManager.createStoreFor<ECS::Components::Player>();
     _ecsManager.createStoreFor<ECS::Components::Animated>();
     _ecsManager.createStoreFor<ECS::Components::Player>();
-    _ecsManager.createStoreFor<ECS::Components::Stats>();
+		_ecsManager.createStoreFor<ECS::Components::Stats>();
 
+		_ecsManager.addSystem<ECS::Systems::Parallax>(_ecsManager, _resourcesManager);
     _ecsManager.addSystem<ECS::Systems::Mouvement>(_eventManager, _ecsManager);
     _ecsManager.addSystem<ECS::Systems::Collision>(_eventManager, _resourcesManager, _ecsManager);
 		_ecsManager.addSystem<ECS::Systems::Animation>(_eventManager, _resourcesManager, _ecsManager);
@@ -188,17 +184,15 @@ namespace GameEngine
   {
     //_networkManager.update();
     _ship->update();
-    _ecsManager.updateSystemsRange(0.f, 0, 3);
-    _myMap->update();
-	  _parallax.updatePos();
+		_myMap->update();
+    _ecsManager.updateSystemsRange(0.f, 0, 4);
   }
 
   void Client::render(float alpha)
   {
 		//std::cout << "entities: " << _ecsManager.getEntities().size() << std::endl;
     _window.clear();
-	  _parallax.update();
-    _ecsManager.updateSystemsRange(0.f, 3, 4);
+    _ecsManager.updateSystemsRange(0.f, 4, 5);
     _guiManager.update(alpha);
     _window.display();
   }

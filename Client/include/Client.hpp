@@ -2,7 +2,7 @@
  * @Author: Remi Gastaldi <gastal_r>
  * @Date:   2018-01-17T04:02:41+01:00
  * @Last modified by:   gastal_r
- * @Last modified time: 2018-01-22T02:41:57+01:00
+ * @Last modified time: 2018-02-15T20:41:15+01:00
  */
 
 #pragma once
@@ -17,11 +17,12 @@
 #include  "ECS/Components/Components.hpp"
 #include  "ECS/Systems/ClientSystems.hpp"
 #include  "ECS/Systems/Collision.hpp"
+#include  "ECS/Systems/Parallax.hpp"
+
 #include  "NetworkManager.hpp"
 
 #include  "StartPage/StartPage.hpp"
 #include  "IngameHUD/IngameHUD.hpp"
-#include  "Parallax/Parallax.hpp"
 
 #include "Ship.hpp"
 #include "SceneManager.hpp"
@@ -48,7 +49,6 @@ namespace GameEngine
       void exitGame(const std::string &);
 
     private:
-      Parallax _parallax;
       EventManager::Manager _eventManager;
       ResourcesManager _resourcesManager;
       ECS::Manager _ecsManager;
