@@ -1,8 +1,9 @@
  set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
- include_directories(SYSTEM ../SFML/include)
- link_directories(${SFML_BINARY_DIR}/lib)
+include_directories(SYSTEM ${CMAKE_SOURCE_DIR}/SFML/include)
+link_directories(${SFML_BINARY_DIR}/lib)
 
+Set(COMPILE_OPTIONS "")
 if (UNIX)
   list(APPEND COMPILE_OPTIONS
     $<$<CONFIG:Debug>: -g3>
@@ -12,8 +13,8 @@ if (UNIX)
 
     $<$<BOOL:True>:
       -fdiagnostics-color=always
-      -W
       -Wall
+      -Wextra
       -Wuninitialized
       -Winit-self
       -Wunsafe-loop-optimizations
@@ -27,9 +28,7 @@ if (UNIX)
       -Weffc++
       -Wfloat-equal
       -Wcast-align
-      -Wmissing-declarations
       -Wmissing-include-dirs
-      -Wswitch
       -Wlogical-op
       -Wnoexcept
       -Winvalid-pch
@@ -43,7 +42,7 @@ if (UNIX)
 endif()
 
 #MAPS
-add_library(KirbyMap SHARED Maps/KirbyMap/KirbyMap.hpp Maps/KirbyMap/KirbyMap.cpp Maps/ILevels.hpp Maps/KirbyMap/levels/LevelOne.cpp Maps/KirbyMap/levels/LevelOne.hpp Maps/MapEngine.cpp ${COMMON_SOURCES})
+add_library(KirbyMap SHARED Maps/KirbyMap/KirbyMap.hpp Maps/KirbyMap/KirbyMap.cpp Maps/ILevels.hpp Maps/KirbyMap/levels/LevelOne.cpp Maps/KirbyMap/levels/LevelOne.hpp Maps/MapEngine.cpp Maps/MapEngine.hpp ../include/GameManagers.hpp ${COMMON_SOURCES})
 
 #MOBS
 add_library(Metallos SHARED Mobs/Metallos/Metallos.cpp Mobs/Metallos/Metallos.hpp ${COMMON_SOURCES})

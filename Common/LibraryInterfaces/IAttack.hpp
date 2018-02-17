@@ -1,3 +1,11 @@
+/**
+ * @Author: Remi Gastaldi <gastal_r>
+ * @Date:   2018-02-15T15:02:12+01:00
+ * @Last modified by:   gastal_r
+ * @Last modified time: 2018-02-16T18:39:26+01:00
+ */
+
+
 #pragma once
 
 #include <string>
@@ -8,7 +16,7 @@
 class IAttack
 {
   public:
-    IAttack(GameEngine::GameManagers &gameManagers, ECS::Entity) {};
+    IAttack(GameEngine::GameManagers &, ECS::Entity) {};
     virtual ~IAttack() = default;
 
     virtual void update() = 0;

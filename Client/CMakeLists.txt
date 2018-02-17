@@ -51,7 +51,7 @@ elseif(MSVC)
   target_link_libraries(${NAME} ${Boost_LIBRARIES} AlfredBase ${SFML_BINARY_DIR}/lib/sfml-audio-d.lib ${SFML_BINARY_DIR}/lib/sfml-graphics-d.lib ${SFML_BINARY_DIR}/lib/sfml-system-d.lib ${SFML_BINARY_DIR}/lib/sfml-window-d.lib)
 endif()
 
-
+Set(COMPILE_OPTIONS "")
 if (UNIX)
   list(APPEND COMPILE_OPTIONS
     $<$<CONFIG:Debug>: -g3>
@@ -61,8 +61,8 @@ if (UNIX)
 
     $<$<BOOL:True>:
       -fdiagnostics-color=always
-      -W
       -Wall
+      -Wextra
       -Wuninitialized
       -Winit-self
       -Wunsafe-loop-optimizations
@@ -78,7 +78,6 @@ if (UNIX)
       -Wcast-align
       -Wmissing-declarations
       -Wmissing-include-dirs
-      -Wswitch
       -Wlogical-op
       -Wnoexcept
       -Winvalid-pch

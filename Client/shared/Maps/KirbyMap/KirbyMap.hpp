@@ -2,7 +2,7 @@
  * @Author: Remi Gastaldi <gastal_r>
  * @Date:   2018-02-14T19:31:45+01:00
  * @Last modified by:   gastal_r
- * @Last modified time: 2018-02-15T00:36:47+01:00
+ * @Last modified time: 2018-02-17T13:31:26+01:00
  */
 
 
@@ -20,7 +20,7 @@ class KirbyMap : public MapEngine
     EventManager::EventListener _listener;
     EventManager::EventListener _listenerOutOfSpace;
 
-    int _wave = 0;
+    size_t _wave = 0;
 
     GameEngine::GameManagers &_gameManagers;
     ECS::Manager &_ecs;
@@ -32,15 +32,15 @@ class KirbyMap : public MapEngine
     bool _isEnd = false;
 
   public:
-    KirbyMap(GameEngine::GameManagers &gameManagers);
+    explicit KirbyMap(GameEngine::GameManagers &gameManagers);
     ~KirbyMap() override;
     const std::pair<int, int> &getNeededLevel() const override;
     void update() override;
     bool isEnd() override;
 };
 
-#if WIN32
-extern "C" std::string __declspec(dllexport) __stdcall getName()
+#ifdef WIN32
+extern "C" char const * __declspec(dllexport) __stdcall getName()
 {
   return "KirbyMap";
 }
@@ -52,7 +52,7 @@ extern "C" IMap  __declspec(dllexport) __stdcall *getSymbol(GameEngine::GameMana
 
 #else
 
-extern "C" std::string getName()
+extern "C" char const * getName()
 {
   return "KirbyMap";
 }

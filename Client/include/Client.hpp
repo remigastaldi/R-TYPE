@@ -2,7 +2,7 @@
  * @Author: Remi Gastaldi <gastal_r>
  * @Date:   2018-01-17T04:02:41+01:00
  * @Last modified by:   gastal_r
- * @Last modified time: 2018-02-15T20:41:15+01:00
+ * @Last modified time: 2018-02-16T11:15:53+01:00
  */
 
 #pragma once
@@ -54,10 +54,9 @@ namespace GameEngine
       ECS::Manager _ecsManager;
       GUI::Manager _guiManager;
       SoundManager _soundManager;
+      LibLoader _libraryLoader;
       GameEngine::GameManagers _gameManagers;
       // SceneManager   _sceneManager;
-      LibLoader _libraryLoader;
-      // Network _network;
       NetworkManager _networkManager;
 
       std::shared_ptr<Ship> _ship;
@@ -72,6 +71,6 @@ namespace GameEngine
 
       SceneManager _sceneManager;
 
-      IMap *_myMap;
+      std::shared_ptr<IMap>  _myMap;
   };
 }

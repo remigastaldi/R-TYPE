@@ -2,7 +2,7 @@
  * @Author: Remi Gastaldi <gastal_r>
  * @Date:   2018-01-22T10:02:46+01:00
  * @Last modified by:   gastal_r
- * @Last modified time: 2018-02-16T02:44:50+01:00
+ * @Last modified time: 2018-02-16T18:44:56+01:00
  */
 
 
@@ -10,6 +10,9 @@
 
 Metallos::Metallos(GameEngine::GameManagers &gameManagers, ECS::Components::Position pos) :
   IMob(gameManagers, pos),
+  _me(gameManagers.ecs.createEntity()),
+  _attacks(),
+  _movement(),
   _gameManagers(gameManagers),
   _ecs(gameManagers.ecs),
   _event(gameManagers.event),
@@ -19,8 +22,6 @@ Metallos::Metallos(GameEngine::GameManagers &gameManagers, ECS::Components::Posi
   Logger::get().setOutput(CONSOLE_LOG);
 
   LOG_INFO << "Creating Metaloss" << std::endl;
-
-  _me = _ecs.createEntity();
 
   LOG_INFO << "Entity ID " << _me << std::endl;
 
@@ -52,7 +53,7 @@ Metallos::~Metallos()
   _ecs.destroyEntity(_me);
 }
 
-const int Metallos::getDifficulty()
+int Metallos::getDifficulty() const
 {
   return _difficulty;
 }

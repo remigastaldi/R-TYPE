@@ -1,3 +1,11 @@
+/**
+ * @Author: Remi Gastaldi <gastal_r>
+ * @Date:   2018-02-16T14:09:59+01:00
+ * @Last modified by:   gastal_r
+ * @Last modified time: 2018-02-17T13:31:23+01:00
+ */
+
+
 #pragma once
 
 #include <LibraryInterfaces/IMove.hpp>
@@ -18,8 +26,8 @@ class UpAndDownMove : public IMove
     void update() override;
 };
 
-#if WIN32
-extern "C" std::string __declspec(dllexport) __stdcall getName()
+#ifdef WIN32
+extern "C" char const * __declspec(dllexport) __stdcall getName()
 {
   return "UpAndDownMove";
 }
@@ -31,7 +39,7 @@ extern "C" IMove __declspec(dllexport) __stdcall *getSymbol(GameEngine::GameMana
 
 #else
 
-extern "C" std::string getName()
+extern "C" char const * getName()
 {
   return "UpAndDownMove";
 }

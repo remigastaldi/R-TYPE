@@ -1,3 +1,11 @@
+/**
+ * @Author: Remi Gastaldi <gastal_r>
+ * @Date:   2018-02-15T16:16:24+01:00
+ * @Last modified by:   gastal_r
+ * @Last modified time: 2018-02-16T11:52:23+01:00
+ */
+
+
 #include <ECS/Components/Stats.hpp>
 #include "LevelOne.hpp"
 
@@ -54,7 +62,8 @@ LevelOne::LevelOne(GameEngine::GameManagers &gameManagers) :
   _gameManagers(gameManagers),
   _ecs(gameManagers.ecs),
   _event(gameManagers.event),
-  _loader(gameManagers.libLoader)
+  _loader(gameManagers.libLoader),
+  _mobs()
 {
   LOG_INFO << "Loading Level One" << std::endl;
 }

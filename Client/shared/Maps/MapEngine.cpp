@@ -2,7 +2,7 @@
  * @Author: Remi Gastaldi <gastal_r>
  * @Date:   2018-02-15T01:38:28+01:00
  * @Last modified by:   gastal_r
- * @Last modified time: 2018-02-15T22:44:37+01:00
+ * @Last modified time: 2018-02-17T12:56:14+01:00
  */
 
 
@@ -10,6 +10,7 @@
 
 MapEngine::MapEngine(GameEngine::GameManagers &gameManagers)
   : _gameManagers(gameManagers),
+  _objects(),
   _parallaxItems()
   {}
 
@@ -18,8 +19,6 @@ void  MapEngine::addParallax(const std::string &layer, float speedLayer, bool fl
 {
   ECS::Entity entity = _gameManagers.ecs.createEntity();
   ECS::Entity flippedEntity = _gameManagers.ecs.createEntity();
-
-  std::cout << "entity " << entity << " flipped " << flippedEntity << std::endl;
 
   std::shared_ptr<Texture> texture(_gameManagers.resources.load<Texture>("layerTexture[" + std::to_string(_parallaxItems.size() + 1) + "]", layer));
 

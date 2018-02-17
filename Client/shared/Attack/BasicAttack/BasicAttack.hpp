@@ -1,3 +1,11 @@
+/**
+ * @Author: Remi Gastaldi <gastal_r>
+ * @Date:   2018-02-16T14:09:59+01:00
+ * @Last modified by:   gastal_r
+ * @Last modified time: 2018-02-16T15:56:59+01:00
+ */
+
+
 #pragma once
 
 #include <LibraryInterfaces/IMove.hpp>
@@ -40,7 +48,7 @@ class BasicAttack : public IAttack
 };
 
 #if WIN32
-extern "C" std::string __declspec(dllexport) __stdcall getName()
+extern "C" char const * __declspec(dllexport) __stdcall getName()
 {
   return "BasicAttack";
 }
@@ -52,7 +60,7 @@ extern "C" IAttack  __declspec(dllexport) __stdcall *getSymbol(GameEngine::GameM
 
 #else
 
-extern "C" std::string getName()
+extern "C" char const * getName()
 {
   return "BasicAttack";
 }

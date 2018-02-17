@@ -2,7 +2,7 @@
  * @Author: Remi Gastaldi <gastal_r>
  * @Date:   2018-01-17T04:07:04+01:00
  * @Last modified by:   gastal_r
- * @Last modified time: 2018-02-16T02:45:00+01:00
+ * @Last modified time: 2018-02-17T12:45:07+01:00
  */
 
 
@@ -28,7 +28,8 @@ namespace GameEngine
     _gameEngineTick(120),
     _maxFrameRate(60),
     _running(true),
-    _sceneManager()
+    _sceneManager(),
+		_myMap(nullptr)
   {}
 
   void Client::init()
@@ -110,7 +111,7 @@ namespace GameEngine
   {
     _sceneManager.pushScene("IngameHUD");
 
-    _myMap = _libraryLoader.map.get("KirbyMap")(_gameManagers);
+    _myMap.reset(_libraryLoader.map.get("KirbyMap")(_gameManagers));
 
     _ship = std::make_shared<Ship>(_gameManagers);
 

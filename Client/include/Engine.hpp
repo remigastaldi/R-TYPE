@@ -1,6 +1,14 @@
+/**
+ * @Author: Remi Gastaldi <gastal_r>
+ * @Date:   2018-02-16T14:09:59+01:00
+ * @Last modified by:   gastal_r
+ * @Last modified time: 2018-02-17T13:12:04+01:00
+ */
+
+
 #pragma once
 
-#include <AlfredBase/EventManager/EventManager.hpp>
+#include <EventManager.hpp>
 //#include "RessourcesManager.hpp"
 #include "SceneManager.hpp"
 
@@ -27,4 +35,3 @@ namespace GameEngine
         void loadDynamicLibrary(const std::string &path = GE_DEFAULT_RESSOURCES_PATH);
     };
 }
-

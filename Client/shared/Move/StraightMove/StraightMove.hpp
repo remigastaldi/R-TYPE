@@ -1,3 +1,11 @@
+/**
+ * @Author: Remi Gastaldi <gastal_r>
+ * @Date:   2018-02-16T15:34:19+01:00
+ * @Last modified by:   gastal_r
+ * @Last modified time: 2018-02-16T15:45:48+01:00
+ */
+
+
 #pragma once
 
 #include <LibraryInterfaces/IMove.hpp>
@@ -25,7 +33,7 @@ class StraightMove : public IMove
     void update() override;
 };
 
-extern "C" std::string getName()
+extern "C" char const * getName()
 {
   return "StraightMove";
 }

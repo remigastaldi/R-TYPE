@@ -1,3 +1,11 @@
+/**
+ * @Author: Remi Gastaldi <gastal_r>
+ * @Date:   2018-02-16T15:34:14+01:00
+ * @Last modified by:   gastal_r
+ * @Last modified time: 2018-02-17T13:31:19+01:00
+ */
+
+
 #pragma once
 
 #include "IMove.hpp"
@@ -19,8 +27,8 @@ class SinusoideMove : public IMove
 };
 
 
-#if WIN32
-extern "C" std::string __declspec(dllexport) __stdcall getName()
+#ifdef WIN32
+extern "C" char const * __declspec(dllexport) __stdcall getName()
 {
   return "SinusoideMove";
 }
@@ -32,7 +40,7 @@ extern "C" IMove __declspec(dllexport) __stdcall *getSymbol(GameEngine::GameMana
 
 #else
 
-extern "C" std::string getName()
+extern "C" char const * getName()
 {
   return "SinusoideMove";
 }

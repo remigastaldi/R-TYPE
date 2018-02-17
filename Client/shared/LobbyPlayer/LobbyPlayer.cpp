@@ -2,7 +2,7 @@
  * @Author: Remi Gastaldi <gastal_r>
  * @Date:   2018-01-20T21:13:21+01:00
  * @Last modified by:   gastal_r
- * @Last modified time: 2018-01-22T02:10:50+01:00
+ * @Last modified time: 2018-02-16T11:40:59+01:00
  */
 
 
@@ -32,8 +32,8 @@ void	LobbyPlayer::playerJoin(const std::string &name)
 
 	sf::Vector2f centerSlot((_guiManager.getWindowSize().x / 2) - (centerSlotSprite.getGlobalBounds().width / 2), (_guiManager.getWindowSize().y / 2) - (centerSlotSprite.getGlobalBounds().height / 2));
 
-	int slotPlayerX = _players == 1 || _players == 3 ? 450 : 1070;
-	int slotPlayerY = _players < 3 ? -290 : 50;
+	float slotPlayerX = _players == 1 || _players == 3 ? 450 : 1070;
+	float slotPlayerY = _players < 3 ? -290 : 50;
 
 	_guiManager.addElement<GUI::Image>("spaceshipPlayer" + name + "Sprite", sf::Vector2f(centerSlot.x, centerSlot.y), playersSpaceships, sf::IntRect(160 * (_players - 1), 0, 160, 160), sf::Vector2f(0.9, 0.9));
 	_guiManager.addElement<GUI::Image>("slotPlayer" + name + "Sprite", sf::Vector2f(slotPlayerX, (_guiManager.getWindowSize().y / 2) + slotPlayerY), playerSlot, sf::Vector2f(0.25, 0.25));
@@ -77,7 +77,6 @@ void	LobbyPlayer::onEnter()
 	sf::Font &font = _resources.getContent<Font>("neuropol");
 	sf::Texture &waitingTexture = _resources.getContent<Texture>("window_whole");
 	sf::Texture &exitLobbyTexture = _resources.getContent<Texture>("exitButton");
-	sf::Texture &readyLobbyTexture = _resources.getContent<Texture>("readyButtonState");
 	sf::Texture &readyButtonLobbyTexture = _resources.getContent<Texture>("readyButton");
 
 	sf::Sprite waitingSprite(waitingTexture);

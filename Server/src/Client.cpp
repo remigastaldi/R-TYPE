@@ -1,3 +1,11 @@
+/**
+ * @Author: Remi Gastaldi <gastal_r>
+ * @Date:   2018-02-15T15:02:12+01:00
+ * @Last modified by:   gastal_r
+ * @Last modified time: 2018-02-16T10:52:35+01:00
+ */
+
+
 /*
 ** Client.cpp for R-TYPE
 **
@@ -14,7 +22,8 @@ Client::Client() : _ip(""),
 _token(""),
 _name(""),
 _roomId(""),
-_ready(false)
+_ready(false),
+_port()
 {
 
 }

@@ -1,3 +1,11 @@
+/**
+ * @Author: Remi Gastaldi <gastal_r>
+ * @Date:   2018-02-16T14:10:00+01:00
+ * @Last modified by:   gastal_r
+ * @Last modified time: 2018-02-16T16:12:59+01:00
+ */
+
+
 #pragma once
 
 #ifdef WIN32
@@ -52,7 +60,7 @@ namespace EventManager
 
 #ifdef WIN32
 
-typedef std::string (__stdcall *getNameOfLib)();
+typedef char const * (__stdcall *getNameOfLib)();
 
 typedef IAttack *(__stdcall *getAttackSymbol)(GameEngine::GameManagers &gameManagers, ECS::Entity);
 typedef IMap *(__stdcall *getMapSymbol)(GameEngine::GameManagers &gameManagers);
@@ -66,7 +74,7 @@ typedef IShipBluprint *(__stdcall *getShipBlueprintSymbol)();
 
 #else
 
-typedef std::string (*getNameOfLib)();
+typedef char const * (*getNameOfLib)();
 
 typedef IAttack *(*getAttackSymbol)(GameEngine::GameManagers &gameManagers, ECS::Entity);
 typedef IMap *(*getMapSymbol)(GameEngine::GameManagers &gameManagers);
@@ -125,7 +133,7 @@ class __lib__implem : public Alfred::Utils::NonCopyable
         LOG_ERROR << "Error while loading lib name " << path << " " << lError << std::endl;
         return "";
       }
-      return ((getNameOfLib)(dlsym(handle, "getName")))();
+      return (((getNameOfLib)(dlsym(handle, "getName")))());
 #endif
     }
 
@@ -185,6 +193,7 @@ class __lib__implem : public Alfred::Utils::NonCopyable
               LOG_INFO << "Trying to load lib " << curPath << std::endl;
 
               std::string nameOfLib = getLibName(curPath);
+              LOG_ERROR << "lib name " << nameOfLib  << std::endl;
 
               if (nameOfLib.empty())
                 LOG_ERROR << "Error while loading lib " << curPath << std::endl;

@@ -2,13 +2,23 @@
 -I./Client/include/ECS/Components
 -I./Client/include/ECS/Systems
 
--I./Client/shared/Attack
+-I./Client/shared/
+
+-I./Client/shared/Attack/BasicAttack
+
 -I./Client/shared/IngameHUD
 -I./Client/shared/LobbyPlayer
--I./Client/shared/Maps
--I./Client/shared/Mobs
--I./Client/shared/Move
--I./Client/shared/Parallax
+
+-I./Client/shared/Maps/
+-I./Client/shared/Maps/KirbyMap/
+-I./Client/shared/Maps/KirbyMap/levels/
+
+-I./Client/shared/Mobs/Metallos
+
+-I./Client/shared/Move/SinusoideMove/
+-I./Client/shared/Move/StraightMove/
+-I./Client/shared/Move/UpAndDown/
+
 -I./Client/shared/StartPage
 
 -I./Common/

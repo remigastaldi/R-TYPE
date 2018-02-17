@@ -2,7 +2,7 @@
  * @Author: Remi Gastaldi <gastal_r>
  * @Date:   2018-01-22T06:10:40+01:00
  * @Last modified by:   gastal_r
- * @Last modified time: 2018-01-22T10:48:23+01:00
+ * @Last modified time: 2018-02-16T11:15:06+01:00
  */
 
 
@@ -64,7 +64,7 @@ UDPPacket	AsioSyncUdpNetwork::receive()
     boost::archive::text_iarchive archive(archive_stream);
     archive >> map;
     map["ip"] = _lastEndpoint.address().to_string();
-    map["port"] = std::to_string(_lastEndpoint.port());
+    map["port"] = std::to_string(static_cast<int>(_lastEndpoint.port()));
     packet.setData(map);
   } catch (std::exception &e) {
     std::cout << e.what() << std::endl;

@@ -1,3 +1,11 @@
+/**
+ * @Author: Remi Gastaldi <gastal_r>
+ * @Date:   2018-02-16T18:03:51+01:00
+ * @Last modified by:   gastal_r
+ * @Last modified time: 2018-02-17T12:48:39+01:00
+ */
+
+
 #pragma once
 
 #include <string>
@@ -10,7 +18,7 @@
 class ILevels
 {
   public:
-    ILevels(GameEngine::GameManagers &gameManagers)
+    ILevels(GameEngine::GameManagers &)
     {}
 
     virtual ~ILevels()

@@ -2,7 +2,7 @@
  * @Author: Remi Gastaldi <gastal_r>
  * @Date:   2018-02-14T19:31:45+01:00
  * @Last modified by:   gastal_r
- * @Last modified time: 2018-02-15T22:44:44+01:00
+ * @Last modified time: 2018-02-16T17:18:02+01:00
  */
 
 
@@ -11,10 +11,13 @@
 
 KirbyMap::KirbyMap(GameEngine::GameManagers &gameManagers) :
   MapEngine(gameManagers),
+  _listener(),
+  _listenerOutOfSpace(),
   _gameManagers(gameManagers),
   _ecs(gameManagers.ecs),
   _event(gameManagers.event),
-  _loader(gameManagers.libLoader)
+  _loader(gameManagers.libLoader),
+  _levels()
 {
   Logger::get().setOutput(CONSOLE_LOG);
 

@@ -2,7 +2,7 @@
  * @Author: Remi Gastaldi <gastal_r>
  * @Date:   2018-01-22T10:02:46+01:00
  * @Last modified by:   gastal_r
- * @Last modified time: 2018-02-15T20:12:16+01:00
+ * @Last modified time: 2018-02-17T13:05:12+01:00
  */
 
 
@@ -15,11 +15,12 @@ BasicAttack::BasicAttack(GameEngine::GameManagers &gameManagers, ECS::Entity own
   _event(gameManagers.event),
   _loader(gameManagers.libLoader),
   _ownerEntity(owner),
+  _entity(gameManagers.ecs.createEntity()),
+  _attacks(),
+  _move(),
   _spriteName()
 {
   Logger::get().setOutput(CONSOLE_LOG);
-
-  _entity = _ecs.createEntity();
 
   std::shared_ptr<Texture> texture(_gameManagers.resources.get<Texture>("playersMissilesTexture"));
   _spriteName = "basic_attack_sprite[" + std::to_string(_entity) + "]";

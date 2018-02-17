@@ -1,3 +1,11 @@
+/**
+ * @Author: Remi Gastaldi <gastal_r>
+ * @Date:   2018-02-16T11:44:29+01:00
+ * @Last modified by:   gastal_r
+ * @Last modified time: 2018-02-17T13:31:40+01:00
+ */
+
+
 #pragma once
 
 #include <LibraryInterfaces/IMob.hpp>
@@ -36,15 +44,15 @@ class Metallos : public IMob
   public:
     Metallos(GameEngine::GameManagers &gameManagers, ECS::Components::Position pos);
     ~Metallos() override;
-    const int getDifficulty() override;
+    int getDifficulty() const override;
     void playerHit(ECS::Entity by, ECS::Entity to) override;
     void update() override;
     ECS::Entity getID() override;
     void unitOutOfSpace(ECS::Entity entity) override;
 };
 
-#if WIN32
-extern "C" std::string __declspec(dllexport) __stdcall getName()
+#ifdef WIN32
+extern "C" char const * __declspec(dllexport) __stdcall getName()
 {
   return "Metallos";
 }
@@ -56,7 +64,7 @@ extern "C" IMob __declspec(dllexport) __stdcall *getSymbol(GameEngine::GameManag
 
 #else
 
-extern "C" std::string getName()
+extern "C" char const * getName()
 {
   return "Metallos";
 }
