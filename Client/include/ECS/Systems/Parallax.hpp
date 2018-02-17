@@ -2,7 +2,7 @@
  * @Author: Remi Gastaldi <gastal_r>
  * @Date:   2018-02-14T19:31:43+01:00
  * @Last modified by:   gastal_r
- * @Last modified time: 2018-02-15T21:54:30+01:00
+ * @Last modified time: 2018-02-16T19:21:45+01:00
  */
 
 
@@ -15,6 +15,9 @@
 
 #include	"ResourcesManager.hpp"
 #include	"Resources.hpp"
+
+#include	"Utils.hpp"
+
 #include	<SFML/System.hpp>
 #include	<SFML/Graphics.hpp>
 

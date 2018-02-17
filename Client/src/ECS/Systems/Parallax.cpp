@@ -2,7 +2,7 @@
  * @Author: Remi Gastaldi <gastal_r>
  * @Date:   2018-02-15T00:58:40+01:00
  * @Last modified by:   gastal_r
- * @Last modified time: 2018-02-15T22:48:27+01:00
+ * @Last modified time: 2018-02-16T19:22:49+01:00
  */
 
 
@@ -34,12 +34,12 @@ namespace ECS
 				return;
 			}
 
-			if (parallax->xDirection != 0)
+			if (Utils::compareFloat(parallax->xDirection, 0.f) == 0)
 			{
 				position->x = position->x + (parallax->xDirection * parallax->speed);
 				//position->x += (parallax->xDirection * parallax->speed);
 			}
-			if (parallax->yDirection != 0)
+			if (Utils::compareFloat(parallax->yDirection, 0.f) == 0)
 			{
 				position->y = position->y + (parallax->yDirection * parallax->speed);
 				// position->y += (parallax->yDirection * parallax->speed);
