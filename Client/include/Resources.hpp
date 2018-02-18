@@ -2,7 +2,7 @@
  * @Author: Remi Gastaldi <gastal_r>
  * @Date:   2018-01-16T21:10:22+01:00
  * @Last modified by:   gastal_r
- * @Last modified time: 2018-01-21T07:10:56+01:00
+ * @Last modified time: 2018-02-18T12:27:02+01:00
  */
 
 
@@ -28,6 +28,7 @@ public:
     void  loadFromFile(const std::string &path)
     {
       _resource.loadFromFile(path);
+      setSmooth(true);
     }
 
     void setSmooth(bool val)
