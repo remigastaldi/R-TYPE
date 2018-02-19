@@ -2,7 +2,7 @@
  * @Author: Remi Gastaldi <gastal_r>
  * @Date:   2018-02-15T01:38:28+01:00
  * @Last modified by:   gastal_r
- * @Last modified time: 2018-02-17T12:56:14+01:00
+ * @Last modified time: 2018-02-18T13:44:53+01:00
  */
 
 
@@ -20,10 +20,10 @@ void  MapEngine::addParallax(const std::string &layer, float speedLayer, bool fl
   ECS::Entity entity = _gameManagers.ecs.createEntity();
   ECS::Entity flippedEntity = _gameManagers.ecs.createEntity();
 
-  std::shared_ptr<Texture> texture(_gameManagers.resources.load<Texture>("layerTexture[" + std::to_string(_parallaxItems.size() + 1) + "]", layer));
+  std::shared_ptr<Texture> texture(_gameManagers.resources.load<Texture>("layerTexture[" + std::to_string(entity) + "]", layer));
 
-  std::string spriteName = "layerSprite[" + std::to_string(_parallaxItems.size() + 1) + "]";
-  std::string flippedSpriteName = "layerFlippedSprite[" + std::to_string(_parallaxItems.size() + 1) + "]";
+  std::string spriteName = "layerSprite[" + std::to_string(entity) + "]";
+  std::string flippedSpriteName = "layerFlippedSprite[" + std::to_string(entity) + "]";
   Sprite sprite(spriteName, *texture);
   Sprite flippedSprite(flippedSpriteName, *texture);
 
@@ -57,7 +57,24 @@ void  MapEngine::clearParallax(void)
 {
   for (const auto & it : _parallaxItems)
   {
-    //_gameManagers.resources.release(_parallaxItems.getTextureName());
+    _gameManagers.resources.release("layerTexture[" + std::to_string(it) + "]");
+    _gameManagers.resources.release("layerSprite[" + std::to_string(it) + "]");
+    _gameManagers.resources.release("layerFlippedSprite[" + std::to_string(it) + "]");
     _gameManagers.ecs.destroyEntity(it);
   }
+}
+
+void  MapEngine::updateObjects(void)
+{
+  for (const auto & it : _objects)
+  {
+    it.second->update();
+  }
+}
+
+void  MapEngine::deleteObject(ECS::Entity entity)
+{
+  size_t nb = _objects.erase(entity);
+  if (nb != 0)
+    LOG_SUCCESS << "Mob out of space deleted" << std::endl;
 }

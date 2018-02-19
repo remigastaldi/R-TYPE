@@ -33,6 +33,8 @@ namespace GameEngine {
   struct GameManagers;
 }
 
+class MapEngine;
+
 class IAttack;
 
 class IMap;
@@ -62,9 +64,9 @@ namespace EventManager
 
 typedef char const * (__stdcall *getNameOfLib)();
 
-typedef IAttack *(__stdcall *getAttackSymbol)(GameEngine::GameManagers &gameManagers, ECS::Entity);
+typedef IAttack *(__stdcall *getAttackSymbol)(GameEngine::GameManagers &gameManagers, MapEngine &mapEngine, ECS::Entity);
 typedef IMap *(__stdcall *getMapSymbol)(GameEngine::GameManagers &gameManagers);
-typedef IMob *(__stdcall *getMobSymbol)(GameEngine::GameManagers &gameManagers, ECS::Components::Position);
+typedef IMob *(__stdcall *getMobSymbol)(GameEngine::GameManagers &gameManagers, MapEngine &mapEngine, ECS::Components::Position);
 typedef IMove *(__stdcall *getMoveSymbol)(GameEngine::GameManagers &gameManagers, ECS::Entity);
 typedef IPart *(__stdcall *getPartSymbol)();
 typedef IPowerUp *(__stdcall *getPowerUpSymbol)();
@@ -76,9 +78,9 @@ typedef IShipBluprint *(__stdcall *getShipBlueprintSymbol)();
 
 typedef char const * (*getNameOfLib)();
 
-typedef IAttack *(*getAttackSymbol)(GameEngine::GameManagers &gameManagers, ECS::Entity);
+typedef IAttack *(*getAttackSymbol)(GameEngine::GameManagers &gameManagers, MapEngine &mapEngine, ECS::Entity);
 typedef IMap *(*getMapSymbol)(GameEngine::GameManagers &gameManagers);
-typedef IMob *(*getMobSymbol)(GameEngine::GameManagers &gameManagers, ECS::Components::Position);
+typedef IMob *(*getMobSymbol)(GameEngine::GameManagers &gameManagers, MapEngine &mapEngine, ECS::Components::Position);
 typedef IMove *(*getMoveSymbol)(GameEngine::GameManagers &gameManagers, ECS::Entity);
 typedef IPart *(*getPartSymbol)();
 typedef IPowerUp *(*getPowerUpSymbol)();

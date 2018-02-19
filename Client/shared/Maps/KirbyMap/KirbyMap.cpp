@@ -10,20 +10,20 @@
 #include "KirbyMap.hpp"
 
 KirbyMap::KirbyMap(GameEngine::GameManagers &gameManagers) :
-  MapEngine(gameManagers),
   _listener(),
   _listenerOutOfSpace(),
   _gameManagers(gameManagers),
   _ecs(gameManagers.ecs),
   _event(gameManagers.event),
   _loader(gameManagers.libLoader),
-  _levels()
+  _levels(),
+  _mapEngine(gameManagers)
 {
   Logger::get().setOutput(CONSOLE_LOG);
 
-  addParallax("../../Client/media/img/Parallax/background_01_parallax_01.png", 0.3, false);
-  addParallax("../../Client/media/img/Parallax/background_01_parallax_02.png", 0.5, false);
-  addParallax("../../Client/media/img/Parallax/background_01_parallax_03.png", 1, true);
+  _mapEngine.addParallax("../../Client/media/img/Parallax/background_01_parallax_01.png", 0.3, false);
+  _mapEngine.addParallax("../../Client/media/img/Parallax/background_01_parallax_02.png", 0.5, false);
+  _mapEngine.addParallax("../../Client/media/img/Parallax/background_01_parallax_03.png", 1, true);
 
   _listener = _event.listen<void, ECS::Entity, ECS::Entity>("Collision", [&](ECS::Entity by,
                                                                              ECS::Entity to) -> void {
@@ -44,7 +44,7 @@ KirbyMap::KirbyMap(GameEngine::GameManagers &gameManagers) :
   LOG_INFO << "Adding Level: " << std::endl;
 
   std::shared_ptr<ILevels> tmp;
-  tmp.reset(new LevelOne(_gameManagers));
+  tmp.reset(new LevelOne(_gameManagers, _mapEngine));
   _levels.push_back(tmp);
 
   LOG_INFO << "Adding Level Done" << std::endl;

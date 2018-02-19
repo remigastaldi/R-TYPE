@@ -16,6 +16,8 @@
 
 #include <DynamicLibrary/LibLoader.hpp>
 
+class LibLoader;
+
 namespace GameEngine
 {
   struct GameManagers

@@ -8,12 +8,13 @@
 
 #include "BasicAttack.hpp"
 
-BasicAttack::BasicAttack(GameEngine::GameManagers &gameManagers, ECS::Entity owner) :
-  IAttack(gameManagers, owner),
+BasicAttack::BasicAttack(GameEngine::GameManagers &gameManagers, MapEngine &mapEngine, ECS::Entity owner) :
+  IAttack(gameManagers, mapEngine, owner),
   _gameManagers(gameManagers),
   _ecs(gameManagers.ecs),
   _event(gameManagers.event),
   _loader(gameManagers.libLoader),
+  _mapEngine(mapEngine),
   _ownerEntity(owner),
   _entity(gameManagers.ecs.createEntity()),
   _attacks(),
@@ -57,7 +58,7 @@ void BasicAttack::update()
   move();
 }
 
-ECS::Entity BasicAttack::getID()
+ECS::Entity BasicAttack::getID() const
 {
   return _entity;
 }

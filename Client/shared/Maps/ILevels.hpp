@@ -8,17 +8,20 @@
 
 #pragma once
 
-#include <string>
-#include <DynamicLibrary/LibLoader.hpp>
 #include "IMove.hpp"
 #include "IMob.hpp"
 #include "IAttack.hpp"
+
+#include <DynamicLibrary/LibLoader.hpp>
 #include <EventManager.hpp>
+#include <MapEngine.hpp>
+
+#include <string>
 
 class ILevels
 {
   public:
-    ILevels(GameEngine::GameManagers &)
+    ILevels(GameEngine::GameManagers &, MapEngine &)
     {}
 
     virtual ~ILevels()

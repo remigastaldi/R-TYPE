@@ -2,7 +2,7 @@
  * @Author: Remi Gastaldi <gastal_r>
  * @Date:   2018-02-16T11:44:29+01:00
  * @Last modified by:   gastal_r
- * @Last modified time: 2018-02-17T13:31:40+01:00
+ * @Last modified time: 2018-02-18T13:34:16+01:00
  */
 
 
@@ -38,16 +38,17 @@ class Metallos : public IMob
     ECS::Manager &_ecs;
     EventManager::Manager &_event;
     LibLoader &_loader;
+    MapEngine &_mapEngine;
 
     std::string _spriteName;
 
   public:
-    Metallos(GameEngine::GameManagers &gameManagers, ECS::Components::Position pos);
+    Metallos(GameEngine::GameManagers &gameManagers, MapEngine &mapEngine, ECS::Components::Position pos);
     ~Metallos() override;
     int getDifficulty() const override;
     void playerHit(ECS::Entity by, ECS::Entity to) override;
     void update() override;
-    ECS::Entity getID() override;
+    ECS::Entity getID() const override;
     void unitOutOfSpace(ECS::Entity entity) override;
 };
 
@@ -57,7 +58,7 @@ extern "C" char const * __declspec(dllexport) __stdcall getName()
   return "Metallos";
 }
 
-extern "C" IMob __declspec(dllexport) __stdcall *getSymbol(GameEngine::GameManagers &gameManagers, ECS::Components::Position pos)
+extern "C" IMob __declspec(dllexport) __stdcall *getSymbol(GameEngine::GameManagers &gameManagers, MapEngine &mapEngine, ECS::Components::Position pos)
 {
   return new Metallos(gameManagers, pos);
 }
@@ -69,9 +70,9 @@ extern "C" char const * getName()
   return "Metallos";
 }
 
-extern "C" IMob *getSymbol(GameEngine::GameManagers &gameManagers, ECS::Components::Position pos)
+extern "C" IMob *getSymbol(GameEngine::GameManagers &gameManagers, MapEngine &mapEngine, ECS::Components::Position pos)
 {
-  return new Metallos(gameManagers, pos);
+  return new Metallos(gameManagers, mapEngine, pos);
 }
 
 #endif

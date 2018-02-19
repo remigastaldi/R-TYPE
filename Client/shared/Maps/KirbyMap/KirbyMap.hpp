@@ -8,11 +8,13 @@
 
 #pragma once
 
-#include <LibraryInterfaces/IMob.hpp>
-#include "Maps/MapEngine.hpp"
+#include  "IMap.hpp"
+
+#include "LibraryInterfaces/IMob.hpp"
+#include "MapEngine.hpp"
 #include "Maps/ILevels.hpp"
 
-class KirbyMap : public MapEngine
+class KirbyMap : public IMap
 {
   private:
     std::pair<int, int> _neededLevel = std::make_pair(0, 5);
@@ -31,9 +33,11 @@ class KirbyMap : public MapEngine
 
     bool _isEnd = false;
 
+    MapEngine   _mapEngine;
+
   public:
     explicit KirbyMap(GameEngine::GameManagers &gameManagers);
-    ~KirbyMap() override;
+    ~KirbyMap();
     const std::pair<int, int> &getNeededLevel() const override;
     void update() override;
     bool isEnd() override;

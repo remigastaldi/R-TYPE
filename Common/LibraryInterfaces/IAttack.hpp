@@ -8,18 +8,18 @@
 
 #pragma once
 
+#include  "MapEngine.hpp"
+
 #include <string>
 #include <EventManager.hpp>
 #include <DynamicLibrary/LibLoader.hpp>
 #include "ECS/Manager.hpp"
 
-class IAttack
+class IAttack : virtual public IEntityObject
 {
   public:
-    IAttack(GameEngine::GameManagers &, ECS::Entity) {};
+    IAttack(GameEngine::GameManagers &, MapEngine &, ECS::Entity) {};
     virtual ~IAttack() = default;
 
-    virtual void update() = 0;
     virtual void playerHit(ECS::Entity) = 0;
-    virtual ECS::Entity getID() = 0;
 };

@@ -22,6 +22,8 @@ class BasicAttack : public IAttack
     ECS::Manager &_ecs;
     EventManager::Manager &_event;
     LibLoader &_loader;
+    MapEngine   &_mapEngine;
+
     ECS::Entity _ownerEntity;
 
     std::string _TEXTURE = "playersMissiles";
@@ -39,11 +41,11 @@ class BasicAttack : public IAttack
     std::string _spriteName;
 
   public:
-    BasicAttack(GameEngine::GameManagers &gameManagers, ECS::Entity owner);
+    BasicAttack(GameEngine::GameManagers &gameManagers, MapEngine &mapEngine, ECS::Entity owner);
     ~BasicAttack() override;
     void update() override;
     void playerHit(ECS::Entity entity) override;
-    ECS::Entity getID() override;
+    ECS::Entity getID() const override;
     void move();
 };
 
@@ -53,9 +55,9 @@ extern "C" char const * __declspec(dllexport) __stdcall getName()
   return "BasicAttack";
 }
 
-extern "C" IAttack  __declspec(dllexport) __stdcall *getSymbol(GameEngine::GameManagers &gameManagers, ECS::Entity parent)
+extern "C" IAttack  __declspec(dllexport) __stdcall *getSymbol(GameEngine::GameManagers &gameManagers, MapEngine &mapEngine, ECS::Entity parent)
 {
-  return new BasicAttack(gameManagers);
+  return new BasicAttack(gameManagers, mapEngine, parent);
 }
 
 #else
@@ -65,9 +67,9 @@ extern "C" char const * getName()
   return "BasicAttack";
 }
 
-extern "C" IAttack *getSymbol(GameEngine::GameManagers &gameManagers, ECS::Entity parent)
+extern "C" IAttack *getSymbol(GameEngine::GameManagers &gameManagers, MapEngine &mapEngine, ECS::Entity parent)
 {
-  return new BasicAttack(gameManagers, parent);
+  return new BasicAttack(gameManagers, mapEngine, parent);
 }
 
 #endif

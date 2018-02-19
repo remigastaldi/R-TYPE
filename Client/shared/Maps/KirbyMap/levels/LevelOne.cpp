@@ -31,38 +31,41 @@ bool LevelOne::isEnd()
 
 void LevelOne::update()
 {
-  if (_nbMobSpawn <= 0) {
-    if (_mobs.empty())
-      _isEnd = true;
-    return;
-  }
+  // if (_nbMobSpawn <= 0) {
+  //   if (_mobs.empty())
+  //     _isEnd = true;
+  //   return;
+  // }
 
   if (_timeLeft > -10)
     _timeLeft -= 1;
 
-  if (_timeLeft < 0 && _mobs.empty()) {
+  if (_timeLeft < 0) {
     _timeLeft = _timeBetweenMobSpawn;
     _nbMobSpawn -= 1;
 
     //Spawn a mob
     LOG_INFO << "Spawning a mob " << _nbMobSpawn << std::endl;
 
-    std::shared_ptr<IMob> tmp;
-    tmp.reset(_loader.mob.get("Metallos")(_gameManagers, ECS::Components::Position(1800, 900)));
-    _mobs[tmp->getID()] = tmp;
+
+    std::shared_ptr<IMob> tmp(_loader.mob.get("Metallos")(_gameManagers, _mapEngine, ECS::Components::Position(1800, 900)));
+    _mapEngine.addObject<IMob>(tmp->getID(), tmp);
+    // _mobs[tmp->getID()] = tmp;
   }
 
   //Update mobs
-  for (auto &it : _mobs)
-    it.second->update();
+  // for (auto &it : _mobs)
+  //   it.second->update();
+  _mapEngine.updateObjects();
 }
 
-LevelOne::LevelOne(GameEngine::GameManagers &gameManagers) :
-  ILevels(gameManagers),
+LevelOne::LevelOne(GameEngine::GameManagers &gameManagers, MapEngine &mapEngine) :
+  ILevels(gameManagers, mapEngine),
   _gameManagers(gameManagers),
   _ecs(gameManagers.ecs),
   _event(gameManagers.event),
   _loader(gameManagers.libLoader),
+  _mapEngine(mapEngine),
   _mobs()
 {
   LOG_INFO << "Loading Level One" << std::endl;
@@ -109,12 +112,13 @@ void LevelOne::playerHit(ECS::Entity by, ECS::Entity to)
 
 void LevelOne::unitOutOfSpace(ECS::Entity entity)
 {
-  if (_mobs.find(entity) != _mobs.end()) {
-    LOG_SUCCESS << "Mob out of space deleted" << std::endl;
-    _mobs.erase(entity);
-    return;
-  }
-
-  for (auto &it : _mobs)
-    it.second->unitOutOfSpace(entity);
+  _mapEngine.deleteObject(entity);
+  // if (_mobs.find(entity) != _mobs.end()) {
+  //   _mobs.erase(entity);
+  //   LOG_SUCCESS << "Mob out of space deleted" << std::endl;
+  //   return;
+  // }
+  //
+  // for (auto &it : _mobs)
+  //   it.second->unitOutOfSpace(entity);
 }

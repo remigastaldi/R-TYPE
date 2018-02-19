@@ -2,14 +2,14 @@
  * @Author: Remi Gastaldi <gastal_r>
  * @Date:   2018-01-22T10:02:46+01:00
  * @Last modified by:   gastal_r
- * @Last modified time: 2018-02-16T18:44:56+01:00
+ * @Last modified time: 2018-02-18T13:35:07+01:00
  */
 
 
 #include "Metallos.hpp"
 
-Metallos::Metallos(GameEngine::GameManagers &gameManagers, ECS::Components::Position pos) :
-  IMob(gameManagers, pos),
+Metallos::Metallos(GameEngine::GameManagers &gameManagers, MapEngine &mapEngine, ECS::Components::Position pos) :
+  IMob(gameManagers, mapEngine, pos),
   _me(gameManagers.ecs.createEntity()),
   _attacks(),
   _movement(),
@@ -17,6 +17,7 @@ Metallos::Metallos(GameEngine::GameManagers &gameManagers, ECS::Components::Posi
   _ecs(gameManagers.ecs),
   _event(gameManagers.event),
   _loader(gameManagers.libLoader),
+  _mapEngine(mapEngine),
   _spriteName()
 {
   Logger::get().setOutput(CONSOLE_LOG);
@@ -64,8 +65,8 @@ void Metallos::update()
   _movement->update();
 
   //Update attacks
-  for (auto &it : _attacks)
-    it.second->update();
+  // for (auto &it : _attacks)
+  //   it.second->update();
 
   _curTime -= 1;
 
@@ -74,13 +75,13 @@ void Metallos::update()
     //return;
     _curTime = _timeBetweenAttack;
     //Spawn an attack
-    std::shared_ptr<IAttack> tmp;
-    tmp.reset(_loader.attack.get(_ATTACK_NAME)(_gameManagers, _me));
-    _attacks[tmp->getID()] = tmp;
+    std::shared_ptr<IAttack> tmp(_loader.attack.get(_ATTACK_NAME)(_gameManagers, _mapEngine, _me));
+    _mapEngine.addObject<IAttack>(tmp->getID(), tmp);
+    // _attacks[tmp->getID()] = tmp;
   }
 }
 
-ECS::Entity Metallos::getID()
+ECS::Entity Metallos::getID() const
 {
   return _me;
 }

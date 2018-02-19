@@ -42,7 +42,13 @@ if (UNIX)
 endif()
 
 #MAPS
-add_library(KirbyMap SHARED Maps/KirbyMap/KirbyMap.hpp Maps/KirbyMap/KirbyMap.cpp Maps/ILevels.hpp Maps/KirbyMap/levels/LevelOne.cpp Maps/KirbyMap/levels/LevelOne.hpp Maps/MapEngine.cpp Maps/MapEngine.hpp ../include/GameManagers.hpp ${COMMON_SOURCES})
+add_library(KirbyMap SHARED
+  Maps/KirbyMap/KirbyMap.hpp Maps/KirbyMap/KirbyMap.cpp
+  Maps/ILevels.hpp
+  Maps/KirbyMap/levels/LevelOne.cpp Maps/KirbyMap/levels/LevelOne.hpp
+  ${CMAKE_SOURCE_DIR}/Client/include/GameManagers.hpp
+  ${CMAKE_SOURCE_DIR}/Client/src/MapEngine.cpp
+  ${COMMON_SOURCES})
 
 #MOBS
 add_library(Metallos SHARED Mobs/Metallos/Metallos.cpp Mobs/Metallos/Metallos.hpp ${COMMON_SOURCES})

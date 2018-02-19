@@ -2,13 +2,14 @@
  * @Author: Remi Gastaldi <gastal_r>
  * @Date:   2018-02-15T00:18:51+01:00
  * @Last modified by:   gastal_r
- * @Last modified time: 2018-02-15T22:44:34+01:00
+ * @Last modified time: 2018-02-18T13:46:53+01:00
  */
 
 
 #pragma once
 
-#include  "IMap.hpp"
+#include  "IEntityObject.hpp"
+
 #include  "GameManagers.hpp"
 #include  "ECS/Components/Components.hpp"
 #include  "ECS/Components/CommonComponents.hpp"
@@ -16,34 +17,27 @@
 #include  <vector>
 #include  <memory>
 
-class MapEngine : public IMap
+class MapEngine
 {
-  class IObject
-  {
-    IObject();
-  };
-  template<class T>
-  class Object : public IObject
-  {
-    Object();
-  };
-
 public:
   explicit MapEngine(GameEngine::GameManagers &gameManagers);
 
   ~MapEngine() = default;
 
   template<typename C>
-  void  addObject(C object)
+  void  addObject(ECS::Entity e, std::shared_ptr<C> object)
   {
-    _objects.emplace_back(object);
+    _objects.emplace(e, object);
   }
 
   void  addParallax(const std::string &layer, float speedLayer, bool flipVerticaly);
   void  clearParallax();
 
+  void  updateObjects(void);
+  void  deleteObject(ECS::Entity entity);
+
 private:
   GameEngine::GameManagers  _gameManagers;
-  std::vector<std::shared_ptr<IObject>> _objects;
+  std::map<ECS::Entity, std::shared_ptr<IEntityObject>> _objects;
   std::vector<ECS::Entity> _parallaxItems;
 };
