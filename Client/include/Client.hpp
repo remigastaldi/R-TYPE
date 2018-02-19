@@ -59,8 +59,6 @@ namespace GameEngine
       // SceneManager   _sceneManager;
       NetworkManager _networkManager;
 
-      std::shared_ptr<Ship> _ship;
-
       sf::RenderWindow _window;
 
       std::string _ip;

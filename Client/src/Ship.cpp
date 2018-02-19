@@ -2,23 +2,23 @@
  * @Author: Remi Gastaldi <gastal_r>
  * @Date:   2018-01-20T20:45:23+01:00
  * @Last modified by:   gastal_r
- * @Last modified time: 2018-02-18T12:50:59+01:00
+ * @Last modified time: 2018-02-19T18:28:35+01:00
  */
 
 
 #include  "Ship.hpp"
 #include <iostream>
 
-Ship::Ship(GameEngine::GameManagers &gameManagers)
+Ship::Ship(GameEngine::GameManagers &gameManagers, MapEngine &mapEngine)
   : _gameManagers(gameManagers),
+    _mapEngine(mapEngine),
     _entity(_gameManagers.ecs.createEntity()),
     _fireTickCounter(0),
     _fire(false),
     _spriteName(),
     _activeKeys()
   {
-    _gameManagers.resources.load<Texture>("playersMissilesTexture", "../../Client/media/img/ship/allies/playersMissiles.png");
-    std::shared_ptr<Texture> texture = _gameManagers.resources.load<Texture>("playersShipTexture", "../../Client/media/img/ship/allies/playersSpaceships.png");
+    std::shared_ptr<Texture> texture = _gameManagers.resources.load<Texture>("player_ship_texture", "../../Client/media/img/ship/allies/playersSpaceships.png");
 
     std::cout << "Ship ID is : " << _entity << std::endl;
 
@@ -26,7 +26,7 @@ Ship::Ship(GameEngine::GameManagers &gameManagers)
     Sprite sprite(_spriteName, *texture);
     sprite.getContent().setRotation(90);
     sprite.getContent().setTextureRect(sf::IntRect(0, 0, 160, 160));
-    sprite.getContent().setScale(0.6, 0.6);
+    sprite.getContent().setScale(0.5, 0.5);
 
     _gameManagers.resources.addResource<Sprite>(_spriteName, sprite);
 
@@ -134,8 +134,8 @@ void  Ship::fire(const std::string &msg)
 
   std::shared_ptr<ECS::Components::Position> position = _gameManagers.ecs.getComponent<ECS::Components::Position>(_entity);
 
-  std::shared_ptr<Texture>  texture(_gameManagers.resources.get<Texture>("playersMissilesTexture"));
-  std::string spriteName = "playersMissiles[" + std::to_string(e) + "]";
+  std::shared_ptr<Texture>  texture(_gameManagers.resources.load<Texture>("player_missiles_texture", "../../Client/media/img/ship/allies/playersMissiles.png"));
+  std::string spriteName = "player_missiles[" + std::to_string(e) + "]";
   Sprite sprite(spriteName, *texture);
   _gameManagers.resources.addResource<Sprite>(spriteName, sprite);
 
@@ -143,8 +143,7 @@ void  Ship::fire(const std::string &msg)
 	spriteMissiles.setRotation(-90);
 	spriteMissiles.setTextureRect(sf::IntRect(0, 0, 30, 112));
 
-  _gameManagers.ecs.addComponent<ECS::Components::Position>(e, ECS::Components::Position(
-    static_cast<size_t>(position->x), static_cast<size_t>(position->y + 60)));
+  _gameManagers.ecs.addComponent<ECS::Components::Position>(e, ECS::Components::Position(position->x, position->y + 60));
   _gameManagers.ecs.addComponent<ECS::Components::Collisionable>(e, ECS::Components::Collisionable(e, ECS::Components::Collisionable::Type::ALLY));
   _gameManagers.ecs.addComponent<ECS::Components::Drawable>(e, ECS::Components::Drawable(spriteName));
   _gameManagers.ecs.addComponent<ECS::Components::Direction>(e, ECS::Components::Direction(1, 0, 30));
@@ -166,4 +165,10 @@ void  Ship::update(void )
     _fireTickCounter++;
   else
     _fireTickCounter = 0;
+}
+
+
+ECS::Entity Ship::getID(void) const
+{
+  return (_entity);
 }

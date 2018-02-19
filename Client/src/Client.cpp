@@ -2,7 +2,7 @@
  * @Author: Remi Gastaldi <gastal_r>
  * @Date:   2018-01-17T04:07:04+01:00
  * @Last modified by:   gastal_r
- * @Last modified time: 2018-02-17T12:45:07+01:00
+ * @Last modified time: 2018-02-19T18:28:08+01:00
  */
 
 
@@ -22,7 +22,6 @@ namespace GameEngine
 		_libraryLoader(),
     _gameManagers(_resourcesManager, _eventManager, _ecsManager, _soundManager, _libraryLoader),
     _networkManager(_eventManager),
-    _ship(),
     _window(videoMode, "R-Type", sf::Style::Titlebar),
     _ip(ip),
     _gameEngineTick(120),
@@ -113,8 +112,6 @@ namespace GameEngine
 
     _myMap.reset(_libraryLoader.map.get("KirbyMap")(_gameManagers));
 
-    _ship = std::make_shared<Ship>(_gameManagers);
-
     long int nextGameTick = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now().time_since_epoch()).count();
 
     auto t1 = std::chrono::high_resolution_clock::now();
@@ -184,14 +181,13 @@ namespace GameEngine
   void Client::update(void)
   {
     //_networkManager.update();
-    _ship->update();
 		_myMap->update();
     _ecsManager.updateSystemsRange(0.f, 0, 4);
   }
 
   void Client::render(float alpha)
   {
-		//std::cout << "entities: " << _ecsManager.getEntities().size() << std::endl;
+//		std::cout << "entities: " << _ecsManager.getEntities().size() << std::endl;
     _window.clear();
     _ecsManager.updateSystemsRange(0.f, 4, 5);
     _guiManager.update(alpha);

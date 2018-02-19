@@ -2,14 +2,16 @@
  * @Author: Remi Gastaldi <gastal_r>
  * @Date:   2018-01-20T20:45:49+01:00
  * @Last modified by:   gastal_r
- * @Last modified time: 2018-02-16T02:42:15+01:00
+ * @Last modified time: 2018-02-19T17:44:06+01:00
  */
 
 
 #pragma once
 
-#include  "GameManagers.hpp"
+#include  "IEntityObject.hpp"
 
+#include  "GameManagers.hpp"
+#include  "MapEngine.hpp"
 #include  "EventManager.hpp"
 #include  "ECS/Manager.hpp"
 
@@ -19,10 +21,10 @@
 #include  <SFML/System.hpp>
 #include  <SFML/Graphics.hpp>
 
-class Ship
+class Ship : public IEntityObject
 {
 public:
-  explicit Ship(GameEngine::GameManagers &gameManager);
+  explicit Ship(GameEngine::GameManagers &gameManager, MapEngine &mapEngine);
 
   ~Ship() {};
 
@@ -30,9 +32,11 @@ public:
   void  keyRelease(sf::Event);
   void  fire(const std::string &);
   void  update(void);
+  ECS::Entity   getID(void) const;
 
 private:
-  GameEngine::GameManagers _gameManagers;
+  GameEngine::GameManagers &_gameManagers;
+  MapEngine &_mapEngine;
   ECS::Entity   _entity;
 
   int  _fireTickCounter;
