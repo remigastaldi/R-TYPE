@@ -70,8 +70,10 @@ public:
   template<typename C>
 	std::shared_ptr<C> load(const std::string &name, const std::string &path)
 	{
-    if (_resources.find(name) != _resources.end())
-      LOG_ERROR << "Ressource " << name << " already exist" << std::endl;
+    auto it =  _resources.find(name);
+    if (it != _resources.end())
+      return (std::static_pointer_cast<C>(it->second));
+
     std::shared_ptr<C> resource(std::make_shared<C>(C(name)));
     resource->loadFromFile(path);
     _resources.emplace(name, resource);
