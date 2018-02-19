@@ -2,7 +2,7 @@
  * @Author: Remi Gastaldi <gastal_r>
  * @Date:   2018-02-16T15:34:19+01:00
  * @Last modified by:   gastal_r
- * @Last modified time: 2018-02-16T15:45:48+01:00
+ * @Last modified time: 2018-02-19T16:23:34+01:00
  */
 
 
@@ -19,8 +19,6 @@ class StraightMove : public IMove
   private:
     std::string name = "StraightMove";
 
-    size_t speed = 2;
-
     GameEngine::GameManagers &_gameManagers;
     ECS::Manager &_ecs;
     EventManager::Manager &_event;
@@ -28,17 +26,34 @@ class StraightMove : public IMove
     ECS::Entity _owner;
 
   public:
-    StraightMove(GameEngine::GameManagers &gameManagers, ECS::Entity entity);
-    ~StraightMove() override;
+    StraightMove(GameEngine::GameManagers &gameManagers, ECS::Entity entity, int direction, int speed);
+    ~StraightMove();
+
     void update() override;
+    ECS::Entity getID(void) const override;
 };
+
+#ifdef WIN32
+extern "C" char const * __declspec(dllexport) __stdcall getName()
+{
+  return "StraightMove";
+}
+
+extern "C" IMove __declspec(dllexport) __stdcall *getSymbol(GameEngine::GameManagers &gameManagers, ECS::Entity parent, int direction, int speed)
+{
+  return new StraightMove(gameManagers, parent, direction, speed);
+}
+
+#else
 
 extern "C" char const * getName()
 {
   return "StraightMove";
 }
 
-extern "C" IMove *getSymbol(GameEngine::GameManagers &gameManagers, ECS::Entity parent)
+extern "C" IMove *getSymbol(GameEngine::GameManagers &gameManagers, ECS::Entity parent, int direction, int speed)
 {
-  return new StraightMove(gameManagers, parent);
+  return new StraightMove(gameManagers, parent, direction, speed);
 }
+
+#endif

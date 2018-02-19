@@ -2,7 +2,7 @@
  * @Author: Remi Gastaldi <gastal_r>
  * @Date:   2018-02-16T11:44:29+01:00
  * @Last modified by:   gastal_r
- * @Last modified time: 2018-02-18T13:34:16+01:00
+ * @Last modified time: 2018-02-19T18:24:05+01:00
  */
 
 
@@ -23,16 +23,10 @@ class Metallos : public IMob
     std::string _MOVE_NAME = "UpAndDownMove";
     std::string _TEXTURE_NAME = "MetallosSprite";
     ECS::Entity _me;
-    int _timeBetweenAttack = 60;
+    int _timeBetweenAttack = 100;
     int _curTime = 0;
 
     int _difficulty = 1;
-
-    //Attacks
-    std::unordered_map<ECS::Entity, std::shared_ptr<IAttack>> _attacks;
-
-    //Move
-    std::shared_ptr<IMove> _movement;
 
     GameEngine::GameManagers &_gameManagers;
     ECS::Manager &_ecs;

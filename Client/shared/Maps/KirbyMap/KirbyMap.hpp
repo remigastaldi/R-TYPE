@@ -13,6 +13,7 @@
 #include "LibraryInterfaces/IMob.hpp"
 #include "MapEngine.hpp"
 #include "Maps/ILevels.hpp"
+#include "Ship.hpp"
 
 class KirbyMap : public IMap
 {

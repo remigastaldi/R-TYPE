@@ -48,6 +48,7 @@ add_library(KirbyMap SHARED
   Maps/KirbyMap/levels/LevelOne.cpp Maps/KirbyMap/levels/LevelOne.hpp
   ${CMAKE_SOURCE_DIR}/Client/include/GameManagers.hpp
   ${CMAKE_SOURCE_DIR}/Client/src/MapEngine.cpp
+  ${CMAKE_SOURCE_DIR}/Client/src/Ship.cpp
   ${COMMON_SOURCES})
 
 #MOBS

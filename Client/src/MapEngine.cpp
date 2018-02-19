@@ -2,7 +2,7 @@
  * @Author: Remi Gastaldi <gastal_r>
  * @Date:   2018-02-15T01:38:28+01:00
  * @Last modified by:   gastal_r
- * @Last modified time: 2018-02-18T13:44:53+01:00
+ * @Last modified time: 2018-02-19T18:27:17+01:00
  */
 
 
@@ -68,13 +68,14 @@ void  MapEngine::updateObjects(void)
 {
   for (const auto & it : _objects)
   {
-    it.second->update();
+    for (const auto & item : it.second)
+    {
+      item->update();
+    }
   }
 }
 
 void  MapEngine::deleteObject(ECS::Entity entity)
 {
-  size_t nb = _objects.erase(entity);
-  if (nb != 0)
-    LOG_SUCCESS << "Mob out of space deleted" << std::endl;
+  _objects.erase(entity);
 }

@@ -2,7 +2,7 @@
  * @Author: Remi Gastaldi <gastal_r>
  * @Date:   2018-02-16T14:10:00+01:00
  * @Last modified by:   gastal_r
- * @Last modified time: 2018-02-16T16:12:59+01:00
+ * @Last modified time: 2018-02-19T14:31:34+01:00
  */
 
 
@@ -67,7 +67,7 @@ typedef char const * (__stdcall *getNameOfLib)();
 typedef IAttack *(__stdcall *getAttackSymbol)(GameEngine::GameManagers &gameManagers, MapEngine &mapEngine, ECS::Entity);
 typedef IMap *(__stdcall *getMapSymbol)(GameEngine::GameManagers &gameManagers);
 typedef IMob *(__stdcall *getMobSymbol)(GameEngine::GameManagers &gameManagers, MapEngine &mapEngine, ECS::Components::Position);
-typedef IMove *(__stdcall *getMoveSymbol)(GameEngine::GameManagers &gameManagers, ECS::Entity);
+typedef IMove *(__stdcall *getMoveSymbol)(GameEngine::GameManagers &gameManagers, ECS::Entity, int direction, int speed);
 typedef IPart *(__stdcall *getPartSymbol)();
 typedef IPowerUp *(__stdcall *getPowerUpSymbol)();
 typedef IRessources *(__stdcall *getRessourceSymbol)();
@@ -81,7 +81,7 @@ typedef char const * (*getNameOfLib)();
 typedef IAttack *(*getAttackSymbol)(GameEngine::GameManagers &gameManagers, MapEngine &mapEngine, ECS::Entity);
 typedef IMap *(*getMapSymbol)(GameEngine::GameManagers &gameManagers);
 typedef IMob *(*getMobSymbol)(GameEngine::GameManagers &gameManagers, MapEngine &mapEngine, ECS::Components::Position);
-typedef IMove *(*getMoveSymbol)(GameEngine::GameManagers &gameManagers, ECS::Entity);
+typedef IMove *(*getMoveSymbol)(GameEngine::GameManagers &gameManagers, ECS::Entity, int direction, int speed);
 typedef IPart *(*getPartSymbol)();
 typedef IPowerUp *(*getPowerUpSymbol)();
 typedef IRessources *(*getRessourceSymbol)();

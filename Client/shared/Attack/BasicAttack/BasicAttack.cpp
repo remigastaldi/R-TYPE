@@ -2,7 +2,7 @@
  * @Author: Remi Gastaldi <gastal_r>
  * @Date:   2018-01-22T10:02:46+01:00
  * @Last modified by:   gastal_r
- * @Last modified time: 2018-02-17T13:05:12+01:00
+ * @Last modified time: 2018-02-19T16:29:38+01:00
  */
 
 
@@ -23,7 +23,7 @@ BasicAttack::BasicAttack(GameEngine::GameManagers &gameManagers, MapEngine &mapE
 {
   Logger::get().setOutput(CONSOLE_LOG);
 
-  std::shared_ptr<Texture> texture(_gameManagers.resources.get<Texture>("playersMissilesTexture"));
+  std::shared_ptr<Texture> texture = _gameManagers.resources.load<Texture>("basick_attack_texture", "../../Client/media/img/ship/enemies/bullet_blaster_big_single.png");
   _spriteName = "basic_attack_sprite[" + std::to_string(_entity) + "]";
 
   Sprite sprite(_spriteName, *texture);
@@ -31,20 +31,18 @@ BasicAttack::BasicAttack(GameEngine::GameManagers &gameManagers, MapEngine &mapE
 
   sf::Sprite &spriteMissiles = _gameManagers.resources.getContent<Sprite>(_spriteName);
   spriteMissiles.setRotation(-90);
-  spriteMissiles.setTextureRect(sf::IntRect(0, 0, 30, 112));
 
   _ecs.addComponent<ECS::Components::Collisionable>(_entity, ECS::Components::Collisionable(_entity, ECS::Components::Collisionable::Type::ENNEMY));
   _ecs.addComponent<ECS::Components::Drawable>(_entity, ECS::Components::Drawable(_spriteName));
   ECS::Components::Position pos = *_ecs.getComponent<ECS::Components::Position>(_ownerEntity);
-  pos.x -= 200;
+  pos.x -= 150;
   _ecs.addComponent<ECS::Components::Position>(_entity, pos);
   _ecs.addComponent<ECS::Components::Stats>(_entity, ECS::Components::Stats(1));
 
   _ecs.updateEntityToSystems(_entity);
 
-  std::shared_ptr<IMove> tmp;
-  tmp.reset(_loader.move.get(_MOVE)(_gameManagers, _entity));
-  _move = tmp;
+  std::shared_ptr<IMove> tmp(_loader.move.get(_MOVE)(_gameManagers, _entity, -1, 5));
+  _mapEngine.addObject(tmp->getID(), tmp);
 }
 
 BasicAttack::~BasicAttack()
@@ -55,7 +53,7 @@ BasicAttack::~BasicAttack()
 
 void BasicAttack::update()
 {
-  move();
+  //move();
 }
 
 ECS::Entity BasicAttack::getID() const

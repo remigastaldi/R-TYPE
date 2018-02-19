@@ -50,6 +50,9 @@ KirbyMap::KirbyMap(GameEngine::GameManagers &gameManagers) :
   LOG_INFO << "Adding Level Done" << std::endl;
 
   _event.fire<void, const std::string &>("printAlert", _levels[_wave]->getName());
+
+  std::shared_ptr<Ship> ship(std::make_shared<Ship>(_gameManagers, _mapEngine));
+  _mapEngine.addObject<Ship>(ship->getID(), ship);
 }
 
 KirbyMap::~KirbyMap()
