@@ -2,7 +2,7 @@
  * @Author: Remi Gastaldi <gastal_r>
  * @Date:   2018-01-13T01:04:20+01:00
  * @Last modified by:   gastal_r
- * @Last modified time: 2018-01-22T03:22:03+01:00
+ * @Last modified time: 2018-02-19T16:38:56+01:00
  */
 
 
@@ -34,9 +34,9 @@ namespace ECS
 
     public:
       template <typename T>
-      inline unsigned GetTypeID() noexcept
+      inline unsigned GetTypeID()
       {
-        return static_cast<unsigned int>(typeid(T).hash_code());
+        return static_cast<size_t>(typeid(T).hash_code());
       }
 
       /**
