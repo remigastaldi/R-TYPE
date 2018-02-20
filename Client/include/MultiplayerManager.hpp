@@ -86,7 +86,7 @@ class MultiplayerManager : Alfred::Utils::MakeFinal<MultiplayerManager>, public 
       auto pos = _ecs.getComponent<ECS::Components::Position>(_players[id]);
       auto dir = _ecs.getComponent<ECS::Components::Direction>(_players[id]);
 
-      pos->x += dir->speed * 2;
+      pos->x -= dir->speed * 2;
     }
 
     void right(const std::string &id)

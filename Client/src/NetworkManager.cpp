@@ -135,6 +135,9 @@ void NetworkManager::update()
           case sf::Keyboard::Right:
             _eventManager.fire<void, std::string>("multiplayer go right", it.getData("token"));
             break;
+          case sf::Keyboard::Space:
+            _eventManager.fire<void, std::string>("multiplayer shoot", it.getData("token"));
+            break;
         }
         break;
       case RFC::Commands::START_GAME:
@@ -306,7 +309,7 @@ void NetworkManager::keyPressed(sf::Event event)
 void NetworkManager::keyRelease(sf::Event event)
 {
   UDPPacket packet;
-  
+
   switch (event.key.code)
   {
     case sf::Keyboard::Key::Up:
