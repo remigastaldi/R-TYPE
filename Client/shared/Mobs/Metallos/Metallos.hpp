@@ -2,7 +2,7 @@
  * @Author: Remi Gastaldi <gastal_r>
  * @Date:   2018-02-16T11:44:29+01:00
  * @Last modified by:   gastal_r
- * @Last modified time: 2018-02-19T18:24:05+01:00
+ * @Last modified time: 2018-02-20T22:43:15+01:00
  */
 
 
@@ -40,7 +40,6 @@ class Metallos : public IMob
     Metallos(GameEngine::GameManagers &gameManagers, MapEngine &mapEngine, ECS::Components::Position pos);
     ~Metallos() override;
     int getDifficulty() const override;
-    void playerHit(ECS::Entity by, ECS::Entity to) override;
     void update() override;
     ECS::Entity getID() const override;
     void unitOutOfSpace(ECS::Entity entity) override;

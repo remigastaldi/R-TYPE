@@ -2,7 +2,7 @@
  * @Author: Remi Gastaldi <gastal_r>
  * @Date:   2018-01-22T10:02:46+01:00
  * @Last modified by:   gastal_r
- * @Last modified time: 2018-02-20T19:08:41+01:00
+ * @Last modified time: 2018-02-20T22:43:03+01:00
  */
 
 
@@ -36,7 +36,7 @@ Metallos::Metallos(GameEngine::GameManagers &gameManagers, MapEngine &mapEngine,
 
   _ecs.addComponent<ECS::Components::Position>(_me, pos);
   _ecs.addComponent<ECS::Components::Drawable>(_me, ECS::Components::Drawable(_spriteName));
-  _ecs.addComponent<ECS::Components::Collisionable>(_me, ECS::Components::Collisionable(_me, ECS::Components::Collisionable::Type::ENNEMY));
+  _ecs.addComponent<ECS::Components::Collisionable>(_me, ECS::Components::Collisionable(_me, ECS::Components::Collisionable::Type::ENEMY_MISSILE));
   _ecs.addComponent<ECS::Components::Health>(_me, ECS::Components::Health(2));
 
   _ecs.updateEntityToSystems(_me);
@@ -72,19 +72,6 @@ void Metallos::update()
 ECS::Entity Metallos::getID() const
 {
   return _me;
-}
-
-void Metallos::playerHit(ECS::Entity by, ECS::Entity to)
-{
-  (void) by;
-  (void) to;
-  // for (auto &it: _attacks)
-  // {
-  //   if (it.first == by)
-  //     it.second->playerHit(to);
-  //   if (it.first == to)
-  //     it.second->playerHit(by);
-  // }
 }
 
 void Metallos::unitOutOfSpace(ECS::Entity entity)
