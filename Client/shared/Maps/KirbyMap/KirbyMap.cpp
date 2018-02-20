@@ -2,7 +2,7 @@
  * @Author: Remi Gastaldi <gastal_r>
  * @Date:   2018-02-14T19:31:45+01:00
  * @Last modified by:   gastal_r
- * @Last modified time: 2018-02-16T17:18:02+01:00
+ * @Last modified time: 2018-02-20T19:22:48+01:00
  */
 
 
@@ -25,11 +25,9 @@ KirbyMap::KirbyMap(GameEngine::GameManagers &gameManagers) :
   _mapEngine.addParallax("../../Client/media/img/Parallax/background_01_parallax_02.png", 0.5, false);
   _mapEngine.addParallax("../../Client/media/img/Parallax/background_01_parallax_03.png", 1, true);
 
-  _listener = _event.listen<void, ECS::Entity, ECS::Entity>("Collision", [&](ECS::Entity by,
-                                                                             ECS::Entity to) -> void {
-
+  _listenerOutOfSpace = _event.listen<void, ECS::Entity>("UnitDie", [&](ECS::Entity e) -> void {
     if (!_isEnd) {
-      _levels[_wave]->playerHit(by, to);
+      _levels[_wave]->unitDie(e);
     }
   });
 
@@ -57,7 +55,7 @@ KirbyMap::KirbyMap(GameEngine::GameManagers &gameManagers) :
 
 KirbyMap::~KirbyMap()
 {
-  _event.unlisten<void, ECS::Entity, ECS::Entity>("Collision", _listener);
+  _event.unlisten<void, ECS::Entity>("UnitDie", _listenerOutOfSpace);
   _event.unlisten<void, ECS::Entity>("UnitOutOfSpace", _listenerOutOfSpace);
 }
 

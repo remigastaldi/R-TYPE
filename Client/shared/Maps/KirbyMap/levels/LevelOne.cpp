@@ -77,6 +77,7 @@ LevelOne::~LevelOne()
 
 void LevelOne::playerHit(ECS::Entity by, ECS::Entity to)
 {
+  return;
   std::shared_ptr<ECS::Components::Collisionable> collisionable = _ecs.getComponent<ECS::Components::Collisionable>(by);
 
   if (collisionable->type == ECS::Components::Collisionable::Type::ENNEMY)
@@ -121,4 +122,9 @@ void LevelOne::unitOutOfSpace(ECS::Entity entity)
   //
   // for (auto &it : _mobs)
   //   it.second->unitOutOfSpace(entity);
+}
+
+void  LevelOne::unitDie(ECS::Entity entity)
+{
+  _mapEngine.deleteObject(entity);
 }

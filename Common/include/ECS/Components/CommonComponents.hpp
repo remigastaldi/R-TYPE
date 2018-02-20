@@ -2,7 +2,7 @@
  * @Author: Remi Gastaldi <gastal_r>
  * @Date:   2018-01-13T20:15:43+01:00
  * @Last modified by:   gastal_r
- * @Last modified time: 2018-02-20T15:35:35+01:00
+ * @Last modified time: 2018-02-20T16:47:20+01:00
  */
 
 
@@ -80,6 +80,24 @@ namespace ECS
       {}
 
       std::string name;
+    };
+
+    struct Health : public ECS::Component
+    {
+      explicit Health(int _health)
+        : health(_health)
+      {}
+
+      int health;
+    };
+
+    struct Damages : public ECS::Component
+    {
+      explicit Damages(int _damages)
+        : damages(_damages)
+      {}
+
+      int damages;
     };
   }
 }

@@ -2,7 +2,7 @@
  * @Author: Remi Gastaldi <gastal_r>
  * @Date:   2018-01-21T04:36:33+01:00
  * @Last modified by:   gastal_r
- * @Last modified time: 2018-02-20T15:42:33+01:00
+ * @Last modified time: 2018-02-20T19:14:01+01:00
  */
 
 
@@ -22,9 +22,7 @@ namespace ECS
       { }
 
     void Collision::init(void)
-    {
-      _eventManager.addEvent<void, ECS::Entity, ECS::Entity>("Collision");
-    }
+    {    }
 
     void Collision::updateEntity(float delta, Entity e)
     {
@@ -41,6 +39,8 @@ namespace ECS
       {
         if (it == e)
           continue;
+        if (getManager().getComponent<ECS::Components::CollisionFrame>(it).get() != nullptr)
+          return;
 
         std::shared_ptr<ECS::Components::Drawable> drawable = getManager().getComponent<ECS::Components::Drawable>(it);
 
@@ -48,8 +48,7 @@ namespace ECS
 
         if (sprite.getGlobalBounds().intersects(entitySprite.getGlobalBounds()))
         {
-        //  _eventManager.fire<void, ECS::Entity, ECS::Entity>("Collision", it, e);
-          getManager().addComponent<ECS::Components::CollisionFrame>(e, ECS::Components::CollisionFrame(e, 1));
+          getManager().addComponent<ECS::Components::CollisionFrame>(e, ECS::Components::CollisionFrame(it, 1));
           getManager().updateEntityToSystems(e);
         }
       }
