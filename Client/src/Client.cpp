@@ -2,7 +2,7 @@
  * @Author: Remi Gastaldi <gastal_r>
  * @Date:   2018-01-17T04:07:04+01:00
  * @Last modified by:   gastal_r
- * @Last modified time: 2018-02-19T18:28:08+01:00
+ * @Last modified time: 2018-02-20T15:36:50+01:00
  */
 
 
@@ -42,13 +42,14 @@ namespace GameEngine
 		_ecsManager.createStoreFor<ECS::Components::Player>();
     _ecsManager.createStoreFor<ECS::Components::Animated>();
     _ecsManager.createStoreFor<ECS::Components::Player>();
-		_ecsManager.createStoreFor<ECS::Components::Stats>();
+		_ecsManager.createStoreFor<ECS::Components::CollisionFrame>();
 
 		_ecsManager.addSystem<ECS::Systems::Parallax>(_ecsManager, _resourcesManager);
     _ecsManager.addSystem<ECS::Systems::Mouvement>(_eventManager, _ecsManager);
     _ecsManager.addSystem<ECS::Systems::Collision>(_eventManager, _resourcesManager, _ecsManager);
 		_ecsManager.addSystem<ECS::Systems::Animation>(_eventManager, _resourcesManager, _ecsManager);
-    _ecsManager.addSystem<ECS::Systems::Render>(_resourcesManager, _ecsManager, _window);
+		_ecsManager.addSystem<ECS::Systems::Render>(_resourcesManager, _ecsManager, _window);
+    _ecsManager.addSystem<ECS::Systems::CleanupFrameCollisionComponents>(_ecsManager);
     _ecsManager.initSystems();
 
     // Create events
@@ -182,14 +183,14 @@ namespace GameEngine
   {
     //_networkManager.update();
 		_myMap->update();
-    _ecsManager.updateSystemsRange(0.f, 0, 4);
+    _ecsManager.updateSystemsRange(0.f, 0, 5);
   }
 
   void Client::render(float alpha)
   {
 //		std::cout << "entities: " << _ecsManager.getEntities().size() << std::endl;
     _window.clear();
-    _ecsManager.updateSystemsRange(0.f, 4, 5);
+    _ecsManager.updateSystemsRange(0.f, 5, 6);
     _guiManager.update(alpha);
     _window.display();
   }

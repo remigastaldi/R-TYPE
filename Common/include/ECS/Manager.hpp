@@ -2,7 +2,7 @@
  * @Author: Remi Gastaldi <gastal_r>
  * @Date:   2018-01-13T01:04:20+01:00
  * @Last modified by:   gastal_r
- * @Last modified time: 2018-02-19T16:38:56+01:00
+ * @Last modified time: 2018-02-19T19:26:35+01:00
  */
 
 
@@ -28,7 +28,6 @@
 
 namespace ECS
 {
-  class Mouvement;
   class Manager {
 
 
@@ -80,7 +79,7 @@ namespace ECS
     }
 
 
-      template <typename C>
+    template <typename C>
     bool addComponent(Entity e, std::shared_ptr<Component> c)
       {
         size_t comptype = GetTypeID<C>();

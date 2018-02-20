@@ -2,7 +2,7 @@
  * @Author: Remi Gastaldi <gastal_r>
  * @Date:   2018-01-21T04:36:33+01:00
  * @Last modified by:   gastal_r
- * @Last modified time: 2018-01-22T07:30:11+01:00
+ * @Last modified time: 2018-02-20T15:42:33+01:00
  */
 
 
@@ -48,7 +48,9 @@ namespace ECS
 
         if (sprite.getGlobalBounds().intersects(entitySprite.getGlobalBounds()))
         {
-          _eventManager.fire<void, ECS::Entity, ECS::Entity>("Collision", it, e);
+        //  _eventManager.fire<void, ECS::Entity, ECS::Entity>("Collision", it, e);
+          getManager().addComponent<ECS::Components::CollisionFrame>(e, ECS::Components::CollisionFrame(e, 1));
+          getManager().updateEntityToSystems(e);
         }
       }
     }
