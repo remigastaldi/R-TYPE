@@ -61,14 +61,14 @@ void	LobbyPlayer::playerLeave(const std::string &name)
 void	LobbyPlayer::onEnter()
 {
 	_players = 0;
-	_resources.load<Texture>("lobbiesBackground", "../../Client/media/img/lobbiesBackground.jpg");
-	_resources.load<Texture>("window_whole", "../../Client/media/img/playerLobby/window_whole.png");
-	_resources.load<Texture>("window_bottom", "../../Client/media/img/playerLobby/window_bottom.png");
-	_resources.load<Texture>("playersSpaceships", "../../Client/media/img/ship/allies/playersSpaceships.png");
-	_resources.load<Texture>("exitButton", "../../Client/media/img/playerLobby/exitButton.png");
-	_resources.load<Texture>("readyButtonState", "../../Client/media/img/playerLobby/readyButtonState.png");
-	_resources.load<Texture>("readyButton", "../../Client/media/img/playerLobby/readyButton.png");
-	_resources.load<Font>("neuropol", "../../Client/media/font/neuropol.ttf");
+	_resources.get<Texture>("lobbiesBackground");
+	_resources.get<Texture>("window_whole");
+	_resources.get<Texture>("window_bottom");
+	_resources.get<Texture>("playersSpaceships");
+	_resources.get<Texture>("exitButton");
+	_resources.get<Texture>("readyButtonState");
+	_resources.get<Texture>("readyButton");
+	_resources.get<Font>("neuropol");
 
 
 	_eventManager.listen<void, const std::string &>("PlayerJoinEvent", [&](const std::string &name){this->playerJoin(name);});

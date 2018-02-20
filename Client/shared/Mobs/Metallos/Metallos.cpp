@@ -25,7 +25,7 @@ Metallos::Metallos(GameEngine::GameManagers &gameManagers, MapEngine &mapEngine,
 
   LOG_INFO << "Entity ID " << _me << std::endl;
 
-  std::shared_ptr<Texture> texture = _gameManagers.resources.load<Texture>("metallos_texture", "../../Client/media/img/ship/enemies/CX16-X2.png");
+  std::shared_ptr<Texture> texture = _gameManagers.resources.get<Texture>("metallos_texture");
   _spriteName = "metallos_sprite[" + std::to_string(_me) + "]";
   Sprite sprite(_spriteName, *texture);
 

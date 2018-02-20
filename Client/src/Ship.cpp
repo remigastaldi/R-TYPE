@@ -18,7 +18,7 @@ Ship::Ship(GameEngine::GameManagers &gameManagers, MapEngine &mapEngine)
     _spriteName(),
     _activeKeys()
   {
-    std::shared_ptr<Texture> texture = _gameManagers.resources.load<Texture>("player_ship_texture", "../../Client/media/img/ship/allies/playersSpaceships.png");
+    std::shared_ptr<Texture> texture = _gameManagers.resources.get<Texture>("player_ship_texture");
 
     std::cout << "Ship ID is : " << _entity << std::endl;
 
@@ -136,7 +136,7 @@ void  Ship::fire(const std::string &msg)
 
   std::shared_ptr<ECS::Components::Position> position = _gameManagers.ecs.getComponent<ECS::Components::Position>(_entity);
 
-  std::shared_ptr<Texture>  texture(_gameManagers.resources.load<Texture>("player_missiles_texture", "../../Client/media/img/ship/allies/playersMissiles.png"));
+  std::shared_ptr<Texture>  texture(_gameManagers.resources.get<Texture>("player_missiles_texture"));
   std::string spriteName = "player_missiles[" + std::to_string(e) + "]";
   Sprite sprite(spriteName, *texture);
   _gameManagers.resources.addResource<Sprite>(spriteName, sprite);

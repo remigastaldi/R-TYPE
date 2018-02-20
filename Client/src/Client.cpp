@@ -77,7 +77,12 @@ namespace GameEngine
    _libraryLoader.mob.addFolder("../ressources/mob/");
    _libraryLoader.move.addFolder("../ressources/move/");
    _libraryLoader.attack.addFolder("../ressources/attack/");
+   _libraryLoader.ressource.addFolder("../ressources/ressources/");
    _libraryLoader.updateAll();
+
+    //Ressources
+
+    _libraryLoader.ressource.get("BasicRessources")(_gameManagers);
 
     //Escape key
     _eventManager.listen<void, sf::Event>("KeyPressedEvent", [&] (sf::Event ev) -> void {

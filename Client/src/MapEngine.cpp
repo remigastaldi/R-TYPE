@@ -20,7 +20,7 @@ void  MapEngine::addParallax(const std::string &layer, float speedLayer, bool fl
   ECS::Entity entity = _gameManagers.ecs.createEntity();
   ECS::Entity flippedEntity = _gameManagers.ecs.createEntity();
 
-  std::shared_ptr<Texture> texture(_gameManagers.resources.load<Texture>("layerTexture[" + std::to_string(entity) + "]", layer));
+  std::shared_ptr<Texture> texture(_gameManagers.resources.get<Texture>(layer));
 
   std::string spriteName = "layerSprite[" + std::to_string(entity) + "]";
   std::string flippedSpriteName = "layerFlippedSprite[" + std::to_string(entity) + "]";
@@ -57,7 +57,6 @@ void  MapEngine::clearParallax(void)
 {
   for (const auto & it : _parallaxItems)
   {
-    _gameManagers.resources.release("layerTexture[" + std::to_string(it) + "]");
     _gameManagers.resources.release("layerSprite[" + std::to_string(it) + "]");
     _gameManagers.resources.release("layerFlippedSprite[" + std::to_string(it) + "]");
     _gameManagers.ecs.destroyEntity(it);

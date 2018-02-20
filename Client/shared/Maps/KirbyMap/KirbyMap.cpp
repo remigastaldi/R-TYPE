@@ -21,9 +21,9 @@ KirbyMap::KirbyMap(GameEngine::GameManagers &gameManagers) :
 {
   Logger::get().setOutput(CONSOLE_LOG);
 
-  _mapEngine.addParallax("../../Client/media/img/Parallax/background_01_parallax_01.png", 0.3, false);
-  _mapEngine.addParallax("../../Client/media/img/Parallax/background_01_parallax_02.png", 0.5, false);
-  _mapEngine.addParallax("../../Client/media/img/Parallax/background_01_parallax_03.png", 1, true);
+  _mapEngine.addParallax("parallax_01", 0.3, false);
+  _mapEngine.addParallax("parallax_02", 0.5, false);
+  _mapEngine.addParallax("parallax_03", 1, true);
 
   _listenerOutOfSpace = _event.listen<void, ECS::Entity>("UnitDie", [&](ECS::Entity e) -> void {
     if (!_isEnd) {

@@ -23,7 +23,7 @@ BasicAttack::BasicAttack(GameEngine::GameManagers &gameManagers, MapEngine &mapE
 {
   Logger::get().setOutput(CONSOLE_LOG);
 
-  std::shared_ptr<Texture> texture = _gameManagers.resources.load<Texture>("basick_attack_texture", "../../Client/media/img/ship/enemies/bullet_blaster_big_single.png");
+  std::shared_ptr<Texture> texture = _gameManagers.resources.get<Texture>("basick_attack_texture");
   _spriteName = "basic_attack_sprite[" + std::to_string(_entity) + "]";
 
   Sprite sprite(_spriteName, *texture);

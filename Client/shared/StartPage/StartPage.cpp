@@ -33,10 +33,10 @@ void	StartPage::funcExit(void)
 
 void	StartPage::onEnter()
 {
-	_resources.load<Texture>("lobbiesBackground", "../../Client/media/img/lobbiesBackground.jpg");
-	_resources.load<Texture>("startButtons", "../../Client/media/img/startPage/startButtons.png");
-	_resources.load<Font>("Gravedigger", "../../Client/media/font/Gravedigger.otf");
-	_resources.load<Font>("neuropol", "../../Client/media/font/neuropol.ttf");
+	_resources.get<Texture>("lobbiesBackground");
+	_resources.get<Texture>("startButtons");
+	_resources.get<Font>("Gravedigger");
+	_resources.get<Font>("neuropol");
 
 	sf::Font &font = _resources.getContent<Font>("Gravedigger");
 	sf::Font &fontButtons = _resources.getContent<Font>("neuropol");

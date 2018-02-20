@@ -7,6 +7,7 @@
 
 #include  "Client.hpp"
 #include "DynamicLibrary/LibLoader.hpp"
+#include "factory/Mobs/MobFactory.hpp"
 
 int main(int ac, char *av[])
 {

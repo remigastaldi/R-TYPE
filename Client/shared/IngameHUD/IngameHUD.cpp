@@ -31,9 +31,9 @@ void	IngameHUD::hideAlert(const std::string&string)
 
 void	IngameHUD::onEnter()
 {
-	_resources.load<Font>("neuropol", "../../Client/media/font/neuropol.ttf");
-	_resources.load<Texture>("scoreSprite", "../../Client/media/img/ingameHUD/scoreSprite.png");
-	_resources.load<Texture>("hearth", "../../Client/media/img/ingameHUD/hearth.png");
+	_resources.get<Font>("neuropol");
+	_resources.get<Texture>("scoreSprite");
+	_resources.get<Texture>("hearth");
 
 	_guiManager.addElement<GUI::Image>("scoreBox", sf::Vector2f(-50, 0), _resources.getContent<Texture>("scoreSprite"), sf::Vector2f(0.7, 0.5));
 	_guiManager.addElement<GUI::Text>("scoreText", sf::Vector2f(0, 0), std::to_string(_score), _resources.getContent<Font>("neuropol"), 30);

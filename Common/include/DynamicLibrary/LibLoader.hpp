@@ -28,8 +28,11 @@
 #include "Logger/Logger.hpp"
 #include "ECS/Manager.hpp"
 #include "ECS/Component.hpp"
+#include <type_traits>
+#include <GameManagers.hpp>
 
-namespace GameEngine {
+namespace GameEngine
+{
   struct GameManagers;
 }
 
@@ -70,13 +73,13 @@ typedef IMob *(__stdcall *getMobSymbol)(GameEngine::GameManagers &gameManagers, 
 typedef IMove *(__stdcall *getMoveSymbol)(GameEngine::GameManagers &gameManagers, ECS::Entity, int direction, int speed);
 typedef IPart *(__stdcall *getPartSymbol)();
 typedef IPowerUp *(__stdcall *getPowerUpSymbol)();
-typedef IRessources *(__stdcall *getRessourceSymbol)();
+typedef void (__stdcall *getRessourceSymbol)(GameEngine::GameManagers &);
 typedef IScene *(__stdcall *getSceneSymbol)();
 typedef IShipBluprint *(__stdcall *getShipBlueprintSymbol)();
 
 #else
 
-typedef char const * (*getNameOfLib)();
+typedef char const *(*getNameOfLib)();
 
 typedef IAttack *(*getAttackSymbol)(GameEngine::GameManagers &gameManagers, MapEngine &mapEngine, ECS::Entity);
 typedef IMap *(*getMapSymbol)(GameEngine::GameManagers &gameManagers);
@@ -84,7 +87,7 @@ typedef IMob *(*getMobSymbol)(GameEngine::GameManagers &gameManagers, MapEngine 
 typedef IMove *(*getMoveSymbol)(GameEngine::GameManagers &gameManagers, ECS::Entity, int direction, int speed);
 typedef IPart *(*getPartSymbol)();
 typedef IPowerUp *(*getPowerUpSymbol)();
-typedef IRessources *(*getRessourceSymbol)();
+typedef void (*getRessourceSymbol)(GameEngine::GameManagers &);
 typedef IScene *(*getSceneSymbol)();
 typedef IShipBluprint *(*getShipBlueprintSymbol)();
 
@@ -100,7 +103,7 @@ static std::string getOSDynLibExtension()
     return ".dll";
 }
 
-template <typename T>
+template <typename T, typename HELPER>
 class __lib__implem : public Alfred::Utils::NonCopyable
 {
   private:
@@ -120,12 +123,12 @@ class __lib__implem : public Alfred::Utils::NonCopyable
           return nullptr;
       }
 
-	  getNameOfLib tmp = (getNameOfLib)(GetProcAddress(hGetProcIDDLL, "getName"));
-	  if (tmp == NULL)
-	  {
-		  LOG_ERROR << "Failed to load lib" << GetLastError() << " " << path << << std::endl;
-		  return "";
-	  }
+    getNameOfLib tmp = (getNameOfLib)(GetProcAddress(hGetProcIDDLL, "getName"));
+    if (tmp == NULL)
+    {
+      LOG_ERROR << "Failed to load lib" << GetLastError() << " " << path << << std::endl;
+      return "";
+    }
 
       return tmp();
 #else
@@ -151,8 +154,8 @@ class __lib__implem : public Alfred::Utils::NonCopyable
       T tmp = (T) GetProcAddress(hGetProcIDDLL, "getSymbol");
       if (tmp == NULL)
       {
-      		  LOG_ERROR << "Failed to load lib" << GetLastError() << " " << path << << std::endl;
-		        return nullptr;
+            LOG_ERROR << "Failed to load lib" << GetLastError() << " " << path << << std::endl;
+            return nullptr;
       }
       return tmp;
 #else
@@ -195,7 +198,7 @@ class __lib__implem : public Alfred::Utils::NonCopyable
               LOG_INFO << "Trying to load lib " << curPath << std::endl;
 
               std::string nameOfLib = getLibName(curPath);
-              LOG_ERROR << "lib name " << nameOfLib  << std::endl;
+              LOG_ERROR << "lib name " << nameOfLib << std::endl;
 
               if (nameOfLib.empty())
                 LOG_ERROR << "Error while loading lib " << curPath << std::endl;
@@ -210,6 +213,7 @@ class __lib__implem : public Alfred::Utils::NonCopyable
                 else {
                   LOG_SUCCESS << "Successfully loaded lib " << nameOfLib << " at path " << curPath << std::endl;
                   //Add to path / symbol
+
                   it.second[curPath] = curSymbol;
 
                   //Add to symbol map
@@ -259,15 +263,15 @@ class __lib__implem : public Alfred::Utils::NonCopyable
 class LibLoader
 {
   public:
-    __lib__implem<getAttackSymbol> attack;
-    __lib__implem<getMapSymbol> map;
-    __lib__implem<getMobSymbol> mob;
-    __lib__implem<getMoveSymbol> move;
-    __lib__implem<getPartSymbol> part;
-    __lib__implem<getPowerUpSymbol> powerup;
-    __lib__implem<getRessourceSymbol> ressource;
-    __lib__implem<getSceneSymbol> scene;
-    __lib__implem<getShipBlueprintSymbol> ship_blueprint;
+    __lib__implem<getAttackSymbol, IAttack> attack;
+    __lib__implem<getMapSymbol, IMap> map;
+    __lib__implem<getMobSymbol, IMob> mob;
+    __lib__implem<getMoveSymbol, IMove> move;
+    __lib__implem<getPartSymbol, IPart> part;
+    __lib__implem<getPowerUpSymbol, IPowerUp> powerup;
+    __lib__implem<getRessourceSymbol, IRessources> ressource;
+    __lib__implem<getSceneSymbol, IScene> scene;
+    __lib__implem<getShipBlueprintSymbol, IShipBluprint> ship_blueprint;
 
   public:
     LibLoader() :

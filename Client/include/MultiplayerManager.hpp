@@ -26,6 +26,9 @@ class MultiplayerManager : Alfred::Utils::MakeFinal<MultiplayerManager>, public 
 
   public:
     explicit MultiplayerManager(ECS::Manager &ecs, EventManager::Manager &event, ResourcesManager &ressources) :
+      _players(),
+      _playerName(),
+      _playerID(),
       _ecs(ecs),
       _event(event),
       _ressources(ressources)
@@ -109,7 +112,8 @@ class MultiplayerManager : Alfred::Utils::MakeFinal<MultiplayerManager>, public 
 
       std::shared_ptr<ECS::Components::Position> position = _ecs.getComponent<ECS::Components::Position>(_players[id]);
 
-      std::shared_ptr<Texture>  texture(_ressources.load<Texture>("player_missiles_texture", "../../Client/media/img/ship/allies/playersMissiles.png"));
+      std::shared_ptr<Texture> texture(
+        _ressources.load<Texture>("player_missiles_texture", "../../Client/media/img/ship/allies/playersMissiles.png"));
       std::string spriteName = "player_missiles[" + std::to_string(e) + "]";
       Sprite sprite(spriteName, *texture);
       _ressources.addResource<Sprite>(spriteName, sprite);
@@ -134,7 +138,8 @@ class MultiplayerManager : Alfred::Utils::MakeFinal<MultiplayerManager>, public 
 
     void join(const std::string &id)
     {
-      std::shared_ptr<Texture> texture = _ressources.load<Texture>("metallos_texture", "../../Client/media/img/ship/enemies/CX16-X2.png");
+      std::shared_ptr<Texture> texture = _ressources.load<Texture>("metallos_texture",
+                                                                   "../../Client/media/img/ship/enemies/CX16-X2.png");
       std::string spriteName = "metallos_sprite[" + id + "]";
       Sprite sprite(spriteName, *texture);
 
@@ -142,7 +147,8 @@ class MultiplayerManager : Alfred::Utils::MakeFinal<MultiplayerManager>, public 
 
       _ecs.addComponent<ECS::Components::Position>(_players[id], ECS::Components::Position(200, 200));
       _ecs.addComponent<ECS::Components::Drawable>(_players[id], ECS::Components::Drawable(spriteName));
-      _ecs.addComponent<ECS::Components::Collisionable>(_players[id], ECS::Components::Collisionable(_players[id], ECS::Components::Collisionable::Type::ALLY));
+      _ecs.addComponent<ECS::Components::Collisionable>(_players[id], ECS::Components::Collisionable(_players[id],
+                                                                                                     ECS::Components::Collisionable::Type::ALLY));
 
       _ecs.updateEntityToSystems(_players[id]);
     }
