@@ -2,7 +2,7 @@
  * @Author: Remi Gastaldi <gastal_r>
  * @Date:   2018-01-17T04:07:04+01:00
  * @Last modified by:   gastal_r
- * @Last modified time: 2018-02-20T15:36:50+01:00
+ * @Last modified time: 2018-02-20T19:48:33+01:00
  */
 
 
@@ -44,14 +44,18 @@ namespace GameEngine
     _ecsManager.createStoreFor<ECS::Components::Player>();
     _ecsManager.createStoreFor<ECS::Components::Animated>();
     _ecsManager.createStoreFor<ECS::Components::Player>();
-    _ecsManager.createStoreFor<ECS::Components::CollisionFrame>();
+		_ecsManager.createStoreFor<ECS::Components::CollisionFrame>();
+		_ecsManager.createStoreFor<ECS::Components::Health>();
+		_ecsManager.createStoreFor<ECS::Components::Damages>();
 
-    _ecsManager.addSystem<ECS::Systems::Parallax>(_ecsManager, _resourcesManager);
+		_ecsManager.addSystem<ECS::Systems::Parallax>(_ecsManager, _resourcesManager);
     _ecsManager.addSystem<ECS::Systems::Mouvement>(_eventManager, _ecsManager);
     _ecsManager.addSystem<ECS::Systems::Collision>(_eventManager, _resourcesManager, _ecsManager);
-    _ecsManager.addSystem<ECS::Systems::Animation>(_eventManager, _resourcesManager, _ecsManager);
-    _ecsManager.addSystem<ECS::Systems::Render>(_resourcesManager, _ecsManager, _window);
-    _ecsManager.addSystem<ECS::Systems::CleanupFrameCollisionComponents>(_ecsManager);
+		_ecsManager.addSystem<ECS::Systems::Animation>(_eventManager, _resourcesManager, _ecsManager);
+		_ecsManager.addSystem<ECS::Systems::Render>(_resourcesManager, _ecsManager, _window);
+		_ecsManager.addSystem<ECS::Systems::CleanupFrameCollisionComponents>(_ecsManager);
+		_ecsManager.addSystem<ECS::Systems::SpriteCollisionHandler>(_eventManager, _ecsManager);
+    _ecsManager.addSystem<ECS::Systems::Health>(_eventManager, _ecsManager);
     _ecsManager.initSystems();
 
     // Create events
@@ -67,17 +71,18 @@ namespace GameEngine
     _eventManager.addEvent<void, sf::Event>("KeyPressedEvent");
     _eventManager.addEvent<void, sf::Event>("KeyReleasedEvent");
 
-    //  _networkManager.init();
+  //  _networkManager.init();
     //Loading library
-    _libraryLoader.map.addFolder("../ressources/map/");
-    _libraryLoader.mob.addFolder("../ressources/mob/");
-    _libraryLoader.move.addFolder("../ressources/move/");
-    _libraryLoader.attack.addFolder("../ressources/attack/");
-    _libraryLoader.updateAll();
+   _libraryLoader.map.addFolder("../ressources/map/");
+   _libraryLoader.mob.addFolder("../ressources/mob/");
+   _libraryLoader.move.addFolder("../ressources/move/");
+   _libraryLoader.attack.addFolder("../ressources/attack/");
+   _libraryLoader.updateAll();
 
     //Escape key
-    _eventManager.listen<void, sf::Event>("KeyPressedEvent", [&](sf::Event ev) -> void {
-      if (ev.key.code == sf::Keyboard::Escape) {
+    _eventManager.listen<void, sf::Event>("KeyPressedEvent", [&] (sf::Event ev) -> void {
+      if (ev.key.code ==  sf::Keyboard::Escape)
+      {
         LOG_SUCCESS << "Exit" << std::endl;
         exit(0);
       }
@@ -88,11 +93,11 @@ namespace GameEngine
     _sceneManager.addScene<LobbyPlayer>("LobbyPlayer", _resourcesManager, _guiManager, _eventManager);
     _sceneManager.addScene<IngameHUD>("IngameHUD", _resourcesManager, _guiManager, _eventManager);
 
-    _eventManager.listen<void, std::string>("changeScene", [&](std::string scene) -> void {
+    _eventManager.listen<void, std::string>("changeScene", [&] (std::string scene) -> void {
       _sceneManager.pushScene(scene);
     });
 
-    _eventManager.listen<void>("popScene", [&]() -> void {
+    _eventManager.listen<void>("popScene", [&] () -> void {
       _sceneManager.popScene();
     });
   }
@@ -114,90 +119,68 @@ namespace GameEngine
 
     _myMap.reset(_libraryLoader.map.get("KirbyMap")(_gameManagers));
 
-    long int nextGameTick = std::chrono::duration_cast<std::chrono::milliseconds>(
-      std::chrono::high_resolution_clock::now().time_since_epoch()).count();
+    long int nextGameTick = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now().time_since_epoch()).count();
 
     auto t1 = std::chrono::high_resolution_clock::now();
-    while (_running) {
+    while(_running)
+    {
       int skipTick = 1000 / _gameEngineTick;
       int maxFrameSkip = sqrt(_gameEngineTick);
 
       int loops = 0;
       handleEvents();
-      while (std::chrono::duration_cast<std::chrono::milliseconds>(
-        std::chrono::high_resolution_clock::now().time_since_epoch()).count() > nextGameTick
-             && loops < maxFrameSkip) {
+      while(std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now().time_since_epoch()).count() > nextGameTick
+        && loops < maxFrameSkip)
+      {
         update();
         nextGameTick += skipTick;
         loops++;
       }
-      if (
-        std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now() - t1).count() >=
-        (1000 / _maxFrameRate)) {
-        float interpolation = static_cast<float>((std::chrono::duration_cast<std::chrono::milliseconds>(
-          std::chrono::high_resolution_clock::now().time_since_epoch()).count()
-                                                  + skipTick - nextGameTick) / skipTick);
+      if (std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now() - t1).count() >= (1000 / _maxFrameRate))
+      {
+        float interpolation = static_cast<float>((std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now().time_since_epoch()).count()
+          + skipTick - nextGameTick) / skipTick);
         render(interpolation);
         t1 = std::chrono::high_resolution_clock::now();
       }
     }
   }
 
-  void Client::handleEvents(void)
+  void  Client::handleEvents(void)
   {
     sf::Event event;
-    while (_window.pollEvent(event)) {
-      switch (event.type) {
-        case sf::Event::KeyPressed :
-          _eventManager.fire<void, sf::Event>("KeyPressedEvent", event);
-          break;
-        case sf::Event::KeyReleased :
-          _eventManager.fire<void, sf::Event>("KeyReleasedEvent", event);
-          break;
-        case sf::Event::Closed:
-          break;
-        case sf::Event::Resized:
-          break;
-        case sf::Event::LostFocus:
-          break;
-        case sf::Event::GainedFocus:
-          break;
-        case sf::Event::TextEntered:
-          break;
-        case sf::Event::MouseWheelMoved:
-          break;
-        case sf::Event::MouseWheelScrolled:
-          break;
-        case sf::Event::MouseButtonPressed:
-          break;
-        case sf::Event::MouseButtonReleased:
-          break;
-        case sf::Event::MouseMoved:
-          break;
-        case sf::Event::MouseEntered:
-          break;
-        case sf::Event::MouseLeft:
-          break;
-        case sf::Event::JoystickButtonPressed:
-          break;
-        case sf::Event::JoystickButtonReleased:
-          break;
-        case sf::Event::JoystickMoved:
-          break;
-        case sf::Event::JoystickConnected:
-          break;
-        case sf::Event::JoystickDisconnected:
-          break;
-        case sf::Event::TouchBegan:
-          break;
-        case sf::Event::TouchMoved:
-          break;
-        case sf::Event::TouchEnded:
-          break;
-        case sf::Event::SensorChanged:
-          break;
-        case sf::Event::Count:
-          break;
+    while (_window.pollEvent(event))
+    {
+      switch (event.type)
+      {
+      case sf::Event::KeyPressed :
+        _eventManager.fire<void, sf::Event>("KeyPressedEvent", event);
+        break;
+      case sf::Event::KeyReleased :
+        _eventManager.fire<void, sf::Event>("KeyReleasedEvent", event);
+        break;
+        case sf::Event::Closed:break;
+        case sf::Event::Resized:break;
+        case sf::Event::LostFocus:break;
+        case sf::Event::GainedFocus:break;
+        case sf::Event::TextEntered:break;
+        case sf::Event::MouseWheelMoved:break;
+        case sf::Event::MouseWheelScrolled:break;
+        case sf::Event::MouseButtonPressed:break;
+        case sf::Event::MouseButtonReleased:break;
+        case sf::Event::MouseMoved:break;
+        case sf::Event::MouseEntered:break;
+        case sf::Event::MouseLeft:break;
+        case sf::Event::JoystickButtonPressed:break;
+        case sf::Event::JoystickButtonReleased:break;
+        case sf::Event::JoystickMoved:break;
+        case sf::Event::JoystickConnected:break;
+        case sf::Event::JoystickDisconnected:break;
+        case sf::Event::TouchBegan:break;
+        case sf::Event::TouchMoved:break;
+        case sf::Event::TouchEnded:break;
+        case sf::Event::SensorChanged:break;
+        case sf::Event::Count:break;
       }
     }
   }
@@ -205,15 +188,15 @@ namespace GameEngine
   void Client::update(void)
   {
     //_networkManager.update();
-    _myMap->update();
-    _ecsManager.updateSystemsRange(0.f, 0, 5);
+		_myMap->update();
+    _ecsManager.updateSystemsRange(0.f, 0, 7);
   }
 
   void Client::render(float alpha)
   {
 //		std::cout << "entities: " << _ecsManager.getEntities().size() << std::endl;
     _window.clear();
-    _ecsManager.updateSystemsRange(0.f, 5, 6);
+    _ecsManager.updateSystemsRange(0.f, 7, 8);
     _guiManager.update(alpha);
     _window.display();
   }

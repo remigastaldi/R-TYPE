@@ -2,7 +2,7 @@
  * @Author: Remi Gastaldi <gastal_r>
  * @Date:   2018-01-22T10:02:46+01:00
  * @Last modified by:   gastal_r
- * @Last modified time: 2018-02-19T18:25:09+01:00
+ * @Last modified time: 2018-02-20T19:08:41+01:00
  */
 
 
@@ -37,7 +37,7 @@ Metallos::Metallos(GameEngine::GameManagers &gameManagers, MapEngine &mapEngine,
   _ecs.addComponent<ECS::Components::Position>(_me, pos);
   _ecs.addComponent<ECS::Components::Drawable>(_me, ECS::Components::Drawable(_spriteName));
   _ecs.addComponent<ECS::Components::Collisionable>(_me, ECS::Components::Collisionable(_me, ECS::Components::Collisionable::Type::ENNEMY));
-  _ecs.addComponent<ECS::Components::Stats>(_me, ECS::Components::Stats(1));
+  _ecs.addComponent<ECS::Components::Health>(_me, ECS::Components::Health(2));
 
   _ecs.updateEntityToSystems(_me);
 

@@ -13,6 +13,8 @@ set(COMMON_SOURCES
 
   ${CMAKE_SOURCE_DIR}/Common/src/ECS/Systems/Mouvement.cpp
   ${CMAKE_SOURCE_DIR}/Common/src/ECS/Systems/CleanupFrameCollisionComponents.cpp
+  ${CMAKE_SOURCE_DIR}/Common/src/ECS/Systems/SpriteCollisionHandler.cpp
+  ${CMAKE_SOURCE_DIR}/Common/src/ECS/Systems/Health.cpp
 
   ${CMAKE_SOURCE_DIR}/Common/src/Communication/AsioSyncUdpNetwork.cpp
   ${CMAKE_SOURCE_DIR}/Common/src/Communication/UDPPacket.cpp
@@ -26,6 +28,8 @@ target_sources(${NAME}
 
         ${CMAKE_SOURCE_DIR}/Common/src/ECS/Systems/Mouvement.cpp
         ${CMAKE_SOURCE_DIR}/Common/src/ECS/Systems/CleanupFrameCollisionComponents.cpp
+        ${CMAKE_SOURCE_DIR}/Common/src/ECS/Systems/SpriteCollisionHandler.cpp
+        ${CMAKE_SOURCE_DIR}/Common/src/ECS/Systems/Health.cpp
 
         ${CMAKE_SOURCE_DIR}/Common/src/Communication/AsioSyncUdpNetwork.cpp
         ${CMAKE_SOURCE_DIR}/Common/src/Communication/UDPPacket.cpp

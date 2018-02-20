@@ -2,7 +2,7 @@
  * @Author: Remi Gastaldi <gastal_r>
  * @Date:   2018-01-20T20:45:23+01:00
  * @Last modified by:   gastal_r
- * @Last modified time: 2018-02-19T18:28:35+01:00
+ * @Last modified time: 2018-02-20T17:55:30+01:00
  */
 
 
@@ -36,6 +36,8 @@ Ship::Ship(GameEngine::GameManagers &gameManagers, MapEngine &mapEngine)
     _gameManagers.ecs.addComponent<ECS::Components::Collisionable>(_entity, ECS::Components::Collisionable(_entity, ECS::Components::Collisionable::Type::ALLY));
     _gameManagers.ecs.addComponent<ECS::Components::Drawable>(_entity, ECS::Components::Drawable(_spriteName));
     _gameManagers.ecs.addComponent<ECS::Components::Direction>(_entity, ECS::Components::Direction(0, 0, 7));
+    _gameManagers.ecs.addComponent<ECS::Components::Health>(_entity, ECS::Components::Health(100));
+
 
     _gameManagers.ecs.updateEntityToSystems(_entity);
 
@@ -144,9 +146,10 @@ void  Ship::fire(const std::string &msg)
 	spriteMissiles.setTextureRect(sf::IntRect(0, 0, 30, 112));
 
   _gameManagers.ecs.addComponent<ECS::Components::Position>(e, ECS::Components::Position(position->x, position->y + 60));
-  _gameManagers.ecs.addComponent<ECS::Components::Collisionable>(e, ECS::Components::Collisionable(e, ECS::Components::Collisionable::Type::ALLY));
+  _gameManagers.ecs.addComponent<ECS::Components::Collisionable>(e, ECS::Components::Collisionable(e, ECS::Components::Collisionable::Type::MISSILE));
   _gameManagers.ecs.addComponent<ECS::Components::Drawable>(e, ECS::Components::Drawable(spriteName));
   _gameManagers.ecs.addComponent<ECS::Components::Direction>(e, ECS::Components::Direction(1, 0, 30));
+  _gameManagers.ecs.addComponent<ECS::Components::Damages>(e, ECS::Components::Damages(1));
   _gameManagers.ecs.updateEntityToSystems(e);
 }
 

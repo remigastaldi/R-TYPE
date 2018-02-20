@@ -2,7 +2,7 @@
  * @Author: Remi Gastaldi <gastal_r>
  * @Date:   2018-01-22T10:02:46+01:00
  * @Last modified by:   gastal_r
- * @Last modified time: 2018-02-19T16:29:38+01:00
+ * @Last modified time: 2018-02-20T18:57:15+01:00
  */
 
 
@@ -32,12 +32,13 @@ BasicAttack::BasicAttack(GameEngine::GameManagers &gameManagers, MapEngine &mapE
   sf::Sprite &spriteMissiles = _gameManagers.resources.getContent<Sprite>(_spriteName);
   spriteMissiles.setRotation(-90);
 
-  _ecs.addComponent<ECS::Components::Collisionable>(_entity, ECS::Components::Collisionable(_entity, ECS::Components::Collisionable::Type::ENNEMY));
+  _ecs.addComponent<ECS::Components::Collisionable>(_entity, ECS::Components::Collisionable(_entity, ECS::Components::Collisionable::Type::MISSILE));
   _ecs.addComponent<ECS::Components::Drawable>(_entity, ECS::Components::Drawable(_spriteName));
   ECS::Components::Position pos = *_ecs.getComponent<ECS::Components::Position>(_ownerEntity);
   pos.x -= 150;
   _ecs.addComponent<ECS::Components::Position>(_entity, pos);
-  _ecs.addComponent<ECS::Components::Stats>(_entity, ECS::Components::Stats(1));
+ // _ecs.addComponent<ECS::Components::Stats>(_entity, ECS::Components::Stats(1));
+  _ecs.addComponent<ECS::Components::Damages>(_entity, ECS::Components::Damages(1));
 
   _ecs.updateEntityToSystems(_entity);
 
@@ -68,6 +69,6 @@ void BasicAttack::move()
 
 void BasicAttack::playerHit(ECS::Entity entity)
 {
-  if (_ecs.getComponent<ECS::Components::Stats>(entity).get() != nullptr)
-    _ecs.getComponent<ECS::Components::Stats>(entity).get()->health -= _baseDamage;
+  // if (_ecs.getComponent<ECS::Components::Stats>(entity).get() != nullptr)
+  //   _ecs.getComponent<ECS::Components::Stats>(entity).get()->health -= _baseDamage;
 }
