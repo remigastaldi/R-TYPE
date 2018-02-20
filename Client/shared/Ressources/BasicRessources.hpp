@@ -13,7 +13,7 @@ void registerRessources(GameEngine::GameManagers &_managers)
   _managers.resources.load<Texture>("basick_attack_texture", "../../Client/media/img/ship/enemies/bullet_blaster_big_single.png");
   _managers.resources.load<Font>("neuropol", "../../Client/media/font/neuropol.ttf");
   _managers.resources.load<Texture>("scoreSprite", "../../Client/media/img/ingameHUD/scoreSprite.png");
-  _managers.resources.load<Texture>("hearth", "../../Client/media/img/ingameHUD/hearth.png");
+  _managers.resources.load<Texture>("heart", "../../Client/media/img/ingameHUD/hearth.png");
   _managers.resources.load<Texture>("lobbiesBackground", "../../Client/media/img/lobbiesBackground.jpg");
   _managers.resources.load<Texture>("startButtons", "../../Client/media/img/startPage/startButtons.png");
   _managers.resources.load<Font>("Gravedigger", "../../Client/media/font/Gravedigger.otf");
