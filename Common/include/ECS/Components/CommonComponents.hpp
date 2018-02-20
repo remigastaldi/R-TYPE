@@ -2,7 +2,7 @@
  * @Author: Remi Gastaldi <gastal_r>
  * @Date:   2018-01-13T20:15:43+01:00
  * @Last modified by:   gastal_r
- * @Last modified time: 2018-02-20T16:47:20+01:00
+ * @Last modified time: 2018-02-20T22:14:43+01:00
  */
 
 
@@ -49,9 +49,10 @@ namespace ECS
       enum class Type
       {
         NEUTRAL,
-        ENNEMY,
+        ENEMY,
         ALLY,
-        MISSILE,
+        ALLY_MISSILE,
+        ENEMY_MISSILE
       };
       Collisionable(ECS::Entity _entity, Collisionable::Type _type)
         : entity(_entity),

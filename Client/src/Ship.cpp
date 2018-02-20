@@ -2,7 +2,7 @@
  * @Author: Remi Gastaldi <gastal_r>
  * @Date:   2018-01-20T20:45:23+01:00
  * @Last modified by:   gastal_r
- * @Last modified time: 2018-02-20T17:55:30+01:00
+ * @Last modified time: 2018-02-21T00:07:21+01:00
  */
 
 
@@ -94,14 +94,14 @@ void  Ship::keyRelease(sf::Event event)
   {
   case sf::Keyboard::Key::Up :
     if (_activeKeys[sf::Keyboard::Key::Down])
-      direction->yDirection = -1;
+      direction->yDirection = 1;
     else
       direction->yDirection = 0;
     break;
 
   case sf::Keyboard::Key::Down :
     if (_activeKeys[sf::Keyboard::Key::Up])
-      direction->yDirection = 1;
+      direction->yDirection = -1;
     else
       direction->yDirection = 0;
     break;
@@ -146,7 +146,7 @@ void  Ship::fire(const std::string &msg)
 	spriteMissiles.setTextureRect(sf::IntRect(0, 0, 30, 112));
 
   _gameManagers.ecs.addComponent<ECS::Components::Position>(e, ECS::Components::Position(position->x, position->y + 60));
-  _gameManagers.ecs.addComponent<ECS::Components::Collisionable>(e, ECS::Components::Collisionable(e, ECS::Components::Collisionable::Type::MISSILE));
+  _gameManagers.ecs.addComponent<ECS::Components::Collisionable>(e, ECS::Components::Collisionable(e, ECS::Components::Collisionable::Type::ALLY_MISSILE));
   _gameManagers.ecs.addComponent<ECS::Components::Drawable>(e, ECS::Components::Drawable(spriteName));
   _gameManagers.ecs.addComponent<ECS::Components::Direction>(e, ECS::Components::Direction(1, 0, 30));
   _gameManagers.ecs.addComponent<ECS::Components::Damages>(e, ECS::Components::Damages(1));

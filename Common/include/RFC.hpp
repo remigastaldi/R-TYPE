@@ -38,6 +38,7 @@ namespace RFC
       SELECT_ROOM_LEVEL,
       CREATE_ROOM,
       KEY_PRESSED,
+      KEY_RELEASE,
       UNKNOWN
   };
 

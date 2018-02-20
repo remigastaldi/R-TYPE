@@ -2,7 +2,7 @@
  * @Author: Remi Gastaldi <gastal_r>
  * @Date:   2018-02-16T14:09:59+01:00
  * @Last modified by:   gastal_r
- * @Last modified time: 2018-02-16T15:56:59+01:00
+ * @Last modified time: 2018-02-20T22:42:15+01:00
  */
 
 
@@ -44,7 +44,6 @@ class BasicAttack : public IAttack
     BasicAttack(GameEngine::GameManagers &gameManagers, MapEngine &mapEngine, ECS::Entity owner);
     ~BasicAttack() override;
     void update() override;
-    void playerHit(ECS::Entity entity) override;
     ECS::Entity getID() const override;
     void move();
 };

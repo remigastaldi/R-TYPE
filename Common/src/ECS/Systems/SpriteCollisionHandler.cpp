@@ -2,7 +2,7 @@
  * @Author: Remi Gastaldi <gastal_r>
  * @Date:   2018-02-20T15:48:14+01:00
  * @Last modified by:   gastal_r
- * @Last modified time: 2018-02-20T19:53:18+01:00
+ * @Last modified time: 2018-02-20T22:38:35+01:00
  */
 
 
@@ -29,34 +29,38 @@ namespace ECS
       std::shared_ptr<ECS::Components::Collisionable>  collisionableB(getManager().getComponent<ECS::Components::Collisionable>(collisionFrame->entity));
 
       //std::cout << collisionFrame.get() << " " << collisionableA.get() << " " << collisionableB.get() << std::endl;
-      if (collisionableA->type != collisionableB->type)
-      {
-        std::shared_ptr<ECS::Components::Health>  healthA(getManager().getComponent<ECS::Components::Health>(e));
-        std::shared_ptr<ECS::Components::Health>  healthB(getManager().getComponent<ECS::Components::Health>(collisionFrame->entity));
+        if ((collisionableA->type == collisionableB->type)
+        || (collisionableA->type == collisionableB->type)
+        || (collisionableA->type == ECS::Components::Collisionable::Type::ENEMY_MISSILE && collisionableB->type == ECS::Components::Collisionable::Type::ENEMY)
+        || (collisionableA->type == ECS::Components::Collisionable::Type::ALLY_MISSILE && collisionableB->type == ECS::Components::Collisionable::Type::ALLY))
+        return;
+      std::shared_ptr<ECS::Components::Health>  healthA(getManager().getComponent<ECS::Components::Health>(e));
+      std::shared_ptr<ECS::Components::Health>  healthB(getManager().getComponent<ECS::Components::Health>(collisionFrame->entity));
 
-        std::shared_ptr<ECS::Components::Damages>  damagesA(getManager().getComponent<ECS::Components::Damages>(e));
-        std::shared_ptr<ECS::Components::Damages>  damagesB(getManager().getComponent<ECS::Components::Damages>(collisionFrame->entity));
+      std::shared_ptr<ECS::Components::Damages>  damagesA(getManager().getComponent<ECS::Components::Damages>(e));
+      std::shared_ptr<ECS::Components::Damages>  damagesB(getManager().getComponent<ECS::Components::Damages>(collisionFrame->entity));
 
 //        std::cout << "Entity " << e <<  " " << collisionFrame->entity << std::endl;
-        if (healthA.get() != nullptr && damagesB.get() != nullptr)
+      if (healthA.get() != nullptr && damagesB.get() != nullptr)
+      {
+      //  std::cout << "1" << " " << healthA->health << " " << damagesB->damages << std::endl;
+        healthA->health -= damagesB->damages;
+        if ((collisionableB->type == ECS::Components::Collisionable::Type::ENEMY_MISSILE)
+          || (collisionableB->type == ECS::Components::Collisionable::Type::ALLY_MISSILE))
         {
-        //  std::cout << "1" << " " << healthA->health << " " << damagesB->damages << std::endl;
-          healthA->health -= damagesB->damages;
-          if (collisionableB->type == ECS::Components::Collisionable::Type::MISSILE)
-          {
-            getManager().destroyEntity(collisionFrame->entity);
-            _eventManager.fire<int, ECS::Entity>("UnitDie", collisionFrame->entity);
-          }
+          getManager().destroyEntity(collisionFrame->entity);
+          _eventManager.fire<int, ECS::Entity>("UnitDie", collisionFrame->entity);
         }
-        if (healthB.get() != nullptr && damagesA.get() != nullptr)
+      }
+      if (healthB.get() != nullptr && damagesA.get() != nullptr)
+      {
+        //std::cout << "2" << " " << healthB->health << " " << damagesA->damages << std::endl;
+        healthB->health -= damagesA->damages;
+        if ((collisionableA->type == ECS::Components::Collisionable::Type::ENEMY_MISSILE)
+          || (collisionableA->type == ECS::Components::Collisionable::Type::ALLY_MISSILE))
         {
-          //std::cout << "2" << " " << healthB->health << " " << damagesA->damages << std::endl;
-          healthB->health -= damagesA->damages;
-          if (collisionableA->type == ECS::Components::Collisionable::Type::MISSILE)
-          {
-            getManager().destroyEntity(e);
-            _eventManager.fire<int, ECS::Entity>("UnitDie", e);
-          }
+          getManager().destroyEntity(e);
+          _eventManager.fire<int, ECS::Entity>("UnitDie", e);
         }
       }
     }

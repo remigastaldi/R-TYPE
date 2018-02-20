@@ -2,7 +2,7 @@
  * @Author: Remi Gastaldi <gastal_r>
  * @Date:   2018-02-15T16:16:24+01:00
  * @Last modified by:   gastal_r
- * @Last modified time: 2018-02-19T18:21:27+01:00
+ * @Last modified time: 2018-02-20T22:42:43+01:00
  */
 
 
@@ -73,42 +73,6 @@ LevelOne::LevelOne(GameEngine::GameManagers &gameManagers, MapEngine &mapEngine)
 
 LevelOne::~LevelOne()
 {
-}
-
-void LevelOne::playerHit(ECS::Entity by, ECS::Entity to)
-{
-  return;
-  std::shared_ptr<ECS::Components::Collisionable> collisionable = _ecs.getComponent<ECS::Components::Collisionable>(by);
-
-  if (collisionable->type == ECS::Components::Collisionable::Type::ENNEMY)
-    return;
-
-  for (auto &it : _mobs) {
-    if (it.first == to) {
-//      if ((*it.second)->isYouWhenHit(by))
-//      {
-      LOG_INFO << "to Mob is hit " << to << " " << by << std::endl;
-
-      _ecs.getComponent<ECS::Components::Stats>(to)->health -= 1;
-      if (_ecs.getComponent<ECS::Components::Stats>(to)->health <= 0) {
-        _mobs.erase(to);
-      }
-      return;
-    }
-    if (it.first == by) {
-      LOG_INFO << "by Mob is hit " << by << " " << to << std::endl;
-
-      _ecs.getComponent<ECS::Components::Stats>(by)->health -= 1;
-      if (_ecs.getComponent<ECS::Components::Stats>(by)->health <= 0) {
-        _mobs.erase(by);
-        _ecs.destroyEntity(to);
-      }
-      return;
-    } else {
-      //Mob is not hit, check if one of his attack is responsible for this
-      it.second->playerHit(by, to);
-    }
-  }
 }
 
 void LevelOne::unitOutOfSpace(ECS::Entity entity)

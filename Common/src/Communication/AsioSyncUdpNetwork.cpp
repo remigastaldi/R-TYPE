@@ -2,7 +2,7 @@
  * @Author: Remi Gastaldi <gastal_r>
  * @Date:   2018-01-22T06:10:40+01:00
  * @Last modified by:   gastal_r
- * @Last modified time: 2018-02-16T11:15:06+01:00
+ * @Last modified time: 2018-01-22T10:48:23+01:00
  */
 
 
@@ -64,7 +64,7 @@ UDPPacket	AsioSyncUdpNetwork::receive()
     boost::archive::text_iarchive archive(archive_stream);
     archive >> map;
     map["ip"] = _lastEndpoint.address().to_string();
-    map["port"] = std::to_string(static_cast<int>(_lastEndpoint.port()));
+    map["port"] = std::to_string(_lastEndpoint.port());
     packet.setData(map);
   } catch (std::exception &e) {
     std::cout << e.what() << std::endl;
@@ -76,12 +76,18 @@ UDPPacket	AsioSyncUdpNetwork::receive()
 void	AsioSyncUdpNetwork::send(UDPPacket &packet)
 {
   try {
+    unsigned int ms = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
+    packet.setTimestamp(std::to_string(ms));
+    std::cout << "send : ";
+    for (auto it : packet.getData())
+    std::cout << " " << it.first << ":" << it.second;
+    std::cout << std::endl;
     std::ostringstream archive_stream;
     boost::archive::text_oarchive archive(archive_stream);
     archive << packet.getData();
     std::string outbound_data_ = archive_stream.str();
-
     _socket.send_to(boost::asio::buffer(outbound_data_), _lastEndpoint);
+    std::cout << "sent to " << _lastEndpoint.address().to_string() << " on port " << _lastEndpoint.port() << std::endl;
   } catch (std::exception &e) {
     throw std::runtime_error("Error send.");
   }
@@ -90,13 +96,19 @@ void	AsioSyncUdpNetwork::send(UDPPacket &packet)
 void	AsioSyncUdpNetwork::send(UDPPacket &packet, const std::string &ip)
 {
   try {
+    unsigned int ms = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
+    packet.setTimestamp(std::to_string(ms));
+    std::cout << "send : ";
+    for (auto it : packet.getData())
+    std::cout << " " << it.first << ":" << it.second;
+    std::cout << std::endl;
     std::ostringstream archive_stream;
     boost::archive::text_oarchive archive(archive_stream);
     archive << packet.getData();
     std::string outbound_data_ = archive_stream.str();
-
     _lastEndpoint.address(boost::asio::ip::address::from_string(ip));
     _socket.send_to(boost::asio::buffer(outbound_data_), _lastEndpoint);
+    std::cout << "sent to " << _lastEndpoint.address().to_string() << " on port " << _lastEndpoint.port() << std::endl;
   } catch (std::exception &e) {
     throw std::runtime_error("Error send.");
   }
@@ -105,14 +117,20 @@ void	AsioSyncUdpNetwork::send(UDPPacket &packet, const std::string &ip)
 void	AsioSyncUdpNetwork::send(UDPPacket &packet, const std::string &ip, unsigned short port)
 {
   try {
+    unsigned int ms = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
+    packet.setTimestamp(std::to_string(ms));
+    std::cout << "send : ";
+    for (auto it : packet.getData())
+    std::cout << " " << it.first << ":" << it.second;
+    std::cout << std::endl;
     std::ostringstream archive_stream;
     boost::archive::text_oarchive archive(archive_stream);
     archive << packet.getData();
     std::string outbound_data_ = archive_stream.str();
-
     _lastEndpoint.address(boost::asio::ip::address::from_string(ip));
     _lastEndpoint.port(port);
     _socket.send_to(boost::asio::buffer(outbound_data_), _lastEndpoint);
+    std::cout << "sent to " << _lastEndpoint.address().to_string() << " on port " << _lastEndpoint.port() << std::endl;
   } catch (std::exception &e) {
     throw std::runtime_error("Error send.");
   }
@@ -131,6 +149,7 @@ void	AsioSyncUdpNetwork::send(UDPPacket &packet, const std::string &ip, unsigned
 //   packet.setData(map);
 //   send(packet);
 // }
+
 
 void  AsioSyncUdpNetwork::disconnect()
 {

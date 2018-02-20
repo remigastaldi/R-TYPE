@@ -2,7 +2,7 @@
  * @Author: Remi Gastaldi <gastal_r>
  * @Date:   2018-02-15T15:02:13+01:00
  * @Last modified by:   gastal_r
- * @Last modified time: 2018-02-20T19:23:58+01:00
+ * @Last modified time: 2018-02-20T22:43:57+01:00
  */
 
 
@@ -37,7 +37,6 @@ class LevelOne : public ILevels
     void exit() override;
     bool isEnd() override;
     void update() override;
-    void playerHit(ECS::Entity by, ECS::Entity to) override;
     void unitOutOfSpace(ECS::Entity entity) override;
     void unitDie(ECS::Entity entity) override;
 };
