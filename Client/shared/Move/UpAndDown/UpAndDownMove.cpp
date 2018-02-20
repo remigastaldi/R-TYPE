@@ -33,16 +33,33 @@ void UpAndDownMove::update()
 {
   std::shared_ptr<ECS::Components::Position> pos = _ecs.getComponent<ECS::Components::Position>(_owner);
 
+  std::shared_ptr<ECS::Components::Direction> dir = _ecs.getComponent<ECS::Components::Direction>(_owner);
+
   if (!pos)
     return;
 
-  if (pos->y < 40)
-    _ecs.getComponent<ECS::Components::Direction>(_owner)->yDirection = 1;
-  if (pos->y > 1000)
-    _ecs.getComponent<ECS::Components::Direction>(_owner)->yDirection = -1;
+  if (_isForwarding-- <= 0) {
+    dir->xDirection = 0;
+    _isForwarding = 40;
+  }
+
+  if (pos->y < 40) {
+    dir->yDirection = 1;
+    if (pos->x > 200) {
+      dir->xDirection = -1;
+      _isForwarding = 40;
+    }
+  }
+  if (pos->y > 1050) {
+    dir->yDirection = -1;
+    if (pos->x > 200) {
+      dir->xDirection = -1;
+      _isForwarding = 40;
+    }
+  }
 }
 
-ECS::Entity   UpAndDownMove::getID(void) const
+ECS::Entity UpAndDownMove::getID() const
 {
   return (_owner);
 }

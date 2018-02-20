@@ -20,6 +20,8 @@ class UpAndDownMove : public IMove
 
     ECS::Entity _owner;
 
+    short _isForwarding = 0;
+
   public:
     UpAndDownMove(GameEngine::GameManagers &gameManagers, ECS::Entity entity, int direction, int speed);
     ~UpAndDownMove() override;
