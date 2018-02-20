@@ -23,6 +23,7 @@ public:
 
   void init();
   void keyPressed(sf::Event event);
+  void keyRelease(sf::Event event);
   void mainLoop();
   void pingLoop();
   void update();
