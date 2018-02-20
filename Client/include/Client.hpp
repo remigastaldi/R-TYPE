@@ -26,6 +26,7 @@
 
 #include "Ship.hpp"
 #include "SceneManager.hpp"
+#include "MultiplayerManager.hpp"
 
 #include  <chrono>
 #include  <cmath>
@@ -70,5 +71,7 @@ namespace GameEngine
       SceneManager _sceneManager;
 
       std::shared_ptr<IMap>  _myMap;
+
+      MultiplayerManager _multiplayerManager;
   };
 }

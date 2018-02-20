@@ -5,6 +5,19 @@
  * @Last modified time: 2018-02-18T12:40:37+01:00
  */
 
+//COMMENT FAIRE BOUGER UN ENNEMI ?
+//EASY AS FUCK !
+//FAITES JUSTE:
+//_eventManager.fire<void, std::string>("multiplayer go up", "ID");
+//Listes des event utilisables:
+//multiplayer go up
+//  multiplayer go down
+//multiplayer go left
+//  multiplayer go right
+//multiplayer shoot
+//multiplayer join
+//multiplayer disconnect
+//multiplayer setPlayerName
 
 #include "NetworkManager.hpp"
 
@@ -26,7 +39,6 @@ void NetworkManager::init()
   _eventManager.listen<void>("PlayGameEvent", [&](){this->playGame();});
 
   std::thread([&](){this->mainLoop();}).detach();
-
 
   UDPPacket packet;
   packet.setCommand(RFC::Commands::LOGIN);
