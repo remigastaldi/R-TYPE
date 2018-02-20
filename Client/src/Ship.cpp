@@ -2,7 +2,7 @@
  * @Author: Remi Gastaldi <gastal_r>
  * @Date:   2018-01-20T20:45:23+01:00
  * @Last modified by:   gastal_r
- * @Last modified time: 2018-02-20T22:23:18+01:00
+ * @Last modified time: 2018-02-21T00:07:21+01:00
  */
 
 
@@ -94,14 +94,14 @@ void  Ship::keyRelease(sf::Event event)
   {
   case sf::Keyboard::Key::Up :
     if (_activeKeys[sf::Keyboard::Key::Down])
-      direction->yDirection = -1;
+      direction->yDirection = 1;
     else
       direction->yDirection = 0;
     break;
 
   case sf::Keyboard::Key::Down :
     if (_activeKeys[sf::Keyboard::Key::Up])
-      direction->yDirection = 1;
+      direction->yDirection = -1;
     else
       direction->yDirection = 0;
     break;
