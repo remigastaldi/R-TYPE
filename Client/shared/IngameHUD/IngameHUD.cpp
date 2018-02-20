@@ -33,14 +33,14 @@ void	IngameHUD::onEnter()
 {
 	_resources.load<Font>("neuropol", "../../Client/media/font/neuropol.ttf");
 	_resources.load<Texture>("scoreSprite", "../../Client/media/img/ingameHUD/scoreSprite.png");
-	_resources.load<Texture>("hearth", "../../Client/media/img/ingameHUD/hearth.png");
+	_resources.load<Texture>("heart", "../../Client/media/img/ingameHUD/heart.png");
 
 	_guiManager.addElement<GUI::Image>("scoreBox", sf::Vector2f(-50, 0), _resources.getContent<Texture>("scoreSprite"), sf::Vector2f(0.7, 0.5));
 	_guiManager.addElement<GUI::Text>("scoreText", sf::Vector2f(0, 0), std::to_string(_score), _resources.getContent<Font>("neuropol"), 30);
 	_guiManager.centerElementWithAnOther<GUI::Image, GUI::Text>("scoreBox", "scoreText", 0, 0);
-	_guiManager.addElement<GUI::Image>("hearth1", sf::Vector2f(100, 130), _resources.getContent<Texture>("hearth"), sf::Vector2f(1, 1));
-	_guiManager.addElement<GUI::Image>("hearth2", sf::Vector2f(50, 130), _resources.getContent<Texture>("hearth"), sf::Vector2f(1, 1));
-	_guiManager.addElement<GUI::Image>("hearth3", sf::Vector2f(0, 130), _resources.getContent<Texture>("hearth"), sf::Vector2f(1, 1));
+	_guiManager.addElement<GUI::Image>("heart1", sf::Vector2f(100, 130), _resources.getContent<Texture>("heart"), sf::Vector2f(1, 1));
+	_guiManager.addElement<GUI::Image>("heart2", sf::Vector2f(50, 130), _resources.getContent<Texture>("heart"), sf::Vector2f(1, 1));
+	_guiManager.addElement<GUI::Image>("heart3", sf::Vector2f(0, 130), _resources.getContent<Texture>("heart"), sf::Vector2f(1, 1));
 }
 
 void	IngameHUD::onExit()
