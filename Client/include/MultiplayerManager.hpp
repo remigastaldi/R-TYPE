@@ -34,13 +34,13 @@ class MultiplayerManager : Alfred::Utils::MakeFinal<MultiplayerManager>, public 
         up(id);
       });
       _event.listen<void, std::string>("multiplayer go down", [&](std::string id) {
-        up(id);
+        down(id);
       });
       _event.listen<void, std::string>("multiplayer go left", [&](std::string id) {
-        up(id);
+        left(id);
       });
       _event.listen<void, std::string>("multiplayer go right", [&](std::string id) {
-        up(id);
+        right(id);
       });
       _event.listen<void, std::string>("multiplayer shoot", [&](std::string id) {
         shoot(id);
@@ -137,11 +137,13 @@ class MultiplayerManager : Alfred::Utils::MakeFinal<MultiplayerManager>, public 
       std::shared_ptr<Texture> texture = _ressources.load<Texture>("metallos_texture", "../../Client/media/img/ship/enemies/CX16-X2.png");
       std::string spriteName = "metallos_sprite[" + id + "]";
       Sprite sprite(spriteName, *texture);
+      _ressources.addResource<Sprite>(spriteName, sprite);
 
       _players[id] = _ecs.createEntity();
 
       _ecs.addComponent<ECS::Components::Position>(_players[id], ECS::Components::Position(200, 200));
       _ecs.addComponent<ECS::Components::Drawable>(_players[id], ECS::Components::Drawable(spriteName));
+      _ecs.addComponent<ECS::Components::Direction>(_players[id], ECS::Components::Direction(0, 0, 10));
       _ecs.addComponent<ECS::Components::Collisionable>(_players[id], ECS::Components::Collisionable(_players[id], ECS::Components::Collisionable::Type::ALLY));
 
       _ecs.updateEntityToSystems(_players[id]);

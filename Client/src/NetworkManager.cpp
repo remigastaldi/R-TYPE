@@ -22,7 +22,7 @@
 #include "NetworkManager.hpp"
 
 NetworkManager::NetworkManager(EventManager::Manager &eventManager) :
-_network(4243, 8000),
+_network(4242, 8000),
 _eventManager(eventManager),
 _mutex(),
 _queue(),
@@ -45,9 +45,23 @@ void NetworkManager::init()
   packet.setData("usr", "root");
   packet.setData("pwd", "root");
 
-  _network.send(packet, "127.0.0.1");
+  _network.send(packet, "10.16.251.24");
+  std::thread([&](){this->pingLoop();}).detach();
   //_eventManager.fire<void, const std::string &>("PlayerJoinEvent", "Slut");
 
+}
+
+void NetworkManager::pingLoop()
+{
+  for (;;)
+  {
+    usleep(1000000);
+    UDPPacket packet;
+    packet.setCommand(RFC::Commands::PING);
+    packet.setToken(_token);
+
+    _network.send(packet);
+  }
 }
 
 void NetworkManager::mainLoop()
@@ -75,10 +89,13 @@ void NetworkManager::update()
   for (auto & it : _queue)
   {
     _mutex.lock();
+    std::cout << "Command: " << std::to_string(static_cast<unsigned int>(it.getCommand())) << std::endl;
+    std::cout << "Result: " << std::to_string(static_cast<unsigned int>(it.getResult())) << std::endl;
     switch (it.getCommand()) {
       case RFC::Commands::CREATE_ROOM:
         packet.setCommand(RFC::Commands::JOIN_ROOM);
         packet.setData("roomId", "room1");
+        std::cout << "CREATED ROOM" << std::endl;
 
         _network.send(packet);
         break;
@@ -90,6 +107,7 @@ void NetworkManager::update()
         } else if (it.getResult() == RFC::Responses::PLAYER_JOIN) {
           std::cout << "PLAYER JOIN" << it.getData("name") << std::endl;
           _eventManager.fire<void, std::string const &>("PlayerJoinEvent", it.getData("name"));
+          _eventManager.fire<void, std::string>("multiplayer join", it.getData("token"));
         } else {
           std::cout << "JOIN ERROR" << std::endl;
         }
@@ -99,6 +117,23 @@ void NetworkManager::update()
           std::cout << "PLAYER " << it.getData("name") << " READY" << std::endl;
         } else {
           std::cout << "PLAYER NOT READY" << std::endl;
+        }
+        break;
+      case RFC::Commands::KEY_PRESSED:
+        std::cout << "KEY PRESSED " << it.getData("key") << std::endl;
+        switch (std::stoi(it.getData("key"))) {
+          case sf::Keyboard::Up:
+            _eventManager.fire<void, std::string>("multiplayer go up", it.getData("token"));
+            break;
+          case sf::Keyboard::Down:
+            _eventManager.fire<void, std::string>("multiplayer go down", it.getData("token"));
+            break;
+          case sf::Keyboard::Left:
+            _eventManager.fire<void, std::string>("multiplayer go left", it.getData("token"));
+            break;
+          case sf::Keyboard::Right:
+            _eventManager.fire<void, std::string>("multiplayer go right", it.getData("token"));
+            break;
         }
         break;
       case RFC::Commands::START_GAME:
@@ -120,7 +155,6 @@ void NetworkManager::update()
       case RFC::Commands::LEAVE_ROOM:break;
       case RFC::Commands::NOT_READY:break;
       case RFC::Commands::SELECT_ROOM_LEVEL:break;
-      case RFC::Commands::KEY_PRESSED:break;
       case RFC::Commands::UNKNOWN:break;
     }
 
