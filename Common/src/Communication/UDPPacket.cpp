@@ -5,7 +5,7 @@
 ** Login	leliev_t
 **
 ** Started on	Sat Jan 20 16:03:44 2018 Tanguy Lelievre
-** Last update	Mon Jan 22 09:36:58 2018 Tanguy Lelievre
+** Last update	Tue Feb 20 19:39:56 2018 Tanguy Lelievre
 */
 
 #include <iostream>
@@ -93,12 +93,12 @@ void	UDPPacket::setResult(RFC::Responses res)
   _data["res"] = std::to_string(static_cast<unsigned int>(res));
 }
 
-int	UDPPacket::getTimestamp() const
+unsigned int	UDPPacket::getTimestamp() const
 {
-  return (std::stoi(_data.at("timestamp")));
+  return (std::stoul(_data.at("timestamp")));
 }
 
-void	UDPPacket::setTimestamp(int timestamp)
+void	UDPPacket::setTimestamp(const std::string &timestamp)
 {
   _data["timestamp"] = timestamp;
 }

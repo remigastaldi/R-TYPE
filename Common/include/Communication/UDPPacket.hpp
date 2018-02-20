@@ -5,7 +5,7 @@
 ** Login	leliev_t
 **
 ** Started on	Sat Jan 20 15:45:53 2018 Tanguy Lelievre
-** Last update	Mon Jan 22 04:53:24 2018 Tanguy Lelievre
+** Last update	Tue Feb 20 19:41:39 2018 Tanguy Lelievre
 */
 
 #pragma	once
@@ -40,8 +40,8 @@ public:
   RFC::Responses getResult() const;
   void	setResult(RFC::Responses);
 
-  int	getTimestamp() const;
-  void	setTimestamp(int);
+  unsigned int	getTimestamp() const;
+  void	setTimestamp(const std::string &);
 
 private:
   std::unordered_map<std::string, std::string>	_data;
