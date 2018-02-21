@@ -37,6 +37,6 @@ class LevelOne : public ILevels
     void exit() override;
     bool isEnd() override;
     void update() override;
-    void unitOutOfSpace(ECS::Entity entity) override;
+    int unitOutOfSpace(ECS::Entity entity) override;
     void unitDie(ECS::Entity entity) override;
 };

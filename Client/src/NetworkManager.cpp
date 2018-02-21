@@ -34,10 +34,10 @@ NetworkManager::~NetworkManager()
 
 void NetworkManager::init()
 {
-  _eventManager.listen<void, sf::Event>("KeyPressedEvent", [&](sf::Event event){this->keyPressed(event);});
-  _eventManager.listen<void, sf::Event>("KeyReleasedEvent", [&](sf::Event event){this->keyRelease(event);});
-  _eventManager.listen<void>("readyToPlayEvent", [&](){this->playerReady();});
-  _eventManager.listen<void>("PlayGameEvent", [&](){this->playGame();});
+	_eventManager.listen<int, sf::Event>("KeyPressedEvent", [&](sf::Event event) -> int {this->keyPressed(event); return 0; });
+	_eventManager.listen<int>("readyToPlayEvent", [&]() -> int {this->playerReady(); return 0; });
+	_eventManager.listen<int>("PlayGameEvent", [&]() -> int {this->playGame(); return 0; });
+  _eventManager.listen<int, sf::Event>("KeyReleasedEvent", [&](sf::Event event){this->keyRelease(event); return 0;});
 
   std::thread([&](){this->mainLoop();}).detach();
 
@@ -56,7 +56,7 @@ void NetworkManager::pingLoop()
 {
   for (;;)
   {
-    usleep(1000000);
+    /*usleep(1000000);*/
     UDPPacket packet;
     packet.setCommand(RFC::Commands::PING);
     packet.setToken(_token);
@@ -103,12 +103,11 @@ void NetworkManager::update()
       case RFC::Commands::JOIN_ROOM:
         if (it.getResult() == RFC::Responses::SUCCESS) {
           std::cout << "JOIN ROOM" << it.getData("name") << std::endl;
-          _eventManager.fire<void, std::string const &>("changeScene", "LobbyPlayer");
-          _eventManager.fire<void, std::string const &>("PlayerJoinEvent", it.getData("name"));
+          _eventManager.fire<int, std::string>("PlayerJoinEvent", it.getData("name"));
         } else if (it.getResult() == RFC::Responses::PLAYER_JOIN) {
           std::cout << "PLAYER JOIN" << it.getData("name") << std::endl;
-          _eventManager.fire<void, std::string const &>("PlayerJoinEvent", it.getData("name"));
-          _eventManager.fire<void, std::string>("multiplayer join", it.getData("token"));
+          _eventManager.fire<int, std::string>("PlayerJoinEvent", it.getData("name"));
+          _eventManager.fire<int, std::string>("multiplayer join", it.getData("token"));
         } else {
           std::cout << "JOIN ERROR" << std::endl;
         }
@@ -124,25 +123,25 @@ void NetworkManager::update()
         std::cout << "KEY PRESSED " << it.getData("key") << std::endl;
         switch (std::stoi(it.getData("key"))) {
           case sf::Keyboard::Up:
-            _eventManager.fire<void, std::string>("multiplayer go up", it.getData("token"));
+            _eventManager.fire<int, std::string>("multiplayer go up", it.getData("token"));
             break;
           case sf::Keyboard::Down:
-            _eventManager.fire<void, std::string>("multiplayer go down", it.getData("token"));
+            _eventManager.fire<int, std::string>("multiplayer go down", it.getData("token"));
             break;
           case sf::Keyboard::Left:
-            _eventManager.fire<void, std::string>("multiplayer go left", it.getData("token"));
+            _eventManager.fire<int, std::string>("multiplayer go left", it.getData("token"));
             break;
           case sf::Keyboard::Right:
-            _eventManager.fire<void, std::string>("multiplayer go right", it.getData("token"));
+            _eventManager.fire<int, std::string>("multiplayer go right", it.getData("token"));
             break;
           case sf::Keyboard::Space:
-            _eventManager.fire<void, std::string>("multiplayer shoot", it.getData("token"));
+            _eventManager.fire<int, std::string>("multiplayer shoot", it.getData("token"));
             break;
         }
         break;
       case RFC::Commands::START_GAME:
         std::cout << "GAME STARTED" << std::endl;
-        _eventManager.fire<void, std::string const &>("changeScene", "IngameHUD");
+        _eventManager.fire<int, std::string>("changeScene", "IngameHUD");
         break;
       default:
           std::cout << "Unkown command " << std::to_string(static_cast<unsigned int>(it.getCommand())) << std::endl;

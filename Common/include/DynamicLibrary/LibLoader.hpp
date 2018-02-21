@@ -65,17 +65,17 @@ namespace EventManager
 
 #ifdef WIN32
 
-typedef char const * (__stdcall *getNameOfLib)();
+typedef char const * (*getNameOfLib)();
 
-typedef IAttack *(__stdcall *getAttackSymbol)(GameEngine::GameManagers &gameManagers, MapEngine &mapEngine, ECS::Entity);
-typedef IMap *(__stdcall *getMapSymbol)(GameEngine::GameManagers &gameManagers);
-typedef IMob *(__stdcall *getMobSymbol)(GameEngine::GameManagers &gameManagers, MapEngine &mapEngine, ECS::Components::Position);
-typedef IMove *(__stdcall *getMoveSymbol)(GameEngine::GameManagers &gameManagers, ECS::Entity, int direction, int speed);
-typedef IPart *(__stdcall *getPartSymbol)();
-typedef IPowerUp *(__stdcall *getPowerUpSymbol)();
-typedef void (__stdcall *getRessourceSymbol)(GameEngine::GameManagers &);
-typedef IScene *(__stdcall *getSceneSymbol)();
-typedef IShipBluprint *(__stdcall *getShipBlueprintSymbol)();
+typedef IAttack *(*getAttackSymbol)(GameEngine::GameManagers &gameManagers, MapEngine &mapEngine, ECS::Entity);
+typedef IMap *(*getMapSymbol)(GameEngine::GameManagers &gameManagers);
+typedef IMob *(*getMobSymbol)(GameEngine::GameManagers &gameManagers, MapEngine &mapEngine, ECS::Components::Position);
+typedef IMove *(*getMoveSymbol)(GameEngine::GameManagers &gameManagers, ECS::Entity, int direction, int speed);
+typedef IPart *(*getPartSymbol)();
+typedef IPowerUp *(*getPowerUpSymbol)();
+typedef IRessources *(*getRessourceSymbol)(GameEngine::GameManagers &gameManagers);
+typedef IScene *(*getSceneSymbol)();
+typedef IShipBluprint *(*getShipBlueprintSymbol)();
 
 #else
 
@@ -123,12 +123,12 @@ class __lib__implem : public Alfred::Utils::NonCopyable
           return nullptr;
       }
 
-    getNameOfLib tmp = (getNameOfLib)(GetProcAddress(hGetProcIDDLL, "getName"));
-    if (tmp == NULL)
-    {
-      LOG_ERROR << "Failed to load lib" << GetLastError() << " " << path << << std::endl;
-      return "";
-    }
+	  getNameOfLib tmp = (getNameOfLib)(GetProcAddress(hGetProcIDDLL, "getName"));
+	  if (tmp == NULL)
+	  {
+		  LOG_ERROR << "Failed to load lib" << GetLastError() << " " << path << std::endl;
+		  return "";
+	  }
 
       return tmp();
 #else
@@ -154,8 +154,8 @@ class __lib__implem : public Alfred::Utils::NonCopyable
       T tmp = (T) GetProcAddress(hGetProcIDDLL, "getSymbol");
       if (tmp == NULL)
       {
-            LOG_ERROR << "Failed to load lib" << GetLastError() << " " << path << << std::endl;
-            return nullptr;
+      		  LOG_ERROR << "Failed to load lib" << GetLastError() << " " << path << std::endl;
+		        return nullptr;
       }
       return tmp;
 #else

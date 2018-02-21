@@ -71,8 +71,8 @@ void	LobbyPlayer::onEnter()
 	_resources.get<Font>("neuropol");
 
 
-	_eventManager.listen<void, const std::string &>("PlayerJoinEvent", [&](const std::string &name){this->playerJoin(name);});
-	_eventManager.listen<void>("exitLobbyEvent", [&](){this->closeLobby();});
+	_eventManager.listen<int, std::string>("PlayerJoinEvent", [&](std::string name) {this->playerJoin(name); return 0; });
+	_eventManager.listen<int>("exitLobbyEvent", [&]() {this->closeLobby(); return 0; });
 
 	sf::Font &font = _resources.getContent<Font>("neuropol");
 	sf::Texture &waitingTexture = _resources.getContent<Texture>("window_whole");
@@ -116,7 +116,7 @@ void	LobbyPlayer::onExit()
 
 void LobbyPlayer::closeLobby()
 {
-	_eventManager.fire<void, std::string const &>("changeScene", "StartPage");
+	_eventManager.fire<int, std::string>("changeScene", "StartPage");
 }
 
 void	LobbyPlayer::update(const float time, ECS::Manager &ecs, EventManager::Manager &event)

@@ -16,7 +16,7 @@ namespace ECS
       : System(SPRITE_COLLISION_HANDLER_PRIORITY, { ecsManager.GetTypeID<ECS::Components::CollisionFrame>() }, ecsManager),
       _eventManager(eventManager)
     {
-      _eventManager.addEvent<void, const std::string &>("UnitDie");
+      _eventManager.addEvent<int, std::string>("UnitDie");
     }
 
     void  SpriteCollisionHandler::updateEntity(float delta, Entity e)

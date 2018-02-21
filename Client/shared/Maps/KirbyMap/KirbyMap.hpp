@@ -44,16 +44,18 @@ class KirbyMap : public IMap
 };
 
 #ifdef WIN32
-extern "C" char const * __declspec(dllexport) __stdcall getName()
-{
-  return "KirbyMap";
-}
+extern "C"
+{ 
+	char const  __declspec(dllexport) *getName()
+	{
+		return "KirbyMap";
+	}
 
-extern "C" IMap  __declspec(dllexport) __stdcall *getSymbol(GameEngine::GameManagers &gameManagers)
-{
-  return new KirbyMap(gameManagers);
+	IMap  __declspec(dllexport) *getSymbol(GameEngine::GameManagers &gameManagers)
+	{
+		return new KirbyMap(gameManagers);
+	}
 }
-
 #else
 
 extern "C" char const * getName()

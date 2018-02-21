@@ -103,7 +103,7 @@ public:
 	{
     if (_resources.find(name) != _resources.end())
       LOG_ERROR << "Ressource " << name << " already exist" << std::endl;
-      std::shared_ptr ptr = std::make_shared<C>(C(name, resource));
+      std::shared_ptr<C> ptr = std::make_shared<C>(C(name, resource));
       _resources.emplace(name, ptr);
 
       return (ptr);

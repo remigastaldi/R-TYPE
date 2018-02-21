@@ -42,11 +42,11 @@ Ship::Ship(GameEngine::GameManagers &gameManagers, MapEngine &mapEngine)
 
     _gameManagers.ecs.updateEntityToSystems(_entity);
 
-    _gameManagers.event.addEvent<void, const std::string &>("SpaceKeyEvent");
+    _gameManagers.event.addEvent<int, std::string>("SpaceKeyEvent");
 
-    _listeners["KeyPressedEvent"] = _gameManagers.event.listen<void, sf::Event>("KeyPressedEvent", [&](sf::Event event) { this->keyPressed(event);});
-    _listeners["KeyReleasedEvent"] = _gameManagers.event.listen<void, sf::Event>("KeyReleasedEvent", [&](sf::Event event) { this->keyRelease(event);});
-    _listeners["SpaceKeyEvent"] = _gameManagers.event.listen<void, const std::string &>("SpaceKeyEvent", [&](const std::string & msg) { this->fire(msg);});
+    _listeners["KeyPressedEvent"] = _gameManagers.event.listen<int, sf::Event>("KeyPressedEvent", [&](sf::Event event) { this->keyPressed(event); return 0;});
+    _listeners["KeyReleasedEvent"] = _gameManagers.event.listen<int, sf::Event>("KeyReleasedEvent", [&](sf::Event event) { this->keyRelease(event); return 0;});
+    _listeners["SpaceKeyEvent"] = _gameManagers.event.listen<int, std::string>("SpaceKeyEvent", [&](std::string msg) { this->fire(msg); return 0;});
 
     _gameManagers.sound.loadSound("shoot", "../../Client/media/sounds/shoot.wav");
     _gameManagers.sound.registerSoundWithEvent<void, sf::Event>("shoot", "SpaceKeyEvent");
@@ -54,9 +54,9 @@ Ship::Ship(GameEngine::GameManagers &gameManagers, MapEngine &mapEngine)
 
 Ship::~Ship()
 {
-  _gameManagers.event.unlisten<void, sf::Event>("KeyPressedEvent", _listeners["KeyPressedEvent"]);
-  _gameManagers.event.unlisten<void, sf::Event>("KeyReleasedEvent", _listeners["KeyReleasedEvent"]);
-  _gameManagers.event.unlisten<void, const std::string &>("SpaceKeyEvent", _listeners["SpaceKeyEvent"]);
+  _gameManagers.event.unlisten<int, sf::Event>("KeyPressedEvent", _listeners["KeyPressedEvent"]);
+  _gameManagers.event.unlisten<int, sf::Event>("KeyReleasedEvent", _listeners["KeyReleasedEvent"]);
+  _gameManagers.event.unlisten<int, std::string>("SpaceKeyEvent", _listeners["SpaceKeyEvent"]);
 }
 
 void  Ship::keyPressed(sf::Event event)
@@ -164,7 +164,7 @@ void  Ship::update(void )
    if (_fire && _fireTickCounter == 0)
   {
     _fireTickCounter++;
-    _gameManagers.event.fire<void, const std::string &>("SpaceKeyEvent", "Fire");
+    _gameManagers.event.fire<int, std::string>("SpaceKeyEvent", "Fire");
   }
   else if (_fire && _fireTickCounter > 20)
     _fireTickCounter = 0;

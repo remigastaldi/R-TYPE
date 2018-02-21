@@ -34,14 +34,17 @@ class StraightMove : public IMove
 };
 
 #ifdef WIN32
-extern "C" char const * __declspec(dllexport) __stdcall getName()
+extern "C" 
 {
-  return "StraightMove";
-}
+	char const __declspec(dllexport) *getName()
+	{
+		return "StraightMove";
+	}
 
-extern "C" IMove __declspec(dllexport) __stdcall *getSymbol(GameEngine::GameManagers &gameManagers, ECS::Entity parent, int direction, int speed)
-{
-  return new StraightMove(gameManagers, parent, direction, speed);
+	IMove __declspec(dllexport) *getSymbol(GameEngine::GameManagers &gameManagers, ECS::Entity parent, int direction, int speed)
+	{
+		return new StraightMove(gameManagers, parent, direction, speed);
+	}
 }
 
 #else

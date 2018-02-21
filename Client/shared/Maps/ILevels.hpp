@@ -33,6 +33,6 @@ class ILevels
     virtual void exit() = 0;
     virtual bool isEnd() = 0;
     virtual void update() = 0;
-    virtual void unitOutOfSpace(ECS::Entity) = 0;
+    virtual int unitOutOfSpace(ECS::Entity) = 0;
     virtual void unitDie(ECS::Entity) = 0;
 };

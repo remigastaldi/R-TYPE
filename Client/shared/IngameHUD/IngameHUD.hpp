@@ -17,8 +17,8 @@ public:
 
 	const	std::string &getName() const { return _name; }
 
-	void	printAlert(const std::string&);
-	void	hideAlert(const std::string&);
+	void	printAlert(std::string);
+	void	hideAlert(std::string);
 
 	void	onEnter();
 	void	onExit();
