@@ -2,7 +2,7 @@
  * @Author: Remi Gastaldi <gastal_r>
  * @Date:   2018-02-15T15:02:12+01:00
  * @Last modified by:   gastal_r
- * @Last modified time: 2018-02-16T11:15:05+01:00
+ * @Last modified time: 2018-02-21T13:15:29+01:00
  */
 
 
@@ -18,10 +18,11 @@
 #include <stdexcept>
 #include <iostream>
 #include <chrono>
+#include <unordered_map>
 
 class AsioSyncUdpNetwork : public ICommunication {
 public:
-  AsioSyncUdpNetwork(int);
+  explicit AsioSyncUdpNetwork(int);
   AsioSyncUdpNetwork(int, int);
   virtual	~AsioSyncUdpNetwork();
 
@@ -34,7 +35,10 @@ public:
   // virtual void	send(std::unordered_map<std::string, std::string>	&);
   virtual void  disconnect();
 
-  virtual	std::string	getLastSender() const;
+  virtual	const std::string	getLastSender() const;
+
+  std::unordered_map<std::string, std::string>  serializeStringToUnorderedMap(std::string string);
+  std::string deserializeUnorderedMapToString(const std::unordered_map<std::string, std::string> &map);
 private:
   int	_port;
   boost::asio::io_context _context;

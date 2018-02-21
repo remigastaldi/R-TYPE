@@ -2,7 +2,7 @@
  * @Author: Remi Gastaldi <gastal_r>
  * @Date:   2018-01-22T06:10:40+01:00
  * @Last modified by:   gastal_r
- * @Last modified time: 2018-01-22T10:48:23+01:00
+ * @Last modified time: 2018-02-21T13:22:05+01:00
  */
 
 
@@ -55,13 +55,13 @@ void AsioSyncUdpNetwork::connect(const std::string &port)
 UDPPacket AsioSyncUdpNetwork::receive()
 {
   UDPPacket packet;
-  std::unordered_map<std::string, std::string> map;
   try {
     std::string archive_data(1024, 0);
     _socket.receive_from(boost::asio::buffer(archive_data), _lastEndpoint);
-    std::istringstream archive_stream(archive_data);
-    boost::archive::text_iarchive archive(archive_stream);
-    archive >> map;
+    // std::istringstream archive_stream(archive_data);
+    // boost::archive::text_iarchive archive(archive_stream);
+    // archive >> map;
+    std::unordered_map<std::string, std::string> map = serializeStringToUnorderedMap(archive_data);
     map["ip"] = _lastEndpoint.address().to_string();
     map["port"] = std::to_string(_lastEndpoint.port());
     packet.setData(map);
@@ -82,10 +82,11 @@ void AsioSyncUdpNetwork::send(UDPPacket &packet)
     for (auto it : packet.getData())
       std::cout << " " << it.first << ":" << it.second;
     std::cout << std::endl;
-    std::ostringstream archive_stream;
-    boost::archive::text_oarchive archive(archive_stream);
-    archive << packet.getData();
-    std::string outbound_data_ = archive_stream.str();
+    // std::ostringstream archive_stream;
+    // boost::archive::text_oarchive archive(archive_stream);
+    // archive << packet.getData();
+    // std::string outbound_data_ = archive_stream.str();
+    std::string outbound_data_(deserializeUnorderedMapToString(packet.getData()));
     _socket.send_to(boost::asio::buffer(outbound_data_), _lastEndpoint);
     std::cout << "sent to " << _lastEndpoint.address().to_string() << " on port " << _lastEndpoint.port() << std::endl;
   } catch (std::exception &e) {
@@ -103,10 +104,11 @@ void AsioSyncUdpNetwork::send(UDPPacket &packet, const std::string &ip)
     for (auto it : packet.getData())
       std::cout << " " << it.first << ":" << it.second;
     std::cout << std::endl;
-    std::ostringstream archive_stream;
-    boost::archive::text_oarchive archive(archive_stream);
-    archive << packet.getData();
-    std::string outbound_data_ = archive_stream.str();
+    // std::ostringstream archive_stream;
+    // boost::archive::text_oarchive archive(archive_stream);
+    // archive << packet.getData();
+    // std::string outbound_data_ = archive_stream.str();
+    std::string outbound_data_(deserializeUnorderedMapToString(packet.getData()));
     _lastEndpoint.address(boost::asio::ip::address::from_string(ip));
     _socket.send_to(boost::asio::buffer(outbound_data_), _lastEndpoint);
     std::cout << "sent to " << _lastEndpoint.address().to_string() << " on port " << _lastEndpoint.port() << std::endl;
@@ -125,10 +127,11 @@ void AsioSyncUdpNetwork::send(UDPPacket &packet, const std::string &ip, unsigned
     for (auto it : packet.getData())
       std::cout << " " << it.first << ":" << it.second;
     std::cout << std::endl;
-    std::ostringstream archive_stream;
-    boost::archive::text_oarchive archive(archive_stream);
-    archive << packet.getData();
-    std::string outbound_data_ = archive_stream.str();
+    // std::ostringstream archive_stream;
+    // boost::archive::text_oarchive archive(archive_stream);
+    // archive << packet.getData();
+    // std::string outbound_data_ = archive_stream.str();
+    std::string outbound_data_(deserializeUnorderedMapToString(packet.getData()));
     _lastEndpoint.address(boost::asio::ip::address::from_string(ip));
     _lastEndpoint.port(port);
     _socket.send_to(boost::asio::buffer(outbound_data_), _lastEndpoint);
@@ -159,7 +162,39 @@ void AsioSyncUdpNetwork::disconnect()
     _socket.close();
 }
 
-std::string AsioSyncUdpNetwork::getLastSender() const
+const std::string AsioSyncUdpNetwork::getLastSender() const
 {
   return (_lastEndpoint.address().to_string());
+}
+
+ std::unordered_map<std::string, std::string>  AsioSyncUdpNetwork::serializeStringToUnorderedMap(std::string string)
+ {
+   std::unordered_map<std::string, std::string> map;
+
+   size_t posSecond = 0;
+   while ((posSecond = string.find(":")) != std::string::npos)
+   {
+     std::string second = string.substr(0, posSecond);
+     size_t posFirst = second.find("=");
+     std::string first = second.substr(0, posFirst);
+     second.erase(0, posFirst + 1);
+     map[first] = second;
+     string.erase(0, posSecond + 1);
+   }
+   return (map);
+ }
+
+std::string AsioSyncUdpNetwork::deserializeUnorderedMapToString(const std::unordered_map<std::string, std::string> &map)
+{
+  std::string string;
+
+  for (auto it = map.cbegin(); it != map.cend();)
+  {
+   string += it->first;
+   string += "=";
+   string += it->second;
+   it = std::next(it);
+   string += ":";
+  }
+  return (string);
 }
