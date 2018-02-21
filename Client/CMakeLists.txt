@@ -97,7 +97,7 @@ endif()
 if(MSVC)
   target_compile_options(${NAME} PUBLIC ${COMPILE_OPTIONS} /std:c++latest)
 else()
-  target_compile_options(${NAME} PUBLIC ${COMPILE_OPTIONS} -lboost_system -lboost_thread-mt)
+  target_compile_options(${NAME} PUBLIC ${COMPILE_OPTIONS})
 endif()
 
 #Copy SFML DLL

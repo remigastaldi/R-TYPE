@@ -61,6 +61,7 @@ void NetworkManager::login()
 			_network.send(packet, _managers.config.getKey("ip"));
 			std::cout << "Trying to reconnect in 2 secondes..." << std::endl;
 		} else {
+			_mutex.unlock();		
 			return;
 		}
 		_mutex.unlock();
