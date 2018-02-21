@@ -10,6 +10,7 @@
 
 #include <SFML/System.hpp>
 #include <SFML/Graphics.hpp>
+#include <chrono>
 
 #include  "Communication/AsioSyncUdpNetwork.hpp"
 #include  "RFC.hpp"

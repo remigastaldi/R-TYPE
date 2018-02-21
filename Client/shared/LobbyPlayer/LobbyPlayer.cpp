@@ -110,7 +110,6 @@ void	LobbyPlayer::onExit()
 	_resources.release("exitButton");
 	_resources.release("readyButtonState");
 	_resources.release("readyButton");
-	_resources.release("neuropol");
 	_guiManager.releaseAll();
 }
 

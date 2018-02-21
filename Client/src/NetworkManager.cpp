@@ -20,7 +20,7 @@
 //multiplayer setPlayerName
 
 #include <GameManagers.hpp>
-#include <chrono>
+#include <AlfredBase/Timer/Timer.hpp>
 #include "NetworkManager.hpp"
 
 NetworkManager::NetworkManager(GameEngine::GameManagers &manager) :
@@ -59,6 +59,7 @@ void NetworkManager::pingLoop()
   for (;;)
   {
     std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+
     UDPPacket packet;
     packet.setCommand(RFC::Commands::PING);
     packet.setToken(_token);
@@ -105,7 +106,7 @@ void NetworkManager::update()
       case RFC::Commands::JOIN_ROOM:
         if (it.getResult() == RFC::Responses::SUCCESS) {
           std::cout << "JOIN ROOM" << it.getData("name") << std::endl;
-          _managers.event.fire<int, std::string const &>("changeScene", "LobbyPlayer");
+					_managers.event.fire<int, std::string const &>("changeScene", "LobbyPlayer");					
           _managers.event.fire<int, std::string>("PlayerJoinEvent", it.getData("name"));
         } else if (it.getResult() == RFC::Responses::PLAYER_JOIN) {
           std::cout << "PLAYER JOIN" << it.getData("name") << std::endl;
@@ -139,6 +140,23 @@ void NetworkManager::update()
             break;
           case sf::Keyboard::Space:
             _managers.event.fire<int, std::string>("multiplayer shoot", it.getData("token"));
+            break;
+        }
+        break;
+			case RFC::Commands::KEY_RELEASE:
+        std::cout << "KEY RELEASE " << it.getData("key") << std::endl;
+        switch (std::stoi(it.getData("key"))) {
+          case sf::Keyboard::Up:
+            _managers.event.fire<int, std::string>("multiplayer release up", it.getData("token"));
+            break;
+          case sf::Keyboard::Down:
+            _managers.event.fire<int, std::string>("multiplayer release down", it.getData("token"));
+            break;
+          case sf::Keyboard::Left:
+            _managers.event.fire<int, std::string>("multiplayer release left", it.getData("token"));
+            break;
+          case sf::Keyboard::Right:
+            _managers.event.fire<int, std::string>("multiplayer release right", it.getData("token"));
             break;
         }
         break;
