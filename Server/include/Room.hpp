@@ -5,13 +5,14 @@
 ** Login	leliev_t
 **
 ** Started on	Wed Jan 17 22:29:28 2018 Tanguy Lelievre
-** Last update	Mon Jan 22 09:35:01 2018 Tanguy Lelievre
+** Last update	Wed Feb 21 00:58:48 2018 Tanguy Lelievre
 */
 
 #pragma once
 
 #include <unordered_map>
 #include <memory>
+#include <thread>
 #include	"Communication/AsioSyncUdpNetwork.hpp"
 #include "Client.hpp"
 

@@ -2,7 +2,7 @@
  * @Author: Remi Gastaldi <gastal_r>
  * @Date:   2018-02-15T00:18:51+01:00
  * @Last modified by:   gastal_r
- * @Last modified time: 2018-02-19T18:21:10+01:00
+ * @Last modified time: 2018-02-21T06:32:08+01:00
  */
 
 
@@ -46,7 +46,7 @@ public:
 
   void  updateObjects(void);
 
-  void  deleteObject(ECS::Entity entity);
+  size_t  deleteObject(ECS::Entity entity);
 
   template<typename C>
   void  deleteObjectFromEntity(ECS::Entity entity)

@@ -15,11 +15,11 @@
 #include "GUIManager.hpp"
 #include "EventManager.hpp"
 
-class StartPage : public IScene
+class StartScene : public IScene
 {
 public:
-	explicit StartPage(ResourcesManager &resourceManager, GUI::Manager &, EventManager::Manager &);
-	virtual ~StartPage() {};
+	explicit StartScene(ResourcesManager &resourceManager, GUI::Manager &, EventManager::Manager &);
+	virtual ~StartScene() {};
 
 	const	std::string &getName() const { return _name; }
 

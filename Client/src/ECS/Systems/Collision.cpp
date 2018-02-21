@@ -2,7 +2,7 @@
  * @Author: Remi Gastaldi <gastal_r>
  * @Date:   2018-01-21T04:36:33+01:00
  * @Last modified by:   gastal_r
- * @Last modified time: 2018-02-20T19:14:01+01:00
+ * @Last modified time: 2018-02-21T05:34:15+01:00
  */
 
 
@@ -39,8 +39,6 @@ namespace ECS
       {
         if (it == e)
           continue;
-        if (getManager().getComponent<ECS::Components::CollisionFrame>(it).get() != nullptr)
-          return;
 
         std::shared_ptr<ECS::Components::Drawable> drawable = getManager().getComponent<ECS::Components::Drawable>(it);
 

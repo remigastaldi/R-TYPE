@@ -48,7 +48,7 @@ namespace GameEngine
       void pushScene(const std::string &name)
       {
         if (_scenes.count(name) == 0) {
-          LOG_ERROR << "Scene dont exist" << std::endl;
+          LOG_ERROR << "Scene " << name << " doesn't exist" << std::endl;
           return;
         }
 
@@ -92,4 +92,3 @@ namespace GameEngine
       }
   };
 }
-

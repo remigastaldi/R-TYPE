@@ -19,7 +19,7 @@
 -I./Client/shared/Move/StraightMove/
 -I./Client/shared/Move/UpAndDown/
 
--I./Client/shared/StartPage
+-I./Client/shared/StartScene
 
 -I./Common/
 -I./Common/include

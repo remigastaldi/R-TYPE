@@ -23,7 +23,8 @@ _token(""),
 _name(""),
 _roomId(""),
 _ready(false),
-_port()
+_port(),
+_timestamp(0)
 {
 
 }
@@ -91,4 +92,14 @@ unsigned short	Client::getPort() const
 void	Client::setPort(unsigned short port)
 {
   _port = port;
+}
+
+unsigned int	Client::getTimestamp() const
+{
+  return (_timestamp);
+}
+
+void	Client::setTimestamp(unsigned int timestamp)
+{
+  _timestamp = timestamp;
 }

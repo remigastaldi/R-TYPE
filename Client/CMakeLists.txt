@@ -35,7 +35,7 @@ target_sources(${NAME}
         ${CMAKE_CURRENT_SOURCE_DIR}/src/ECS/Systems/Collision.cpp
 
         # Temporary
-        ${CMAKE_CURRENT_SOURCE_DIR}/shared/StartPage/StartPage.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/shared/StartScene/StartScene.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/shared/LobbyPlayer/LobbyPlayer.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/shared/IngameHUD/IngameHUD.cpp
 

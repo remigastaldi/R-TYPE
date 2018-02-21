@@ -2,7 +2,7 @@
  * @Author: Remi Gastaldi <gastal_r>
  * @Date:   2018-01-17T04:07:04+01:00
  * @Last modified by:   gastal_r
- * @Last modified time: 2018-02-20T19:48:33+01:00
+ * @Last modified time: 2018-02-21T06:47:38+01:00
  */
 
 
@@ -63,6 +63,7 @@ namespace GameEngine
     _eventManager.addEvent<int, std::string>("PlayGameEvent");
     _eventManager.addEvent<int, std::string>("ExitGameEvent");
     _eventManager.addEvent<int, std::string>("OptionsEvent");
+    _eventManager.addEvent<int, std::string>("PlayerJoinEvent");
 /*
 	_eventManager.listen<int, std::string>("PlayGameEvent",
 		[&](ECS::Entity by, ECS::Entity to) -> int { playGame(); return 0; });
@@ -73,7 +74,7 @@ namespace GameEngine
     _eventManager.addEvent<int, sf::Event>("KeyPressedEvent");
     _eventManager.addEvent<int, sf::Event>("KeyReleasedEvent");
 
-//   _networkManager.init();
+  //_networkManager.init();
     //Loading library
    _libraryLoader.map.addFolder("../ressources/map/");
    _libraryLoader.mob.addFolder("../ressources/mob/");
@@ -97,7 +98,7 @@ namespace GameEngine
     });
 
     //Scenes
-    //_sceneManager.addScene<StartPage>("StartPage", _resourcesManager, _guiManager, _eventManager);
+    _sceneManager.addScene<StartScene>("StartScene", _resourcesManager, _guiManager, _eventManager);
     _sceneManager.addScene<LobbyPlayer>("LobbyPlayer", _resourcesManager, _guiManager, _eventManager);
     _sceneManager.addScene<IngameHUD>("IngameHUD", _resourcesManager, _guiManager, _eventManager);
 
@@ -128,8 +129,8 @@ namespace GameEngine
 
   void Client::run(void)
   {
-//    _sceneManager.pushScene("StartPage");
-    _sceneManager.pushScene("IngameHUD");
+   _sceneManager.pushScene("StartScene");
+    // _sceneManager.pushScene("IngameHUD");
 
     _myMap.reset(_libraryLoader.map.get("KirbyMap")(_gameManagers));
 
@@ -201,14 +202,14 @@ namespace GameEngine
 
   void Client::update(void)
   {
-//    _networkManager.update();
 		_myMap->update();
+    _networkManager.update();
     _ecsManager.updateSystemsRange(0.f, 0, 7);
   }
 
   void Client::render(float alpha)
   {
-//		std::cout << "entities: " << _ecsManager.getEntities().size() << std::endl;
+		std::cout << "entities: " << _ecsManager.getEntities().size() << std::endl;
     _window.clear();
     _ecsManager.updateSystemsRange(0.f, 7, 8);
     _guiManager.update(alpha);

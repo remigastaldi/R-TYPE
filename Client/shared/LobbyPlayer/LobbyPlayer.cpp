@@ -110,13 +110,12 @@ void	LobbyPlayer::onExit()
 	_resources.release("exitButton");
 	_resources.release("readyButtonState");
 	_resources.release("readyButton");
-	_resources.release("neuropol");
 	_guiManager.releaseAll();
 }
 
 void LobbyPlayer::closeLobby()
 {
-	_eventManager.fire<int, std::string>("changeScene", "StartPage");
+	_eventManager.fire<int, std::string>("changeScene", "StartScene");
 }
 
 void	LobbyPlayer::update(const float time, ECS::Manager &ecs, EventManager::Manager &event)
