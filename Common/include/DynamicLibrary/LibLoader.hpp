@@ -10,9 +10,11 @@
 
 #ifdef WIN32
 #include <windows.h>
+#include "mon_dirent.hpp"
 #else
 
 #include <dlfcn.h>
+#include <dirent.h>
 
 #endif
 
@@ -30,7 +32,6 @@
 #include <type_traits>
 #include <GameManagers.hpp>
 #include <stdio.h>
-#include <dirent.h>
 
 namespace GameEngine
 {
