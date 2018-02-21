@@ -41,6 +41,16 @@
              )
  endif ()
 
+ set(UTILS_SOURCES
+         ${CMAKE_SOURCE_DIR}/Common/src/ECS/Manager.cpp
+         ${CMAKE_SOURCE_DIR}/Common/src/ECS/System.cpp
+         ${CMAKE_SOURCE_DIR}/Common/src/ECS/Store.cpp
+
+         ${CMAKE_SOURCE_DIR}/Common/src/ECS/Systems/Mouvement.cpp
+         ${CMAKE_SOURCE_DIR}/Common/src/ECS/Systems/CleanupFrameCollisionComponents.cpp
+         ${CMAKE_SOURCE_DIR}/Common/src/ECS/Systems/SpriteCollisionHandler.cpp
+         ${CMAKE_SOURCE_DIR}/Common/src/ECS/Systems/Health.cpp)
+
  #MAPS
  add_library(KirbyMap SHARED
          Maps/KirbyMap/KirbyMap.hpp Maps/KirbyMap/KirbyMap.cpp
@@ -49,20 +59,20 @@
          ${CMAKE_SOURCE_DIR}/Client/include/GameManagers.hpp
          ${CMAKE_SOURCE_DIR}/Client/src/MapEngine.cpp
          ${CMAKE_SOURCE_DIR}/Client/src/Ship.cpp
-         ${COMMON_SOURCES})
+         ${UTILS_SOURCES})
 
  #MOBS
- add_library(Metallos SHARED Mobs/Metallos/Metallos.cpp Mobs/Metallos/Metallos.hpp ${COMMON_SOURCES})
+ add_library(Metallos SHARED Mobs/Metallos/Metallos.cpp Mobs/Metallos/Metallos.hpp ${UTILS_SOURCES})
  target_link_libraries(Metallos sfml-system sfml-graphics sfml-window sfml-audio)
 
  #ATTACKS
- add_library(BasicAttack SHARED Attack/BasicAttack/BasicAttack.cpp Attack/BasicAttack/BasicAttack.cpp ${COMMON_SOURCES})
+ add_library(BasicAttack SHARED Attack/BasicAttack/BasicAttack.cpp Attack/BasicAttack/BasicAttack.cpp ${UTILS_SOURCES})
 
  #MOVE
- add_library(StraightMove SHARED Move/StraightMove/StraightMove.cpp Move/StraightMove/StraightMove.hpp ${COMMON_SOURCES})
- add_library(UpAndDownMove SHARED Move/UpAndDown/UpAndDownMove.cpp Move/UpAndDown/UpAndDownMove.hpp ${COMMON_SOURCES})
- add_library(SinusoideMove SHARED Move/SinusoideMove/SinusoideMove.cpp Move/SinusoideMove/SinusoideMove.hpp ${COMMON_SOURCES})
- add_library(BasicRessource SHARED Ressources/BasicRessources.hpp Ressources/BasicRessources.cpp ${COMMON_SOURCES})
+ add_library(StraightMove SHARED Move/StraightMove/StraightMove.cpp Move/StraightMove/StraightMove.hpp ${UTILS_SOURCES})
+ add_library(UpAndDownMove SHARED Move/UpAndDown/UpAndDownMove.cpp Move/UpAndDown/UpAndDownMove.hpp ${UTILS_SOURCES})
+ add_library(SinusoideMove SHARED Move/SinusoideMove/SinusoideMove.cpp Move/SinusoideMove/SinusoideMove.hpp ${UTILS_SOURCES})
+ add_library(BasicRessource SHARED Ressources/BasicRessources.hpp Ressources/BasicRessources.cpp ${UTILS_SOURCES})
 
  set_target_properties(KirbyMap PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/ressources/map)
  target_compile_options(KirbyMap PUBLIC ${COMPILE_OPTIONS})

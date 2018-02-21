@@ -44,9 +44,6 @@ void LevelOne::update()
     _timeLeft = _timeBetweenMobSpawn;
     _nbMobSpawn -= 1;
 
-    //Spawn a mob
-    LOG_INFO << "Spawning a mob " << _nbMobSpawn << std::endl;
-
 
     std::shared_ptr<IMob> tmp(_loader.mob.get("Metallos")(_gameManagers, _mapEngine, ECS::Components::Position(1800, 900)));
     _mapEngine.addObject<IMob>(tmp->getID(), tmp);

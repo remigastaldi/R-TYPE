@@ -21,10 +21,6 @@ Metallos::Metallos(GameEngine::GameManagers &gameManagers, MapEngine &mapEngine,
   Logger::get().setOutput(CONSOLE_LOG);
 
 
-  LOG_INFO << "Creating Metaloss" << std::endl;
-
-  LOG_INFO << "Entity ID " << _me << std::endl;
-
   std::shared_ptr<Texture> texture = _gameManagers.resources.get<Texture>("metallos_texture");
   _spriteName = "metallos_sprite[" + std::to_string(_me) + "]";
   Sprite sprite(_spriteName, *texture);

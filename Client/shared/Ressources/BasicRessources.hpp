@@ -13,7 +13,7 @@ void registerRessources(GameEngine::GameManagers &_managers)
   _managers.resources.load<Texture>("parallax_03", "../../Client/media/img/Parallax/background_01_parallax_03.png");
   _managers.resources.load<Texture>("basick_attack_texture", "../../Client/media/img/ship/enemies/bullet_blaster_big_single.png");
   _managers.resources.load<Texture>("scoreSprite", "../../Client/media/img/ingameHUD/scoreSprite.png");
-  _managers.resources.load<Texture>("heart", "../../Client/media/img/ingameHUD/hearth.png");
+  _managers.resources.load<Texture>("heart", "../../Client/media/img/ingameHUD/heart.png");
   _managers.resources.load<Texture>("lobbiesBackground", "../../Client/media/img/lobbiesBackground.jpg");
   _managers.resources.load<Texture>("startButtons", "../../Client/media/img/startPage/startButtons.png");
   _managers.resources.load<Texture>("lobbiesBackground", "../../Client/media/img/lobbiesBackground.jpg");

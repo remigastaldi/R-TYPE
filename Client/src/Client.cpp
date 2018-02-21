@@ -71,7 +71,7 @@ namespace GameEngine
     _eventManager.addEvent<void, sf::Event>("KeyPressedEvent");
     _eventManager.addEvent<void, sf::Event>("KeyReleasedEvent");
 
-   _networkManager.init();
+//   _networkManager.init();
     //Loading library
    _libraryLoader.map.addFolder("../ressources/map/");
    _libraryLoader.mob.addFolder("../ressources/mob/");
@@ -82,7 +82,7 @@ namespace GameEngine
 
     //Ressources
 
-    _libraryLoader.ressource.get("BasicRessources")(_gameManagers);
+    _libraryLoader.updateAllRessources(_gameManagers);
 
     //Escape key
     _eventManager.listen<void, sf::Event>("KeyPressedEvent", [&] (sf::Event ev) -> void {
@@ -120,7 +120,8 @@ namespace GameEngine
 
   void Client::run(void)
   {
-    _sceneManager.pushScene("StartPage");
+//    _sceneManager.pushScene("StartPage");
+    _sceneManager.pushScene("IngameHUD");
 
     _myMap.reset(_libraryLoader.map.get("KirbyMap")(_gameManagers));
 
@@ -192,7 +193,7 @@ namespace GameEngine
 
   void Client::update(void)
   {
-    _networkManager.update();
+//    _networkManager.update();
 		_myMap->update();
     _ecsManager.updateSystemsRange(0.f, 0, 7);
   }

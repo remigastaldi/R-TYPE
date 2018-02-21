@@ -198,7 +198,6 @@ class __lib__implem : public Alfred::Utils::NonCopyable
               LOG_INFO << "Trying to load lib " << curPath << std::endl;
 
               std::string nameOfLib = getLibName(curPath);
-              LOG_ERROR << "lib name " << nameOfLib << std::endl;
 
               if (nameOfLib.empty())
                 LOG_ERROR << "Error while loading lib " << curPath << std::endl;
@@ -258,6 +257,15 @@ class __lib__implem : public Alfred::Utils::NonCopyable
       }
       return _symbols[name];
     }
+
+    std::vector<std::string> getAll()
+    {
+      std::vector<std::string> out;
+      for (const auto &it : _symbols)
+        out.push_back(it.first);
+
+      return out;
+    }
 };
 
 class LibLoader
@@ -300,5 +308,11 @@ class LibLoader
       ressource.update();
       scene.update();
       ship_blueprint.update();
+    }
+
+    void updateAllRessources(GameEngine::GameManagers &manager)
+    {
+      for (const auto &it: ressource.getAll())
+        ressource.get(it)(manager);
     }
 };

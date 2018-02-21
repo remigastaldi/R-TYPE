@@ -28,7 +28,7 @@ namespace GameEngine
           LOG_ERROR << "Scene already exist" << std::endl;
         else {
           _scenes[name] = new S(std::forward<Args>(args)...);
-          LOG_ERROR << "Scene " << name << " loaded" << std::endl;
+          LOG_SUCCESS << "Scene " << name << " loaded" << std::endl;
         }
       };
 
