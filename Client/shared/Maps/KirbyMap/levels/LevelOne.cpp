@@ -2,7 +2,7 @@
  * @Author: Remi Gastaldi <gastal_r>
  * @Date:   2018-02-15T16:16:24+01:00
  * @Last modified by:   gastal_r
- * @Last modified time: 2018-02-20T22:42:43+01:00
+ * @Last modified time: 2018-02-21T06:34:54+01:00
  */
 
 
@@ -44,6 +44,7 @@ void LevelOne::update()
     _timeLeft = _timeBetweenMobSpawn;
     _nbMobSpawn -= 1;
 
+    return;
 
     std::shared_ptr<IMob> tmp(_loader.mob.get("Metallos")(_gameManagers, _mapEngine, ECS::Components::Position(1800, 900)));
     _mapEngine.addObject<IMob>(tmp->getID(), tmp);
@@ -74,7 +75,10 @@ LevelOne::~LevelOne()
 
 int LevelOne::unitOutOfSpace(ECS::Entity entity)
 {
-  _mapEngine.deleteObject(entity);
+  if (_mapEngine.deleteObject(entity) == 0)
+  {
+    _ecs.destroyEntity(entity);
+  }
   // if (_mobs.find(entity) != _mobs.end()) {
   //   _mobs.erase(entity);
   //   LOG_SUCCESS << "Mob out of space deleted" << std::endl;

@@ -37,7 +37,7 @@ namespace ECS
       if (health->health <= 0)
       {
         getManager().destroyEntity(e);
-        _eventManager.fire<int, ECS::Entity>("UnitDie", e);
+        _eventManager.fire<int, ECS::Entity>("UnitDieEvent", e);
       }
     }
   }

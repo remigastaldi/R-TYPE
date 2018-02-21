@@ -16,7 +16,7 @@ namespace ECS
       : System(MOUVEMENT_PRIORITY, {ecsManager.GetTypeID<ECS::Components::Position>(), ecsManager.GetTypeID<ECS::Components::Direction>()}, ecsManager),
       _eventManager(eventManager)
       {
-        _eventManager.addEvent<int, ECS::Entity>("UnitOutOfSpace");
+        _eventManager.addEvent<int, ECS::Entity>("UnitOutOfSpaceEvent");
       }
 
     void Mouvement::updateEntity(float delta, Entity e)
@@ -44,7 +44,7 @@ namespace ECS
 
       if ((position->x <= 0 || position->x >= 1900) || (position->y <= 0 || position->y >= 1080))
       {
-        _eventManager.fire<int, ECS::Entity>("UnitOutOfSpace", e);
+        _eventManager.fire<int, ECS::Entity>("UnitOutOfSpaceEvent", e);
 //        getManager().destroyEntity(e);
       }
     }

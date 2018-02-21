@@ -2,7 +2,7 @@
  * @Author: Remi Gastaldi <gastal_r>
  * @Date:   2018-01-20T20:45:23+01:00
  * @Last modified by:   gastal_r
- * @Last modified time: 2018-02-21T01:16:30+01:00
+ * @Last modified time: 2018-02-21T06:21:03+01:00
  */
 
 
@@ -166,7 +166,7 @@ void  Ship::update(void )
     _fireTickCounter++;
     _gameManagers.event.fire<int, std::string>("SpaceKeyEvent", "Fire");
   }
-  else if (_fire && _fireTickCounter > 20)
+  else if (_fire && _fireTickCounter > 30)
     _fireTickCounter = 0;
   else if (_fire)
     _fireTickCounter++;

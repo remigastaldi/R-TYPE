@@ -16,7 +16,7 @@ namespace ECS
       : System(SPRITE_COLLISION_HANDLER_PRIORITY, { ecsManager.GetTypeID<ECS::Components::CollisionFrame>() }, ecsManager),
       _eventManager(eventManager)
     {
-      _eventManager.addEvent<int, std::string>("UnitDie");
+      _eventManager.addEvent<int, std::string>("UnitDieEvent");
     }
 
     void  SpriteCollisionHandler::updateEntity(float delta, Entity e)
@@ -52,7 +52,7 @@ namespace ECS
           || (collisionableB->type == ECS::Components::Collisionable::Type::ALLY_MISSILE))
         {
           getManager().destroyEntity(collisionFrame->entity);
-          _eventManager.fire<int, ECS::Entity>("UnitDie", collisionFrame->entity);
+          _eventManager.fire<int, ECS::Entity>("UnitDieEvent", collisionFrame->entity);
         }
       }
       if (healthB.get() != nullptr && damagesA.get() != nullptr)
@@ -63,7 +63,7 @@ namespace ECS
           || (collisionableA->type == ECS::Components::Collisionable::Type::ALLY_MISSILE))
         {
           getManager().destroyEntity(e);
-          _eventManager.fire<int, ECS::Entity>("UnitDie", e);
+          _eventManager.fire<int, ECS::Entity>("UnitDieEvent", e);
         }
       }
     }
