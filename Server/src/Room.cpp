@@ -5,7 +5,7 @@
 ** Login	leliev_t
 **
 ** Started on	Mon Jan 22 00:40:59 2018 Tanguy Lelievre
-** Last update	Wed Feb 21 05:34:33 2018 Tanguy Lelievre
+** Last update	Wed Feb 21 08:36:01 2018 Tanguy Lelievre
 */
 
 #include "Room.hpp"
@@ -125,6 +125,7 @@ void	Room::getRoomInfo(UDPPacket &packet) const
     player = str + std::to_string((i + 1));
     if (_clients.find(player) != _clients.end())
     {
+      packet.setData(player + "_token", _clients.at(player).getToken());
       if (_clients.at(player).getState() == true)
         packet.setData(player, strue);
       else

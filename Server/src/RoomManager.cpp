@@ -5,7 +5,7 @@
 ** Login	leliev_t
 **
 ** Started on	Sat Jan 20 22:26:56 2018 Tanguy Lelievre
-** Last update	Wed Feb 21 05:26:45 2018 Tanguy Lelievre
+** Last update	Wed Feb 21 09:50:53 2018 Tanguy Lelievre
 */
 
 #include "RoomManager.hpp"
@@ -169,8 +169,8 @@ std::cout << "set player ready" << std::endl;
     {
         packet.setCommand(RFC::Commands::START_GAME);
         packet.setResult(RFC::Responses::GAME_STARTED);
-        _net.get()->send(packet, _clientsList[player].getIp(), _clientsList[player].getPort());
         _roomList.at(_clientsList.at(player).getRoom()).broadcast(packet);
+        _net.get()->send(packet, _clientsList[player].getIp(), _clientsList[player].getPort());
     }
   }
   _mutex.unlock();
@@ -200,7 +200,6 @@ void	RoomManager::checkPlayerTimestamp()
       if (ms - it.second.getTimestamp() > 2000)
       {
         _mutex.unlock();
-        std::cout << it.first << std::endl;
         disconnect(it.second);
         _mutex.lock();
       }
@@ -214,7 +213,7 @@ void	RoomManager::disconnect(Client &player)
 {
   std::cout << "disconnect" << std::endl;
   _mutex.lock();
-  if (player.getRoom().length() > 0 && _roomList.find(player.getToken()) != _roomList.end())
+  if (player.getRoom().length() > 0 && _roomList.find(player.getRoom()) != _roomList.end())
   {
     _mutex.unlock();
     leaveRoom(player.getToken());

@@ -13,7 +13,7 @@
 ** Login	leliev_t
 **
 ** Started on	Sat Jan 20 15:45:53 2018 Tanguy Lelievre
-** Last update	Tue Feb 20 19:41:39 2018 Tanguy Lelievre
+** Last update	Wed Feb 21 09:09:56 2018 Tanguy Lelievre
 */
 
 #pragma	once
@@ -55,9 +55,9 @@ public:
 private:
   std::unordered_map<std::string, std::string>	_data;
 
-    friend class boost::serialization::access;
-
-    template <typename Archive>
-    void serialize(Archive &ar, const unsigned int version) { ar & _data; }
+    // friend class boost::serialization::access;
+    //
+    // template <typename Archive>
+    // void serialize(Archive &ar, const unsigned int version) { ar & _data; }
 
 };

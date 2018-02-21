@@ -20,7 +20,6 @@
 //multiplayer setPlayerName
 
 #include <GameManagers.hpp>
-#include <AlfredBase/Timer/Timer.hpp>
 #include "NetworkManager.hpp"
 
 NetworkManager::NetworkManager(GameEngine::GameManagers &manager) :

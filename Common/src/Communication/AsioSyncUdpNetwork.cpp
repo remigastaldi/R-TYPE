@@ -84,7 +84,7 @@ void AsioSyncUdpNetwork::send(UDPPacket &packet)
     std::cout << std::endl;
     std::ostringstream archive_stream;
     boost::archive::text_oarchive archive(archive_stream);
-    archive << packet;
+    archive << packet.getData();
     std::string outbound_data_ = archive_stream.str();
     _socket.send_to(boost::asio::buffer(outbound_data_), _lastEndpoint);
     std::cout << "sent to " << _lastEndpoint.address().to_string() << " on port " << _lastEndpoint.port() << std::endl;
@@ -105,7 +105,7 @@ void AsioSyncUdpNetwork::send(UDPPacket &packet, const std::string &ip)
     std::cout << std::endl;
     std::ostringstream archive_stream;
     boost::archive::text_oarchive archive(archive_stream);
-    archive << packet;
+    archive << packet.getData();
     std::string outbound_data_ = archive_stream.str();
     _lastEndpoint.address(boost::asio::ip::address::from_string(ip));
     _socket.send_to(boost::asio::buffer(outbound_data_), _lastEndpoint);
@@ -127,7 +127,7 @@ void AsioSyncUdpNetwork::send(UDPPacket &packet, const std::string &ip, unsigned
     std::cout << std::endl;
     std::ostringstream archive_stream;
     boost::archive::text_oarchive archive(archive_stream);
-    archive << packet;
+    archive << packet.getData();
     std::string outbound_data_ = archive_stream.str();
     _lastEndpoint.address(boost::asio::ip::address::from_string(ip));
     _lastEndpoint.port(port);
