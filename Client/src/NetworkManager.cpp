@@ -61,7 +61,7 @@ void NetworkManager::login()
 			_network.send(packet, _managers.config.getKey("ip"));
 			std::cout << "Trying to reconnect in 2 secondes..." << std::endl;
 		} else {
-			_mutex.unlock();		
+			_mutex.unlock();
 			return;
 		}
 		_mutex.unlock();
@@ -91,16 +91,15 @@ void NetworkManager::mainLoop()
   {
     UDPPacket packet = _network.receive();
 
-    _mutex.lock();
     if (packet.getCommand() == RFC::Commands::LOGIN && packet.getResult() == RFC::Responses::SUCCESS) {
       _token = packet.getData("token");
     } else if (_token.empty()) {
 			std::cout << "no token" << std::endl;
     } else {
+			_mutex.lock();
 			_queue.emplace_back(packet);
+			_mutex.unlock();
 		}
-    _mutex.unlock();
-
   }
 }
 
@@ -109,12 +108,14 @@ void NetworkManager::update()
   UDPPacket packet;
 
   packet.setToken(_token);
-  for (auto & it : _queue)
+	_mutex.lock();
+	auto it = _queue.cbegin();
+  while (it != _queue.cend())
   {
-    _mutex.lock();
-    std::cout << "Command: " << std::to_string(static_cast<unsigned int>(it.getCommand())) << std::endl;
-    std::cout << "Result: " << std::to_string(static_cast<unsigned int>(it.getResult())) << std::endl;
-    switch (it.getCommand()) {
+
+    std::cout << "Command: " << std::to_string(static_cast<unsigned int>(it->getCommand())) << std::endl;
+    std::cout << "Result: " << std::to_string(static_cast<unsigned int>(it->getResult())) << std::endl;
+    switch (it->getCommand()) {
       case RFC::Commands::CREATE_ROOM:
         packet.setCommand(RFC::Commands::JOIN_ROOM);
         packet.setData("roomId", "room1");
@@ -123,97 +124,97 @@ void NetworkManager::update()
         _network.send(packet);
         break;
       case RFC::Commands::JOIN_ROOM:
-        if (it.getResult() == RFC::Responses::SUCCESS) {
-          std::cout << "JOIN ROOM" << it.getData("name") << std::endl;
+        if (it->getResult() == RFC::Responses::SUCCESS) {
+          std::cout << "JOIN ROOM" << it->getData("name") << std::endl;
 					_managers.event.fire<int, std::string const &>("changeScene", "LobbyPlayer");
-					if (it.getData("player1") != "") {
-						if ("player1" != it.getData("name")) {
-							_managers.event.fire<int, std::string>("multiplayer join", it.getData("player1_token"));
+					if (it->getData("player1") != "") {
+						if ("player1" != it->getData("name")) {
+							_managers.event.fire<int, std::string>("multiplayer join", it->getData("player1_token"));
 						}
 						_managers.event.fire<int, std::string, int>("PlayerJoinEvent", "player1", 1);
 					}
-					if (it.getData("player2") != "") {
-						if ("player2" != it.getData("name")) {
-							_managers.event.fire<int, std::string>("multiplayer join", it.getData("player2_token"));
+					if (it->getData("player2") != "") {
+						if ("player2" != it->getData("name")) {
+							_managers.event.fire<int, std::string>("multiplayer join", it->getData("player2_token"));
 						}
 
 						_managers.event.fire<int, std::string, int>("PlayerJoinEvent", "player2", 2);
 					}
-					if (it.getData("player3") != "") {
-						if ("player3" != it.getData("name")) {
-							_managers.event.fire<int, std::string>("multiplayer join", it.getData("player3_token"));
+					if (it->getData("player3") != "") {
+						if ("player3" != it->getData("name")) {
+							_managers.event.fire<int, std::string>("multiplayer join", it->getData("player3_token"));
 						}
 						_managers.event.fire<int, std::string, int>("PlayerJoinEvent", "player3", 3);
 					}
-					if (it.getData("player4") != "") {
-						if ("player4" != it.getData("name")) {
-							_managers.event.fire<int, std::string>("multiplayer join", it.getData("player4_token"));
+					if (it->getData("player4") != "") {
+						if ("player4" != it->getData("name")) {
+							_managers.event.fire<int, std::string>("multiplayer join", it->getData("player4_token"));
 						}
 						_managers.event.fire<int, std::string, int>("PlayerJoinEvent", "player4", 4);
 					}
-        } else if (it.getResult() == RFC::Responses::PLAYER_JOIN) {
+        } else if (it->getResult() == RFC::Responses::PLAYER_JOIN) {
 					int player = 0;
-          std::cout << "PLAYER JOIN" << it.getData("name") << std::endl;
-					if (it.getData("name") == "player1") {
+          std::cout << "PLAYER JOIN" << it->getData("name") << std::endl;
+					if (it->getData("name") == "player1") {
 						player = 1;
-					} else if (it.getData("name") == "player2") {
+					} else if (it->getData("name") == "player2") {
 						player = 2;
-					} else if (it.getData("name") == "player3") {
+					} else if (it->getData("name") == "player3") {
 						player = 3;
-					} else if (it.getData("name") == "player4") {
+					} else if (it->getData("name") == "player4") {
 						player = 4;
 					}
-          _managers.event.fire<int, std::string, int>("PlayerJoinEvent", it.getData("name"), player);
-          _managers.event.fire<int, std::string>("multiplayer join", it.getData("token"));
+          _managers.event.fire<int, std::string, int>("PlayerJoinEvent", it->getData("name"), player);
+          _managers.event.fire<int, std::string>("multiplayer join", it->getData("token"));
         } else {
           std::cout << "JOIN ERROR" << std::endl;
         }
         break;
 			case RFC::Commands::LEAVE_ROOM:
 				std::cout << "LEAVE ROOM =====================" << std::endl;
-      	_managers.event.fire<int, std::string>("PlayerLeaveEvent", it.getData("name"));
+      	_managers.event.fire<int, std::string>("PlayerLeaveEvent", it->getData("name"));
         break;
       case RFC::Commands::READY:
-        if (it.getResult() == RFC::Responses::PLAYER_READY) {
-          std::cout << "PLAYER " << it.getData("name") << " READY" << std::endl;
+        if (it->getResult() == RFC::Responses::PLAYER_READY) {
+          std::cout << "PLAYER " << it->getData("name") << " READY" << std::endl;
         } else {
           std::cout << "PLAYER NOT READY" << std::endl;
         }
         break;
       case RFC::Commands::KEY_PRESSED:
-        std::cout << "KEY PRESSED " << it.getData("key") << std::endl;
-        switch (std::stoi(it.getData("key"))) {
+        std::cout << "KEY PRESSED " << it->getData("key") << std::endl;
+        switch (std::stoi(it->getData("key"))) {
           case sf::Keyboard::Up:
-            _managers.event.fire<int, std::string>("multiplayer go up", it.getData("token"));
+            _managers.event.fire<int, std::string>("multiplayer go up", it->getData("token"));
             break;
           case sf::Keyboard::Down:
-            _managers.event.fire<int, std::string>("multiplayer go down", it.getData("token"));
+            _managers.event.fire<int, std::string>("multiplayer go down", it->getData("token"));
             break;
           case sf::Keyboard::Left:
-            _managers.event.fire<int, std::string>("multiplayer go left", it.getData("token"));
+            _managers.event.fire<int, std::string>("multiplayer go left", it->getData("token"));
             break;
           case sf::Keyboard::Right:
-            _managers.event.fire<int, std::string>("multiplayer go right", it.getData("token"));
+            _managers.event.fire<int, std::string>("multiplayer go right", it->getData("token"));
             break;
           case sf::Keyboard::Space:
-            _managers.event.fire<int, std::string>("multiplayer shoot", it.getData("token"));
+            _managers.event.fire<int, std::string>("multiplayer shoot", it->getData("token"));
             break;
         }
         break;
 			case RFC::Commands::KEY_RELEASE:
-        std::cout << "KEY RELEASE " << it.getData("key") << std::endl;
-        switch (std::stoi(it.getData("key"))) {
+        std::cout << "KEY RELEASE " << it->getData("key") << std::endl;
+        switch (std::stoi(it->getData("key"))) {
           case sf::Keyboard::Up:
-            _managers.event.fire<int, std::string>("multiplayer release up", it.getData("token"));
+            _managers.event.fire<int, std::string>("multiplayer release up", it->getData("token"));
             break;
           case sf::Keyboard::Down:
-            _managers.event.fire<int, std::string>("multiplayer release down", it.getData("token"));
+            _managers.event.fire<int, std::string>("multiplayer release down", it->getData("token"));
             break;
           case sf::Keyboard::Left:
-            _managers.event.fire<int, std::string>("multiplayer release left", it.getData("token"));
+            _managers.event.fire<int, std::string>("multiplayer release left", it->getData("token"));
             break;
           case sf::Keyboard::Right:
-            _managers.event.fire<int, std::string>("multiplayer release right", it.getData("token"));
+            _managers.event.fire<int, std::string>("multiplayer release right", it->getData("token"));
             break;
         }
         break;
@@ -223,8 +224,8 @@ void NetworkManager::update()
         _managers.event.fire<int>("multiplayer game start");
         break;
       default:
-          std::cout << "Unkown command " << std::to_string(static_cast<unsigned int>(it.getCommand())) << std::endl;
-          std::cout << "Unkown response " << std::to_string(static_cast<unsigned int>(it.getResult())) << std::endl;
+          std::cout << "Unkown command " << std::to_string(static_cast<unsigned int>(it->getCommand())) << std::endl;
+          std::cout << "Unkown response " << std::to_string(static_cast<unsigned int>(it->getResult())) << std::endl;
         break;
       case RFC::Commands::PING:break;
       case RFC::Commands::LOGIN:break;
@@ -239,9 +240,12 @@ void NetworkManager::update()
       case RFC::Commands::UNKNOWN:break;
     }
 
-    _queue.erase(_queue.begin());
-    _mutex.unlock();
+    it = _queue.erase(_queue.begin());
+		if (it != _queue.cend())
+			it = std::next(it);
   }
+	_mutex.unlock();
+
 }
 
 void NetworkManager::playGame()
