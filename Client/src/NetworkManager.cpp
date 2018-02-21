@@ -20,7 +20,7 @@
 //multiplayer setPlayerName
 
 #include <GameManagers.hpp>
-#include <AlfredBase/Timer/Timer.hpp>
+#include <chrono>
 #include "NetworkManager.hpp"
 
 NetworkManager::NetworkManager(GameEngine::GameManagers &manager) :
@@ -58,9 +58,7 @@ void NetworkManager::pingLoop()
 {
   for (;;)
   {
-    Alfred::Time::Timer t(1);
-    t.run();
-
+    std::this_thread::sleep_for(std::chrono::milliseconds(1000));
     UDPPacket packet;
     packet.setCommand(RFC::Commands::PING);
     packet.setToken(_token);
@@ -107,6 +105,7 @@ void NetworkManager::update()
       case RFC::Commands::JOIN_ROOM:
         if (it.getResult() == RFC::Responses::SUCCESS) {
           std::cout << "JOIN ROOM" << it.getData("name") << std::endl;
+          _managers.event.fire<int, std::string const &>("changeScene", "LobbyPlayer");
           _managers.event.fire<int, std::string>("PlayerJoinEvent", it.getData("name"));
         } else if (it.getResult() == RFC::Responses::PLAYER_JOIN) {
           std::cout << "PLAYER JOIN" << it.getData("name") << std::endl;

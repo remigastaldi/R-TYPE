@@ -84,11 +84,11 @@ void	StartPage::onEnter()
 
 void	StartPage::onExit()
 {
-	_resources.release("lobbiesBackground");
-	_resources.release("startButtons");
-	_resources.release("Gravedigger");
-	_resources.release("neuropol");
-	_guiManager.releaseAll();
+	// _resources.release("lobbiesBackground");
+	// _resources.release("startButtons");
+	// _resources.release("Gravedigger");
+	// _resources.release("neuropol");
+	// _guiManager.releaseAll();
 }
 
 void	StartPage::update(const float time, ECS::Manager &ecs, EventManager::Manager &event)

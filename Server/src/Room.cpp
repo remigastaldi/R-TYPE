@@ -5,7 +5,7 @@
 ** Login	leliev_t
 **
 ** Started on	Mon Jan 22 00:40:59 2018 Tanguy Lelievre
-** Last update	Mon Jan 22 13:21:24 2018 Tanguy Lelievre
+** Last update	Wed Feb 21 05:34:33 2018 Tanguy Lelievre
 */
 
 #include "Room.hpp"
@@ -58,10 +58,9 @@ void	Room::broadcast(UDPPacket &packet)
 
   for (size_t i = 0; i < 4; i++) {
     player = str + std::to_string((i + 1));
-    if (_clients[player].getName().length() != 0 &&
+    if (_clients.find(player) != _clients.end() && _clients[player].getName().length() != 0 &&
     _clients[player].getToken() != packet.getToken())
     {
-      std::cout << _clients[player].getIp() << std::endl;
       _net.get()->send(packet, _clients[player].getIp(), _clients[player].getPort());
     }
   }
@@ -74,7 +73,7 @@ void	Room::addPlayer(Client &client)
 
   for (size_t i = 0; i < 4; i++) {
     player = str + std::to_string((i + 1));
-    if (_clients[player].getName().length() == 0)
+    if (_clients.find(player) == _clients.end())
     {
       client.setName(player);
       _clients[player] = client;

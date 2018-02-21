@@ -17,6 +17,7 @@ namespace RFC
     GAME_STARTED,
     ROOM_CREATED,
     PLAYER_JOIN,
+    PLAYER_LEAVE,
     UNKNOWN
   };
 

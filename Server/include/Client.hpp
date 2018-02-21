@@ -5,7 +5,7 @@
 ** Login	leliev_t
 **
 ** Started on	Mon Jan 22 02:54:04 2018 Tanguy Lelievre
-** Last update	Mon Jan 22 13:12:46 2018 Tanguy Lelievre
+** Last update	Wed Feb 21 00:59:12 2018 Tanguy Lelievre
 */
 
 #pragma once
@@ -36,6 +36,9 @@ public:
   unsigned short	getPort() const;
   void	setPort(unsigned short);
 
+  unsigned int	getTimestamp() const;
+  void	setTimestamp(unsigned int);
+
 private:
   std::string	_ip;
   std::string	_token;
@@ -43,4 +46,5 @@ private:
   std::string	_roomId;
   bool	_ready;
   unsigned short	_port;
+  unsigned int	_timestamp;
 };

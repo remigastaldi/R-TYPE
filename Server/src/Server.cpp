@@ -22,7 +22,7 @@
 Server::Server() : _net(8000),
 _roomManager(_net)
 {
-
+  std::thread([&](){this->_roomManager.checkPlayerTimestamp();}).detach();
 }
 
 Server::~Server()
@@ -81,6 +81,9 @@ void	Server::manageClientPacket(UDPPacket &packet)
     case RFC::Commands::KEY_PRESSED:
       pressKeyClient(packet);
       break;
+    case RFC::Commands::KEY_RELEASE:
+      pressKeyClient(packet);
+      break;
 
     default:
       break;
@@ -89,6 +92,7 @@ void	Server::manageClientPacket(UDPPacket &packet)
 
 void	Server::pingClient(UDPPacket &packet)
 {
+  _roomManager.setPlayerTimestamp(packet);
   packet.setResult(RFC::Responses::PONG);
   sendResponseToClient(packet);
 }
@@ -107,6 +111,7 @@ void	Server::loginClient(UDPPacket &packet)
   client.setIp(packet.getIp());
   client.setToken(token);
   client.setPort(std::stoi(packet.getData("port")));
+  client.setTimestamp(packet.getTimestamp());
   _roomManager.addPlayer(client);
   sendResponseToClient(resp);
 }

@@ -63,6 +63,7 @@ namespace GameEngine
     _eventManager.addEvent<int, std::string>("PlayGameEvent");
     _eventManager.addEvent<int, std::string>("ExitGameEvent");
     _eventManager.addEvent<int, std::string>("OptionsEvent");
+    _eventManager.addEvent<int, std::string>("PlayerJoinEvent");
 /*
 	_eventManager.listen<int, std::string>("PlayGameEvent",
 		[&](ECS::Entity by, ECS::Entity to) -> int { playGame(); return 0; });
@@ -73,7 +74,7 @@ namespace GameEngine
     _eventManager.addEvent<int, sf::Event>("KeyPressedEvent");
     _eventManager.addEvent<int, sf::Event>("KeyReleasedEvent");
 
-//   _networkManager.init();
+  _networkManager.init();
     //Loading library
    _libraryLoader.map.addFolder("../ressources/map/");
    _libraryLoader.mob.addFolder("../ressources/mob/");
@@ -97,7 +98,7 @@ namespace GameEngine
     });
 
     //Scenes
-    //_sceneManager.addScene<StartPage>("StartPage", _resourcesManager, _guiManager, _eventManager);
+    _sceneManager.addScene<StartPage>("StartPage", _resourcesManager, _guiManager, _eventManager);
     _sceneManager.addScene<LobbyPlayer>("LobbyPlayer", _resourcesManager, _guiManager, _eventManager);
     _sceneManager.addScene<IngameHUD>("IngameHUD", _resourcesManager, _guiManager, _eventManager);
 
@@ -125,8 +126,8 @@ namespace GameEngine
 
   void Client::run(void)
   {
-//    _sceneManager.pushScene("StartPage");
-    _sceneManager.pushScene("IngameHUD");
+   _sceneManager.pushScene("StartPage");
+    // _sceneManager.pushScene("IngameHUD");
 
     _myMap.reset(_libraryLoader.map.get("KirbyMap")(_gameManagers));
 
@@ -198,7 +199,7 @@ namespace GameEngine
 
   void Client::update(void)
   {
-//    _networkManager.update();
+   _networkManager.update();
 		_myMap->update();
     _ecsManager.updateSystemsRange(0.f, 0, 7);
   }
