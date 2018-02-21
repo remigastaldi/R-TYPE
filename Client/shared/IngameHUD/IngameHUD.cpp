@@ -68,11 +68,10 @@ void	IngameHUD::onExit()
 	_eventManager.unlisten<int, std::string>("changePlayerHealth", _listeners["changePlayerHealth"]);
 }
 
-void	IngameHUD::update(const float time, ECS::Manager &ecs, EventManager::Manager &event)
+void	IngameHUD::update(const float time, GameEngine::GameManagers &manager)
 {
 	(void)time;
-	(void)ecs;
-	(void)event;
+  (void)manager;
 }
 
 void  IngameHUD::changePlayerHealth(const std::string &playerName, int health)

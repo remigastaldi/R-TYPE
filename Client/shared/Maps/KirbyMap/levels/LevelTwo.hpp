@@ -1,16 +1,8 @@
-/**
- * @Author: Remi Gastaldi <gastal_r>
- * @Date:   2018-02-15T15:02:13+01:00
- * @Last modified by:   gastal_r
- * @Last modified time: 2018-02-20T22:43:57+01:00
- */
-
-
 #pragma once
 
 #include <Maps/ILevels.hpp>
 
-class LevelOne : public ILevels
+class LevelTwo : public ILevels
 {
   private:
     GameEngine::GameManagers &_gameManagers;
@@ -23,13 +15,15 @@ class LevelOne : public ILevels
 
     int _timeLeft = 0;
     int _timeBetweenMobSpawn = 620;
-    int _nbMobSpawn = 4;
+    int _nbMobSpawn = 10;
 
-    std::string _name = "LevelOne";
+    std::unordered_map<ECS::Entity, std::shared_ptr<IMob>> _mobs;
+
+    std::string _name = "LevelTwo";
 
   public:
-    explicit LevelOne(GameEngine::GameManagers &gameManagers, MapEngine &mapEngine);
-    ~LevelOne() override;
+    explicit LevelTwo(GameEngine::GameManagers &gameManagers, MapEngine &mapEngine);
+    ~LevelTwo() override;
     const std::string &getName() override;
     void enter() override;
     void exit() override;

@@ -55,6 +55,8 @@
          Maps/KirbyMap/KirbyMap.hpp Maps/KirbyMap/KirbyMap.cpp
          Maps/ILevels.hpp
          Maps/KirbyMap/levels/LevelOne.cpp Maps/KirbyMap/levels/LevelOne.hpp
+         Maps/KirbyMap/levels/LevelTwo.cpp Maps/KirbyMap/levels/LevelTwo.hpp
+         Maps/KirbyMap/levels/LevelThree.cpp Maps/KirbyMap/levels/LevelThree.hpp
          ${CMAKE_SOURCE_DIR}/Client/include/GameManagers.hpp
          ${CMAKE_SOURCE_DIR}/Client/src/MapEngine.cpp
          ${CMAKE_SOURCE_DIR}/Client/src/Ship.cpp

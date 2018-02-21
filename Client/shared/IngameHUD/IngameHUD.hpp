@@ -36,7 +36,7 @@ public:
 
 	void	setScore(int score) { _score = score; }
 
-	void	update(const float time, ECS::Manager &ecs, EventManager::Manager &event);
+	void update(const float time, GameEngine::GameManagers &manager);
 
 	void  changePlayerHealth(const std::string &playerName, int health);
 

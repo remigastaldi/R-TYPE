@@ -11,7 +11,7 @@ void registerRessources(GameEngine::GameManagers &_managers)
 
   //Missiles
   _managers.resources.load<Texture>("player_missiles_texture", "../../Client/media/img/ship/allies/playersMissiles.png");
-  _managers.resources.load<Texture>("player_missiles_texture_red", "../../Client/media/img/ship/ennemies/rocket_bx_single.png");
+  _managers.resources.load<Texture>("player_missiles_texture_red", "../../Client/media/img/ship/enemies/rocket_bx_single.png");
   _managers.resources.load<Texture>("basick_attack_texture", "../../Client/media/img/ship/enemies/bullet_blaster_big_single.png");
   _managers.resources.load<Texture>("bomb_texture", "../../Client/media/img/ship/enemies/cluster_bomb_single.png");
   _managers.resources.load<Texture>("mini_bomb_texture", "../../Client/media/img/ship/enemies/cluster_bomb_single_cluster.png");

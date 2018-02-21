@@ -1,35 +1,27 @@
-/**
- * @Author: Remi Gastaldi <gastal_r>
- * @Date:   2018-02-15T16:16:24+01:00
- * @Last modified by:   gastal_r
- * @Last modified time: 2018-02-21T06:34:54+01:00
- */
-
-
 #include <ECS/Components/Stats.hpp>
-#include "LevelOne.hpp"
+#include "LevelThree.hpp"
 
-const std::string &LevelOne::getName()
+const std::string &LevelThree::getName()
 {
   return _name;
 }
 
-void LevelOne::enter()
+void LevelThree::enter()
 {
   LOG_ERROR << "Je rentre dans le niveau un" << std::endl;
 }
 
-void LevelOne::exit()
+void LevelThree::exit()
 {
   LOG_ERROR << "Bravo tu as fini le niveau un !" << std::endl;
 }
 
-bool LevelOne::isEnd()
+bool LevelThree::isEnd()
 {
   return _isEnd;
 }
 
-void LevelOne::update()
+void LevelThree::update()
 {
   if (_nbMobSpawn <= 0) {
     if (_ecs.getStore(_ecs.GetTypeID<ECS::Components::Ennemy>())->size() <= 0) {
@@ -46,17 +38,14 @@ void LevelOne::update()
     _nbMobSpawn -= 2;
 
     std::shared_ptr<IMob> tmp(
-      _loader.mob.get("Metallos")(_gameManagers, _mapEngine, ECS::Components::Position(1800, 900)));
-    std::shared_ptr<IMob> tmp2(
-      _loader.mob.get("Metallos")(_gameManagers, _mapEngine, ECS::Components::Position(1800, 400)));
+      _loader.mob.get("Bomber")(_gameManagers, _mapEngine, ECS::Components::Position(1800, 500)));
     _mapEngine.addObject<IMob>(tmp->getID(), tmp);
-    _mapEngine.addObject<IMob>(tmp2->getID(), tmp2);
   }
 
   _mapEngine.updateObjects();
 }
 
-LevelOne::LevelOne(GameEngine::GameManagers &gameManagers, MapEngine &mapEngine) :
+LevelThree::LevelThree(GameEngine::GameManagers &gameManagers, MapEngine &mapEngine) :
   ILevels(gameManagers, mapEngine),
   _gameManagers(gameManagers),
   _ecs(gameManagers.ecs),
@@ -64,14 +53,14 @@ LevelOne::LevelOne(GameEngine::GameManagers &gameManagers, MapEngine &mapEngine)
   _loader(gameManagers.libLoader),
   _mapEngine(mapEngine)
 {
-  LOG_INFO << "Loading Level One" << std::endl;
+  LOG_INFO << "Loading Level Three" << std::endl;
 }
 
-LevelOne::~LevelOne()
+LevelThree::~LevelThree()
 {
 }
 
-int LevelOne::unitOutOfSpace(ECS::Entity entity)
+int LevelThree::unitOutOfSpace(ECS::Entity entity)
 {
   if (_mapEngine.deleteObject(entity) == 0) {
     _ecs.destroyEntity(entity);
@@ -79,7 +68,7 @@ int LevelOne::unitOutOfSpace(ECS::Entity entity)
   return 0;
 }
 
-void LevelOne::unitDie(ECS::Entity entity)
+void LevelThree::unitDie(ECS::Entity entity)
 {
   _mapEngine.deleteObject(entity);
 }

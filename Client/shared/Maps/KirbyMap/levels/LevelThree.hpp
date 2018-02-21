@@ -1,16 +1,8 @@
-/**
- * @Author: Remi Gastaldi <gastal_r>
- * @Date:   2018-02-15T15:02:13+01:00
- * @Last modified by:   gastal_r
- * @Last modified time: 2018-02-20T22:43:57+01:00
- */
-
-
 #pragma once
 
 #include <Maps/ILevels.hpp>
 
-class LevelOne : public ILevels
+class LevelThree : public ILevels
 {
   private:
     GameEngine::GameManagers &_gameManagers;
@@ -22,14 +14,14 @@ class LevelOne : public ILevels
     bool _isEnd = false;
 
     int _timeLeft = 0;
-    int _timeBetweenMobSpawn = 620;
+    int _timeBetweenMobSpawn = 320;
     int _nbMobSpawn = 4;
 
-    std::string _name = "LevelOne";
+    std::string _name = "LevelThree";
 
   public:
-    explicit LevelOne(GameEngine::GameManagers &gameManagers, MapEngine &mapEngine);
-    ~LevelOne() override;
+    explicit LevelThree(GameEngine::GameManagers &gameManagers, MapEngine &mapEngine);
+    ~LevelThree() override;
     const std::string &getName() override;
     void enter() override;
     void exit() override;

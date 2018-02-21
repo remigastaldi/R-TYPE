@@ -11,6 +11,7 @@
 #include "ECS/Manager.hpp"
 #include "EventManager.hpp"
 #include <string>
+#include "GameManagers.hpp"
 
 class IScene
 {
@@ -25,5 +26,5 @@ class IScene
     virtual void onPause() = 0;
     virtual void onResume() = 0;
 
-    virtual void update(const float time, ECS::Manager &ecs, EventManager::Manager &event) = 0;
+    virtual void update(const float time, GameEngine::GameManagers &manager) = 0;
 };

@@ -8,6 +8,7 @@
 
 #pragma once
 
+#include <GameManagers.hpp>
 #include "LibraryInterfaces/IScene.hpp"
 #include "ResourcesManager.hpp"
 #include "Resources.hpp"
@@ -34,7 +35,7 @@ public:
 
 	void  closeLobby();
 
-	void	update(const float time, ECS::Manager &ecs, EventManager::Manager &event);
+	void update(const float time, GameEngine::GameManagers &manager);
 
 private:
 	std::string				_name;

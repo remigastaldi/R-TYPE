@@ -3,10 +3,10 @@
 #include "factory/FactoryMacros.hpp"
 #include "factory/Mobs/AMobs.hpp"
 
-INIT_MOB(MonSuperMob, "BombAttack", "UpAndDownMove", "blue_texture");
+INIT_MOB(Bomber, "BombAttack", "UpAndDownMove", "blue_texture");
 
 static void addCustomRessources(LibLoader &loader)
 {
-  auto bob = BUILD_MOB(MonSuperMob);
-  loader.mob.set("bob", bob);
+  auto bomber = BUILD_MOB(Bomber);
+  loader.mob.set("Bomber", bomber);
 }

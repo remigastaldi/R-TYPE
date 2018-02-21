@@ -100,5 +100,10 @@ namespace ECS
 
       int damages;
     };
+
+    struct Ennemy : public ECS::Component
+    {
+      explicit Ennemy() {};
+    };
   }
 }

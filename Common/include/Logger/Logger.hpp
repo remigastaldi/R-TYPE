@@ -17,12 +17,15 @@
 #include <sstream>
 #include <iostream>
 
+static constexpr bool ENABLE_LOGGER = true;
+
 #define LOG_DEBUG Logger::get().debug(__FUNCTION__, __FILE__, __LINE__)
 #define LOG_SUCCESS Logger::get().success(__FUNCTION__, __FILE__, __LINE__)
 #define LOG_INFO Logger::get().info(__FUNCTION__, __FILE__, __LINE__)
 #define LOG_WARNING Logger::get().warning(__FUNCTION__, __FILE__, __LINE__)
 #define LOG_ERROR Logger::get().error(__FUNCTION__, __FILE__, __LINE__)
 #define LOG_FATAL Logger::get().fatal(__FUNCTION__, __FILE__, __LINE__)
+
 
 enum __CONSOLE_LOG_ENUM
 {
@@ -53,6 +56,10 @@ class Logger : public Alfred::Utils::Singleton<Logger>
 
     const std::string getTime()
     {
+      if constexpr (!ENABLE_LOGGER)
+      {
+        return "";
+      }
       auto in_time_t = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
 
       std::stringstream ss;
@@ -73,6 +80,9 @@ class Logger : public Alfred::Utils::Singleton<Logger>
       _fileName(DEFAULT_LOG_FILENAME),
       null_buffer()
     {
+      if constexpr (!ENABLE_LOGGER) {
+        _stream->setstate(std::ios_base::badbit);
+      }
     }
 
     explicit Logger(const std::string &fileName) :
@@ -82,6 +92,9 @@ class Logger : public Alfred::Utils::Singleton<Logger>
       _fileName(fileName),
       null_buffer()
     {
+      if constexpr (!ENABLE_LOGGER) {
+        _stream->setstate(std::ios_base::badbit);
+      }
     }
 
     explicit Logger(const __CONSOLE_LOG_ENUM console) :
@@ -91,6 +104,9 @@ class Logger : public Alfred::Utils::Singleton<Logger>
       _fileName("console output"),
       null_buffer()
     {
+      if constexpr (!ENABLE_LOGGER) {
+        _stream->setstate(std::ios_base::badbit);
+      }
       (void) console;
     }
 
@@ -124,6 +140,9 @@ class Logger : public Alfred::Utils::Singleton<Logger>
 
     std::ostream &debug(const std::string &funcName, const std::string &file, int line)
     {
+      if constexpr (!ENABLE_LOGGER) {
+        return *_stream;
+      }
       if constexpr(DEBUG) {
         *_stream << "[DEBUG] " << getTime() << " - " << funcName << " in " << file << ":" <<line << " - ";
         return *_stream;
@@ -134,30 +153,45 @@ class Logger : public Alfred::Utils::Singleton<Logger>
 
     std::ostream &info(const std::string &funcName, const std::string &file, int line)
     {
+      if constexpr (!ENABLE_LOGGER) {
+        return *_stream;
+      }
       *_stream << "\033[0m[INFO] " << getTime() << " - " << funcName << " in " << file << ":" <<line << " - ";
       return *_stream;
     }
 
     std::ostream &success(const std::string &funcName, const std::string &file, int line)
     {
+      if constexpr (!ENABLE_LOGGER) {
+        return *_stream;
+      }
       *_stream << "\033[92m[SUCCESS] " << getTime() << " - " << funcName << " in " << file << ":" <<line << " - ";
       return *_stream;
     }
 
     std::ostream &warning(const std::string &funcName, const std::string &file, int line)
     {
+      if constexpr (!ENABLE_LOGGER) {
+        return *_stream;
+      }
       *_stream << "\033[0m\033[33m[WARNING] " << getTime() << " - " << funcName << " in " << file << ":" <<line << " - ";
       return *_stream;
     }
 
     std::ostream &error(const std::string &funcName, const std::string &file, int line)
     {
+      if constexpr (!ENABLE_LOGGER) {
+        return *_stream;
+      }
       *_stream << "\033[0m\033[31m[ERROR] " << getTime() << " - " << funcName << " in " << file << ":" <<line << " - ";
       return *_stream;
     }
 
     std::ostream &fatal(const std::string &funcName, const std::string &file, int line)
     {
+      if constexpr (!ENABLE_LOGGER) {
+        return *_stream;
+      }
       *_stream << "\033[0m\033[1;4;31m[FATAL] " << getTime() << " - " << funcName << " in " << file << ":" <<line << " - ";
       return *_stream;
     }

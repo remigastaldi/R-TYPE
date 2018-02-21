@@ -75,6 +75,11 @@ namespace GameEngine
           _scenesList.top()->onEnter();
       }
 
+      void update(const float time, GameEngine::GameManagers &manager)
+      {
+        _scenesList.top()->update(time, manager);
+      }
+
       IScene *operator[](const std::string &name)
       {
         if (_scenes.count(name) == 0) {

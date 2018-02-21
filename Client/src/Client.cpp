@@ -48,6 +48,7 @@ namespace GameEngine
 		_ecsManager.createStoreFor<ECS::Components::CollisionFrame>();
 		_ecsManager.createStoreFor<ECS::Components::Health>();
 		_ecsManager.createStoreFor<ECS::Components::Damages>();
+		_ecsManager.createStoreFor<ECS::Components::Ennemy>();
 
 		_ecsManager.addSystem<ECS::Systems::Parallax>(_ecsManager, _resourcesManager);
     _ecsManager.addSystem<ECS::Systems::Mouvement>(_eventManager, _ecsManager);
@@ -129,8 +130,8 @@ namespace GameEngine
 
   void Client::run(void)
   {
-   _sceneManager.pushScene("StartScene");
-    // _sceneManager.pushScene("IngameHUD");
+//   _sceneManager.pushScene("StartScene");
+     _sceneManager.pushScene("IngameHUD");
 
     _myMap.reset(_libraryLoader.map.get("KirbyMap")(_gameManagers));
 
@@ -203,13 +204,12 @@ namespace GameEngine
   void Client::update(void)
   {
 		_myMap->update();
-    _networkManager.update();
+//    _networkManager.update();
     _ecsManager.updateSystemsRange(0.f, 0, 7);
   }
 
   void Client::render(float alpha)
   {
-		std::cout << "entities: " << _ecsManager.getEntities().size() << std::endl;
     _window.clear();
     _ecsManager.updateSystemsRange(0.f, 7, 8);
     _guiManager.update(alpha);

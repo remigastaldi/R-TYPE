@@ -7,6 +7,8 @@
 
 
 #include <Maps/KirbyMap/levels/LevelOne.hpp>
+#include <Maps/KirbyMap/levels/LevelTwo.hpp>
+#include <Maps/KirbyMap/levels/LevelThree.hpp>
 #include "KirbyMap.hpp"
 
 KirbyMap::KirbyMap(GameEngine::GameManagers &gameManagers) :
@@ -46,8 +48,15 @@ KirbyMap::KirbyMap(GameEngine::GameManagers &gameManagers) :
   std::shared_ptr<ILevels> tmp;
   tmp.reset(new LevelOne(_gameManagers, _mapEngine));
   _levels.push_back(tmp);
+  std::shared_ptr<ILevels> tmp2;
+  tmp2.reset(new LevelTwo(_gameManagers, _mapEngine));
+  _levels.push_back(tmp2);
+  std::shared_ptr<ILevels> tmp3;
+  tmp3.reset(new LevelThree(_gameManagers, _mapEngine));
+  _levels.push_back(tmp3);
 
-  LOG_INFO << "Adding Level Done" << std::endl;
+
+  LOG_WARNING << "Adding Level Done" << std::endl;
 
   _event.fire<int, std::string>("printAlert", _levels[_wave]->getName());
 
@@ -80,7 +89,6 @@ void KirbyMap::update()
 
     if (_wave < _levels.size()) {
       _event.fire<int, std::string>("printAlert", _levels[_wave]->getName());
-      //TODO EVENT POUR ECRIRE SUR GUI LE NOM DU NIVEAU
       _levels[_wave]->enter();
       LOG_INFO << _levels[_wave]->getName() << std::endl;
     } else {
@@ -91,6 +99,5 @@ void KirbyMap::update()
 
 bool KirbyMap::isEnd()
 {
-  //TODO
   return _isEnd;
 }

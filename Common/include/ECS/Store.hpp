@@ -27,6 +27,9 @@ namespace ECS
     bool add(Entity e, std::shared_ptr<Component> c);
     bool remove(Entity e);
     std::set<Entity> getEntities() const;
+      int size() {
+        return _store.size();
+      }
 
   private:
     std::map<Entity, std::shared_ptr<Component>> _store;

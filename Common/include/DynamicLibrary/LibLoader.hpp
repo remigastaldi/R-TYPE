@@ -21,7 +21,6 @@
 #include <cstdio>
 #include <vector>
 #include "FindOS.hpp"
-#include <experimental/filesystem>
 #include <AlfredBase/Utils/NonCopyable.hpp>
 #include <unordered_map>
 #include "DynamicLibrary/DynamicLibraryTypes.hpp"
@@ -30,6 +29,8 @@
 #include "ECS/Component.hpp"
 #include <type_traits>
 #include <GameManagers.hpp>
+#include <stdio.h>
+#include <dirent.h>
 
 namespace GameEngine
 {
@@ -123,12 +124,12 @@ class __lib__implem : public Alfred::Utils::NonCopyable
           return nullptr;
       }
 
-	  getNameOfLib tmp = (getNameOfLib)(GetProcAddress(hGetProcIDDLL, "getName"));
-	  if (tmp == NULL)
-	  {
-		  LOG_ERROR << "Failed to load lib" << GetLastError() << " " << path << std::endl;
-		  return "";
-	  }
+    getNameOfLib tmp = (getNameOfLib)(GetProcAddress(hGetProcIDDLL, "getName"));
+    if (tmp == NULL)
+    {
+      LOG_ERROR << "Failed to load lib" << GetLastError() << " " << path << std::endl;
+      return "";
+    }
 
       return tmp();
 #else
@@ -154,8 +155,8 @@ class __lib__implem : public Alfred::Utils::NonCopyable
       T tmp = (T) GetProcAddress(hGetProcIDDLL, "getSymbol");
       if (tmp == NULL)
       {
-      		  LOG_ERROR << "Failed to load lib" << GetLastError() << " " << path << std::endl;
-		        return nullptr;
+            LOG_ERROR << "Failed to load lib" << GetLastError() << " " << path << std::endl;
+            return nullptr;
       }
       return tmp;
 #else
@@ -186,11 +187,27 @@ class __lib__implem : public Alfred::Utils::NonCopyable
 
     std::vector<std::pair<std::string, T>> update()
     {
+      struct dirent *entry;
+      DIR *dp;
+
       std::vector<std::pair<std::string, T>> out;
       for (auto &it : _files) {
+        dp = opendir(it.first.c_str());
+        if (dp == NULL) {
+          LOG_ERROR << "Can't open dir " << it.first << std::endl;
+          continue;
+        }
+
         LOG_WARNING << "Updating " << it.first << std::endl;
-        for (auto &p: std::experimental::filesystem::directory_iterator(it.first)) {
-          std::string curPath = p.path().generic_string();
+
+        while ((entry = readdir(dp))) {
+          std::string tmpPath(entry->d_name);
+
+          if (tmpPath == "." || tmpPath == "..")
+            continue;
+
+          std::string curPath = it.first + tmpPath;
+
           if (curPath.find(_osLibEnding) != 0) {
             if (it.second.count(curPath) <= 0) {
               //Get name
@@ -240,13 +257,8 @@ class __lib__implem : public Alfred::Utils::NonCopyable
      */
     bool addFolder(const std::string &path)
     {
-      std::experimental::filesystem::directory_entry entry(path);
-      if (std::experimental::filesystem::exists(entry)) {
-        _files[path] = std::unordered_map<std::string, T>();
-        return true;
-      }
-      LOG_ERROR << "Directory " << path << " not exist" << std::endl;
-      return false;
+      _files[path] = std::unordered_map<std::string, T>();
+      return true;
     }
 
     T get(const std::string &name)

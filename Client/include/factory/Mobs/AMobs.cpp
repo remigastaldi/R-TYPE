@@ -29,6 +29,7 @@ AMobs::AMobs(GameEngine::GameManagers &gameManagers, MapEngine &mapEngine, ECS::
   _ecs.addComponent<ECS::Components::Collisionable>(_me, ECS::Components::Collisionable(_me,
                                                                                         ECS::Components::Collisionable::Type::ENEMY_MISSILE));
   _ecs.addComponent<ECS::Components::Health>(_me, ECS::Components::Health(2));
+  _ecs.addComponent<ECS::Components::Ennemy>(_me, ECS::Components::Ennemy());
 
   _ecs.updateEntityToSystems(_me);
 
