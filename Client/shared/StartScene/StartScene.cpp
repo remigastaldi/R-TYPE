@@ -91,8 +91,6 @@ void	StartScene::onExit()
 	// _guiManager.releaseAll();
 }
 
-void	StartScene::update(const float time, GameEngine::GameManagers &manager)
+void	StartScene::update()
 {
-	(void)time;
-	(void)manager;
 }

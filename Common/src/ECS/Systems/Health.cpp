@@ -30,7 +30,7 @@ namespace ECS
         std::shared_ptr<ECS::Components::Player>  player(getManager().getComponent<ECS::Components::Player>(e));
         if (player.get() != nullptr)
         {
-          _eventManager.fire<int, const std::string &, int>("changePlayerHealth", player->name, health->health);
+          _eventManager.fire<int, std::string, int>("changePlayerHealth", player->name, health->health);
         }
       }
 

@@ -26,5 +26,5 @@ class IScene
     virtual void onPause() = 0;
     virtual void onResume() = 0;
 
-    virtual void update(const float time, GameEngine::GameManagers &manager) = 0;
+    virtual void update() = 0;
 };

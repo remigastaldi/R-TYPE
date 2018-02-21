@@ -35,7 +35,7 @@ public:
 
 	void  closeLobby();
 
-	void update(const float time, GameEngine::GameManagers &manager);
+	void	update();
 
 private:
 	std::string				_name;

@@ -118,8 +118,7 @@ void LobbyPlayer::closeLobby()
 	_eventManager.fire<int, std::string>("changeScene", "StartScene");
 }
 
-void LobbyPlayer::update(const float time, GameEngine::GameManagers &manager)
+void	LobbyPlayer::update()
 {
-	(void)time;
-	(void)manager;
+
 }

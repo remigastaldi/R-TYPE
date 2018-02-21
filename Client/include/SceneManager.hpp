@@ -95,5 +95,10 @@ namespace GameEngine
           os << it.first << std::endl;
         return os;
       }
+
+	  void	updateCurrentScene(void)
+	  {
+		  _scenesList.top()->update();
+	  }
   };
 }
