@@ -2,7 +2,7 @@
  * @Author: Remi Gastaldi <gastal_r>
  * @Date:   2018-01-17T04:07:04+01:00
  * @Last modified by:   gastal_r
- * @Last modified time: 2018-02-21T07:27:33+01:00
+ * @Last modified time: 2018-02-21T14:29:59+01:00
  */
 
 
@@ -32,7 +32,8 @@ namespace GameEngine
     _sceneManager(),
     _myMap(nullptr),
     _multiplayerManager(_ecsManager, _eventManager, _resourcesManager)
-  {}
+  {
+  }
 
   void Client::init()
   {
@@ -75,7 +76,6 @@ namespace GameEngine
     _eventManager.addEvent<int, sf::Event>("KeyPressedEvent");
     _eventManager.addEvent<int, sf::Event>("KeyReleasedEvent");
 
-    _networkManager.init();
     //Loading library
    _libraryLoader.map.addFolder("../ressources/map/");
    _libraryLoader.mob.addFolder("../ressources/mob/");
@@ -133,6 +133,7 @@ namespace GameEngine
   void Client::run(void)
   {
    _sceneManager.pushScene("StartScene");
+   _networkManager.init();
     // _sceneManager.pushScene("IngameHUD");
 
     long int nextGameTick = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now().time_since_epoch()).count();
