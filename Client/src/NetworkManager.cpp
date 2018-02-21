@@ -74,11 +74,9 @@ void NetworkManager::pingLoop()
 {
   for (;;)
   {
+		std::this_thread::sleep_for(std::chrono::milliseconds(1000));
 		if (_token.empty()) {
-			std::this_thread::sleep_for(std::chrono::milliseconds(2000));
 			continue;
-		} else {
-			std::this_thread::sleep_for(std::chrono::milliseconds(1000));
 		}
 
     UDPPacket packet;
