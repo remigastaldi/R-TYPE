@@ -32,7 +32,6 @@ class LibLoader;
 #include <cstdio>
 #include <vector>
 #include "FindOS.hpp"
-#include <experimental/filesystem>
 #include <AlfredBase/Utils/NonCopyable.hpp>
 #include <unordered_map>
 #include "DynamicLibrary/DynamicLibraryTypes.hpp"

@@ -24,7 +24,7 @@ public:
 
 	const	std::string &getName() const { return _name; }
 
-	void	playerJoin(const std::string &);
+	void	playerJoin(const std::string &, int player);
 	void	playerLeave(const std::string &);
 
 	void	onEnter();

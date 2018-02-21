@@ -18,7 +18,7 @@ LobbyPlayer::LobbyPlayer(ResourcesManager &resourceManager, GUI::Manager& guiMan
 
 }
 
-void	LobbyPlayer::playerJoin(const std::string &name)
+void	LobbyPlayer::playerJoin(const std::string &name, int player)
 {
 	_players++;
 
@@ -32,10 +32,10 @@ void	LobbyPlayer::playerJoin(const std::string &name)
 
 	sf::Vector2f centerSlot((_guiManager.getWindowSize().x / 2) - (centerSlotSprite.getGlobalBounds().width / 2), (_guiManager.getWindowSize().y / 2) - (centerSlotSprite.getGlobalBounds().height / 2));
 
-	float slotPlayerX = _players == 1 || _players == 3 ? 450 : 1070;
-	float slotPlayerY = _players < 3 ? -290 : 50;
+	float slotPlayerX = player == 1 || player == 3 ? 450 : 1070;
+	float slotPlayerY = player < 3 ? -290 : 50;
 
-	_guiManager.addElement<GUI::Image>("spaceshipPlayer" + name + "Sprite", sf::Vector2f(centerSlot.x, centerSlot.y), playersSpaceships, sf::IntRect(160 * (_players - 1), 0, 160, 160), sf::Vector2f(0.9, 0.9));
+	_guiManager.addElement<GUI::Image>("spaceshipPlayer" + name + "Sprite", sf::Vector2f(centerSlot.x, centerSlot.y), playersSpaceships, sf::IntRect(160 * (player - 1), 0, 160, 160), sf::Vector2f(0.9, 0.9));
 	_guiManager.addElement<GUI::Image>("slotPlayer" + name + "Sprite", sf::Vector2f(slotPlayerX, (_guiManager.getWindowSize().y / 2) + slotPlayerY), playerSlot, sf::Vector2f(0.25, 0.25));
 	_guiManager.addElement<GUI::Image>("readyButton" + name + "Sprite", sf::Vector2f(0, 0), readyLobbyTexture, sf::IntRect(0, 0, 76, 76), sf::Vector2f(0.5, 0.5));
 	_guiManager.addElement<GUI::Image>("readyButtonState" + name + "Sprite", sf::Vector2f(0, 0), readyLobbyTexture, sf::IntRect(152, 0, 76, 76), sf::Vector2f(0.5, 0.5));
@@ -71,7 +71,8 @@ void	LobbyPlayer::onEnter()
 	_resources.get<Font>("neuropol");
 
 
-	_eventManager.listen<int, std::string>("PlayerJoinEvent", [&](std::string name) {this->playerJoin(name); return 0; });
+	_eventManager.listen<int, std::string, int>("PlayerJoinEvent", [&](std::string name, int player) {this->playerJoin(name, player); return 0; });
+	_eventManager.listen<int, std::string>("PlayerLeaveEvent", [&](std::string name) {this->playerLeave(name); return 0; });
 	_eventManager.listen<int>("exitLobbyEvent", [&]() {this->closeLobby(); return 0; });
 
 	sf::Font &font = _resources.getContent<Font>("neuropol");

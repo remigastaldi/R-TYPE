@@ -27,6 +27,7 @@ public:
   void keyRelease(sf::Event event);
   void mainLoop();
   void pingLoop();
+  void login();
   void update();
   void playGame();
   void playerReady();

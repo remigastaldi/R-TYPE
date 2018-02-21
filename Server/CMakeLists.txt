@@ -65,7 +65,7 @@ if (UNIX)
 endif()
 
 if(MSVC)
-  target_compile_options(${NAME} PUBLIC ${COMPILE_OPTIONS} /std:c++latest)
+  target_compile_options(${NAME} PUBLIC ${COMPILE_OPTIONS}  /std:c++latest)
 else()
   target_compile_options(${NAME} PUBLIC ${COMPILE_OPTIONS})
 endif()

@@ -41,24 +41,46 @@ void NetworkManager::init()
   _managers.event.listen<int>("PlayGameEvent", [&]() -> int {this->playGame(); return 0; });
   _managers.event.listen<int, sf::Event>("KeyReleasedEvent", [&](sf::Event event){this->keyRelease(event); return 0;});
 
+	std::thread([&](){this->login();}).detach();
+
   std::thread([&](){this->mainLoop();}).detach();
 
-  UDPPacket packet;
-  packet.setCommand(RFC::Commands::LOGIN);
-  packet.setData("usr", "root");
-  packet.setData("pwd", "root");
+	std::thread([&](){this->pingLoop();}).detach();
+}
 
-  _network.send(packet, _managers.config.getKey("ip"));
-  std::thread([&](){this->pingLoop();}).detach();
-  //_eventManager.fire<void, const std::string &>("PlayerJoinEvent", "Slut");
+void NetworkManager::login()
+{
+  for (;;)
+  {
+		UDPPacket packet;
+		packet.setCommand(RFC::Commands::LOGIN);
+		packet.setData("usr", "root");
+		packet.setData("pwd", "root");
 
+		_network.send(packet, _managers.config.getKey("ip"));
+
+    if (_token.empty()) {
+			std::cout << "Connection to server failed" << std::endl;
+			std::cout << "Trying to reconnect in 2 secondes..." << std::endl;
+		} else {
+			return;
+		}
+
+		std::this_thread::sleep_for(std::chrono::milliseconds(2000));
+
+  }
 }
 
 void NetworkManager::pingLoop()
 {
   for (;;)
   {
-    std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+		if (_token.empty()) {
+			std::this_thread::sleep_for(std::chrono::milliseconds(2000));
+			continue;
+		} else {
+			std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+		}
 
     UDPPacket packet;
     packet.setCommand(RFC::Commands::PING);
@@ -77,9 +99,11 @@ void NetworkManager::mainLoop()
     _mutex.lock();
     if (packet.getCommand() == RFC::Commands::LOGIN && packet.getResult() == RFC::Responses::SUCCESS) {
       _token = packet.getData("token");
+    } else if (_token.empty()) {
+			std::cout << "no token" << std::endl;
     } else {
-      _queue.emplace_back(packet);
-    }
+			_queue.emplace_back(packet);
+		}
     _mutex.unlock();
 
   }
@@ -111,34 +135,48 @@ void NetworkManager::update()
 						if ("player1" != it.getData("name")) {
 							_managers.event.fire<int, std::string>("multiplayer join", it.getData("player1_token"));
 						}
-						_managers.event.fire<int, std::string>("PlayerJoinEvent", "player1");
+						_managers.event.fire<int, std::string, int>("PlayerJoinEvent", "player1", 1);
 					}
 					if (it.getData("player2") != "") {
 						if ("player2" != it.getData("name")) {
 							_managers.event.fire<int, std::string>("multiplayer join", it.getData("player2_token"));
 						}
 
-						_managers.event.fire<int, std::string>("PlayerJoinEvent", "player2");
+						_managers.event.fire<int, std::string, int>("PlayerJoinEvent", "player2", 2);
 					}
 					if (it.getData("player3") != "") {
 						if ("player3" != it.getData("name")) {
 							_managers.event.fire<int, std::string>("multiplayer join", it.getData("player3_token"));
 						}
-						_managers.event.fire<int, std::string>("PlayerJoinEvent", "player3");
+						_managers.event.fire<int, std::string, int>("PlayerJoinEvent", "player3", 3);
 					}
 					if (it.getData("player4") != "") {
 						if ("player4" != it.getData("name")) {
 							_managers.event.fire<int, std::string>("multiplayer join", it.getData("player4_token"));
 						}
-						_managers.event.fire<int, std::string>("PlayerJoinEvent", "player4");
+						_managers.event.fire<int, std::string, int>("PlayerJoinEvent", "player4", 4);
 					}
         } else if (it.getResult() == RFC::Responses::PLAYER_JOIN) {
+					int player = 0;
           std::cout << "PLAYER JOIN" << it.getData("name") << std::endl;
-          _managers.event.fire<int, std::string>("PlayerJoinEvent", it.getData("name"));
+					if (it.getData("name") == "player1") {
+						player = 1;
+					} else if (it.getData("name") == "player2") {
+						player = 2;
+					} else if (it.getData("name") == "player3") {
+						player = 3;
+					} else if (it.getData("name") == "player4") {
+						player = 4;
+					}
+          _managers.event.fire<int, std::string, int>("PlayerJoinEvent", it.getData("name"), player);
           _managers.event.fire<int, std::string>("multiplayer join", it.getData("token"));
         } else {
           std::cout << "JOIN ERROR" << std::endl;
         }
+        break;
+			case RFC::Commands::LEAVE_ROOM:
+				std::cout << "LEAVE ROOM =====================" << std::endl;
+      	_managers.event.fire<int, std::string>("PlayerLeaveEvent", it.getData("name"));
         break;
       case RFC::Commands::READY:
         if (it.getResult() == RFC::Responses::PLAYER_READY) {
@@ -200,7 +238,6 @@ void NetworkManager::update()
       case RFC::Commands::BUY_SHIP_COMPONENT:break;
       case RFC::Commands::SEARCH_ROOM:break;
       case RFC::Commands::GET_ROOM_INFO:break;
-      case RFC::Commands::LEAVE_ROOM:break;
       case RFC::Commands::NOT_READY:break;
       case RFC::Commands::SELECT_ROOM_LEVEL:break;
       case RFC::Commands::UNKNOWN:break;
