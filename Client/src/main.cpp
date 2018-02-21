@@ -5,9 +5,8 @@
  * @Last modified time: 2018-01-19T18:49:42+01:00
  */
 
-#include  "Client.hpp"
+#include "Client.hpp"
 #include "DynamicLibrary/LibLoader.hpp"
-#include "factory/Mobs/MobFactory.hpp"
 #include "ConfigurationManager.hpp"
 
 int main(int ac, char *av[])

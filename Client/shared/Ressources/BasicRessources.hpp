@@ -6,6 +6,7 @@ void registerRessources(GameEngine::GameManagers &_managers)
 {
   //Texture
   _managers.resources.load<Texture>("metallos_texture", "../../Client/media/img/ship/enemies/CX16-X2.png");
+  _managers.resources.load<Texture>("blue_texture", "../../Client/media/img/ship/enemies/WO84-wu-X3.png");
   _managers.resources.load<Texture>("player_ship_texture", "../../Client/media/img/ship/allies/playersSpaceships.png");
   _managers.resources.load<Texture>("player_missiles_texture", "../../Client/media/img/ship/allies/playersMissiles.png");
   _managers.resources.load<Texture>("parallax_01", "../../Client/media/img/Parallax/background_01_parallax_01.png");

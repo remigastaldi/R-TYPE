@@ -45,7 +45,8 @@ void LevelOne::update()
     _nbMobSpawn -= 1;
 
 
-    std::shared_ptr<IMob> tmp(_loader.mob.get("Metallos")(_gameManagers, _mapEngine, ECS::Components::Position(1800, 900)));
+//    std::shared_ptr<IMob> tmp(_loader.mob.get("Metallos")(_gameManagers, _mapEngine, ECS::Components::Position(1800, 900)));
+    std::shared_ptr<IMob> tmp(_loader.mob.get("bob")(_gameManagers, _mapEngine, ECS::Components::Position(1800, 900)));
     _mapEngine.addObject<IMob>(tmp->getID(), tmp);
     // _mobs[tmp->getID()] = tmp;
   }

@@ -31,6 +31,7 @@
 #include  <chrono>
 #include  <cmath>
 #include <DynamicLibrary/LibLoader.hpp>
+#include "factory/FactoryDeclaration.hpp"
 
 namespace GameEngine
 {

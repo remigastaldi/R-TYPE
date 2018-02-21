@@ -266,6 +266,11 @@ class __lib__implem : public Alfred::Utils::NonCopyable
 
       return out;
     }
+
+    void set(const std::string &name, T func)
+    {
+      _symbols[name] = func;
+    }
 };
 
 class LibLoader

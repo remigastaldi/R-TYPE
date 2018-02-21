@@ -40,7 +40,7 @@ void SinusoideMove::update()
 }
 
 
-ECS::Entity   SinusoideMove::getID(void) const
+ECS::Entity SinusoideMove::getID(void) const
 {
   return (_owner);
 }

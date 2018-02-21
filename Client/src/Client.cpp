@@ -110,6 +110,9 @@ namespace GameEngine
       _sceneManager.popScene();
 	  return 0;
     });
+
+    //Customs Mobs
+    addCustomRessources(_libraryLoader);
   }
 
   void Client::playGame(const std::string &message)
