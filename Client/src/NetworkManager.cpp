@@ -106,8 +106,32 @@ void NetworkManager::update()
       case RFC::Commands::JOIN_ROOM:
         if (it.getResult() == RFC::Responses::SUCCESS) {
           std::cout << "JOIN ROOM" << it.getData("name") << std::endl;
-					_managers.event.fire<int, std::string const &>("changeScene", "LobbyPlayer");					
-          _managers.event.fire<int, std::string>("PlayerJoinEvent", it.getData("name"));
+					_managers.event.fire<int, std::string const &>("changeScene", "LobbyPlayer");
+					if (it.getData("player1") != "") {
+						if ("player1" != it.getData("name")) {
+							_managers.event.fire<int, std::string>("multiplayer join", it.getData("player1_token"));
+						}
+						_managers.event.fire<int, std::string>("PlayerJoinEvent", "player1");
+					}
+					if (it.getData("player2") != "") {
+						if ("player2" != it.getData("name")) {
+							_managers.event.fire<int, std::string>("multiplayer join", it.getData("player2_token"));
+						}
+
+						_managers.event.fire<int, std::string>("PlayerJoinEvent", "player2");
+					}
+					if (it.getData("player3") != "") {
+						if ("player3" != it.getData("name")) {
+							_managers.event.fire<int, std::string>("multiplayer join", it.getData("player3_token"));
+						}
+						_managers.event.fire<int, std::string>("PlayerJoinEvent", "player3");
+					}
+					if (it.getData("player4") != "") {
+						if ("player4" != it.getData("name")) {
+							_managers.event.fire<int, std::string>("multiplayer join", it.getData("player4_token"));
+						}
+						_managers.event.fire<int, std::string>("PlayerJoinEvent", "player4");
+					}
         } else if (it.getResult() == RFC::Responses::PLAYER_JOIN) {
           std::cout << "PLAYER JOIN" << it.getData("name") << std::endl;
           _managers.event.fire<int, std::string>("PlayerJoinEvent", it.getData("name"));

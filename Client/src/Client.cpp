@@ -199,8 +199,8 @@ namespace GameEngine
 
   void Client::update(void)
   {
-   //_networkManager.update();
 		_myMap->update();
+    _networkManager.update();
     _ecsManager.updateSystemsRange(0.f, 0, 7);
   }
 
