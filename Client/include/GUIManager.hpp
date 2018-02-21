@@ -2,7 +2,7 @@
  * @Author: Remi Gastaldi <gastal_r>
  * @Date:   2018-01-18T14:54:03+01:00
  * @Last modified by:   gastal_r
- * @Last modified time: 2018-01-21T23:51:49+01:00
+ * @Last modified time: 2018-02-21T03:47:41+01:00
  */
 
 
@@ -58,6 +58,8 @@ namespace GUI
 		bool release(const std::string &name)
 		{
       auto it = std::find(_zIndex.begin(), _zIndex.end(), name);
+      if (it == _zIndex.end())
+        return (false);
       _zIndex.erase(it);
       int nb = _elements.erase(name);
 	    return (nb == 0 ? false : true);

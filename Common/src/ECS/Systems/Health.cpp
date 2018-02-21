@@ -2,7 +2,7 @@
  * @Author: Remi Gastaldi <gastal_r>
  * @Date:   2018-02-20T17:25:33+01:00
  * @Last modified by:   gastal_r
- * @Last modified time: 2018-02-20T19:49:42+01:00
+ * @Last modified time: 2018-02-21T02:56:03+01:00
  */
 
 
@@ -23,7 +23,17 @@ namespace ECS
 
       std::shared_ptr<ECS::Components::Health>  health(getManager().getComponent<ECS::Components::Health>(e));
 
-      //std::cout << "entity " << e << "health " << health->health << std::endl;
+      // std::cout << "entity " << e << "health " << health->health << std::endl;
+      std::shared_ptr<ECS::Components::CollisionFrame>  collisionFrame(getManager().getComponent<ECS::Components::CollisionFrame>(e));
+      if (collisionFrame.get() != nullptr)
+      {
+        std::shared_ptr<ECS::Components::Player>  player(getManager().getComponent<ECS::Components::Player>(e));
+        if (player.get() != nullptr)
+        {
+          _eventManager.fire<int, const std::string &, int>("changePlayerHealth", player->name, health->health);
+        }
+      }
+
       if (health->health <= 0)
       {
         getManager().destroyEntity(e);

@@ -1,3 +1,11 @@
+/**
+ * @Author: Remi Gastaldi <gastal_r>
+ * @Date:   2018-02-15T15:02:12+01:00
+ * @Last modified by:   gastal_r
+ * @Last modified time: 2018-02-21T03:46:40+01:00
+ */
+
+
 #pragma once
 
 #include "LibraryInterfaces/IScene.hpp"
@@ -12,7 +20,7 @@
 class IngameHUD : public IScene
 {
 public:
-	explicit IngameHUD(ResourcesManager &resourceManager, GUI::Manager &, EventManager::Manager &);
+	explicit IngameHUD(ResourcesManager &resourceManager, GUI::Manager& guiManager, EventManager::Manager &eventManager);
 	virtual ~IngameHUD() {};
 
 	const	std::string &getName() const { return _name; }
@@ -30,6 +38,8 @@ public:
 
 	void	update(const float time, ECS::Manager &ecs, EventManager::Manager &event);
 
+	void  changePlayerHealth(const std::string &playerName, int health);
+
 private:
 	std::string				_name;
 
@@ -38,4 +48,7 @@ private:
 	GUI::Manager			&_guiManager;
 	EventManager::Manager	&_eventManager;
 	ResourcesManager		&_resources;
+
+	std::unordered_map<std::string, int> _playersHealth;
+	std::unordered_map<std::string, EventManager::EventListener>  _listeners;
 };
