@@ -10,7 +10,7 @@
 
 #pragma	once
 
-#include <string>
+#include <boost/archive/text_oarchive.hpp>#include <string>
 #include <unordered_map>
 #include "RFC.hpp"
 
@@ -45,4 +45,10 @@ public:
 
 private:
   std::unordered_map<std::string, std::string>	_data;
+
+    friend class boost::serialization::access;
+
+    template <typename Archive>
+    void serialize(Archive &ar, const unsigned int version) { ar & _data; }
+
 };
