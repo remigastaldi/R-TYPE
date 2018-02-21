@@ -15,7 +15,7 @@ void registerRessources(GameEngine::GameManagers &_managers)
   _managers.resources.load<Texture>("scoreSprite", "../../Client/media/img/ingameHUD/scoreSprite.png");
   _managers.resources.load<Texture>("heart", "../../Client/media/img/ingameHUD/heart.png");
   _managers.resources.load<Texture>("lobbiesBackground", "../../Client/media/img/lobbiesBackground.jpg");
-  _managers.resources.load<Texture>("startButtons", "../../Client/media/img/startPage/startButtons.png");
+  _managers.resources.load<Texture>("startButtons", "../../Client/media/img/StartScene/startButtons.png");
   _managers.resources.load<Texture>("lobbiesBackground", "../../Client/media/img/lobbiesBackground.jpg");
   _managers.resources.load<Texture>("window_whole", "../../Client/media/img/playerLobby/window_whole.png");
   _managers.resources.load<Texture>("window_bottom", "../../Client/media/img/playerLobby/window_bottom.png");

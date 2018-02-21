@@ -6,10 +6,10 @@
  */
 
 
-#include "StartPage/StartPage.hpp"
+#include "StartScene/StartScene.hpp"
 
-StartPage::StartPage(ResourcesManager &resourceManager, GUI::Manager& guiManager, EventManager::Manager &eventManager)
-	:	_name("StartPage"),
+StartScene::StartScene(ResourcesManager &resourceManager, GUI::Manager& guiManager, EventManager::Manager &eventManager)
+	:	_name("StartScene"),
 	_guiManager(guiManager),
 	_eventManager(eventManager),
 	_resources(resourceManager)
@@ -17,21 +17,21 @@ StartPage::StartPage(ResourcesManager &resourceManager, GUI::Manager& guiManager
 
 }
 
-void	StartPage::funcPlay(void)
+void	StartScene::funcPlay(void)
 {
 }
 
 
-void	StartPage::funcOptions(void)
+void	StartScene::funcOptions(void)
 {
 }
 
-void	StartPage::funcExit(void)
+void	StartScene::funcExit(void)
 {
 
 }
 
-void	StartPage::onEnter()
+void	StartScene::onEnter()
 {
 	_resources.get<Texture>("lobbiesBackground");
 	_resources.get<Texture>("startButtons");
@@ -67,22 +67,22 @@ void	StartPage::onEnter()
 	_guiManager.addElement<GUI::Image>("Background", sf::Vector2f(0, 0), _resources.getContent<Texture>("lobbiesBackground"), sf::Vector2f(1, 1));
 	_guiManager.addElement<GUI::Text>("GameTitle", sf::Vector2f(center.x + 100, center.y - 300), "R-TYPE", font, 60);
 
-	_guiManager.addElement<GUI::Button>("StartPagePlayButton", _eventManager, "PlayGameEvent", sf::Vector2f(center.x - 100, center.y - 100), startButton, startButtonHovered);
-	_guiManager.addElement<GUI::Text>("StartPagePlayText", sf::Vector2f(810, 400), "Play", fontButtons, sf::Color::White, 30);
-	_guiManager.centerElementWithAnOther<GUI::Button, GUI::Text>("StartPagePlayButton", "StartPagePlayText", 0, 0);
+	_guiManager.addElement<GUI::Button>("StartScenePlayButton", _eventManager, "PlayGameEvent", sf::Vector2f(center.x - 100, center.y - 100), startButton, startButtonHovered);
+	_guiManager.addElement<GUI::Text>("StartScenePlayText", sf::Vector2f(810, 400), "Play", fontButtons, sf::Color::White, 30);
+	_guiManager.centerElementWithAnOther<GUI::Button, GUI::Text>("StartScenePlayButton", "StartScenePlayText", 0, 0);
 
-	_guiManager.addElement<GUI::Button>("StartPageOptionsButton", _eventManager, "OptionsEvent" ,sf::Vector2f(center.x, center.y + 100), optionsButton, optionsButtonHovered);
-	_guiManager.addElement<GUI::Text>("StartPageOptionsText", sf::Vector2f(810, 500), "Options", fontButtons, sf::Color::White, 30);
-	_guiManager.centerElementWithAnOther<GUI::Button, GUI::Text>("StartPageOptionsButton", "StartPageOptionsText", 0, 0);
+	_guiManager.addElement<GUI::Button>("StartSceneOptionsButton", _eventManager, "OptionsEvent" ,sf::Vector2f(center.x, center.y + 100), optionsButton, optionsButtonHovered);
+	_guiManager.addElement<GUI::Text>("StartSceneOptionsText", sf::Vector2f(810, 500), "Options", fontButtons, sf::Color::White, 30);
+	_guiManager.centerElementWithAnOther<GUI::Button, GUI::Text>("StartSceneOptionsButton", "StartSceneOptionsText", 0, 0);
 
-	_guiManager.addElement<GUI::Button>("StartPageExitButton", _eventManager, "ExitGameEvent" ,sf::Vector2f(center.x + 100, center.y + 300), exitButton, exitButtonHovered);
-	_guiManager.addElement<GUI::Text>("StartPageExitText", sf::Vector2f(810, 600), "Exit", fontButtons, sf::Color::White, 30);
-	_guiManager.centerElementWithAnOther<GUI::Button, GUI::Text>("StartPageExitButton", "StartPageExitText", 0, 0);
+	_guiManager.addElement<GUI::Button>("StartSceneExitButton", _eventManager, "ExitGameEvent" ,sf::Vector2f(center.x + 100, center.y + 300), exitButton, exitButtonHovered);
+	_guiManager.addElement<GUI::Text>("StartSceneExitText", sf::Vector2f(810, 600), "Exit", fontButtons, sf::Color::White, 30);
+	_guiManager.centerElementWithAnOther<GUI::Button, GUI::Text>("StartSceneExitButton", "StartSceneExitText", 0, 0);
 
 
 }
 
-void	StartPage::onExit()
+void	StartScene::onExit()
 {
 	// _resources.release("lobbiesBackground");
 	// _resources.release("startButtons");
@@ -91,7 +91,7 @@ void	StartPage::onExit()
 	// _guiManager.releaseAll();
 }
 
-void	StartPage::update(const float time, ECS::Manager &ecs, EventManager::Manager &event)
+void	StartScene::update(const float time, ECS::Manager &ecs, EventManager::Manager &event)
 {
 	(void)time;
 	(void)ecs;

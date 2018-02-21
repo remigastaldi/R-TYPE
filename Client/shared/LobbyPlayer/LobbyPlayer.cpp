@@ -115,7 +115,7 @@ void	LobbyPlayer::onExit()
 
 void LobbyPlayer::closeLobby()
 {
-	_eventManager.fire<int, std::string>("changeScene", "StartPage");
+	_eventManager.fire<int, std::string>("changeScene", "StartScene");
 }
 
 void	LobbyPlayer::update(const float time, ECS::Manager &ecs, EventManager::Manager &event)

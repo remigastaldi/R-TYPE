@@ -21,7 +21,7 @@
 
 #include  "NetworkManager.hpp"
 
-#include  "StartPage/StartPage.hpp"
+#include  "StartScene/StartScene.hpp"
 #include  "IngameHUD/IngameHUD.hpp"
 
 #include "Ship.hpp"
