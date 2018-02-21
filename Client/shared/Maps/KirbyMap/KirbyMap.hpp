@@ -2,7 +2,7 @@
  * @Author: Remi Gastaldi <gastal_r>
  * @Date:   2018-02-14T19:31:45+01:00
  * @Last modified by:   gastal_r
- * @Last modified time: 2018-02-17T13:31:26+01:00
+ * @Last modified time: 2018-02-21T00:48:11+01:00
  */
 
 
@@ -20,8 +20,7 @@ class KirbyMap : public IMap
   private:
     std::pair<int, int> _neededLevel = std::make_pair(0, 5);
 
-    EventManager::EventListener _listener;
-    EventManager::EventListener _listenerOutOfSpace;
+    std::unordered_map<std::string, EventManager::EventListener> _listeners;
 
     size_t _wave = 0;
 

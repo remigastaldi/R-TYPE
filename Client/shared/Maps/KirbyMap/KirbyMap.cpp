@@ -2,7 +2,7 @@
  * @Author: Remi Gastaldi <gastal_r>
  * @Date:   2018-02-14T19:31:45+01:00
  * @Last modified by:   gastal_r
- * @Last modified time: 2018-02-20T19:22:48+01:00
+ * @Last modified time: 2018-02-21T01:09:42+01:00
  */
 
 
@@ -10,8 +10,7 @@
 #include "KirbyMap.hpp"
 
 KirbyMap::KirbyMap(GameEngine::GameManagers &gameManagers) :
-  _listener(),
-  _listenerOutOfSpace(),
+  _listeners(),
   _gameManagers(gameManagers),
   _ecs(gameManagers.ecs),
   _event(gameManagers.event),
@@ -25,13 +24,13 @@ KirbyMap::KirbyMap(GameEngine::GameManagers &gameManagers) :
   _mapEngine.addParallax("parallax_02", 0.5, false);
   _mapEngine.addParallax("parallax_03", 1, true);
 
-  _listenerOutOfSpace = _event.listen<void, ECS::Entity>("UnitDie", [&](ECS::Entity e) -> void {
+  _listeners["UnitDie"] = _event.listen<void, ECS::Entity>("UnitDie", [&](ECS::Entity e) -> void {
     if (!_isEnd) {
       _levels[_wave]->unitDie(e);
     }
   });
 
-  _listenerOutOfSpace = _event.listen<void, ECS::Entity>("UnitOutOfSpace", [&](ECS::Entity e) -> void {
+  _listeners["UnitOutOfSpace"] = _event.listen<void, ECS::Entity>("UnitOutOfSpace", [&](ECS::Entity e) -> void {
     if (!_isEnd) {
       _levels[_wave]->unitOutOfSpace(e);
     }
@@ -55,8 +54,8 @@ KirbyMap::KirbyMap(GameEngine::GameManagers &gameManagers) :
 
 KirbyMap::~KirbyMap()
 {
-  _event.unlisten<void, ECS::Entity>("UnitDie", _listenerOutOfSpace);
-  _event.unlisten<void, ECS::Entity>("UnitOutOfSpace", _listenerOutOfSpace);
+  _event.unlisten<void, ECS::Entity>("UnitDie", _listeners["UnitDie"]);
+  _event.unlisten<void, ECS::Entity>("UnitOutOfSpace", _listeners["UnitOutOfSpace"]);
 }
 
 const std::pair<int, int> &KirbyMap::getNeededLevel() const
