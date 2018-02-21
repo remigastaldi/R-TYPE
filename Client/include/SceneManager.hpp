@@ -77,7 +77,9 @@ namespace GameEngine
 
       void update(const float time, GameEngine::GameManagers &manager)
       {
-        _scenesList.top()->update(time, manager);
+        (void) time;
+        (void) manager;
+//        _scenesList.top()->update();
       }
 
       IScene *operator[](const std::string &name)
