@@ -2,7 +2,7 @@
  * @Author: Remi Gastaldi <gastal_r>
  * @Date:   2018-02-14T19:31:45+01:00
  * @Last modified by:   gastal_r
- * @Last modified time: 2018-02-21T01:09:42+01:00
+ * @Last modified time: 2018-02-21T09:20:43+01:00
  */
 
 
@@ -26,7 +26,7 @@ KirbyMap::KirbyMap(GameEngine::GameManagers &gameManagers) :
   _mapEngine.addParallax("parallax_02", 0.5, false);
   _mapEngine.addParallax("parallax_03", 1, true);
 
-  
+
   _listeners["UnitDieEvent"] = _event.listen<int, ECS::Entity>("UnitDieEvent", [&](ECS::Entity e) -> int {
     if (!_isEnd) {
       _levels[_wave]->unitDie(e);
@@ -68,6 +68,7 @@ KirbyMap::~KirbyMap()
 {
   _event.unlisten<int, ECS::Entity>("UnitDieEvent", _listeners["UnitDieEvent"]);
   _event.unlisten<int, ECS::Entity>("UnitOutOfSpaceEvent", _listeners["UnitOutOfSpaceEvent"]);
+  _mapEngine.clearObjects();
 }
 
 const std::pair<int, int> &KirbyMap::getNeededLevel() const

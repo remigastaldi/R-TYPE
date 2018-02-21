@@ -2,7 +2,7 @@
  * @Author: Remi Gastaldi <gastal_r>
  * @Date:   2018-02-15T01:38:28+01:00
  * @Last modified by:   gastal_r
- * @Last modified time: 2018-02-21T06:31:59+01:00
+ * @Last modified time: 2018-02-21T07:17:33+01:00
  */
 
 
@@ -77,4 +77,9 @@ void  MapEngine::updateObjects(void)
 size_t  MapEngine::deleteObject(ECS::Entity entity)
 {
   return (_objects.erase(entity));
+}
+
+void  MapEngine::clearObjects(void)
+{
+  _objects.clear();
 }

@@ -2,7 +2,7 @@
  * @Author: Remi Gastaldi <gastal_r>
  * @Date:   2018-01-17T04:31:52+01:00
  * @Last modified by:   gastal_r
- * @Last modified time: 2018-01-20T04:02:52+01:00
+ * @Last modified time: 2018-02-21T09:14:03+01:00
  */
 
 
@@ -52,6 +52,7 @@ namespace GUI {
 
 		sf::Sprite					_normalSprite;
 		sf::Sprite					_hoverSprite;
+		bool								_isPressed;
 	};
 
 	inline sf::Sprite	loadSprite(const sf::Texture&, const sf::Vector2f&);

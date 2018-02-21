@@ -2,7 +2,7 @@
  * @Author: Remi Gastaldi <gastal_r>
  * @Date:   2018-02-15T00:18:51+01:00
  * @Last modified by:   gastal_r
- * @Last modified time: 2018-02-21T06:32:08+01:00
+ * @Last modified time: 2018-02-21T07:09:36+01:00
  */
 
 
@@ -60,6 +60,8 @@ public:
       it = std::next(it);
     }
   }
+
+  void  clearObjects(void);
 
 private:
   GameEngine::GameManagers  _gameManagers;

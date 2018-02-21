@@ -2,7 +2,7 @@
  * @Author: Remi Gastaldi <gastal_r>
  * @Date:   2018-01-20T21:13:21+01:00
  * @Last modified by:   gastal_r
- * @Last modified time: 2018-02-16T11:40:59+01:00
+ * @Last modified time: 2018-02-21T07:16:46+01:00
  */
 
 
@@ -104,13 +104,13 @@ void	LobbyPlayer::onEnter()
 
 void	LobbyPlayer::onExit()
 {
-	_resources.release("lobbiesBackground");
-	_resources.release("window_whole");
-	_resources.release("window_bottom");
-	_resources.release("playersSpaceships");
-	_resources.release("exitButton");
-	_resources.release("readyButtonState");
-	_resources.release("readyButton");
+	// _resources.release("lobbiesBackground");
+	// _resources.release("window_whole");
+	// _resources.release("window_bottom");
+	// _resources.release("playersSpaceships");
+	// _resources.release("exitButton");
+	// _resources.release("readyButtonState");
+	// _resources.release("readyButton");
 	_guiManager.releaseAll();
 }
 

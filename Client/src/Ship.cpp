@@ -2,7 +2,7 @@
  * @Author: Remi Gastaldi <gastal_r>
  * @Date:   2018-01-20T20:45:23+01:00
  * @Last modified by:   gastal_r
- * @Last modified time: 2018-02-21T06:21:03+01:00
+ * @Last modified time: 2018-02-21T07:41:56+01:00
  */
 
 
@@ -42,11 +42,9 @@ Ship::Ship(GameEngine::GameManagers &gameManagers, MapEngine &mapEngine)
 
     _gameManagers.ecs.updateEntityToSystems(_entity);
 
-    _gameManagers.event.addEvent<int, std::string>("SpaceKeyEvent");
-
-    _listeners["KeyPressedEvent"] = _gameManagers.event.listen<int, sf::Event>("KeyPressedEvent", [&](sf::Event event) { this->keyPressed(event); return 0;});
-    _listeners["KeyReleasedEvent"] = _gameManagers.event.listen<int, sf::Event>("KeyReleasedEvent", [&](sf::Event event) { this->keyRelease(event); return 0;});
-    _listeners["SpaceKeyEvent"] = _gameManagers.event.listen<int, std::string>("SpaceKeyEvent", [&](std::string msg) { this->fire(msg); return 0;});
+    _listeners["KeyPressedEvent"] = _gameManagers.event.listen<int, sf::Event>("KeyPressedEvent", [&](sf::Event event) -> int { this->keyPressed(event); return 0;});
+    _listeners["KeyReleasedEvent"] = _gameManagers.event.listen<int, sf::Event>("KeyReleasedEvent", [&](sf::Event event) -> int { this->keyRelease(event); return 0;});
+    _listeners["SpaceKeyEvent"] = _gameManagers.event.listen<int, std::string>("SpaceKeyEvent", [&](std::string msg) -> int { this->fire(msg); return 0;});
 
     _gameManagers.sound.loadSound("shoot", "../../Client/media/sounds/shoot.wav");
     _gameManagers.sound.registerSoundWithEvent<void, sf::Event>("shoot", "SpaceKeyEvent");

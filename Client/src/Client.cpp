@@ -2,7 +2,7 @@
  * @Author: Remi Gastaldi <gastal_r>
  * @Date:   2018-01-17T04:07:04+01:00
  * @Last modified by:   gastal_r
- * @Last modified time: 2018-02-21T06:47:38+01:00
+ * @Last modified time: 2018-02-21T07:27:33+01:00
  */
 
 
@@ -75,7 +75,7 @@ namespace GameEngine
     _eventManager.addEvent<int, sf::Event>("KeyPressedEvent");
     _eventManager.addEvent<int, sf::Event>("KeyReleasedEvent");
 
-  _networkManager.init();
+    _networkManager.init();
     //Loading library
    _libraryLoader.map.addFolder("../ressources/map/");
    _libraryLoader.mob.addFolder("../ressources/mob/");
@@ -104,6 +104,8 @@ namespace GameEngine
     _sceneManager.addScene<IngameHUD>("IngameHUD", _resourcesManager, _guiManager, _eventManager);
 
     _eventManager.listen<int, std::string>("changeScene", [&] (std::string scene) -> int {
+      if (scene == "IngameHUD")
+        _myMap.reset(_libraryLoader.map.get("KirbyMap")(_gameManagers));
       _sceneManager.pushScene(scene);
 	  return 0;
     });
@@ -132,8 +134,6 @@ namespace GameEngine
   {
    _sceneManager.pushScene("StartScene");
     // _sceneManager.pushScene("IngameHUD");
-
-    _myMap.reset(_libraryLoader.map.get("KirbyMap")(_gameManagers));
 
     long int nextGameTick = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now().time_since_epoch()).count();
 
@@ -203,14 +203,16 @@ namespace GameEngine
 
   void Client::update(void)
   {
-		_myMap->update();
     _networkManager.update();
+		if (_myMap.get() != nullptr)
+      _myMap->update();
 		_sceneManager.updateCurrentScene();
     _ecsManager.updateSystemsRange(0.f, 0, 7);
   }
 
   void Client::render(float alpha)
   {
+		// std::cout << "entities: " << _ecsManager.getEntities().size() << std::endl;
     _window.clear();
     _ecsManager.updateSystemsRange(0.f, 7, 8);
     _guiManager.update(alpha);

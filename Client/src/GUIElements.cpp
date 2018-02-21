@@ -2,7 +2,7 @@
  * @Author: Remi Gastaldi <gastal_r>
  * @Date:   2018-01-17T14:12:41+01:00
  * @Last modified by:   gastal_r
- * @Last modified time: 2018-01-20T20:06:29+01:00
+ * @Last modified time: 2018-02-21T09:28:31+01:00
  */
 
 
@@ -23,7 +23,8 @@ GUI::Button::Button(EventManager::Manager &manager, const std::string &event, co
 	:	_eventManager(manager),
 	_event(event),
 	_normalSprite(normalSprite),
-	_hoverSprite(hoverSprite)
+	_hoverSprite(hoverSprite),
+	_isPressed(false)
 {
 	_normalSprite.setPosition(position);
 	_hoverSprite.setPosition(position);
@@ -35,8 +36,13 @@ void	GUI::Button::update(sf::RenderWindow& window)
 
 	if (_normalSprite.getGlobalBounds().contains(mousePos.x, mousePos.y))
 	{
-		if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Left))
-			_eventManager.fire<int, std::string>(_event, "Play");
+		if (!_isPressed && sf::Mouse::isButtonPressed(sf::Mouse::Button::Left))
+		{
+			_eventManager.fire<int>(_event);
+			_isPressed = true;
+		}
+		else if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Left) == 0)
+			_isPressed = false;
 		window.draw(_hoverSprite);
 	}
 	else

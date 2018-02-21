@@ -1,3 +1,11 @@
+/**
+ * @Author: Remi Gastaldi <gastal_r>
+ * @Date:   2018-02-21T08:07:45+01:00
+ * @Last modified by:   gastal_r
+ * @Last modified time: 2018-02-21T08:48:11+01:00
+ */
+
+
 #include <AlfredBase/Utils/MakeFinal.hpp>
 #include <AlfredBase/Utils/NonCopyable.hpp>
 
@@ -167,10 +175,11 @@ class MultiplayerManager : Alfred::Utils::MakeFinal<MultiplayerManager>, public 
       spriteMissiles.setTextureRect(sf::IntRect(0, 0, 30, 112));
 
       _ecs.addComponent<ECS::Components::Position>(e, ECS::Components::Position(position->x, position->y + 60));
-      _ecs.addComponent<ECS::Components::Collisionable>(e, ECS::Components::Collisionable(e,
-                                                                                          ECS::Components::Collisionable::Type::ALLY));
+      _ecs.addComponent<ECS::Components::Collisionable>(e, ECS::Components::Collisionable(e, ECS::Components::Collisionable::Type::ALLY));
       _ecs.addComponent<ECS::Components::Drawable>(e, ECS::Components::Drawable(spriteName));
+      _ecs.addComponent<ECS::Components::Collisionable>(_players[id], ECS::Components::Collisionable(_players[id], ECS::Components::Collisionable::Type::ALLY_MISSILE));
       _ecs.addComponent<ECS::Components::Direction>(e, ECS::Components::Direction(1, 0, 30));
+      _ecs.addComponent<ECS::Components::Damages>(_players[id], ECS::Components::Damages(1));
       _ecs.updateEntityToSystems(e);
     }
 
@@ -195,9 +204,7 @@ class MultiplayerManager : Alfred::Utils::MakeFinal<MultiplayerManager>, public 
       _ecs.addComponent<ECS::Components::Position>(_players[id], ECS::Components::Position(200, 200));
       _ecs.addComponent<ECS::Components::Drawable>(_players[id], ECS::Components::Drawable(spriteName));
       _ecs.addComponent<ECS::Components::Direction>(_players[id], ECS::Components::Direction(0, 0, 10));
-      _ecs.addComponent<ECS::Components::Collisionable>(_players[id], ECS::Components::Collisionable(_players[id],
-                                                                                                     ECS::Components::Collisionable::Type::ALLY_MISSILE));
-
+      _ecs.addComponent<ECS::Components::Collisionable>(_players[id], ECS::Components::Collisionable(_players[id], ECS::Components::Collisionable::Type::ALLY));
       _ecs.updateEntityToSystems(_players[id]);
     }
 
