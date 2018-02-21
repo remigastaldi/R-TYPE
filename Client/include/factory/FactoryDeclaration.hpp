@@ -3,7 +3,7 @@
 #include "factory/FactoryMacros.hpp"
 #include "factory/Mobs/AMobs.hpp"
 
-INIT_MOB(MonSuperMob, "BasicAttack", "SinusoideMove", "blue_texture");
+INIT_MOB(MonSuperMob, "BombAttack", "UpAndDownMove", "blue_texture");
 
 static void addCustomRessources(LibLoader &loader)
 {

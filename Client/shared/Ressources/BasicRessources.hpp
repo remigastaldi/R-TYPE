@@ -8,11 +8,20 @@ void registerRessources(GameEngine::GameManagers &_managers)
   _managers.resources.load<Texture>("metallos_texture", "../../Client/media/img/ship/enemies/CX16-X2.png");
   _managers.resources.load<Texture>("blue_texture", "../../Client/media/img/ship/enemies/WO84-wu-X3.png");
   _managers.resources.load<Texture>("player_ship_texture", "../../Client/media/img/ship/allies/playersSpaceships.png");
+
+  //Missiles
   _managers.resources.load<Texture>("player_missiles_texture", "../../Client/media/img/ship/allies/playersMissiles.png");
+  _managers.resources.load<Texture>("player_missiles_texture_red", "../../Client/media/img/ship/ennemies/rocket_bx_single.png");
+  _managers.resources.load<Texture>("basick_attack_texture", "../../Client/media/img/ship/enemies/bullet_blaster_big_single.png");
+  _managers.resources.load<Texture>("bomb_texture", "../../Client/media/img/ship/enemies/cluster_bomb_single.png");
+  _managers.resources.load<Texture>("mini_bomb_texture", "../../Client/media/img/ship/enemies/cluster_bomb_single_cluster.png");
+
+  //Animations
+  _managers.resources.load<Texture>("bomb_explosion", "../../Client/media/img/ship/explosion.png");
+
   _managers.resources.load<Texture>("parallax_01", "../../Client/media/img/Parallax/background_01_parallax_01.png");
   _managers.resources.load<Texture>("parallax_02", "../../Client/media/img/Parallax/background_01_parallax_02.png");
   _managers.resources.load<Texture>("parallax_03", "../../Client/media/img/Parallax/background_01_parallax_03.png");
-  _managers.resources.load<Texture>("basick_attack_texture", "../../Client/media/img/ship/enemies/bullet_blaster_big_single.png");
   _managers.resources.load<Texture>("scoreSprite", "../../Client/media/img/ingameHUD/scoreSprite.png");
   _managers.resources.load<Texture>("heart", "../../Client/media/img/ingameHUD/heart.png");
   _managers.resources.load<Texture>("lobbiesBackground", "../../Client/media/img/lobbiesBackground.jpg");

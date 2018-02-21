@@ -46,6 +46,11 @@ class ConfigurationManager
       return _config[val];
     }
 
+    void setKey(std::string val, std::string key)
+    {
+      _config[val] = key;
+    }
+
     void readJSON()
     {
       std::ifstream file(_fileName);

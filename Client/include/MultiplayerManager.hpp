@@ -196,7 +196,7 @@ class MultiplayerManager : Alfred::Utils::MakeFinal<MultiplayerManager>, public 
       _ecs.addComponent<ECS::Components::Drawable>(_players[id], ECS::Components::Drawable(spriteName));
       _ecs.addComponent<ECS::Components::Direction>(_players[id], ECS::Components::Direction(0, 0, 10));
       _ecs.addComponent<ECS::Components::Collisionable>(_players[id], ECS::Components::Collisionable(_players[id],
-                                                                                                     ECS::Components::Collisionable::Type::ALLY));
+                                                                                                     ECS::Components::Collisionable::Type::ALLY_MISSILE));
 
       _ecs.updateEntityToSystems(_players[id]);
     }

@@ -5,7 +5,6 @@
  * @Last modified time: 2018-02-19T18:17:54+01:00
  */
 
-
 #include "SinusoideMove.hpp"
 
 SinusoideMove::SinusoideMove(GameEngine::GameManagers &gameManagers, ECS::Entity entity, int direction, int speed) :
@@ -18,7 +17,7 @@ SinusoideMove::SinusoideMove(GameEngine::GameManagers &gameManagers, ECS::Entity
 {
   Logger::get().setOutput(CONSOLE_LOG);
 
-  _ecs.addComponent<ECS::Components::Direction>(_owner, ECS::Components::Direction(direction, 1, speed));
+  _ecs.addComponent<ECS::Components::Direction>(_owner, ECS::Components::Direction(direction, -1, speed));
 
   _ecs.updateEntityToSystems(_owner);
 }

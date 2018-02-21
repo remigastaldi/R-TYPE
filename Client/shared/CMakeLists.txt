@@ -59,11 +59,16 @@
          ${CMAKE_SOURCE_DIR}/Client/src/MapEngine.cpp
          ${CMAKE_SOURCE_DIR}/Client/src/Ship.cpp
          ${UTILS_SOURCES})
-target_link_libraries(KirbyMap sfml-system sfml-graphics sfml-window sfml-audio)
+ target_link_libraries(KirbyMap sfml-system sfml-graphics sfml-window sfml-audio)
 
-#ATTACKS
-add_library(BasicAttack SHARED Attack/BasicAttack/BasicAttack.cpp ${UTILS_SOURCES})
-target_link_libraries(BasicAttack sfml-system sfml-graphics sfml-window sfml-audio)
+ #ATTACKS
+ add_library(BasicAttack SHARED Attack/BasicAttack/BasicAttack.cpp ${UTILS_SOURCES})
+ target_link_libraries(BasicAttack sfml-system sfml-graphics sfml-window sfml-audio)
+ add_library(BombAttack SHARED Attack/BombAttack/BombAttack.cpp ${UTILS_SOURCES})
+ target_link_libraries(BombAttack sfml-system sfml-graphics sfml-window sfml-audio)
+ add_library(MiniBombAttack SHARED Attack/MiniBombAttack/MiniBombAttack.cpp ${UTILS_SOURCES})
+ target_link_libraries(MiniBombAttack sfml-system sfml-graphics sfml-window sfml-audio)
+
 
  #MOBS
  add_library(Metallos SHARED Mobs/Metallos/Metallos.cpp Mobs/Metallos/Metallos.hpp ${UTILS_SOURCES})
@@ -73,6 +78,9 @@ target_link_libraries(BasicAttack sfml-system sfml-graphics sfml-window sfml-aud
  add_library(StraightMove SHARED Move/StraightMove/StraightMove.cpp Move/StraightMove/StraightMove.hpp ${UTILS_SOURCES})
  add_library(UpAndDownMove SHARED Move/UpAndDown/UpAndDownMove.cpp Move/UpAndDown/UpAndDownMove.hpp ${UTILS_SOURCES})
  add_library(SinusoideMove SHARED Move/SinusoideMove/SinusoideMove.cpp Move/SinusoideMove/SinusoideMove.hpp ${UTILS_SOURCES})
+ add_library(InverseSinusoideMove SHARED Move/InverseSinusoideMove/SinusoideMove.cpp Move/InverseSinusoideMove/SinusoideMove.hpp ${UTILS_SOURCES})
+
+ #RESSOURCES
  add_library(BasicRessource SHARED Ressources/BasicRessources.hpp Ressources/BasicRessources.cpp ${UTILS_SOURCES})
  target_link_libraries(BasicRessource sfml-system sfml-graphics sfml-window sfml-audio)
 
@@ -90,3 +98,9 @@ target_link_libraries(BasicAttack sfml-system sfml-graphics sfml-window sfml-aud
  target_compile_options(SinusoideMove PUBLIC ${COMPILE_OPTIONS})
  set_target_properties(BasicRessource PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/ressources/ressources)
  target_compile_options(BasicRessource PUBLIC ${COMPILE_OPTIONS})
+ set_target_properties(BombAttack PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/ressources/attack)
+ target_compile_options(BasicAttack PUBLIC ${COMPILE_OPTIONS})
+ set_target_properties(MiniBombAttack PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/ressources/attack)
+ target_compile_options(MiniBombAttack PUBLIC ${COMPILE_OPTIONS})
+ set_target_properties(InverseSinusoideMove PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/ressources/move)
+ target_compile_options(InverseSinusoideMove PUBLIC ${COMPILE_OPTIONS})
