@@ -48,11 +48,13 @@ include(../Common/common.cmake)
 link_directories(${SFML_BINARY_DIR}/lib)
 
 if (UNIX)
-  target_link_libraries(${NAME} ${Boost_LIBRARIES} sfml-system sfml-graphics sfml-window sfml-audio AlfredBase -lstdc++fs stdc++fs -ldl)
+  target_link_libraries(${NAME} ${Boost_LIBRARIES} sfml-system sfml-graphics sfml-window sfml-audio AlfredBase  -ldl)
 elseif(MSVC)
   target_compile_definitions(${NAME} PRIVATE WIN32_LEAN_AND_MEAN)
   target_link_libraries(${NAME} ${Boost_LIBRARIES} AlfredBase ${SFML_BINARY_DIR}/lib/sfml-audio-d.lib ${SFML_BINARY_DIR}/lib/sfml-graphics-d.lib ${SFML_BINARY_DIR}/lib/sfml-system-d.lib ${SFML_BINARY_DIR}/lib/sfml-window-d.lib)
 endif()
+
+
 
 Set(COMPILE_OPTIONS "")
 if (UNIX)
@@ -60,7 +62,6 @@ if (UNIX)
     $<$<CONFIG:Debug>: -g3>
     $<$<CONFIG:Release>: -O3>
 
-    $<$<PLATFORM_ID:Darwin>: -stdlib=libc++ >
 
     $<$<BOOL:True>:
       -fdiagnostics-color=always
@@ -96,7 +97,7 @@ endif()
 if(MSVC)
   target_compile_options(${NAME} PUBLIC ${COMPILE_OPTIONS} /std:c++latest)
 else()
-  target_compile_options(${NAME} PUBLIC ${COMPILE_OPTIONS})
+  target_compile_options(${NAME} PUBLIC ${COMPILE_OPTIONS} -lboost_system -lboost_thread-mt)
 endif()
 
 #Copy SFML DLL

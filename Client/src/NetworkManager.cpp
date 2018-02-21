@@ -51,20 +51,19 @@ void NetworkManager::login()
 {
   for (;;)
   {
-		UDPPacket packet;
-		packet.setCommand(RFC::Commands::LOGIN);
-		packet.setData("usr", "root");
-		packet.setData("pwd", "root");
-
-		_network.send(packet, _managers.config.getKey("ip"));
-
+		_mutex.lock();
     if (_token.empty()) {
-			std::cout << "Connection to server failed" << std::endl;
+			UDPPacket packet;
+			packet.setCommand(RFC::Commands::LOGIN);
+			packet.setData("usr", "root");
+			packet.setData("pwd", "root");
+
+			_network.send(packet, _managers.config.getKey("ip"));
 			std::cout << "Trying to reconnect in 2 secondes..." << std::endl;
 		} else {
 			return;
 		}
-
+		_mutex.unlock();
 		std::this_thread::sleep_for(std::chrono::milliseconds(2000));
 
   }
@@ -74,10 +73,8 @@ void NetworkManager::pingLoop()
 {
   for (;;)
   {
+
 		std::this_thread::sleep_for(std::chrono::milliseconds(1000));
-		if (_token.empty()) {
-			continue;
-		}
 
     UDPPacket packet;
     packet.setCommand(RFC::Commands::PING);
