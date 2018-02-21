@@ -20,6 +20,7 @@
 //multiplayer setPlayerName
 
 #include <GameManagers.hpp>
+#include <AlfredBase/Timer/Timer.hpp>
 #include "NetworkManager.hpp"
 
 NetworkManager::NetworkManager(GameEngine::GameManagers &manager) :
@@ -35,10 +36,10 @@ NetworkManager::~NetworkManager()
 
 void NetworkManager::init()
 {
-	_eventManager.listen<int, sf::Event>("KeyPressedEvent", [&](sf::Event event) -> int {this->keyPressed(event); return 0; });
-	_eventManager.listen<int>("readyToPlayEvent", [&]() -> int {this->playerReady(); return 0; });
-	_eventManager.listen<int>("PlayGameEvent", [&]() -> int {this->playGame(); return 0; });
-  _eventManager.listen<int, sf::Event>("KeyReleasedEvent", [&](sf::Event event){this->keyRelease(event); return 0;});
+	_managers.event.listen<int, sf::Event>("KeyPressedEvent", [&](sf::Event event) -> int {this->keyPressed(event); return 0; });
+  _managers.event.listen<int>("readyToPlayEvent", [&]() -> int {this->playerReady(); return 0; });
+  _managers.event.listen<int>("PlayGameEvent", [&]() -> int {this->playGame(); return 0; });
+  _managers.event.listen<int, sf::Event>("KeyReleasedEvent", [&](sf::Event event){this->keyRelease(event); return 0;});
 
   std::thread([&](){this->mainLoop();}).detach();
 
@@ -47,7 +48,7 @@ void NetworkManager::init()
   packet.setData("usr", "root");
   packet.setData("pwd", "root");
 
-  _network.send(packet, "10.16.251.24");
+  _network.send(packet, _managers.config.getKey("ip"));
   std::thread([&](){this->pingLoop();}).detach();
   //_eventManager.fire<void, const std::string &>("PlayerJoinEvent", "Slut");
 
@@ -57,7 +58,9 @@ void NetworkManager::pingLoop()
 {
   for (;;)
   {
-    /*usleep(1000000);*/
+    Alfred::Time::Timer t(1);
+    t.run();
+
     UDPPacket packet;
     packet.setCommand(RFC::Commands::PING);
     packet.setToken(_token);
