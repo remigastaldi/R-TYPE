@@ -2,7 +2,7 @@
  * @Author: Remi Gastaldi <gastal_r>
  * @Date:   2018-02-21T08:07:45+01:00
  * @Last modified by:   gastal_r
- * @Last modified time: 2018-02-21T11:21:29+01:00
+ * @Last modified time: 2018-02-21T13:49:53+01:00
  */
 
 
@@ -220,7 +220,7 @@ class MultiplayerManager : Alfred::Utils::MakeFinal<MultiplayerManager>, public 
         _ecs.addComponent<ECS::Components::Drawable>(it.second, ECS::Components::Drawable(spriteName));
         _ecs.addComponent<ECS::Components::Direction>(it.second, ECS::Components::Direction(0, 0, 10));
         _ecs.addComponent<ECS::Components::Collisionable>(it.second, ECS::Components::Collisionable(it.second, ECS::Components::Collisionable::Type::ALLY));
-        _ecs.addComponent<ECS::Components::Health>(it.second, ECS::Components::Health(1));
+        _ecs.addComponent<ECS::Components::Health>(it.second, ECS::Components::Health(3));
         _ecs.updateEntityToSystems(it.second);
       }
     }
