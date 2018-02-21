@@ -56,6 +56,7 @@ namespace GameEngine
       GUI::Manager _guiManager;
       SoundManager _soundManager;
       LibLoader _libraryLoader;
+      ConfigurationManager _configurationManager;
       GameEngine::GameManagers _gameManagers;
       // SceneManager   _sceneManager;
       NetworkManager _networkManager;

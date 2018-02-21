@@ -8,6 +8,7 @@
 #include  "Client.hpp"
 #include "DynamicLibrary/LibLoader.hpp"
 #include "factory/Mobs/MobFactory.hpp"
+#include "ConfigurationManager.hpp"
 
 int main(int ac, char *av[])
 {

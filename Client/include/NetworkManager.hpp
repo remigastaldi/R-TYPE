@@ -18,7 +18,7 @@
 class NetworkManager
 {
 public:
-  NetworkManager(EventManager::Manager &);
+  NetworkManager(GameEngine::GameManagers &);
   ~NetworkManager();
 
   void init();
@@ -32,7 +32,7 @@ public:
 
 private:
   AsioSyncUdpNetwork    _network;
-  EventManager::Manager &_eventManager;
+  GameEngine::GameManagers &_managers;
   std::mutex            _mutex;
   std::vector<UDPPacket> _queue;
   std::string            _token;

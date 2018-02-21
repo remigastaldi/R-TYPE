@@ -188,7 +188,7 @@ class __lib__implem : public Alfred::Utils::NonCopyable
     {
       std::vector<std::pair<std::string, T>> out;
       for (auto &it : _files) {
-        LOG_INFO << "Updating " << it.first << std::endl;
+        LOG_WARNING << "Updating " << it.first << std::endl;
         for (auto &p: std::experimental::filesystem::directory_iterator(it.first)) {
           std::string curPath = p.path().generic_string();
           if (curPath.find(_osLibEnding) != 0) {
