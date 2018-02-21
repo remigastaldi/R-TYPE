@@ -1,3 +1,11 @@
+/**
+ * @Author: Remi Gastaldi <gastal_r>
+ * @Date:   2018-02-21T08:40:21+01:00
+ * @Last modified by:   gastal_r
+ * @Last modified time: 2018-02-21T08:44:11+01:00
+ */
+
+
 /*
 ** Packet.hpp for R-TYPE
 **
@@ -10,7 +18,8 @@
 
 #pragma	once
 
-#include <boost/archive/text_oarchive.hpp>#include <string>
+#include <boost/archive/text_oarchive.hpp>
+#include <string>
 #include <unordered_map>
 #include "RFC.hpp"
 
