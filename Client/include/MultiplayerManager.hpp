@@ -65,19 +65,19 @@ class MultiplayerManager : Alfred::Utils::MakeFinal<MultiplayerManager>, public 
         release_right(id);
         return 0;
       });
-      _event.listen<void, std::string>("multiplayer shoot", [&](std::string id) {
+      _event.listen<int, std::string>("multiplayer shoot", [&](std::string id) {
         shoot(id);
         return 0;
       });
-      _event.listen<void, std::string>("multiplayer join", [&](std::string id) {
+      _event.listen<int, std::string>("multiplayer join", [&](std::string id) {
         join(id);
         return 0;
       });
-      _event.listen<void, std::string>("multiplayer disconnect", [&](std::string id) {
+      _event.listen<int, std::string>("multiplayer disconnect", [&](std::string id) {
         disconnect(id);
         return 0;
       });
-      _event.listen<void, std::string>("multiplayer setPlayerName", [&](std::string id) {
+      _event.listen<int, std::string>("multiplayer setPlayerName", [&](std::string id) {
         setPlayerName(id);
         return 0;
       });

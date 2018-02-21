@@ -34,7 +34,7 @@ public:
 
 	void  closeLobby();
 
-	void	update(const float time, ECS::Manager &ecs, EventManager::Manager &event);
+	void	update();
 
 private:
 	std::string				_name;

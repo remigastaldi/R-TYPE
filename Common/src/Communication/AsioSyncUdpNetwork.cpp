@@ -104,7 +104,7 @@ void	AsioSyncUdpNetwork::send(UDPPacket &packet, const std::string &ip)
     std::cout << std::endl;
     std::ostringstream archive_stream;
     boost::archive::text_oarchive archive(archive_stream);
-    archive << packet.getData();
+	archive << packet.getData();
     std::string outbound_data_ = archive_stream.str();
     _lastEndpoint.address(boost::asio::ip::address::from_string(ip));
     _socket.send_to(boost::asio::buffer(outbound_data_), _lastEndpoint);

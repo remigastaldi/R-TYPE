@@ -14,6 +14,8 @@ void registerRessources(GameEngine::GameManagers &_managers)
   _managers.resources.load<Texture>("basick_attack_texture", "../../Client/media/img/ship/enemies/bullet_blaster_big_single.png");
   _managers.resources.load<Texture>("scoreSprite", "../../Client/media/img/ingameHUD/scoreSprite.png");
   _managers.resources.load<Texture>("heart", "../../Client/media/img/ingameHUD/heart.png");
+  _managers.resources.load<Texture>("border", "../../Client/media/img/ingameHUD/border.png");
+  _managers.resources.load<Texture>("border2", "../../Client/media/img/ingameHUD/border2.png");
   _managers.resources.load<Texture>("lobbiesBackground", "../../Client/media/img/lobbiesBackground.jpg");
   _managers.resources.load<Texture>("startButtons", "../../Client/media/img/StartScene/startButtons.png");
   _managers.resources.load<Texture>("lobbiesBackground", "../../Client/media/img/lobbiesBackground.jpg");
@@ -23,7 +25,7 @@ void registerRessources(GameEngine::GameManagers &_managers)
   _managers.resources.load<Texture>("exitButton", "../../Client/media/img/playerLobby/exitButton.png");
   _managers.resources.load<Texture>("readyButtonState", "../../Client/media/img/playerLobby/readyButtonState.png");
   _managers.resources.load<Texture>("readyButton", "../../Client/media/img/playerLobby/readyButton.png");
-
+  
   //Font
   _managers.resources.load<Font>("Gravedigger", "../../Client/media/font/Gravedigger.otf");
   _managers.resources.load<Font>("neuropol", "../../Client/media/font/neuropol.ttf");

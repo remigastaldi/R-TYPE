@@ -74,7 +74,7 @@ namespace GameEngine
     _eventManager.addEvent<int, sf::Event>("KeyPressedEvent");
     _eventManager.addEvent<int, sf::Event>("KeyReleasedEvent");
 
-  //_networkManager.init();
+  _networkManager.init();
     //Loading library
    _libraryLoader.map.addFolder("../ressources/map/");
    _libraryLoader.mob.addFolder("../ressources/mob/");
@@ -201,6 +201,7 @@ namespace GameEngine
   {
 		_myMap->update();
     _networkManager.update();
+		_sceneManager.updateCurrentScene();
     _ecsManager.updateSystemsRange(0.f, 0, 7);
   }
 

@@ -25,5 +25,5 @@ class IScene
     virtual void onPause() = 0;
     virtual void onResume() = 0;
 
-    virtual void update(const float time, ECS::Manager &ecs, EventManager::Manager &event) = 0;
+    virtual void update() = 0;
 };

@@ -29,7 +29,7 @@ public:
 	void	onPause() {}
 	void	onResume() {}
 
-	void	update(const float time, ECS::Manager &ecs, EventManager::Manager &event);
+	void	update();
 	void	funcPlay(void);
 	void	funcOptions(void);
 	void	funcExit(void);

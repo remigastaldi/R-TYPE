@@ -186,7 +186,7 @@ void NetworkManager::update()
         break;
       case RFC::Commands::START_GAME:
         std::cout << "GAME STARTED" << std::endl;
-        _managers.event.fire<void, std::string const &>("changeScene", "IngameHUD");
+        _managers.event.fire<int, std::string>("changeScene", "IngameHUD");
         break;
       default:
           std::cout << "Unkown command " << std::to_string(static_cast<unsigned int>(it.getCommand())) << std::endl;

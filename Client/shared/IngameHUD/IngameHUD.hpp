@@ -36,13 +36,13 @@ public:
 
 	void	setScore(int score) { _score = score; }
 
-	void	update(const float time, ECS::Manager &ecs, EventManager::Manager &event);
+	void	update();
 
 	void  changePlayerHealth(const std::string &playerName, int health);
 
 private:
 	std::string				_name;
-
+	std::vector<std::tuple<std::shared_ptr<GUI::Image>, int, int>>	_border;
 	int						_score;
 
 	GUI::Manager			&_guiManager;

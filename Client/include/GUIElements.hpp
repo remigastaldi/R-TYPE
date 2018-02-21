@@ -162,12 +162,16 @@ namespace GUI {
 		void	setColor(const sf::Color& color) { _sprite.setColor(color); }
 		void	setAbsoluteScale(const sf::Vector2f& scale) { _sprite.setScale(scale); }
 		void	setRelativeScale(const sf::Vector2f& scale) { _sprite.scale(scale); }
+		void	setRotate(int rotate) { _sprite.rotate(rotate); }
+		void	setOrigin(sf::Vector2f origin) { _sprite.setOrigin(origin); }
 
 		const sf::Vector2f	getPosition() const { return _sprite.getPosition(); }
 		const sf::Texture	*getTexture() const { return _sprite.getTexture(); }
 		const sf::FloatRect	getTextureRect() const { return _sprite.getGlobalBounds(); }
 		const sf::Color		getColor() const { return _sprite.getColor(); }
 		const sf::Vector2f	getAbsoluteScale() const { return _sprite.getScale(); }
+		int					getRotation() const { return _sprite.getRotation(); }
+		const sf::Vector2f  getOrigin() const { return _sprite.getOrigin(); }
 
 	private:
 		sf::Sprite	_sprite;
