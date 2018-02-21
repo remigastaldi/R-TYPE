@@ -30,16 +30,18 @@ class SinusoideMove : public IMove
 
 
 #ifdef WIN32
-extern "C" char const * __declspec(dllexport) __stdcall getName()
+extern "C" 
 {
-  return "SinusoideMove";
-}
+	char const  __declspec(dllexport) *getName()
+	{
+		return "SinusoideMove";
+	}
 
-extern "C" IMove __declspec(dllexport) __stdcall *getSymbol(GameEngine::GameManagers &gameManagers, ECS::Entity parent, int direction, int speed)
-{
-  return new SinusoideMove(gameManagers, parent, direction, speed);
+	IMove __declspec(dllexport) *getSymbol(GameEngine::GameManagers &gameManagers, ECS::Entity parent, int direction, int speed)
+	{
+		return new SinusoideMove(gameManagers, parent, direction, speed);
+	}
 }
-
 #else
 
 extern "C" char const * getName()

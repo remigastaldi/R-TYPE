@@ -2,7 +2,7 @@
  * @Author: Remi Gastaldi <gastal_r>
  * @Date:   2018-02-14T19:31:45+01:00
  * @Last modified by:   gastal_r
- * @Last modified time: 2018-02-20T19:22:48+01:00
+ * @Last modified time: 2018-02-21T01:09:42+01:00
  */
 
 
@@ -10,8 +10,7 @@
 #include "KirbyMap.hpp"
 
 KirbyMap::KirbyMap(GameEngine::GameManagers &gameManagers) :
-  _listener(),
-  _listenerOutOfSpace(),
+  _listeners(),
   _gameManagers(gameManagers),
   _ecs(gameManagers.ecs),
   _event(gameManagers.event),
@@ -25,16 +24,19 @@ KirbyMap::KirbyMap(GameEngine::GameManagers &gameManagers) :
   _mapEngine.addParallax("parallax_02", 0.5, false);
   _mapEngine.addParallax("parallax_03", 1, true);
 
-  _listenerOutOfSpace = _event.listen<void, ECS::Entity>("UnitDie", [&](ECS::Entity e) -> void {
+  
+  _listeners["UnitDie"] = _event.listen<int, ECS::Entity>("UnitDie", [&](ECS::Entity e) -> int {
     if (!_isEnd) {
       _levels[_wave]->unitDie(e);
     }
+	return 0;
   });
 
-  _listenerOutOfSpace = _event.listen<void, ECS::Entity>("UnitOutOfSpace", [&](ECS::Entity e) -> void {
+  _listeners["UnitOutOfSpace"] = _event.listen<int, ECS::Entity>("UnitOutOfSpace", [&](ECS::Entity e) -> int {
     if (!_isEnd) {
       _levels[_wave]->unitOutOfSpace(e);
     }
+	return 0;
   });
 
 
@@ -47,7 +49,7 @@ KirbyMap::KirbyMap(GameEngine::GameManagers &gameManagers) :
 
   LOG_INFO << "Adding Level Done" << std::endl;
 
-  _event.fire<void, const std::string &>("printAlert", _levels[_wave]->getName());
+  _event.fire<int, std::string>("printAlert", _levels[_wave]->getName());
 
   std::shared_ptr<Ship> ship(std::make_shared<Ship>(_gameManagers, _mapEngine));
   _mapEngine.addObject<Ship>(ship->getID(), ship);
@@ -55,8 +57,8 @@ KirbyMap::KirbyMap(GameEngine::GameManagers &gameManagers) :
 
 KirbyMap::~KirbyMap()
 {
-  _event.unlisten<void, ECS::Entity>("UnitDie", _listenerOutOfSpace);
-  _event.unlisten<void, ECS::Entity>("UnitOutOfSpace", _listenerOutOfSpace);
+  _event.unlisten<int, ECS::Entity>("UnitDie", _listeners["UnitDie"]);
+  _event.unlisten<int, ECS::Entity>("UnitOutOfSpace", _listeners["UnitOutOfSpace"]);
 }
 
 const std::pair<int, int> &KirbyMap::getNeededLevel() const
@@ -77,7 +79,7 @@ void KirbyMap::update()
     _wave += 1;
 
     if (_wave < _levels.size()) {
-      _event.fire<void, const std::string &>("printAlert", _levels[_wave]->getName());
+      _event.fire<int, std::string>("printAlert", _levels[_wave]->getName());
       //TODO EVENT POUR ECRIRE SUR GUI LE NOM DU NIVEAU
       _levels[_wave]->enter();
       LOG_INFO << _levels[_wave]->getName() << std::endl;

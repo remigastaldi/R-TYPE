@@ -46,14 +46,17 @@ class Metallos : public IMob
 };
 
 #ifdef WIN32
-extern "C" char const * __declspec(dllexport) __stdcall getName()
+extern "C"
 {
-  return "Metallos";
-}
+	char const __declspec(dllexport) *getName()
+	{
+		return "Metallos";
+	}
 
-extern "C" IMob __declspec(dllexport) __stdcall *getSymbol(GameEngine::GameManagers &gameManagers, MapEngine &mapEngine, ECS::Components::Position pos)
-{
-  return new Metallos(gameManagers, pos);
+	IMob __declspec(dllexport) *getSymbol(GameEngine::GameManagers &gameManagers, MapEngine &mapEngine, ECS::Components::Position pos)
+	{
+		return new Metallos(gameManagers, mapEngine, pos);
+	}
 }
 
 #else

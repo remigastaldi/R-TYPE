@@ -30,12 +30,12 @@ void registerRessources(GameEngine::GameManagers &_managers)
 }
 
 #ifdef WIN32
-extern "C" char const * __declspec(dllexport) __stdcall getName()
+extern "C" char const  __declspec(dllexport) *getName()
 {
   return "BasicRessources";
 }
 
-extern "C" void __declspec(dllexport) __stdcall getSymbol(GameEngine::GameManagers &_managers)
+extern "C" void __declspec(dllexport) getSymbol(GameEngine::GameManagers &_managers)
 {
   registerRessources(_managers);
 }

@@ -7,16 +7,18 @@ _guiManager(guiManager),
 	_eventManager(eventManager),
 	_resources(resourceManager)
 {
-	_eventManager.listen<void, const std::string &>("printAlert", [&] (const std::string &ev) {
+	_eventManager.listen<int, std::string>("printAlert", [&] (std::string ev) -> int {
 		printAlert(ev);
+		return 0;
 	});
 
-	_eventManager.listen<void, const std::string &>("hideAlert", [&] (const std::string &ev) {
+	_eventManager.listen<int, std::string>("hideAlert", [&] (std::string ev) -> int {
 		hideAlert(ev);
+		return 0;
 	});
 }
 
-void	IngameHUD::printAlert(const std::string&string)
+void	IngameHUD::printAlert(std::string string)
 {
 	_guiManager.addElement<GUI::Text>(string, sf::Vector2f(0, 0), string, _resources.getContent<Font>("neuropol"), 30);
 	std::shared_ptr<GUI::Text> text = _guiManager.getElement<GUI::Text>(string);
@@ -24,7 +26,7 @@ void	IngameHUD::printAlert(const std::string&string)
 	text->setPosition(sf::Vector2f((_guiManager.getWindowSize().x / 2) - (text->getTextureRect().width / 2), 100));
 }
 
-void	IngameHUD::hideAlert(const std::string&string)
+void	IngameHUD::hideAlert(std::string string)
 {
 	_guiManager.release(string);
 }

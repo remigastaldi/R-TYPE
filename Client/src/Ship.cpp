@@ -2,7 +2,7 @@
  * @Author: Remi Gastaldi <gastal_r>
  * @Date:   2018-01-20T20:45:23+01:00
  * @Last modified by:   gastal_r
- * @Last modified time: 2018-02-21T00:07:21+01:00
+ * @Last modified time: 2018-02-21T01:16:30+01:00
  */
 
 
@@ -13,6 +13,7 @@ Ship::Ship(GameEngine::GameManagers &gameManagers, MapEngine &mapEngine)
   : _gameManagers(gameManagers),
     _mapEngine(mapEngine),
     _entity(_gameManagers.ecs.createEntity()),
+    _listeners(),
     _fireTickCounter(0),
     _fire(false),
     _spriteName(),
@@ -36,24 +37,27 @@ Ship::Ship(GameEngine::GameManagers &gameManagers, MapEngine &mapEngine)
     _gameManagers.ecs.addComponent<ECS::Components::Collisionable>(_entity, ECS::Components::Collisionable(_entity, ECS::Components::Collisionable::Type::ALLY));
     _gameManagers.ecs.addComponent<ECS::Components::Drawable>(_entity, ECS::Components::Drawable(_spriteName));
     _gameManagers.ecs.addComponent<ECS::Components::Direction>(_entity, ECS::Components::Direction(0, 0, 7));
-    _gameManagers.ecs.addComponent<ECS::Components::Health>(_entity, ECS::Components::Health(100));
+    _gameManagers.ecs.addComponent<ECS::Components::Health>(_entity, ECS::Components::Health(3));
 
 
     _gameManagers.ecs.updateEntityToSystems(_entity);
 
-    _gameManagers.event.addEvent<void, const std::string &>("SpaceKeyEvent");
+    _gameManagers.event.addEvent<int, std::string>("SpaceKeyEvent");
 
-    _gameManagers.event.listen<void, sf::Event>("KeyPressedEvent", [&](sf::Event event) { this->keyPressed(event);});
-    _gameManagers.event.listen<void, sf::Event>("KeyReleasedEvent", [&](sf::Event event) { this->keyRelease(event);});
-    _gameManagers.event.listen<void, const std::string &>("SpaceKeyEvent", [&](const std::string & msg) { this->fire(msg);});
+    _listeners["KeyPressedEvent"] = _gameManagers.event.listen<int, sf::Event>("KeyPressedEvent", [&](sf::Event event) { this->keyPressed(event); return 0;});
+    _listeners["KeyReleasedEvent"] = _gameManagers.event.listen<int, sf::Event>("KeyReleasedEvent", [&](sf::Event event) { this->keyRelease(event); return 0;});
+    _listeners["SpaceKeyEvent"] = _gameManagers.event.listen<int, std::string>("SpaceKeyEvent", [&](std::string msg) { this->fire(msg); return 0;});
 
     _gameManagers.sound.loadSound("shoot", "../../Client/media/sounds/shoot.wav");
     _gameManagers.sound.registerSoundWithEvent<void, sf::Event>("shoot", "SpaceKeyEvent");
-
-    _gameManagers.event.listen<void, ECS::Entity>("UnitOutOfSpace", [&](ECS::Entity e) -> void {
-      _gameManagers.ecs.destroyEntity(e);
-    });
   }
+
+Ship::~Ship()
+{
+  _gameManagers.event.unlisten<int, sf::Event>("KeyPressedEvent", _listeners["KeyPressedEvent"]);
+  _gameManagers.event.unlisten<int, sf::Event>("KeyReleasedEvent", _listeners["KeyReleasedEvent"]);
+  _gameManagers.event.unlisten<int, std::string>("SpaceKeyEvent", _listeners["SpaceKeyEvent"]);
+}
 
 void  Ship::keyPressed(sf::Event event)
 {
@@ -160,7 +164,7 @@ void  Ship::update(void )
    if (_fire && _fireTickCounter == 0)
   {
     _fireTickCounter++;
-    _gameManagers.event.fire<void, const std::string &>("SpaceKeyEvent", "Fire");
+    _gameManagers.event.fire<int, std::string>("SpaceKeyEvent", "Fire");
   }
   else if (_fire && _fireTickCounter > 20)
     _fireTickCounter = 0;

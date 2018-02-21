@@ -48,17 +48,19 @@ class BasicAttack : public IAttack
     void move();
 };
 
-#if WIN32
-extern "C" char const * __declspec(dllexport) __stdcall getName()
+#ifdef WIN32
+extern "C"
 {
-  return "BasicAttack";
-}
+	char const  __declspec(dllexport) *getName()
+	{	
+		return "BasicAttack";
+	}
 
-extern "C" IAttack  __declspec(dllexport) __stdcall *getSymbol(GameEngine::GameManagers &gameManagers, MapEngine &mapEngine, ECS::Entity parent)
-{
-  return new BasicAttack(gameManagers, mapEngine, parent);
+	IAttack  __declspec(dllexport) *getSymbol(GameEngine::GameManagers &gameManagers, MapEngine &mapEngine, ECS::Entity parent)
+	{
+		return new BasicAttack(gameManagers, mapEngine, parent);
+	}
 }
-
 #else
 
 extern "C" char const * getName()

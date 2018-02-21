@@ -36,7 +36,7 @@ void	GUI::Button::update(sf::RenderWindow& window)
 	if (_normalSprite.getGlobalBounds().contains(mousePos.x, mousePos.y))
 	{
 		if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Left))
-			_eventManager.fire<void, const std::string &>(_event, "Play");
+			_eventManager.fire<int, std::string>(_event, "Play");
 		window.draw(_hoverSprite);
 	}
 	else
@@ -58,7 +58,7 @@ void	GUI::Checkbox::event(const sf::Vector2i& mousePos)
 {
 	if (_uncheckedSprite.getGlobalBounds().contains(mousePos.x, mousePos.y))
 	{
-		_eventManager.fire<void, bool>(_event, _isChecked);
+		_eventManager.fire<int, bool>(_event, _isChecked);
 		_isChecked = !_isChecked;
 	}
 }

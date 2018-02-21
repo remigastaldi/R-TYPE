@@ -72,7 +72,7 @@ LevelOne::~LevelOne()
 {
 }
 
-void LevelOne::unitOutOfSpace(ECS::Entity entity)
+int LevelOne::unitOutOfSpace(ECS::Entity entity)
 {
   _mapEngine.deleteObject(entity);
   // if (_mobs.find(entity) != _mobs.end()) {
@@ -83,6 +83,7 @@ void LevelOne::unitOutOfSpace(ECS::Entity entity)
   //
   // for (auto &it : _mobs)
   //   it.second->unitOutOfSpace(entity);
+  return 0;
 }
 
 void  LevelOne::unitDie(ECS::Entity entity)

@@ -35,10 +35,10 @@ NetworkManager::~NetworkManager()
 
 void NetworkManager::init()
 {
-  _managers.event.listen<void, sf::Event>("KeyPressedEvent", [&](sf::Event event){this->keyPressed(event);});
-  _managers.event.listen<void, sf::Event>("KeyReleasedEvent", [&](sf::Event event){this->keyRelease(event);});
-  _managers.event.listen<void>("readyToPlayEvent", [&](){this->playerReady();});
-  _managers.event.listen<void>("PlayGameEvent", [&](){this->playGame();});
+	_eventManager.listen<int, sf::Event>("KeyPressedEvent", [&](sf::Event event) -> int {this->keyPressed(event); return 0; });
+	_eventManager.listen<int>("readyToPlayEvent", [&]() -> int {this->playerReady(); return 0; });
+	_eventManager.listen<int>("PlayGameEvent", [&]() -> int {this->playGame(); return 0; });
+  _eventManager.listen<int, sf::Event>("KeyReleasedEvent", [&](sf::Event event){this->keyRelease(event); return 0;});
 
   std::thread([&](){this->mainLoop();}).detach();
 
@@ -47,9 +47,9 @@ void NetworkManager::init()
   packet.setData("usr", "root");
   packet.setData("pwd", "root");
 
-  _network.send(packet, _managers.config.getKey("ip"));
+  _network.send(packet, "10.16.251.24");
   std::thread([&](){this->pingLoop();}).detach();
-  //_managers.event.fire<void, const std::string &>("PlayerJoinEvent", "Slut");
+  //_eventManager.fire<void, const std::string &>("PlayerJoinEvent", "Slut");
 
 }
 
@@ -57,7 +57,7 @@ void NetworkManager::pingLoop()
 {
   for (;;)
   {
-    usleep(1000000);
+    /*usleep(1000000);*/
     UDPPacket packet;
     packet.setCommand(RFC::Commands::PING);
     packet.setToken(_token);
@@ -104,12 +104,11 @@ void NetworkManager::update()
       case RFC::Commands::JOIN_ROOM:
         if (it.getResult() == RFC::Responses::SUCCESS) {
           std::cout << "JOIN ROOM" << it.getData("name") << std::endl;
-          _managers.event.fire<void, std::string const &>("changeScene", "LobbyPlayer");
-          _managers.event.fire<void, std::string const &>("PlayerJoinEvent", it.getData("name"));
+          _managers.event.fire<int, std::string>("PlayerJoinEvent", it.getData("name"));
         } else if (it.getResult() == RFC::Responses::PLAYER_JOIN) {
           std::cout << "PLAYER JOIN" << it.getData("name") << std::endl;
-          _managers.event.fire<void, std::string const &>("PlayerJoinEvent", it.getData("name"));
-          _managers.event.fire<void, std::string>("multiplayer join", it.getData("token"));
+          _managers.event.fire<int, std::string>("PlayerJoinEvent", it.getData("name"));
+          _managers.event.fire<int, std::string>("multiplayer join", it.getData("token"));
         } else {
           std::cout << "JOIN ERROR" << std::endl;
         }

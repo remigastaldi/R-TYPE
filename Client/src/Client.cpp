@@ -60,17 +60,18 @@ namespace GameEngine
     _ecsManager.initSystems();
 
     // Create events
-    _eventManager.addEvent<void, const std::string &>("PlayGameEvent");
-    _eventManager.addEvent<void, const std::string &>("ExitGameEvent");
-    _eventManager.addEvent<void, const std::string &>("OptionsEvent");
+    _eventManager.addEvent<int, std::string>("PlayGameEvent");
+    _eventManager.addEvent<int, std::string>("ExitGameEvent");
+    _eventManager.addEvent<int, std::string>("OptionsEvent");
+/*
+	_eventManager.listen<int, std::string>("PlayGameEvent",
+		[&](ECS::Entity by, ECS::Entity to) -> int { playGame(); return 0; });
 
-    _eventManager.listen<void, const std::string &>("PlayGameEvent",
-                                                    std::bind(&Client::playGame, this, std::placeholders::_1));
-    _eventManager.listen<void, const std::string &>("ExitGameEvent",
-                                                    std::bind(&Client::exitGame, this, std::placeholders::_1));
+    _eventManager.listen<int, std::string>("ExitGameEvent",
+		[&](ECS::Entity by, ECS::Entity to) -> int { &Client::exitGame; return 0; });*/
 
-    _eventManager.addEvent<void, sf::Event>("KeyPressedEvent");
-    _eventManager.addEvent<void, sf::Event>("KeyReleasedEvent");
+    _eventManager.addEvent<int, sf::Event>("KeyPressedEvent");
+    _eventManager.addEvent<int, sf::Event>("KeyReleasedEvent");
 
 //   _networkManager.init();
     //Loading library
@@ -86,25 +87,28 @@ namespace GameEngine
     _libraryLoader.updateAllRessources(_gameManagers);
 
     //Escape key
-    _eventManager.listen<void, sf::Event>("KeyPressedEvent", [&] (sf::Event ev) -> void {
+    _eventManager.listen<int, sf::Event>("KeyPressedEvent", [&] (sf::Event ev) -> int {
       if (ev.key.code ==  sf::Keyboard::Escape)
       {
         LOG_SUCCESS << "Exit" << std::endl;
         exit(0);
       }
+	  return 0;
     });
 
     //Scenes
-    _sceneManager.addScene<StartPage>("StartPage", _resourcesManager, _guiManager, _eventManager);
+    //_sceneManager.addScene<StartPage>("StartPage", _resourcesManager, _guiManager, _eventManager);
     _sceneManager.addScene<LobbyPlayer>("LobbyPlayer", _resourcesManager, _guiManager, _eventManager);
     _sceneManager.addScene<IngameHUD>("IngameHUD", _resourcesManager, _guiManager, _eventManager);
 
-    _eventManager.listen<void, std::string>("changeScene", [&] (std::string scene) -> void {
+    _eventManager.listen<int, std::string>("changeScene", [&] (std::string scene) -> int {
       _sceneManager.pushScene(scene);
+	  return 0;
     });
 
-    _eventManager.listen<void>("popScene", [&] () -> void {
+    _eventManager.listen<int>("popScene", [&] () -> int {
       _sceneManager.popScene();
+	  return 0;
     });
   }
 
@@ -161,10 +165,10 @@ namespace GameEngine
       switch (event.type)
       {
       case sf::Event::KeyPressed :
-        _eventManager.fire<void, sf::Event>("KeyPressedEvent", event);
+        _eventManager.fire<int, sf::Event>("KeyPressedEvent", event);
         break;
       case sf::Event::KeyReleased :
-        _eventManager.fire<void, sf::Event>("KeyReleasedEvent", event);
+        _eventManager.fire<int, sf::Event>("KeyReleasedEvent", event);
         break;
         case sf::Event::Closed:break;
         case sf::Event::Resized:break;
