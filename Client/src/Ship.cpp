@@ -2,7 +2,7 @@
  * @Author: Remi Gastaldi <gastal_r>
  * @Date:   2018-01-20T20:45:23+01:00
  * @Last modified by:   gastal_r
- * @Last modified time: 2018-02-21T07:41:56+01:00
+ * @Last modified time: 2018-02-21T10:17:17+01:00
  */
 
 
@@ -37,7 +37,7 @@ Ship::Ship(GameEngine::GameManagers &gameManagers, MapEngine &mapEngine)
     _gameManagers.ecs.addComponent<ECS::Components::Collisionable>(_entity, ECS::Components::Collisionable(_entity, ECS::Components::Collisionable::Type::ALLY));
     _gameManagers.ecs.addComponent<ECS::Components::Drawable>(_entity, ECS::Components::Drawable(_spriteName));
     _gameManagers.ecs.addComponent<ECS::Components::Direction>(_entity, ECS::Components::Direction(0, 0, 7));
-//    _gameManagers.ecs.addComponent<ECS::Components::Health>(_entity, ECS::Components::Health(3));
+   _gameManagers.ecs.addComponent<ECS::Components::Health>(_entity, ECS::Components::Health(3));
 
 
     _gameManagers.ecs.updateEntityToSystems(_entity);

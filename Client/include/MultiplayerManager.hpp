@@ -2,7 +2,7 @@
  * @Author: Remi Gastaldi <gastal_r>
  * @Date:   2018-02-21T08:07:45+01:00
  * @Last modified by:   gastal_r
- * @Last modified time: 2018-02-21T08:48:11+01:00
+ * @Last modified time: 2018-02-21T11:21:29+01:00
  */
 
 
@@ -87,6 +87,10 @@ class MultiplayerManager : Alfred::Utils::MakeFinal<MultiplayerManager>, public 
       });
       _event.listen<int, std::string>("multiplayer setPlayerName", [&](std::string id) {
         setPlayerName(id);
+        return 0;
+      });
+      _event.listen<int>("multiplayer game start", [&]() {
+        joinMap();
         return 0;
       });
     };
@@ -180,6 +184,7 @@ class MultiplayerManager : Alfred::Utils::MakeFinal<MultiplayerManager>, public 
       _ecs.addComponent<ECS::Components::Collisionable>(_players[id], ECS::Components::Collisionable(_players[id], ECS::Components::Collisionable::Type::ALLY_MISSILE));
       _ecs.addComponent<ECS::Components::Direction>(e, ECS::Components::Direction(1, 0, 30));
       _ecs.addComponent<ECS::Components::Damages>(_players[id], ECS::Components::Damages(1));
+      _ecs.addComponent<ECS::Components::Health>(_players[id], ECS::Components::Health(1));
       _ecs.updateEntityToSystems(e);
     }
 
@@ -190,26 +195,33 @@ class MultiplayerManager : Alfred::Utils::MakeFinal<MultiplayerManager>, public 
       _ecs.destroyEntity(_players[id]);
     }
 
-    void join(const std::string &id)
+    void  join(const std::string &id)
     {
-      std::shared_ptr<Texture> texture = _ressources.load<Texture>("metallos_texture",
-                                                                   "../../Client/media/img/ship/enemies/CX16-X2.png");
-      std::string spriteName = "metallos_sprite[" + id + "]";
-      Sprite sprite(spriteName, *texture);
-      _ressources.addResource<Sprite>(spriteName, sprite);
-
       _players[id] = _ecs.createEntity();
-
-      _ecs.addComponent<ECS::Components::Player>(_players[id], ECS::Components::Player(id));
-      _ecs.addComponent<ECS::Components::Position>(_players[id], ECS::Components::Position(200, 200));
-      _ecs.addComponent<ECS::Components::Drawable>(_players[id], ECS::Components::Drawable(spriteName));
-      _ecs.addComponent<ECS::Components::Direction>(_players[id], ECS::Components::Direction(0, 0, 10));
-      _ecs.addComponent<ECS::Components::Collisionable>(_players[id], ECS::Components::Collisionable(_players[id], ECS::Components::Collisionable::Type::ALLY));
-      _ecs.updateEntityToSystems(_players[id]);
     }
 
     void setPlayerName(const std::string &id)
     {
       _playerName = id;
+    }
+
+    void  joinMap(void)
+    {
+      for (auto & it : _players)
+      {
+        std::shared_ptr<Texture> texture = _ressources.load<Texture>("metallos_texture",
+                                                                     "../../Client/media/img/ship/enemies/CX16-X2.png");
+        std::string spriteName = "metallos_sprite[" + std::to_string(static_cast<int>(it.second)) + "]";
+        Sprite sprite(spriteName, *texture);
+        _ressources.addResource<Sprite>(spriteName, sprite);
+
+        _ecs.addComponent<ECS::Components::Player>(it.second, ECS::Components::Player(it.first));
+        _ecs.addComponent<ECS::Components::Position>(it.second, ECS::Components::Position(200, 200));
+        _ecs.addComponent<ECS::Components::Drawable>(it.second, ECS::Components::Drawable(spriteName));
+        _ecs.addComponent<ECS::Components::Direction>(it.second, ECS::Components::Direction(0, 0, 10));
+        _ecs.addComponent<ECS::Components::Collisionable>(it.second, ECS::Components::Collisionable(it.second, ECS::Components::Collisionable::Type::ALLY));
+        _ecs.addComponent<ECS::Components::Health>(it.second, ECS::Components::Health(1));
+        _ecs.updateEntityToSystems(it.second);
+      }
     }
 };

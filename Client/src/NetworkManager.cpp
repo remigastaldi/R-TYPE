@@ -2,7 +2,7 @@
  * @Author: Remi Gastaldi <gastal_r>
  * @Date:   2018-01-22T10:35:17+01:00
  * @Last modified by:   gastal_r
- * @Last modified time: 2018-02-18T12:40:37+01:00
+ * @Last modified time: 2018-02-21T10:58:12+01:00
  */
 
 //COMMENT FAIRE BOUGER UN ENNEMI ?
@@ -219,7 +219,8 @@ void NetworkManager::update()
         break;
       case RFC::Commands::START_GAME:
         std::cout << "GAME STARTED" << std::endl;
-        _managers.event.fire<int, std::string>("changeScene", "IngameHUD");
+				_managers.event.fire<int, std::string>("changeScene", "IngameHUD");
+        _managers.event.fire<int>("multiplayer game start");
         break;
       default:
           std::cout << "Unkown command " << std::to_string(static_cast<unsigned int>(it.getCommand())) << std::endl;
