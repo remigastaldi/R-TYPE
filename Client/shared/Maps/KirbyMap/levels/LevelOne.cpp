@@ -2,7 +2,7 @@
  * @Author: Remi Gastaldi <gastal_r>
  * @Date:   2018-02-15T16:16:24+01:00
  * @Last modified by:   gastal_r
- * @Last modified time: 2018-02-21T06:34:54+01:00
+ * @Last modified time: 2018-02-24T19:54:08+01:00
  */
 
 
@@ -53,7 +53,6 @@ void LevelOne::update()
     _mapEngine.addObject<IMob>(tmp2->getID(), tmp2);
   }
 
-  _mapEngine.updateObjects();
 }
 
 LevelOne::LevelOne(GameEngine::GameManagers &gameManagers, MapEngine &mapEngine) :

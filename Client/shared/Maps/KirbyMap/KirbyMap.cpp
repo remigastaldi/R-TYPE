@@ -2,7 +2,7 @@
  * @Author: Remi Gastaldi <gastal_r>
  * @Date:   2018-02-14T19:31:45+01:00
  * @Last modified by:   gastal_r
- * @Last modified time: 2018-02-21T09:20:43+01:00
+ * @Last modified time: 2018-02-24T19:57:13+01:00
  */
 
 
@@ -83,13 +83,15 @@ void KirbyMap::update()
     return;
   }
 
+
   _levels[_wave]->update();
+  _mapEngine.updateObjects();
   if (_levels[_wave]->isEnd()) {
     _levels[_wave]->exit();
     _wave += 1;
 
     if (_wave < _levels.size()) {
-      _event.fire<int, std::string>("printAlert", _levels[_wave]->getName());
+      //_event.fire<int, std::string>("printAlert", _levels[_wave]->getName());
       _levels[_wave]->enter();
       LOG_INFO << _levels[_wave]->getName() << std::endl;
     } else {

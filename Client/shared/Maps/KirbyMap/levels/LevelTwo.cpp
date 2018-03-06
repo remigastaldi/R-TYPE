@@ -1,3 +1,11 @@
+/**
+ * @Author: Remi Gastaldi <gastal_r>
+ * @Date:   2018-02-21T08:07:45+01:00
+ * @Last modified by:   gastal_r
+ * @Last modified time: 2018-02-24T19:32:34+01:00
+ */
+
+
 #include <ECS/Components/Stats.hpp>
 #include "LevelTwo.hpp"
 
@@ -45,8 +53,6 @@ void LevelTwo::update()
     _mapEngine.addObject<IMob>(tmp2->getID(), tmp2);
     _mapEngine.addObject<IMob>(tmp3->getID(), tmp3);
   }
-
-  _mapEngine.updateObjects();
 }
 
 LevelTwo::LevelTwo(GameEngine::GameManagers &gameManagers, MapEngine &mapEngine) :

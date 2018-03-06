@@ -1,3 +1,11 @@
+/**
+ * @Author: Remi Gastaldi <gastal_r>
+ * @Date:   2018-02-21T08:07:45+01:00
+ * @Last modified by:   gastal_r
+ * @Last modified time: 2018-02-24T19:32:49+01:00
+ */
+
+
 #include <ECS/Components/Stats.hpp>
 #include "LevelThree.hpp"
 
@@ -41,8 +49,6 @@ void LevelThree::update()
       _loader.mob.get("Bomber")(_gameManagers, _mapEngine, ECS::Components::Position(1800, 500)));
     _mapEngine.addObject<IMob>(tmp->getID(), tmp);
   }
-
-  _mapEngine.updateObjects();
 }
 
 LevelThree::LevelThree(GameEngine::GameManagers &gameManagers, MapEngine &mapEngine) :
